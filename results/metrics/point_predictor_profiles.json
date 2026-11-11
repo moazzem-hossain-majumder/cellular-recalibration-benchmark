@@ -1,38 +1,38 @@
 {
   "Persistence": {
     "fit_time_seconds": 0.0,
-    "val_mae": 9.0975,
-    "val_rmse": 16.6421
+    "val_mae": 3.2201,
+    "val_rmse": 7.2069
   },
   "Ridge": {
-    "fit_time_seconds": 0.027,
-    "val_mae": 12.0814,
-    "val_rmse": 24.2634
+    "fit_time_seconds": 0.033,
+    "val_mae": 6.0274,
+    "val_rmse": 8.7779
   },
   "HistGradientBoosting": {
-    "fit_time_seconds": 2.5257,
-    "val_mae": 14.5218,
-    "val_rmse": 27.6666
+    "fit_time_seconds": 2.9427,
+    "val_mae": 10.9966,
+    "val_rmse": 11.999
   },
   "BAMMO": {
-    "fit_time_seconds": 0.4081,
-    "val_mae": 16.7213,
-    "val_rmse": 33.8389
+    "fit_time_seconds": 0.405,
+    "val_mae": 15.4589,
+    "val_rmse": 23.8646
   },
   "QuantileGBM_p10": {
-    "fit_time_seconds": 0.111,
-    "val_mae": 18.0749,
-    "val_rmse": 35.9932
+    "fit_time_seconds": 0.0917,
+    "val_mae": 5.0138,
+    "val_rmse": 8.6831
   },
   "GPU_ThroughputResNet": {
-    "fit_time_seconds": 1.0325,
-    "val_mae": 18.2657,
-    "val_rmse": 33.3848,
+    "fit_time_seconds": 0.5349,
+    "val_mae": 5.8535,
+    "val_rmse": 8.3324,
     "device": "cuda",
     "gpu_name": "NVIDIA GeForce RTX 4060",
-    "train_time_seconds": 1.0325486660003662,
-    "peak_vram_mb": 24.78076171875,
+    "train_time_seconds": 0.5348925590515137,
+    "peak_vram_mb": 24.74169921875,
     "parameter_count": 435457,
-    "best_val_loss": 17.777891997135047
+    "best_val_loss": 5.353466033935547
   }
 }

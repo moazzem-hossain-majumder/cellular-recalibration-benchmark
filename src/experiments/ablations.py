@@ -145,7 +145,7 @@ def run_freshness_sensitivity() -> Dict:
         
         window_dict = {}
         for reg_name, (s_df, t_df) in regimes.items():
-            splits = create_experiment_splits(s_df, t_df, budgets=[0, 10])
+            splits = create_experiment_splits(s_df, t_df, budgets=[0, 10], regime=reg_name)
             model = HistGradientBoostingThroughputPredictor().fit(splits.train, splits.train['target_y'].to_numpy(dtype=float))
             
             y_pred_src_cal = model.predict(splits.source_calib)
@@ -203,7 +203,7 @@ def run_multi_alpha_frontier() -> Dict:
     frontier_data = {reg: {'alphas': alphas, 'global': {'V': [], 'U': []}, 'proposed': {'V': [], 'U': []}} for reg in regimes}
     
     for reg_name, (s_df, t_df) in regimes.items():
-        splits = create_experiment_splits(s_df, t_df, budgets=[10])
+        splits = create_experiment_splits(s_df, t_df, budgets=[10], regime=reg_name)
         model = HistGradientBoostingThroughputPredictor().fit(splits.train, splits.train['target_y'].to_numpy(dtype=float))
         
         y_te = splits.target_test['target_y'].to_numpy(dtype=float)
@@ -302,7 +302,7 @@ def run_covariate_shift_benchmark() -> Dict:
         'E3_JointShift': fdf_140[fdf_140['operator'] == 'Op2'].copy()
     }
     
-    splits_e0 = create_experiment_splits(source_df, source_df, budgets=[0])
+    splits_e0 = create_experiment_splits(source_df, source_df, budgets=[0], regime='E0_WithinDomain')
     model = HistGradientBoostingThroughputPredictor().fit(splits_e0.train, splits_e0.train['target_y'].to_numpy(dtype=float))
     
     src_cal = splits_e0.source_calib
@@ -314,7 +314,7 @@ def run_covariate_shift_benchmark() -> Dict:
     cs_results = {}
     
     for r_name, tgt_df in regimes.items():
-        splits = create_experiment_splits(source_df, tgt_df, budgets=[0])
+        splits = create_experiment_splits(source_df, tgt_df, budgets=[0], regime=r_name)
         test_df = splits.target_test
         y_test = test_df['target_y'].to_numpy(dtype=float)
         y_test_pred = model.predict(test_df)

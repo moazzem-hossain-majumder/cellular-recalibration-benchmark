@@ -55,9 +55,18 @@ def partition_by_chronological_days(df: pd.DataFrame, fractions: Tuple[float, ..
     return splits
 
 def create_experiment_splits(source_df: pd.DataFrame, target_df: pd.DataFrame,
-                             budgets: List[int] = [0, 1, 2, 5, 8, 9, 10, 15]) -> DomainSplits:
+                             budgets: List[int] = [0, 1, 2, 5, 8, 9, 10, 15],
+                             is_within_domain: object = None,
+                             regime: str = None) -> DomainSplits:
     """Create chronological source-development, source-calibration, target-calibration,
     and fixed-test partitions without reusing calibration labels.
+
+    Args:
+        source_df: Source domain measurement instances.
+        target_df: Target domain measurement instances.
+        budgets: Target calibration budgets K to extract.
+        is_within_domain: Optional explicit boolean flag. If provided, overrides implicit detection.
+        regime: Optional experiment regime name (e.g. 'E0_WithinDomain_Op1_2021').
 
     E0 within-domain uses five disjoint chronological blocks (35/10/15/15/25
     percent of days): train, validation, source calibration, target calibration
@@ -67,11 +76,16 @@ def create_experiment_splits(source_df: pd.DataFrame, target_df: pd.DataFrame,
     Transfer regimes use source 60/20/20 and target 40/60 chronological blocks.
     """
 
-    # Detect E0 by shared dataframe identity, not by session_id overlap:
-    # IDs can restart at zero in independently loaded campaigns.
-    is_within_domain = source_df is target_df
+    if is_within_domain is not None:
+        within_domain = bool(is_within_domain)
+    elif regime is not None:
+        within_domain = regime.startswith('E0') or 'within' in regime.lower()
+    else:
+        # Detect E0 by shared dataframe identity, not by session_id overlap:
+        # IDs can restart at zero in independently loaded campaigns.
+        within_domain = (source_df is target_df)
     
-    if is_within_domain:
+    if within_domain:
         # Five disjoint chronological blocks are necessary here: the frozen
         # source quantile must not use labels later exposed as target calibration
         # prefixes. The fixed test suffix remains the final 25% of collection days.
@@ -102,7 +116,7 @@ def create_experiment_splits(source_df: pd.DataFrame, target_df: pd.DataFrame,
         assert set(train_df['session_id']).isdisjoint(set(source_calib_df['session_id'])), "FATAL LEAKAGE: Source train and source calibration overlap!"
         assert set(val_df['session_id']).isdisjoint(set(source_calib_df['session_id'])), "FATAL LEAKAGE: Source validation and calibration overlap!"
         assert set(calib_pool_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Target calibration pool and test overlap!"
-        if is_within_domain:
+        if within_domain:
             source_ids = set(source_df['session_id'])
             target_ids = set(target_df['session_id'])
             assert source_ids == target_ids, "E0 should use the same underlying session set for source and target."
