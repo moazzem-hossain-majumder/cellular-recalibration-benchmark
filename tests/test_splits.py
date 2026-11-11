@@ -76,3 +76,31 @@ if __name__ == '__main__':
     test_e0_within_domain_split_disjointness()
     print('Split integrity tests PASSED.')
 
+
+
+def test_synthetic_e0_partitions_are_disjoint_and_budgets_are_explicit():
+    """No data download needed: exercise E0 separation and unsupported K handling."""
+    import pandas as pd
+    rows = []
+    for day in range(10):
+        rows.append({
+            "session_id": day + 1,
+            "date": f"2026-01-{day + 1:02d}",
+            "t_start": pd.Timestamp("2026-01-01") + pd.Timedelta(days=day),
+            "target_y": float(day + 1),
+            "group_id": 2,
+            "has_nr": 0,
+        })
+    frame = pd.DataFrame(rows)
+    splits = create_experiment_splits(frame, frame, budgets=[0, 1, 2, 5, 8, 9, 10, 15])
+
+    parts = [splits.train, splits.val, splits.source_calib,
+             splits.target_calib_pool, splits.target_test]
+    for i, left in enumerate(parts):
+        for right in parts[i + 1:]:
+            assert set(left["session_id"]).isdisjoint(set(right["session_id"]))
+            assert set(left["date"]).isdisjoint(set(right["date"]))
+
+    assert splits.target_prefix_sessions[0] is not None
+    assert splits.target_prefix_sessions[1] is not None
+    assert splits.target_prefix_sessions[15] is None
