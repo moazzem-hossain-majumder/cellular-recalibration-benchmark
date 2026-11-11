@@ -58,6 +58,8 @@ def test_e0_within_domain_split_disjointness():
     assert s_tr.isdisjoint(s_te), "CRITICAL LEAKAGE: E0 train overlaps with test suffix!"
     assert s_va.isdisjoint(s_te), "CRITICAL LEAKAGE: E0 val overlaps with test suffix!"
     assert s_ca.isdisjoint(s_te), "CRITICAL LEAKAGE: E0 calib overlaps with test suffix!"
+    s_target_cal = set(splits.target_calib_pool['session_id'])
+    assert s_ca.isdisjoint(s_target_cal), "CRITICAL LEAKAGE: E0 source calibration overlaps target calibration pool!"
     assert s_tr.isdisjoint(s_va), "E0 train overlaps with val!"
     assert s_tr.isdisjoint(s_ca), "E0 train overlaps with calib!"
     
@@ -65,9 +67,67 @@ def test_e0_within_domain_split_disjointness():
     d_tr = set(splits.train['date'].unique())
     d_te = set(splits.target_test['date'].unique())
     assert d_tr.isdisjoint(d_te), "E0 train dates overlap with test dates!"
+    d_src_cal = set(splits.source_calib['date'].unique())
+    d_tgt_cal = set(splits.target_calib_pool['date'].unique())
+    assert d_src_cal.isdisjoint(d_tgt_cal), "E0 source-calibration dates overlap target-calibration dates!"
+
+
+def test_synthetic_e0_partitions_are_disjoint_and_budgets_are_explicit():
+    """No data download needed: exercise E0 separation and unsupported K handling."""
+    import pandas as pd
+    rows = []
+    for day in range(10):
+        rows.append({
+            "session_id": day + 1,
+            "date": f"2026-01-{day + 1:02d}",
+            "t_start": pd.Timestamp("2026-01-01") + pd.Timedelta(days=day),
+            "target_y": float(day + 1),
+            "group_id": 2,
+            "has_nr": 0,
+        })
+    frame = pd.DataFrame(rows)
+    splits = create_experiment_splits(frame, frame, budgets=[0, 1, 2, 5, 8, 9, 10, 15])
+
+    parts = [splits.train, splits.val, splits.source_calib,
+             splits.target_calib_pool, splits.target_test]
+    for i, left in enumerate(parts):
+        for right in parts[i + 1:]:
+            assert set(left["session_id"]).isdisjoint(set(right["session_id"]))
+            assert set(left["date"]).isdisjoint(set(right["date"]))
+
+    assert splits.target_prefix_sessions[0] is not None
+    assert splits.target_prefix_sessions[1] is not None
+    assert splits.target_prefix_sessions[15] is None
+
+
+def test_transfer_domains_with_reused_local_session_ids_are_not_misclassified_as_e0():
+    """Separate datasets can restart session IDs; this must not trigger the E0 split."""
+    import pandas as pd
+    def make_frame(start_day, offset):
+        rows = []
+        for i in range(10):
+            rows.append({
+                "session_id": i,  # IDs intentionally restart in each dataset
+                "date": f"2026-02-{start_day + i:02d}",
+                "t_start": pd.Timestamp("2026-02-01") + pd.Timedelta(days=start_day + i),
+                "target_y": float(offset + i),
+                "group_id": 2,
+                "has_nr": 0,
+            })
+        return pd.DataFrame(rows)
+    source = make_frame(1, 10)
+    target = make_frame(11, 100)
+    splits = create_experiment_splits(source, target, budgets=[0, 1, 2, 5, 8, 9, 10, 15])
+    assert len(splits.train) > 0
+    assert len(splits.source_calib) > 0
+    assert len(splits.target_calib_pool) > 0
+    assert len(splits.target_test) > 0
+    assert splits.target_prefix_sessions[15] is None
+
 
 if __name__ == '__main__':
     test_split_independence_and_disjointness()
     test_e0_within_domain_split_disjointness()
+    test_synthetic_e0_partitions_are_disjoint_and_budgets_are_explicit()
+    test_transfer_domains_with_reused_local_session_ids_are_not_misclassified_as_e0()
     print('Split integrity tests PASSED.')
-

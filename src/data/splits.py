@@ -11,7 +11,7 @@ class DomainSplits:
     source_calib: pd.DataFrame
     target_calib_pool: pd.DataFrame
     target_test: pd.DataFrame
-    target_prefix_sessions: Dict[int, pd.DataFrame]  # K -> df for K in [0, 1, 2, 5, 10]
+    target_prefix_sessions: Dict[int, object]  # K -> dataframe, or None when K sessions are unsupported
 
 def partition_by_chronological_days(df: pd.DataFrame, fractions: Tuple[float, ...]) -> List[pd.DataFrame]:
     """Partition a dataframe into non-overlapping chronological blocks by collection date."""
@@ -24,14 +24,26 @@ def partition_by_chronological_days(df: pd.DataFrame, fractions: Tuple[float, ..
         
     date_order = df_temp.groupby('date')['t_start'].min().sort_values().index.tolist()
     n_dates = len(date_order)
-    
+    if n_dates < len(fractions):
+        raise ValueError(
+            f"Cannot create {len(fractions)} non-empty chronological partitions "
+            f"from only {n_dates} collection dates."
+        )
+
     # Calculate cutoff indices
     cutoffs = []
     cum = 0.0
-    for frac in fractions[:-1]:
+    previous_cut = 0
+    for i, frac in enumerate(fractions[:-1]):
         cum += frac
-        idx = max(1, int(round(cum * n_dates)))
+        # Keep every partition non-empty when there are enough collection days;
+        # Python's round-to-even can otherwise create duplicate cut points.
+        remaining_partitions = len(fractions) - i - 1
+        proposed = int(round(cum * n_dates))
+        idx = max(previous_cut + 1, proposed)
+        idx = min(idx, n_dates - remaining_partitions)
         cutoffs.append(idx)
+        previous_cut = idx
         
     splits = []
     start_idx = 0
@@ -44,39 +56,36 @@ def partition_by_chronological_days(df: pd.DataFrame, fractions: Tuple[float, ..
 
 def create_experiment_splits(source_df: pd.DataFrame, target_df: pd.DataFrame,
                              budgets: List[int] = [0, 1, 2, 5, 8, 9, 10, 15]) -> DomainSplits:
-    """Create strictly disjoint source train/val/calib and target calibration pool / test suffix splits.
-    
-    For within-domain evaluation (source == target):
-        Single 4-way chronological day partition (45% train, 15% dev, 15% calib pool, 25% test suffix).
-        Guarantees 0% leakage: train, val, calib, and test dates and sessions are 100% disjoint.
-        
-    For transfer regimes (source != target):
-        Source domain: earliest 60% days for train, next 20% for dev, final 20% for source calib.
-        Target domain: earliest 40% days for calibration pool, remaining 60% days for fixed test suffix.
+    """Create chronological source-development, source-calibration, target-calibration,
+    and fixed-test partitions without reusing calibration labels.
+
+    E0 within-domain uses five disjoint chronological blocks (35/10/15/15/25
+    percent of days): train, validation, source calibration, target calibration
+    pool, and fixed test suffix. The source-calibration block is never reused
+    as target calibration data.
+
+    Transfer regimes use source 60/20/20 and target 40/60 chronological blocks.
     """
-    # Detect whether this is a within-domain experiment (overlapping session pool)
-    has_sid_src = 'session_id' in source_df.columns
-    has_sid_tgt = 'session_id' in target_df.columns
-    if has_sid_src and has_sid_tgt:
-        overlap_sessions = set(source_df['session_id']).intersection(set(target_df['session_id']))
-        is_within_domain = len(overlap_sessions) > 0
-    else:
-        is_within_domain = (source_df is target_df or len(source_df) == len(target_df))
-        overlap_sessions = set()
+
+    # Detect E0 by shared dataframe identity, not by session_id overlap:
+    # IDs can restart at zero in independently loaded campaigns.
+    is_within_domain = source_df is target_df
     
     if is_within_domain:
-        # Strictly disjoint 4-way chronological split of the single domain
-        # 45% train, 15% val, 15% calib pool, 25% test
-        e0_splits = partition_by_chronological_days(source_df, (0.45, 0.15, 0.15, 0.25))
+        # Five disjoint chronological blocks are necessary here: the frozen
+        # source quantile must not use labels later exposed as target calibration
+        # prefixes. The fixed test suffix remains the final 25% of collection days.
+        e0_splits = partition_by_chronological_days(
+            source_df, (0.35, 0.10, 0.15, 0.15, 0.25)
+        )
         train_df = e0_splits[0]
         val_df = e0_splits[1]
-        calib_pool_df = e0_splits[2]
-        source_calib_df = calib_pool_df.copy()  # In within-domain, source calib is the calib pool
-        test_df = e0_splits[3]
+        source_calib_df = e0_splits[2]
+        calib_pool_df = e0_splits[3]
+        test_df = e0_splits[4]
     else:
-        # Transfer regime: source and target are already distinct domains
-        if has_sid_src and has_sid_tgt:
-            assert len(overlap_sessions) == 0, "Source and target unexpectedly share session IDs in transfer regime!"
+        # Transfer regime: source and target are distinct domains. Their local
+        # session IDs and dates may legitimately collide across datasets.
         # Source partitions (60 / 20 / 20)
         source_splits = partition_by_chronological_days(source_df, (0.60, 0.20, 0.20))
         train_df, val_df, source_calib_df = source_splits[0], source_splits[1], source_splits[2]
@@ -85,13 +94,24 @@ def create_experiment_splits(source_df: pd.DataFrame, target_df: pd.DataFrame,
         target_splits = partition_by_chronological_days(target_df, (0.40, 0.60))
         calib_pool_df, test_df = target_splits[0], target_splits[1]
 
-    # Verify strict disjointness assertions
-    if 'session_id' in train_df.columns and 'session_id' in test_df.columns:
-        assert set(train_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Train and Test overlap!"
-        assert set(val_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Val and Test overlap!"
-        assert set(calib_pool_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Calib Pool and Test overlap!"
-        assert set(source_calib_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Source Calib and Test overlap!"
-    
+    # Verify disjointness only within a domain. Numeric IDs and dates from
+    # separate datasets are not globally unique and must not be compared across
+    # domains. Within E0, every partition must be pairwise disjoint.
+    if 'session_id' in train_df.columns and 'session_id' in val_df.columns:
+        assert set(train_df['session_id']).isdisjoint(set(val_df['session_id'])), "FATAL LEAKAGE: Source train and validation overlap!"
+        assert set(train_df['session_id']).isdisjoint(set(source_calib_df['session_id'])), "FATAL LEAKAGE: Source train and source calibration overlap!"
+        assert set(val_df['session_id']).isdisjoint(set(source_calib_df['session_id'])), "FATAL LEAKAGE: Source validation and calibration overlap!"
+        assert set(calib_pool_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Target calibration pool and test overlap!"
+        if is_within_domain:
+            source_ids = set(source_df['session_id'])
+            target_ids = set(target_df['session_id'])
+            assert source_ids == target_ids, "E0 should use the same underlying session set for source and target."
+            parts = [train_df, val_df, source_calib_df, calib_pool_df, test_df]
+            for i, left in enumerate(parts):
+                for right in parts[i + 1:]:
+                    assert set(left['session_id']).isdisjoint(set(right['session_id'])), "FATAL LEAKAGE: E0 partitions overlap!"
+                    assert set(left['date']).isdisjoint(set(right['date'])), "FATAL LEAKAGE: E0 dates overlap!"
+
     # Sort calibration pool chronologically
     calib_pool_sorted = calib_pool_df.sort_values('t_start').reset_index(drop=True)
     
@@ -100,6 +120,11 @@ def create_experiment_splits(source_df: pd.DataFrame, target_df: pd.DataFrame,
     for k in budgets:
         if k == 0:
             target_prefixes[0] = calib_pool_sorted.iloc[:0].copy()
+        elif 'session_id' in calib_pool_sorted.columns and calib_pool_sorted['session_id'].nunique() < k:
+            # Never silently report a smaller prefix as if it were budget K.
+            target_prefixes[k] = None
+        elif len(calib_pool_sorted) < k:
+            target_prefixes[k] = None
         else:
             target_prefixes[k] = calib_pool_sorted.iloc[:k].copy()
             

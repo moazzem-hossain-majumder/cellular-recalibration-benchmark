@@ -1,7 +1,7 @@
 # Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry
 
-[![IEEE Publication Ready](https://img.shields.io/badge/IEEE%20Format-Publication%20Ready-blue.svg)](paper/manuscript.pdf)
-[![Reproducibility](https://img.shields.io/badge/Reproducibility-Verified-success.svg)](scripts/reproduce_experiments.py)
+[![Research Status](https://img.shields.io/badge/Research-Under%20Validation-orange.svg)](paper/manuscript.tex)
+[![Reproducibility](https://img.shields.io/badge/Reproducibility-Re--run%20Required-lightgrey.svg)](scripts/reproduce_experiments.py)
 [![License: CC BY 4.0](https://img.shields.io/badge/Data%20License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![Hardware: NVIDIA RTX 4060](https://img.shields.io/badge/GPU%20Accelerated-NVIDIA%20RTX%204060-76B900.svg)](src/models/neural.py)
 
@@ -9,6 +9,8 @@ Official repository for the telecommunications research study:
 **"How Much Recalibration Is Enough? Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry"**
 
 ---
+
+> **Research status — not submission-ready:** This repository is undergoing a split-integrity correction. E0 previously reused the same observations for source calibration and target calibration prefixes. The code is being corrected to separate these partitions, which changes the experiment and invalidates the currently reported E0 metrics. Re-run the full pipeline and regenerate every manuscript table/figure before using numerical claims or submitting the paper. The README's historical metrics below are retained only as unverified prior-run outputs until that rerun is completed.
 
 ## 1. Research Overview
 
@@ -24,7 +26,7 @@ This degradation is compounded by **natural telemetry missingness**: in operatio
 
 ---
 
-## 2. Key Empirical Findings
+## 2. Historical Metrics from a Prior Run (UNVERIFIED — Do Not Cite)
 
 - **Uncalibrated Point Prediction Breakdown:** Relying on uncalibrated point estimates results in a catastrophic **61.1% service violation rate** under cross-operator transfer (Op1 $\to$ Op2) and 26.6% under temporal shift.
 - **Conformal Reliability Restoration:** Split-conformal calibration immediately recovers conservative nominal reliability ($V \le 10\%$) across both within-domain and transfer regimes.
@@ -32,7 +34,7 @@ This degradation is compounded by **natural telemetry missingness**: in operatio
 - **Missingness-Aware Calibration Advantage:** In within-domain evaluation, our proposed coarse missingness-aware calibration prevents over-penalization, achieving a statistically significant supported-rate increase of $\Delta U = +0.085$ [95% CI: $+0.065, +0.113$] ($p < 0.001$). Under severe cross-operator shift, simple global target recalibration at $K=10$ provides equally robust coverage.
 - **Covariate-Shift Conformal Prediction (CS-CP):** Incorporating domain-discriminator importance weighting (Tibshirani et al., *NeurIPS* 2019) effectively counters joint distribution shifts (Regime E3), recovering $V = 0.078 \le 0.10$ while sustaining $U = 11.1\%$ capacity where un-adapted split-conformal prediction collapsed to $U = 0.6\%$.
 - **SLA Economic Loss Optimization:** End-to-end operational loss analysis under $Cost(\lambda) = \lambda \cdot V + (1 - \lambda) \cdot (1 - U)$ proves that conformal calibration slashes economic penalty costs by up to **83.8%** across penalty-weighted regimes ($\lambda \ge 0.50$).
-- **Hardware Acceleration:** The PyTorch Deep Tabular ResNet executed on an **NVIDIA GeForce RTX 4060 GPU** trains 60 epochs in **0.91 seconds** (24.8 MB peak VRAM), providing high-throughput inference for real-time radio telemetry processing.
+- **Hardware profiling:** The pipeline records runtime and memory metrics when available. Published hardware figures should be retained only after a clean rerun on documented hardware and software versions.
 
 ---
 
@@ -128,13 +130,15 @@ pytest tests/
 
 ---
 
-## 6. Telecommunications Industry Relevance (Bangladesh MNOs)
+## 6. Potential Telecommunications Industry Relevance (Bangladesh)
 
-This research directly addresses operational challenges faced by telecommunications operators in emerging mobile markets such as Bangladesh (**Grameenphone, Banglalink, Robi Axiata, and Teletalk**). A dedicated field study report is available in [`docs/bangladesh_telecom_case_study.md`](docs/bangladesh_telecom_case_study.md):
-1. **Drive-Test Campaign Planning:** Proves that operators need a minimum of $K \ge 10$ full drive-test sessions when transferring models across administrative circles (Dhaka, Chittagong, Sylhet) or network vendor updates (Ericsson vs Huawei).
-2. **BTRC Regulatory Compliance:** Directly maps to Bangladesh Telecommunication Regulatory Commission (BTRC) QoS parameters (20 Mbps threshold in urban centers), preventing subscriber SLA breach penalties.
-3. **Preventing Overcommitment Violations:** Establishes that uncalibrated throughput models experience a 61% violation rate, whereas conformal prediction guarantees nominal service commitments ($\le 10\%$).
-4. **Telemetry Quality Assurance:** Provides methods to handle natural 5G telemetry gaps without discarding logs or corrupting models with artificial zero imputations.
+The benchmark uses public commercial measurements collected in Rome, Italy. It may help develop transferable evaluation practices for operators in Bangladesh, including Grameenphone, Banglalink, Robi Axiata, and Teletalk, but it is **not evidence about those operators' own networks**.
+
+- **Campaign planning:** The study can inform a future budget-sizing experiment. It does not establish a minimum number of drive-test sessions for Bangladesh regions, administrative circles, or specific vendors.
+- **QoS/SLA interpretation:** The supported-rate and violation metrics are offline research proxies. They do not establish compliance with BTRC thresholds, avoid penalties, or guarantee service levels in deployment.
+- **Telemetry quality:** The code evaluates naturally missing radio features in the selected public datasets. Local data, protocol validation, and independent testing would be needed before adapting it to an operator's telemetry.
+
+Any Bangladesh-specific operational claim requires authorized local measurements and independent validation.
 
 ---
 

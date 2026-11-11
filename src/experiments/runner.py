@@ -157,6 +157,9 @@ def run_all_experiments() -> Dict:
         
         for k in budgets:
             prefix_df = splits.target_prefix_sessions[k]
+            if prefix_df is None:
+                print(f'    K={k:2d} | UNAVAILABLE: calibration pool has fewer than K sessions; not substituting a smaller prefix.')
+                continue
             y_prefix = prefix_df['target_y'].to_numpy(dtype=float) if k > 0 else np.array([])
             prefix_groups = prefix_df['group_id'].to_numpy(dtype=int) if k > 0 else np.array([])
             prefix_sessions = prefix_df['session_id'].to_numpy(dtype=int) if (k > 0 and 'session_id' in prefix_df.columns) else np.arange(k)
@@ -244,8 +247,12 @@ def run_all_experiments() -> Dict:
         test_groups = df_test['group_id'].to_numpy(dtype=int)
         y_test_pred = primary_predictor.predict(df_test)
         
-        # Fit global and proposed on K=10 prefix
+        # Bootstrap comparison is defined only when a full K=10 prefix exists.
         prefix_10 = splits.target_prefix_sessions[10]
+        if prefix_10 is None:
+            bootstrap_results[regime_name] = {'status': 'unavailable', 'reason': 'fewer than 10 target calibration sessions'}
+            print(f'  {regime_name:30s} | Bootstrap comparison unavailable: fewer than 10 target calibration sessions')
+            continue
         y_pref = prefix_10['target_y'].to_numpy(dtype=float)
         pref_grp = prefix_10['group_id'].to_numpy(dtype=int)
         pref_sess = prefix_10['session_id'].to_numpy(dtype=int) if 'session_id' in prefix_10.columns else np.arange(len(prefix_10))
