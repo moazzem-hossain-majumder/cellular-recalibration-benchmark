@@ -104,3 +104,28 @@ def test_synthetic_e0_partitions_are_disjoint_and_budgets_are_explicit():
     assert splits.target_prefix_sessions[0] is not None
     assert splits.target_prefix_sessions[1] is not None
     assert splits.target_prefix_sessions[15] is None
+
+
+def test_transfer_domains_with_reused_local_session_ids_are_not_misclassified_as_e0():
+    """Separate datasets can restart session IDs; this must not trigger the E0 split."""
+    import pandas as pd
+    def make_frame(start_day, offset):
+        rows = []
+        for i in range(10):
+            rows.append({
+                "session_id": i,  # IDs intentionally restart in each dataset
+                "date": f"2026-02-{start_day + i:02d}",
+                "t_start": pd.Timestamp("2026-02-01") + pd.Timedelta(days=start_day + i),
+                "target_y": float(offset + i),
+                "group_id": 2,
+                "has_nr": 0,
+            })
+        return pd.DataFrame(rows)
+    source = make_frame(1, 10)
+    target = make_frame(11, 100)
+    splits = create_experiment_splits(source, target, budgets=[0, 1, 2, 5, 8, 9, 10, 15])
+    assert len(splits.train) > 0
+    assert len(splits.source_calib) > 0
+    assert len(splits.target_calib_pool) > 0
+    assert len(splits.target_test) > 0
+    assert splits.target_prefix_sessions[15] is None
