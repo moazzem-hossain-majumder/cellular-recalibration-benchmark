@@ -89,20 +89,23 @@ def create_experiment_splits(source_df: pd.DataFrame, target_df: pd.DataFrame,
         target_splits = partition_by_chronological_days(target_df, (0.40, 0.60))
         calib_pool_df, test_df = target_splits[0], target_splits[1]
 
-    # Verify strict disjointness assertions
-    if 'session_id' in train_df.columns and 'session_id' in test_df.columns:
-        assert set(train_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Train and Test overlap!"
-        assert set(val_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Val and Test overlap!"
-        assert set(calib_pool_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Calib Pool and Test overlap!"
-        assert set(source_calib_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Source Calib and Test overlap!"
-        assert set(source_calib_df['session_id']).isdisjoint(set(calib_pool_df['session_id'])), "FATAL LEAKAGE: Source and target calibration overlap!"
-    
-    # The source calibration labels and target calibration pool must be disjoint
-    # in every regime; assert this explicitly before producing any prefixes.
-    if 'session_id' in source_calib_df.columns and 'session_id' in calib_pool_df.columns:
-        assert set(source_calib_df['session_id']).isdisjoint(
-            set(calib_pool_df['session_id'])
-        ), "FATAL LEAKAGE: Source and target calibration overlap!"
+    # Verify disjointness only within a domain. Numeric IDs and dates from
+    # separate datasets are not globally unique and must not be compared across
+    # domains. Within E0, every partition must be pairwise disjoint.
+    if 'session_id' in train_df.columns and 'session_id' in val_df.columns:
+        assert set(train_df['session_id']).isdisjoint(set(val_df['session_id'])), "FATAL LEAKAGE: Source train and validation overlap!"
+        assert set(train_df['session_id']).isdisjoint(set(source_calib_df['session_id'])), "FATAL LEAKAGE: Source train and source calibration overlap!"
+        assert set(val_df['session_id']).isdisjoint(set(source_calib_df['session_id'])), "FATAL LEAKAGE: Source validation and calibration overlap!"
+        assert set(calib_pool_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Target calibration pool and test overlap!"
+        if is_within_domain:
+            source_ids = set(source_df['session_id'])
+            target_ids = set(target_df['session_id'])
+            assert source_ids == target_ids, "E0 should use the same underlying session set for source and target."
+            parts = [train_df, val_df, source_calib_df, calib_pool_df, test_df]
+            for i, left in enumerate(parts):
+                for right in parts[i + 1:]:
+                    assert set(left['session_id']).isdisjoint(set(right['session_id'])), "FATAL LEAKAGE: E0 partitions overlap!"
+                    assert set(left['date']).isdisjoint(set(right['date'])), "FATAL LEAKAGE: E0 dates overlap!"
 
     # Sort calibration pool chronologically
     calib_pool_sorted = calib_pool_df.sort_values('t_start').reset_index(drop=True)
