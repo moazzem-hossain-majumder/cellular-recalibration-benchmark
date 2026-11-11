@@ -161,6 +161,8 @@ def extract_sessions_8224890(df: pd.DataFrame, window_seconds: int = 60) -> Tupl
         })
 
     fdf = pd.DataFrame(forecast_rows)
+    # Strictly enforce 60-second lag freshness gate
+    fdf = fdf[fdf['lag_age_s'] <= float(window_seconds)].copy().reset_index(drop=True)
     return sdf, fdf
 
 def load_14073311_ookla(extract_dir: Path = None, window_seconds: int = 60) -> pd.DataFrame:
@@ -282,5 +284,9 @@ def load_14073311_ookla(extract_dir: Path = None, window_seconds: int = 60) -> p
             curr['lag_age_s'] = (curr['t_start'] - prev['t_end']).total_seconds() if pd.notna(curr['t_start']) and pd.notna(prev['t_end']) else 0.5
             causal_rows.append(curr)
             
-    return pd.DataFrame(causal_rows)
+    fdf = pd.DataFrame(causal_rows)
+    # Strictly enforce 60-second lag freshness gate
+    fdf = fdf[fdf['lag_age_s'] <= float(window_seconds)].copy().reset_index(drop=True)
+    fdf['session_id'] = np.arange(10000, 10000 + len(fdf))
+    return fdf
 

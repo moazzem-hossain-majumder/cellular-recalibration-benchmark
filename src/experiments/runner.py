@@ -85,7 +85,7 @@ def run_all_experiments() -> Dict:
         'E3_JointShift_Op2_2023': (source_df, fdf_140[fdf_140['operator'] == 'Op2'].copy())
     }
     
-    budgets = [0, 1, 2, 5, 10]
+    budgets = [0, 1, 2, 5, 8, 9, 10, 15]
     results_all = {}
     
     # 3. Model Benchmark on Source Development Split
@@ -142,7 +142,7 @@ def run_all_experiments() -> Dict:
     print(f'  Frozen Source Global Conformal Quantile (alpha=0.10): q_source = {source_global_q:.3f} Mbps')
 
     # 4. Multi-Domain Transfer & Calibration Budget Experiments
-    print('\n[3/6] Running Transfer Regimes across Budgets K in {0, 1, 2, 5, 10}...')
+    print('\n[3/6] Running Transfer Regimes across Budgets K in {0, 1, 2, 5, 8, 9, 10, 15}...')
     calibration_records = []
     
     for regime_name, (src_d, tgt_d) in regimes.items():
@@ -248,6 +248,7 @@ def run_all_experiments() -> Dict:
         prefix_10 = splits.target_prefix_sessions[10]
         y_pref = prefix_10['target_y'].to_numpy(dtype=float)
         pref_grp = prefix_10['group_id'].to_numpy(dtype=int)
+        pref_sess = prefix_10['session_id'].to_numpy(dtype=int) if 'session_id' in prefix_10.columns else np.arange(len(prefix_10))
         y_pref_pred = primary_predictor.predict(prefix_10)
         
         c_glob = GlobalConformalCalibrator(alpha=0.10).fit(y_pref_pred, y_pref)
@@ -255,7 +256,7 @@ def run_all_experiments() -> Dict:
         b_glob = np.maximum(0.0, y_test_pred - q_g)
         
         c_grp = GroupedConformalCalibrator(alpha=0.10, min_rows=3, min_sessions=1, fallback_source_q=source_global_q)
-        c_grp.fit(y_pref_pred, y_pref, pref_grp)
+        c_grp.fit(y_pref_pred, y_pref, pref_grp, pref_sess)
         b_prop, _ = c_grp.predict_lower_bound(y_test_pred, test_groups)
         
         boot_diff = paired_day_cluster_bootstrap(df_test, y_test, b_glob, b_prop, n_boot=2000, random_seed=42)
@@ -431,10 +432,10 @@ def generate_latex_tables(calib_df: pd.DataFrame, boot_results: Dict, model_prof
         r'\centering',
         r'\caption{Reliability and Supported-Rate Fraction across Transfer Regimes and Calibration Budgets ($K$ Sessions)}',
         r'\label{tab:main_benchmark}',
-        r'\begin{tabular}{llcccccccc}',
+        r'\begin{tabular}{llcccccccccccccc}',
         r'\hline',
-        r'\textbf{Regime} & \textbf{Method} & \multicolumn{2}{c}{\textbf{Budget $K=0$}} & \multicolumn{2}{c}{\textbf{Budget $K=2$}} & \multicolumn{2}{c}{\textbf{Budget $K=5$}} & \multicolumn{2}{c}{\textbf{Budget $K=10$}} \\',
-        r' & & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ \\',
+        r'\textbf{Regime} & \textbf{Method} & \multicolumn{2}{c}{\textbf{Budget $K=0$}} & \multicolumn{2}{c}{\textbf{Budget $K=2$}} & \multicolumn{2}{c}{\textbf{Budget $K=5$}} & \multicolumn{2}{c}{\textbf{Budget $K=8$}} & \multicolumn{2}{c}{\textbf{Budget $K=9$}} & \multicolumn{2}{c}{\textbf{Budget $K=10$}} & \multicolumn{2}{c}{\textbf{Budget $K=15$}} \\',
+        r' & & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ \\',
         r'\hline'
     ]
     for reg in ['E0_WithinDomain_Op1_2021', 'E1_CampaignTransfer_Op1_2023', 'E2_CrossOperator_Op2_2021', 'E3_JointShift_Op2_2023']:
@@ -447,11 +448,12 @@ def generate_latex_tables(calib_df: pd.DataFrame, boot_results: Dict, model_prof
                 if len(row) > 0:
                     return f"{row['violation_rate'].iloc[0]:.2f}", f"{row['supported_fraction'].iloc[0]:.2f}"
                 return '-', '-'
-            v0, u0 = get_vu(0)
-            v2, u2 = get_vu(2)
-            v5, u5 = get_vu(5)
-            v10, u10 = get_vu(10)
-            lines_tab2.append(f"{r_short} & {meth.replace('_', ' ')} & {v0} & {u0} & {v2} & {u2} & {v5} & {u5} & {v10} & {u10} \\\\")
+            vals = []
+            for k_tgt in [0, 2, 5, 8, 9, 10, 15]:
+                v_k, u_k = get_vu(k_tgt)
+                vals.extend([v_k, u_k])
+            v_str = ' & '.join(vals)
+            lines_tab2.append(f"{r_short} & {meth.replace('_', ' ')} & {v_str} \\\\")
         lines_tab2.append(r'\hline')
     lines_tab2.extend([
         r'\end{tabular}',

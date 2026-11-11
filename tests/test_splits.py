@@ -40,7 +40,34 @@ def test_split_independence_and_disjointness():
             assert set(prefix_df['session_id']).issubset(set(splits.target_calib_pool['session_id']))
             assert set(prefix_df['session_id']).isdisjoint(set(splits.target_test['session_id']))
 
+def test_e0_within_domain_split_disjointness():
+    """Verify that E0 within-domain partitioning is 100% disjoint with zero train/test leakage."""
+    raw_df = load_raw_8224890()
+    sdf, fdf = extract_sessions_8224890(raw_df)
+    op1_df = fdf[fdf['operator'] == 'Op1'].copy()
+    
+    # E0: Within-domain splits
+    splits = create_experiment_splits(op1_df, op1_df, budgets=[0, 1, 2, 5, 8, 9, 10])
+    
+    s_tr = set(splits.train['session_id'])
+    s_va = set(splits.val['session_id'])
+    s_ca = set(splits.source_calib['session_id'])
+    s_te = set(splits.target_test['session_id'])
+    
+    # Assert pairwise session ID disjointness
+    assert s_tr.isdisjoint(s_te), "CRITICAL LEAKAGE: E0 train overlaps with test suffix!"
+    assert s_va.isdisjoint(s_te), "CRITICAL LEAKAGE: E0 val overlaps with test suffix!"
+    assert s_ca.isdisjoint(s_te), "CRITICAL LEAKAGE: E0 calib overlaps with test suffix!"
+    assert s_tr.isdisjoint(s_va), "E0 train overlaps with val!"
+    assert s_tr.isdisjoint(s_ca), "E0 train overlaps with calib!"
+    
+    # Assert date disjointness
+    d_tr = set(splits.train['date'].unique())
+    d_te = set(splits.target_test['date'].unique())
+    assert d_tr.isdisjoint(d_te), "E0 train dates overlap with test dates!"
+
 if __name__ == '__main__':
     test_split_independence_and_disjointness()
+    test_e0_within_domain_split_disjointness()
     print('Split integrity tests PASSED.')
 

@@ -1,23 +1,23 @@
 {
   "E1_CampaignTransfer": {
-    "violation_rate": 0.0504,
-    "supported_fraction": 0.0852,
-    "mean_overcommitment": 0.311,
-    "mean_weight": 0.4604,
-    "max_weight": 2.4679
+    "violation_rate": 0.0144,
+    "supported_fraction": 0.0202,
+    "mean_overcommitment": 0.0602,
+    "mean_weight": 0.2652,
+    "max_weight": 0.8201
   },
   "E2_CrossOperator": {
-    "violation_rate": 0.0625,
-    "supported_fraction": 0.1185,
-    "mean_overcommitment": 0.4927,
-    "mean_weight": 4.059,
-    "max_weight": 10.0
+    "violation_rate": 0.0352,
+    "supported_fraction": 0.042,
+    "mean_overcommitment": 0.2233,
+    "mean_weight": 0.8634,
+    "max_weight": 5.8725
   },
   "E3_JointShift": {
-    "violation_rate": 0.0777,
-    "supported_fraction": 0.1111,
-    "mean_overcommitment": 0.6243,
-    "mean_weight": 1.1237,
-    "max_weight": 3.517
+    "violation_rate": 0.0097,
+    "supported_fraction": 0.0347,
+    "mean_overcommitment": 0.0183,
+    "mean_weight": 0.279,
+    "max_weight": 1.3008
   }
 }

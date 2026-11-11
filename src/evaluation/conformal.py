@@ -35,7 +35,13 @@ class GlobalConformalCalibrator:
         return bounds, np.zeros_like(y_pred, dtype=bool)
 
 class GroupedConformalCalibrator:
-    """Grouped conformal calibrator with support threshold and fallback hierarchy."""
+    """Grouped conformal calibrator with support threshold and 3-tier fallback hierarchy (Algorithm 1).
+    
+    Fallback Hierarchy:
+      Tier 1: Subgroup Target Quantile (activated when |D_cal,g^tgt| >= min_rows and >= min_sessions)
+      Tier 2: Pooled Target Quantile (activated when pooled |D_cal^tgt| >= ceil((1-alpha)/alpha) = 9)
+      Tier 3: Source Domain Conservative Fallback (used when target budget K < 9)
+    """
     def __init__(self, alpha: float = 0.10, min_rows: int = 10, min_sessions: int = 2,
                  fallback_source_q: Optional[float] = None):
         self.alpha = alpha
@@ -145,11 +151,13 @@ class CovariateShiftConformalCalibrator:
         self.discriminator = LogisticRegression(C=0.5, max_iter=500, random_state=42)
         self.discriminator.fit(X_comb_scaled, y_comb)
         
-        # Density ratio: w(x) \propto P(Tgt|x) / P(Src|x) = exp(w^T x + b)
+        # Bayes class-prior correction: w(x) = [P(Tgt|x)/P(Src|x)] * [P(Src)/P(Tgt)] = odds * (N_src / N_tgt)
+        self.prior_ratio = float(len(X_src)) / float(max(1, len(X_tgt)))
+        
         X_src_scaled = scaler.transform(X_src)
         probs_src = self.discriminator.predict_proba(X_src_scaled)[:, 1]
         probs_src = np.clip(probs_src, 1e-4, 1.0 - 1e-4)
-        raw_weights_src = probs_src / (1.0 - probs_src)
+        raw_weights_src = (probs_src / (1.0 - probs_src)) * self.prior_ratio
         self.source_weights = np.clip(raw_weights_src, self.clip_weight_min, self.clip_weight_max)
         return self
 
@@ -162,7 +170,8 @@ class CovariateShiftConformalCalibrator:
         X_te_scaled = self.scaler.transform(X_te)
         probs_te = self.discriminator.predict_proba(X_te_scaled)[:, 1]
         probs_te = np.clip(probs_te, 1e-4, 1.0 - 1e-4)
-        raw_weights_te = probs_te / (1.0 - probs_te)
+        prior_ratio = getattr(self, 'prior_ratio', 1.0)
+        raw_weights_te = (probs_te / (1.0 - probs_te)) * prior_ratio
         weights_te = np.clip(raw_weights_te, self.clip_weight_min, self.clip_weight_max)
         
         n_src = len(self.source_scores)

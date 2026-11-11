@@ -2,12 +2,12 @@
   "window_30s": {
     "E0_WithinDomain": {
       "K_0": {
-        "violation_rate": 0.131,
-        "supported_fraction": 0.231
+        "violation_rate": 0.0,
+        "supported_fraction": 0.1299
       },
       "K_10": {
-        "violation_rate": 0.131,
-        "supported_fraction": 0.231
+        "violation_rate": 0.0,
+        "supported_fraction": 0.1299
       }
     },
     "E2_CrossOperator": {
@@ -34,12 +34,12 @@
   "window_60s": {
     "E0_WithinDomain": {
       "K_0": {
-        "violation_rate": 0.0952,
-        "supported_fraction": 0.1638
+        "violation_rate": 0.0,
+        "supported_fraction": 0.0365
       },
       "K_10": {
-        "violation_rate": 0.0952,
-        "supported_fraction": 0.1638
+        "violation_rate": 0.0,
+        "supported_fraction": 0.0365
       }
     },
     "E2_CrossOperator": {
@@ -66,12 +66,12 @@
   "window_120s": {
     "E0_WithinDomain": {
       "K_0": {
-        "violation_rate": 0.0952,
-        "supported_fraction": 0.1638
+        "violation_rate": 0.0,
+        "supported_fraction": 0.0365
       },
       "K_10": {
-        "violation_rate": 0.0952,
-        "supported_fraction": 0.1638
+        "violation_rate": 0.0,
+        "supported_fraction": 0.0365
       }
     },
     "E2_CrossOperator": {

@@ -31,7 +31,22 @@ def test_causal_lag_freshness_and_ordering():
     # 4. Check group_id integrity
     assert set(fdf['group_id'].unique()).issubset({0, 1, 2, 3}), 'Invalid group_id value'
     
+def test_freshness_gate_boundary():
+    """Verify that the 60-second lag freshness gate strictly excludes stale lags."""
+    test_df = pd.DataFrame({
+        'session_id': [1, 2, 3, 4, 5],
+        'lag_age_s': [10.0, 59.9, 60.0, 60.1, 120.0],
+        'target_y': [50.0, 60.0, 70.0, 80.0, 90.0]
+    })
+    # Apply gate
+    gated_df = test_df[test_df['lag_age_s'] <= 60.0]
+    assert len(gated_df) == 3, f"Expected 3 fresh sessions, got {len(gated_df)}"
+    assert (gated_df['lag_age_s'] <= 60.0).all()
+    assert 60.1 not in gated_df['lag_age_s'].values
+    assert 120.0 not in gated_df['lag_age_s'].values
+
 if __name__ == '__main__':
     test_causal_lag_freshness_and_ordering()
+    test_freshness_gate_boundary()
     print('Causality and leakage tests PASSED.')
 

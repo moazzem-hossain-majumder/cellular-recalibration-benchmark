@@ -61,6 +61,7 @@ def test_grouped_fallback_hierarchy():
 
 def test_covariate_shift_conformal():
     import pandas as pd
+    np.random.seed(42)  # Fixed seed for deterministic test reproducibility
     calib = CovariateShiftConformalCalibrator(alpha=0.10)
     
     # Source: 40 samples, feature centered at 0.0
@@ -72,6 +73,10 @@ def test_covariate_shift_conformal():
     
     calib.fit_weights_and_scores(X_src, scores_src, X_tgt, feature_cols=['f1', 'f2'])
     
+    # Verify Bayes class prior ratio
+    expected_prior = 40.0 / 30.0
+    assert abs(calib.prior_ratio - expected_prior) < 1e-5, f"Expected prior ratio {expected_prior}, got {calib.prior_ratio}"
+    
     test_pred = np.array([40.0, 60.0])
     X_test = pd.DataFrame({'f1': [1.5, 2.5], 'f2': [1.5, 2.5]})
     bounds = calib.predict_lower_bound(test_pred, X_test)
@@ -80,10 +85,20 @@ def test_covariate_shift_conformal():
     assert (bounds >= 0.0).all()
     assert (bounds <= test_pred).all()
 
+def test_lemma1_exact_threshold():
+    """Verify that split conformal at alpha=0.10 is undefined for n<=8 and defined for n>=9."""
+    scores_8 = np.arange(1.0, 9.0)  # n=8
+    assert np.isinf(compute_conformal_quantile(scores_8, alpha=0.10)), "n=8 must return inf"
+    
+    scores_9 = np.arange(1.0, 10.0)  # n=9
+    assert not np.isinf(compute_conformal_quantile(scores_9, alpha=0.10)), "n=9 must return finite quantile"
+    assert compute_conformal_quantile(scores_9, alpha=0.10) == 9.0
+
 if __name__ == '__main__':
     test_conformal_quantile_formula()
     test_global_calibrator()
     test_grouped_fallback_hierarchy()
     test_covariate_shift_conformal()
+    test_lemma1_exact_threshold()
     print('All conformal unit tests PASSED.')
 

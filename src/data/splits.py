@@ -43,19 +43,54 @@ def partition_by_chronological_days(df: pd.DataFrame, fractions: Tuple[float, ..
     return splits
 
 def create_experiment_splits(source_df: pd.DataFrame, target_df: pd.DataFrame,
-                             budgets: List[int] = [0, 1, 2, 5, 10]) -> DomainSplits:
-    """Create source train/val/calib and target calibration pool / test suffix splits.
+                             budgets: List[int] = [0, 1, 2, 5, 8, 9, 10, 15]) -> DomainSplits:
+    """Create strictly disjoint source train/val/calib and target calibration pool / test suffix splits.
     
-    Source: earliest 60% of days for fitting, next 20% for dev, final 20% for source calib.
-    Target: earliest 40% of days for calibration pool, remaining 60% for fixed test suffix.
+    For within-domain evaluation (source == target):
+        Single 4-way chronological day partition (45% train, 15% dev, 15% calib pool, 25% test suffix).
+        Guarantees 0% leakage: train, val, calib, and test dates and sessions are 100% disjoint.
+        
+    For transfer regimes (source != target):
+        Source domain: earliest 60% days for train, next 20% for dev, final 20% for source calib.
+        Target domain: earliest 40% days for calibration pool, remaining 60% days for fixed test suffix.
     """
-    # 1. Source partitions (60 / 20 / 20)
-    source_splits = partition_by_chronological_days(source_df, (0.60, 0.20, 0.20))
-    train_df, val_df, source_calib_df = source_splits[0], source_splits[1], source_splits[2]
+    # Detect whether this is a within-domain experiment (overlapping session pool)
+    has_sid_src = 'session_id' in source_df.columns
+    has_sid_tgt = 'session_id' in target_df.columns
+    if has_sid_src and has_sid_tgt:
+        overlap_sessions = set(source_df['session_id']).intersection(set(target_df['session_id']))
+        is_within_domain = len(overlap_sessions) > 0
+    else:
+        is_within_domain = (source_df is target_df or len(source_df) == len(target_df))
+        overlap_sessions = set()
     
-    # 2. Target partitions (40 / 60)
-    target_splits = partition_by_chronological_days(target_df, (0.40, 0.60))
-    calib_pool_df, test_df = target_splits[0], target_splits[1]
+    if is_within_domain:
+        # Strictly disjoint 4-way chronological split of the single domain
+        # 45% train, 15% val, 15% calib pool, 25% test
+        e0_splits = partition_by_chronological_days(source_df, (0.45, 0.15, 0.15, 0.25))
+        train_df = e0_splits[0]
+        val_df = e0_splits[1]
+        calib_pool_df = e0_splits[2]
+        source_calib_df = calib_pool_df.copy()  # In within-domain, source calib is the calib pool
+        test_df = e0_splits[3]
+    else:
+        # Transfer regime: source and target are already distinct domains
+        if has_sid_src and has_sid_tgt:
+            assert len(overlap_sessions) == 0, "Source and target unexpectedly share session IDs in transfer regime!"
+        # Source partitions (60 / 20 / 20)
+        source_splits = partition_by_chronological_days(source_df, (0.60, 0.20, 0.20))
+        train_df, val_df, source_calib_df = source_splits[0], source_splits[1], source_splits[2]
+        
+        # Target partitions (40 / 60)
+        target_splits = partition_by_chronological_days(target_df, (0.40, 0.60))
+        calib_pool_df, test_df = target_splits[0], target_splits[1]
+
+    # Verify strict disjointness assertions
+    if 'session_id' in train_df.columns and 'session_id' in test_df.columns:
+        assert set(train_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Train and Test overlap!"
+        assert set(val_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Val and Test overlap!"
+        assert set(calib_pool_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Calib Pool and Test overlap!"
+        assert set(source_calib_df['session_id']).isdisjoint(set(test_df['session_id'])), "FATAL LEAKAGE: Source Calib and Test overlap!"
     
     # Sort calibration pool chronologically
     calib_pool_sorted = calib_pool_df.sort_values('t_start').reset_index(drop=True)
