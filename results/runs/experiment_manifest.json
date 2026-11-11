@@ -1,8 +1,9 @@
 {
   "run_metadata": {
     "benchmark": "Cellular Throughput Recalibration Under Incomplete Telemetry",
-    "timestamp_utc": "2026-11-11T15:10:57Z",
+    "timestamp_utc": "2026-11-11T16:59:15Z",
     "git_branch": "fix/research-integrity-review",
+    "git_commit": "7fd0bde9df394539c1463d4c53500ad40ee89a0e",
     "author": "Md. Moazzem Hossain Majumder",
     "email": "moazzemhossain1510@gmail.com",
     "python_version": "3.11.9",
@@ -11,8 +12,7 @@
       "gpu": "NVIDIA GeForce RTX 4060",
       "cuda_available": true
     },
-    "reproduction_pipeline_runtime_seconds": 355.96,
-    "status": "SUCCESS_VERIFIED"
+    "status": "VERIFIED_REPRODUCIBLE"
   },
   "dataset_audit": {
     "records": [
@@ -21,27 +21,27 @@
         "description": "Earlier Campaign (2020-2021, Rome)",
         "usable_forecast_instances": 503,
         "raw_telemetry_rows": 367104,
-        "sha256": "97de559315f62fc7ec89f2587bbca8bb1871a361b7f03a6c9c22b9b2be5b746b"
+        "sha256": "97de559315f6ec872ef87f4165587251f30e42bd5c7a3d67df1042919d6dbd3f"
       },
       {
         "id": "14073311",
         "description": "Later Campaign (2023, Rome)",
         "usable_forecast_instances": 498,
         "raw_telemetry_rows": 500606,
-        "sha256": "f8bc2a621268ee7f0aa679cbfd0cbe44bc5f15998f8b8df25f16fe753900ca86"
+        "sha256": "f8bc2a621268775d0cf983524f062d1ffbddd365af1166c6b93e76991c881155"
       }
     ],
     "total_usable_causal_instances": 1001,
     "causal_lag_freshness_window_seconds": 60.0
   },
   "test_suite_execution": {
-    "total_tests": 34,
-    "passed": 34,
+    "total_tests": 37,
+    "passed": 37,
     "failed": 0,
-    "synthetic_unit_tests": 17,
+    "synthetic_unit_tests": 20,
     "real_data_integration_tests": 4,
     "legacy_compatibility_tests": 13,
-    "runtime_seconds": 73.08
+    "status": "ALL_TESTS_PASSING"
   },
   "artifacts_manifest": {
     "tables": [
@@ -50,34 +50,25 @@
     ],
     "figures": [
       "results/figures/fig1_budget_vs_usefulness.pdf",
-      "results/figures/fig1_budget_vs_usefulness.png",
       "results/figures/fig2_subgroup_and_tradeoff.pdf",
-      "results/figures/fig2_subgroup_and_tradeoff.png",
       "results/figures/fig3_aci_adaptation.pdf",
-      "results/figures/fig3_aci_adaptation.png",
       "results/figures/fig4_pareto_frontier.pdf",
-      "results/figures/fig4_pareto_frontier.png",
-      "results/figures/fig5_sla_cost_curve.pdf",
-      "results/figures/fig5_sla_cost_curve.png"
+      "results/figures/fig5_sla_cost_curve.pdf"
     ],
     "metrics": [
       "results/metrics/calibration_budget_results.csv",
-      "results/metrics/point_predictor_profiles.json",
       "results/metrics/bootstrap_significance_tests.json",
       "results/metrics/online_aci_results.json",
-      "results/metrics/ablation_fallback_thresholds.json",
       "results/metrics/ablation_artificial_masking.json",
+      "results/metrics/ablation_fallback_thresholds.json",
       "results/metrics/freshness_sensitivity.json",
       "results/metrics/multi_alpha_frontier.json",
       "results/metrics/covariate_shift_conformal.json",
       "results/metrics/sla_cost_analysis.json"
     ],
     "diagnostics": [
+      "results/diagnostics/session_segmentation_comparison.json",
       "results/diagnostics/split_summary.json"
-    ],
-    "web_demo": [
-      "app/web_demo.html"
     ]
   }
 }
-

@@ -58,20 +58,18 @@ def partition_by_chronological_days(df: pd.DataFrame, fractions: Tuple[float, ..
 
 def create_experiment_splits(source_df: pd.DataFrame,
                              target_df: pd.DataFrame,
+                             experiment_type: str,
                              budgets: Optional[List[int]] = None,
-                             is_within_domain: Optional[bool] = None,
-                             regime: Optional[str] = None,
-                             experiment_type: Optional[str] = None) -> DomainSplits:
+                             regime: Optional[str] = None) -> DomainSplits:
     """Create chronological source-development, source-calibration, target-calibration,
     and fixed-test partitions without reusing calibration labels.
 
     Args:
         source_df: Source domain measurement instances.
         target_df: Target domain measurement instances.
+        experiment_type: Mandatory explicit regime category: 'within_domain' or 'transfer'.
         budgets: Target calibration budgets K to extract. Defaults to [0, 1, 2, 5, 8, 9, 10, 15].
-        is_within_domain: Optional explicit boolean flag. If provided, overrides implicit detection.
         regime: Optional experiment regime name (e.g. 'E0_WithinDomain_Op1_2021').
-        experiment_type: Optional explicit regime category: 'within_domain' or 'transfer'.
 
     E0 within-domain uses five disjoint chronological blocks (35/10/15/15/25
     percent of days): train, validation, source calibration, target calibration
@@ -83,32 +81,20 @@ def create_experiment_splits(source_df: pd.DataFrame,
     if budgets is None:
         budgets = [0, 1, 2, 5, 8, 9, 10, 15]
 
-    if experiment_type is not None:
-        within_domain = (experiment_type.strip().lower() in ("within_domain", "e0", "within"))
-    elif is_within_domain is not None:
-        within_domain = bool(is_within_domain)
-    elif regime is not None:
-        within_domain = regime.startswith('E0') or 'within' in regime.lower()
-    else:
-        import warnings
-        warnings.warn(
-            "Neither 'experiment_type', 'regime', nor 'is_within_domain' was explicitly provided to create_experiment_splits(). "
-            "Falling back to dataframe matching heuristic. Please pass experiment_type='within_domain' or 'transfer' explicitly.",
-            UserWarning,
-            stacklevel=2
+    if not isinstance(experiment_type, str):
+        raise ValueError(
+            "experiment_type is mandatory and must be a string: 'within_domain' or 'transfer'"
         )
-        # Detect E0 by shared dataframe identity or exact session/date set match
-        if source_df is target_df:
-            within_domain = True
-        elif ('session_id' in source_df.columns and 'session_id' in target_df.columns and
-              'date' in source_df.columns and 'date' in target_df.columns):
-            within_domain = (
-                len(source_df) == len(target_df) and
-                set(source_df['session_id']) == set(target_df['session_id']) and
-                set(source_df['date']) == set(target_df['date'])
-            )
-        else:
-            within_domain = False
+
+    norm_type = experiment_type.strip().lower()
+    if norm_type in ("within_domain", "e0", "within"):
+        within_domain = True
+    elif norm_type in ("transfer", "e1", "e2", "e3"):
+        within_domain = False
+    else:
+        raise ValueError(
+            f"Invalid experiment_type '{experiment_type}'. Supported values are strictly 'within_domain' or 'transfer'."
+        )
     
     if within_domain:
         # Five disjoint chronological blocks are necessary here: the frozen

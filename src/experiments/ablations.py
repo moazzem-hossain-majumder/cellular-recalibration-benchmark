@@ -325,22 +325,44 @@ def run_covariate_shift_benchmark() -> Dict:
             experiment_type='within_domain' if r_name.startswith('E0') else 'transfer'
         )
         test_df = splits.target_test
+        target_cal_pool = splits.target_calib_pool
         y_test = test_df['target_y'].to_numpy(dtype=float)
         y_test_pred = model.predict(test_df)
         
-        calib_cs = CovariateShiftConformalCalibrator(alpha=0.10)
-        calib_cs.fit_weights_and_scores(src_cal, src_scores, test_df, feature_cols=feat_cols)
-        bounds_cs = calib_cs.predict_lower_bound(y_test_pred, test_df)
+        reg_out = {}
+        for proto_name, ref_df in [('Protocol_A_NonTransductive', target_cal_pool),
+                                   ('Protocol_B_Transductive', test_df)]:
+            reg_out[proto_name] = {}
+            for clip_label, (c_min, c_max) in [('tight_clip', (0.1, 10.0)),
+                                               ('wide_clip', (0.01, 100.0))]:
+                calib_cs = CovariateShiftConformalCalibrator(
+                    alpha=0.10, clip_weight_min=c_min, clip_weight_max=c_max
+                )
+                calib_cs.fit_weights_and_scores(src_cal, src_scores, ref_df, feature_cols=feat_cols)
+                bounds_cs = calib_cs.predict_lower_bound(y_test_pred, test_df)
+                m_cs = compute_reliability_metrics(y_test, y_test_pred, bounds_cs)
+                diag = calib_cs.get_diagnostics()
+                reg_out[proto_name][clip_label] = {
+                    'violation_rate': round(m_cs.violation_rate, 4),
+                    'supported_fraction': round(m_cs.supported_rate_fraction, 4),
+                    'mean_overcommitment': round(m_cs.mean_overcommitment, 4),
+                    'mean_lower_bound': round(float(np.mean(bounds_cs)), 4),
+                    'diagnostics': diag
+                }
         
-        m_cs = compute_reliability_metrics(y_test, y_test_pred, bounds_cs)
+        # Primary benchmark: Protocol A with tight clipping
+        prim = reg_out['Protocol_A_NonTransductive']['tight_clip']
         cs_results[r_name] = {
-            'violation_rate': round(m_cs.violation_rate, 4),
-            'supported_fraction': round(m_cs.supported_rate_fraction, 4),
-            'mean_overcommitment': round(m_cs.mean_overcommitment, 4),
-            'mean_weight': round(float(np.mean(calib_cs.source_weights)), 4),
-            'max_weight': round(float(np.max(calib_cs.source_weights)), 4)
+            'violation_rate': prim['violation_rate'],
+            'supported_fraction': prim['supported_fraction'],
+            'mean_overcommitment': prim['mean_overcommitment'],
+            'source_ess': prim['diagnostics']['source_ess'],
+            'test_ess': prim['diagnostics']['test_ess'],
+            'protocols': reg_out
         }
-        print(f'  {r_name:24s} | CS-CP: V={m_cs.violation_rate:.3f}, U={m_cs.supported_rate_fraction:.3f} (Mean w={np.mean(calib_cs.source_weights):.2f})')
+        print(f"  {r_name:24s} | Protocol A (Non-Transductive): V={prim['violation_rate']:.3f}, U={prim['supported_fraction']:.3f}, Src-ESS={prim['diagnostics']['source_ess']:.1f}")
+        proto_b = reg_out['Protocol_B_Transductive']['tight_clip']
+        print(f"  {' '*24} | Protocol B (Transductive):     V={proto_b['violation_rate']:.3f}, U={proto_b['supported_fraction']:.3f}, Src-ESS={proto_b['diagnostics']['source_ess']:.1f}")
         
     with open(RESULTS_DIR / 'covariate_shift_conformal.json', 'w') as f:
         json.dump(cs_results, f, indent=2)

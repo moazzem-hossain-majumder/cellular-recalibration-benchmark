@@ -23,7 +23,7 @@ def test_synthetic_e0_partitions_are_disjoint_and_budgets_are_explicit():
             "has_nr": 0,
         })
     frame = pd.DataFrame(rows)
-    splits = create_experiment_splits(frame, frame, budgets=[0, 1, 2, 5, 8, 9, 10, 15])
+    splits = create_experiment_splits(frame, frame, budgets=[0, 1, 2, 5, 8, 9, 10, 15], experiment_type="within_domain")
 
     parts = [splits.train, splits.val, splits.source_calib,
              splits.target_calib_pool, splits.target_test]
@@ -76,7 +76,7 @@ def test_explicit_regime_and_within_domain_parameter():
     frame = pd.DataFrame(rows)
     frame_copy = frame.copy()
     
-    splits = create_experiment_splits(frame, frame_copy, budgets=[0, 1, 2, 5], regime='E0_WithinDomain')
+    splits = create_experiment_splits(frame, frame_copy, budgets=[0, 1, 2, 5], regime='E0_WithinDomain', experiment_type="within_domain")
     parts = [splits.train, splits.val, splits.source_calib, splits.target_calib_pool, splits.target_test]
     for i, left in enumerate(parts):
         for right in parts[i + 1:]:
@@ -105,4 +105,20 @@ def test_generate_split_summary_structure():
     assert "budget_availability" in summary
     assert summary["budget_availability"]["1"]["available"] is True
     assert summary["budget_availability"]["10"]["available"] is False
+
+
+@pytest.mark.unit
+def test_create_experiment_splits_requires_experiment_type():
+    """Verify that omitting or passing invalid experiment_type strictly raises ValueError."""
+    rows = [{"session_id": 1, "date": "2026-01-01", "t_start": pd.Timestamp("2026-01-01"), "target_y": 10.0, "group_id": 1}]
+    df = pd.DataFrame(rows)
+    
+    # Missing experiment_type raises TypeError or ValueError
+    with pytest.raises((ValueError, TypeError)):
+        create_experiment_splits(df, df)  # type: ignore
+        
+    # Invalid experiment_type raises ValueError
+    with pytest.raises(ValueError, match="Invalid experiment_type"):
+        create_experiment_splits(df, df, experiment_type="unsupported_regime")
+
 

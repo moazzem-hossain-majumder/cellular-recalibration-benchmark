@@ -1,7 +1,7 @@
 """Data loading, session extraction, and causal feature construction for cellular throughput."""
 import os
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 import numpy as np
 import pandas as pd
 
@@ -14,6 +14,7 @@ def clean_numeric(series: pd.Series) -> pd.Series:
 def segment_ookla_speedtests(series: pd.Series,
                             diff_thresh: float = -5.0,
                             val_thresh: float = 5.0,
+                            timestamps: Optional[pd.Series] = None,
                             method: str = "reset") -> pd.Series:
     """Identify discrete Ookla Speedtest session boundaries.
     
@@ -21,7 +22,8 @@ def segment_ookla_speedtests(series: pd.Series,
         series: Numeric series of throughput measurements over time.
         diff_thresh: Throughput drop threshold for reset detection (default: -5.0 Mbps).
         val_thresh: Absolute throughput ceiling after reset (default: 5.0 Mbps).
-        method: Segmentation strategy ('reset' or 'relative_drop').
+        timestamps: Optional datetime series for time-gap based burst detection.
+        method: Segmentation strategy ('reset', 'relative_drop', or 'active_burst').
     
     Returns:
         Series of integer session IDs (cumsum).
@@ -30,6 +32,15 @@ def segment_ookla_speedtests(series: pd.Series,
         is_reset = (series.diff() < diff_thresh) & (series < val_thresh)
     elif method == "relative_drop":
         is_reset = (series.diff() < -2.0) & (series < 1.0)
+    elif method == "active_burst":
+        is_active = series > 1.0
+        active_start = is_active & (~is_active.shift(1, fill_value=False))
+        if timestamps is not None and len(timestamps) == len(series):
+            time_diffs = timestamps.diff().dt.total_seconds().fillna(0.0)
+            time_gap = time_diffs > 10.0
+            is_reset = active_start | time_gap
+        else:
+            is_reset = active_start
     else:
         raise ValueError(f"Unknown segmentation method: {method}")
     return is_reset.cumsum()
@@ -262,16 +273,21 @@ def load_14073311_ookla(extract_dir: Path = None, window_seconds: int = 60) -> p
             ss_rsrq_cols = [c for c in df.columns if '5G NR Carriers_SS-RSRQ' in c and f': [{ue_idx}]' in c]
             ss_sinr_cols = [c for c in df.columns if '5G NR Carriers_SS-SINR' in c and f': [{ue_idx}]' in c]
             
-            # Extract valid rows
-            valid_mask = df[m_col] != '?'
+            # Clean and validate numeric values before segmentation
+            cleaned_vals = clean_numeric(df[m_col]) * scale
+            valid_mask = cleaned_vals.notna() & (cleaned_vals >= 0.0)
             sub = df[valid_mask].copy()
             if len(sub) == 0:
                 continue
                 
-            sub['val_mbps'] = clean_numeric(sub[m_col]) * scale
+            sub['val_mbps'] = cleaned_vals[valid_mask].astype(float)
             
             # Identify test segments by resets: drop > 5 Mbps to < 5 Mbps
-            sub['test_id'] = segment_ookla_speedtests(sub['val_mbps'], diff_thresh=-5.0, val_thresh=5.0)
+            sub['test_id'] = segment_ookla_speedtests(
+                sub['val_mbps'], diff_thresh=-5.0, val_thresh=5.0,
+                timestamps=sub['datetime'] if 'datetime' in sub.columns else None,
+                method='reset'
+            )
             
             # Group by test_id
             for tid, test_rows in sub.groupby('test_id'):
