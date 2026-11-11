@@ -58,6 +58,8 @@ def test_e0_within_domain_split_disjointness():
     assert s_tr.isdisjoint(s_te), "CRITICAL LEAKAGE: E0 train overlaps with test suffix!"
     assert s_va.isdisjoint(s_te), "CRITICAL LEAKAGE: E0 val overlaps with test suffix!"
     assert s_ca.isdisjoint(s_te), "CRITICAL LEAKAGE: E0 calib overlaps with test suffix!"
+    s_target_cal = set(splits.target_calib_pool['session_id'])
+    assert s_ca.isdisjoint(s_target_cal), "CRITICAL LEAKAGE: E0 source calibration overlaps target calibration pool!"
     assert s_tr.isdisjoint(s_va), "E0 train overlaps with val!"
     assert s_tr.isdisjoint(s_ca), "E0 train overlaps with calib!"
     
@@ -65,6 +67,9 @@ def test_e0_within_domain_split_disjointness():
     d_tr = set(splits.train['date'].unique())
     d_te = set(splits.target_test['date'].unique())
     assert d_tr.isdisjoint(d_te), "E0 train dates overlap with test dates!"
+    d_src_cal = set(splits.source_calib['date'].unique())
+    d_tgt_cal = set(splits.target_calib_pool['date'].unique())
+    assert d_src_cal.isdisjoint(d_tgt_cal), "E0 source-calibration dates overlap target-calibration dates!"
 
 if __name__ == '__main__':
     test_split_independence_and_disjointness()
