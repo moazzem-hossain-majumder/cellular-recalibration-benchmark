@@ -11,7 +11,7 @@ class DomainSplits:
     source_calib: pd.DataFrame
     target_calib_pool: pd.DataFrame
     target_test: pd.DataFrame
-    target_prefix_sessions: Dict[int, pd.DataFrame]  # K -> df for K in [0, 1, 2, 5, 10]
+    target_prefix_sessions: Dict[int, object]  # K -> dataframe, or None when K sessions are unsupported
 
 def partition_by_chronological_days(df: pd.DataFrame, fractions: Tuple[float, ...]) -> List[pd.DataFrame]:
     """Partition a dataframe into non-overlapping chronological blocks by collection date."""
@@ -112,6 +112,11 @@ def create_experiment_splits(source_df: pd.DataFrame, target_df: pd.DataFrame,
     for k in budgets:
         if k == 0:
             target_prefixes[0] = calib_pool_sorted.iloc[:0].copy()
+        elif 'session_id' in calib_pool_sorted.columns and calib_pool_sorted['session_id'].nunique() < k:
+            # Never silently report a smaller prefix as if it were budget K.
+            target_prefixes[k] = None
+        elif len(calib_pool_sorted) < k:
+            target_prefixes[k] = None
         else:
             target_prefixes[k] = calib_pool_sorted.iloc[:k].copy()
             
