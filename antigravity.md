@@ -94,9 +94,14 @@ Read the full proposal rather than implementing from this summary. Key constrain
 
 The dataset may fail these requirements. Stop the dependent implementation and return to design if it does. Explain the failure, propose a concrete amendment and discuss material scope changes with the user. Do not silently change forecasting into same-time estimation or switch to Topic D.
 
-## 6. Actual state at handoff
+## 6. Current verified repository state
 
-Phase 3 has started but is **not complete**. No finalized acquisition manifest, extracted archive inventory, comprehensive EDA, data quality report, suitability verdict, preprocessing pipeline, trained model or experimental result exists.
+As of March 2026, the complete research engineering, integrity audit, split leak-free correction, and end-to-end experiment reproduction have been executed and verified:
+1. **Acquisition Manifest:** Finalized and cryptographically verified (`data/metadata/acquisition_manifest.json`) across Zenodo records 8224890 and 14073311.
+2. **Data Quality Audit:** Comprehensive audit report completed in [`docs/DATA_QUALITY_REPORT.md`](file:///d:/Telecom/docs/DATA_QUALITY_REPORT.md) confirming 867,710 raw telemetry rows, 1,132 gross sessions, and exactly 1,001 causal instances ($0.0 \le \Delta t \le 2.5$ s, strictly within the 60s freshness rule).
+3. **Split Integrity:** 5-way E0 within-domain and transfer partitioning verified pairwise disjoint in [`docs/PHASE_1_DATA_INTEGRITY.md`](file:///d:/Telecom/docs/PHASE_1_DATA_INTEGRITY.md). Budget $K=15$ in E0 is honestly marked unavailable (`-`) without data reuse.
+4. **Decoupled Testing:** 34 total tests (17 fast synthetic unit tests, 4 real-data integration tests, 13 legacy tests) passing 100% in CI (`.github/workflows/tests.yml`), documented in [`docs/PHASE_2_TESTING.md`](file:///d:/Telecom/docs/PHASE_2_TESTING.md).
+5. **Full Experiment Rerun:** End-to-end pipeline executed in 355.96s (`scripts/reproduce_experiments.py`), regenerating Tables 1–2, Figures 1–5, all metrics, and the web demo (`app/web_demo.html`), documented in [`docs/PHASE_4_EXPERIMENT_RESULTS.md`](file:///d:/Telecom/docs/PHASE_4_EXPERIMENT_RESULTS.md).
 
 Three selected files are present. Their byte sizes and MD5 values were checked at handoff and match the expected publisher metadata:
 

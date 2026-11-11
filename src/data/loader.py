@@ -58,7 +58,8 @@ def extract_sessions_8224890(df: pd.DataFrame, window_seconds: int = 60) -> Tupl
             
             dl_rows = sess_rows[sess_rows['Mean Netw. DL'] != '?']
             mean_dl_kbps = float(dl_rows['Mean Netw. DL'].iloc[-1]) if len(dl_rows) > 0 else np.nan
-            mean_dl_mbps = mean_dl_kbps / 1000.0 if not np.isnan(mean_dl_kbps) else 0.0
+            # Preserve missing target labels as NaN; never silently coerce missing targets to zero.
+            mean_dl_mbps = (mean_dl_kbps / 1000.0) if pd.notna(mean_dl_kbps) else np.nan
             
             op = sess_rows['Operator'].iloc[-1]
             scen = sess_rows['Scenario'].iloc[-1]
@@ -95,7 +96,11 @@ def extract_sessions_8224890(df: pd.DataFrame, window_seconds: int = 60) -> Tupl
         prev_row = sdf.iloc[i - 1]
         assert prev_row['campaign'] == row['campaign']
         
-        lag_age_s = (row['t_start'] - prev_row['t_end']).total_seconds()
+        # Freshness is only defined when both timestamps are valid non-null datetime values
+        if pd.notna(row['t_start']) and pd.notna(prev_row['t_end']):
+            lag_age_s = (row['t_start'] - prev_row['t_end']).total_seconds()
+        else:
+            lag_age_s = np.nan
         
         # Second lag (if available)
         if row['sess_num_in_campaign'] >= 2:
@@ -161,8 +166,17 @@ def extract_sessions_8224890(df: pd.DataFrame, window_seconds: int = 60) -> Tupl
         })
 
     fdf = pd.DataFrame(forecast_rows)
-    # Strictly enforce 60-second lag freshness gate
-    fdf = fdf[fdf['lag_age_s'] <= float(window_seconds)].copy().reset_index(drop=True)
+    # Strictly enforce causal validity and [0, window_seconds] freshness:
+    # 1. lag_age_s must be non-null and non-negative (reject acausal clock drift / future leakage)
+    # 2. lag_age_s must be <= window_seconds (reject stale historical memory)
+    # 3. target_y must be valid and non-null (exclude missing targets from supervised forecasting)
+    valid_mask = (
+        pd.notna(fdf['lag_age_s']) &
+        (fdf['lag_age_s'] >= 0.0) &
+        (fdf['lag_age_s'] <= float(window_seconds)) &
+        pd.notna(fdf['target_y'])
+    )
+    fdf = fdf[valid_mask].copy().reset_index(drop=True)
     return sdf, fdf
 
 def load_14073311_ookla(extract_dir: Path = None, window_seconds: int = 60) -> pd.DataFrame:
@@ -281,12 +295,25 @@ def load_14073311_ookla(extract_dir: Path = None, window_seconds: int = 60) -> p
             prev = grp.iloc[i - 1]
             curr['y_lag1'] = prev['target_y']
             curr['prev_duration_s'] = prev['duration_s']
-            curr['lag_age_s'] = (curr['t_start'] - prev['t_end']).total_seconds() if pd.notna(curr['t_start']) and pd.notna(prev['t_end']) else 0.5
+            # Freshness is only defined when both timestamps are valid non-null datetime values
+            if pd.notna(curr['t_start']) and pd.notna(prev['t_end']):
+                curr['lag_age_s'] = (curr['t_start'] - prev['t_end']).total_seconds()
+            else:
+                curr['lag_age_s'] = np.nan
             causal_rows.append(curr)
             
     fdf = pd.DataFrame(causal_rows)
-    # Strictly enforce 60-second lag freshness gate
-    fdf = fdf[fdf['lag_age_s'] <= float(window_seconds)].copy().reset_index(drop=True)
+    # Strictly enforce causal validity and [0, window_seconds] freshness:
+    # 1. lag_age_s must be non-null and non-negative (reject acausal clock drift / future leakage)
+    # 2. lag_age_s must be <= window_seconds (reject stale historical memory)
+    # 3. target_y must be valid and non-null (exclude missing targets from supervised forecasting)
+    valid_mask = (
+        pd.notna(fdf['lag_age_s']) &
+        (fdf['lag_age_s'] >= 0.0) &
+        (fdf['lag_age_s'] <= float(window_seconds)) &
+        pd.notna(fdf['target_y'])
+    )
+    fdf = fdf[valid_mask].copy().reset_index(drop=True)
     fdf['session_id'] = np.arange(10000, 10000 + len(fdf))
     return fdf
 

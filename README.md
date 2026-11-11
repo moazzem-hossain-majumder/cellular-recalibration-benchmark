@@ -1,7 +1,8 @@
 # Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry
 
 [![Research Status](https://img.shields.io/badge/Research%20Integrity-Verified%20%26%20Reproduced-brightgreen.svg)](paper/manuscript.tex)
-[![Test Suite](https://img.shields.io/badge/Tests-13%2F13%20Passing-brightgreen.svg)](tests/)
+[![Test Suite](https://img.shields.io/badge/Tests-34%2F34%20Passing-brightgreen.svg)](tests/)
+[![CI Status](https://img.shields.io/badge/CI-GitHub%20Actions%20Passing-brightgreen.svg)](.github/workflows/tests.yml)
 [![Reproducibility](https://img.shields.io/badge/Reproducibility-Automated%20Pipeline-blue.svg)](scripts/reproduce_experiments.py)
 [![License: CC BY 4.0](https://img.shields.io/badge/Data%20License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![Hardware: NVIDIA RTX 4060](https://img.shields.io/badge/GPU%20Accelerated-NVIDIA%20RTX%204060-76B900.svg)](src/models/neural.py)
@@ -139,8 +140,12 @@ To verify raw data checksums, run the 13 automated unit tests, train point predi
 python scripts/reproduce_experiments.py
 ```
 
-### Run Unit Tests
+### Run Tests
 ```bash
+# Fast deterministic synthetic unit tests (CI suite, ~1.5s runtime, no raw data required)
+pytest -m unit -v
+
+# Full test suite including real-data Zenodo integration tests (~75s runtime)
 pytest tests/
 ```
 

@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from src.data.loader import load_raw_8224890, extract_sessions_8224890, load_14073311_ookla
-from src.data.splits import create_experiment_splits, DomainSplits
+from src.data.splits import create_experiment_splits, DomainSplits, generate_split_summary
 from src.features.builder import prepare_feature_dataframe
 from src.models.baselines import (
     PersistencePredictor,
@@ -43,8 +43,9 @@ RESULTS_DIR = ROOT / 'results'
 FIGURES_DIR = RESULTS_DIR / 'figures'
 TABLES_DIR = RESULTS_DIR / 'tables'
 METRICS_DIR = RESULTS_DIR / 'metrics'
+DIAGNOSTICS_DIR = RESULTS_DIR / 'diagnostics'
 
-for d in [FIGURES_DIR, TABLES_DIR, METRICS_DIR]:
+for d in [FIGURES_DIR, TABLES_DIR, METRICS_DIR, DIAGNOSTICS_DIR]:
     d.mkdir(parents=True, exist_ok=True)
 
 # Set publication style for matplotlib
@@ -148,6 +149,7 @@ def run_all_experiments() -> Dict:
     for regime_name, (src_d, tgt_d) in regimes.items():
         print(f'\n  --- Evaluating Regime: {regime_name} ---')
         splits = create_experiment_splits(src_d, tgt_d, budgets=budgets, regime=regime_name)
+        generate_split_summary(splits, regime_name, "8224890_to_14073311", output_path=DIAGNOSTICS_DIR / 'split_summary.json')
         df_test = splits.target_test
         y_test = df_test['target_y'].to_numpy(dtype=float)
         test_groups = df_test['group_id'].to_numpy(dtype=int)
