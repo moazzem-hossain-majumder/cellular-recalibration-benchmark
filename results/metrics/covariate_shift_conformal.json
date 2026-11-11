@@ -1,23 +1,377 @@
 {
   "E1_CampaignTransfer": {
-    "violation_rate": 0.0144,
-    "supported_fraction": 0.0063,
-    "mean_overcommitment": 0.059,
-    "mean_weight": 0.2439,
-    "max_weight": 2.8925
+    "violation_rate": 0.0072,
+    "supported_fraction": 0.0127,
+    "mean_overcommitment": 0.0664,
+    "source_ess": 3.35,
+    "test_ess": 121.86,
+    "protocols": {
+      "Protocol_A_NonTransductive": {
+        "tight_clip": {
+          "violation_rate": 0.0072,
+          "supported_fraction": 0.0127,
+          "mean_overcommitment": 0.0664,
+          "mean_lower_bound": 0.5725,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 145,
+            "clip_weight_min": 0.1,
+            "clip_weight_max": 10.0,
+            "source_ess": 3.35,
+            "test_ess": 121.86,
+            "fraction_clipped_src": 0.6667,
+            "fraction_clipped_tgt": 0.6403,
+            "raw_source_weight_stats": {
+              "min": 0.0001,
+              "max": 25.5535,
+              "mean": 1.0312,
+              "median": 0.0262
+            },
+            "raw_test_weight_stats": {
+              "min": 0.3129,
+              "max": 2275.6345,
+              "mean": 222.7723,
+              "median": 19.5357
+            }
+          }
+        },
+        "wide_clip": {
+          "violation_rate": 0.0288,
+          "supported_fraction": 0.045,
+          "mean_overcommitment": 0.3274,
+          "mean_lower_bound": 2.1159,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 145,
+            "clip_weight_min": 0.01,
+            "clip_weight_max": 100.0,
+            "source_ess": 1.72,
+            "test_ess": 70.11,
+            "fraction_clipped_src": 0.3333,
+            "fraction_clipped_tgt": 0.259,
+            "raw_source_weight_stats": {
+              "min": 0.0001,
+              "max": 25.5535,
+              "mean": 1.0312,
+              "median": 0.0262
+            },
+            "raw_test_weight_stats": {
+              "min": 0.3129,
+              "max": 2275.6345,
+              "mean": 222.7723,
+              "median": 19.5357
+            }
+          }
+        }
+      },
+      "Protocol_B_Transductive": {
+        "tight_clip": {
+          "violation_rate": 0.0144,
+          "supported_fraction": 0.0063,
+          "mean_overcommitment": 0.059,
+          "mean_lower_bound": 0.3074,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 139,
+            "clip_weight_min": 0.1,
+            "clip_weight_max": 10.0,
+            "source_ess": 6.53,
+            "test_ess": 109.66,
+            "fraction_clipped_src": 0.697,
+            "fraction_clipped_tgt": 0.4676,
+            "raw_source_weight_stats": {
+              "min": 0.0005,
+              "max": 2.8925,
+              "mean": 0.1876,
+              "median": 0.0231
+            },
+            "raw_test_weight_stats": {
+              "min": 0.3776,
+              "max": 2373.8633,
+              "mean": 150.76,
+              "median": 8.2123
+            }
+          }
+        },
+        "wide_clip": {
+          "violation_rate": 0.0,
+          "supported_fraction": 0.0003,
+          "mean_overcommitment": 0.0,
+          "mean_lower_bound": 0.0105,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 139,
+            "clip_weight_min": 0.01,
+            "clip_weight_max": 100.0,
+            "source_ess": 4.03,
+            "test_ess": 52.81,
+            "fraction_clipped_src": 0.3333,
+            "fraction_clipped_tgt": 0.1439,
+            "raw_source_weight_stats": {
+              "min": 0.0005,
+              "max": 2.8925,
+              "mean": 0.1876,
+              "median": 0.0231
+            },
+            "raw_test_weight_stats": {
+              "min": 0.3776,
+              "max": 2373.8633,
+              "mean": 150.76,
+              "median": 8.2123
+            }
+          }
+        }
+      }
+    }
   },
   "E2_CrossOperator": {
-    "violation_rate": 0.0469,
-    "supported_fraction": 0.0791,
-    "mean_overcommitment": 0.2136,
-    "mean_weight": 1.0807,
-    "max_weight": 10.0
+    "violation_rate": 0.0156,
+    "supported_fraction": 0.0304,
+    "mean_overcommitment": 0.1298,
+    "source_ess": 7.77,
+    "test_ess": 112.12,
+    "protocols": {
+      "Protocol_A_NonTransductive": {
+        "tight_clip": {
+          "violation_rate": 0.0156,
+          "supported_fraction": 0.0304,
+          "mean_overcommitment": 0.1298,
+          "mean_lower_bound": 1.0536,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 97,
+            "clip_weight_min": 0.1,
+            "clip_weight_max": 10.0,
+            "source_ess": 7.77,
+            "test_ess": 112.12,
+            "fraction_clipped_src": 0.4242,
+            "fraction_clipped_tgt": 0.2773,
+            "raw_source_weight_stats": {
+              "min": 0.0063,
+              "max": 4.8088,
+              "mean": 0.4918,
+              "median": 0.1173
+            },
+            "raw_test_weight_stats": {
+              "min": 0.0152,
+              "max": 613.4239,
+              "mean": 9.7214,
+              "median": 1.3251
+            }
+          }
+        },
+        "wide_clip": {
+          "violation_rate": 0.0156,
+          "supported_fraction": 0.0295,
+          "mean_overcommitment": 0.1298,
+          "mean_lower_bound": 1.0244,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 97,
+            "clip_weight_min": 0.01,
+            "clip_weight_max": 100.0,
+            "source_ess": 7.04,
+            "test_ess": 43.3,
+            "fraction_clipped_src": 0.0606,
+            "fraction_clipped_tgt": 0.0117,
+            "raw_source_weight_stats": {
+              "min": 0.0063,
+              "max": 4.8088,
+              "mean": 0.4918,
+              "median": 0.1173
+            },
+            "raw_test_weight_stats": {
+              "min": 0.0152,
+              "max": 613.4239,
+              "mean": 9.7214,
+              "median": 1.3251
+            }
+          }
+        }
+      },
+      "Protocol_B_Transductive": {
+        "tight_clip": {
+          "violation_rate": 0.0469,
+          "supported_fraction": 0.0791,
+          "mean_overcommitment": 0.2136,
+          "mean_lower_bound": 2.616,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 256,
+            "clip_weight_min": 0.1,
+            "clip_weight_max": 10.0,
+            "source_ess": 7.71,
+            "test_ess": 136.43,
+            "fraction_clipped_src": 0.1212,
+            "fraction_clipped_tgt": 0.1289,
+            "raw_source_weight_stats": {
+              "min": 0.0587,
+              "max": 17.2359,
+              "mean": 1.2982,
+              "median": 0.3169
+            },
+            "raw_test_weight_stats": {
+              "min": 0.1059,
+              "max": 405.3561,
+              "mean": 8.4589,
+              "median": 1.9532
+            }
+          }
+        },
+        "wide_clip": {
+          "violation_rate": 0.0664,
+          "supported_fraction": 0.113,
+          "mean_overcommitment": 0.3432,
+          "mean_lower_bound": 3.7747,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 256,
+            "clip_weight_min": 0.01,
+            "clip_weight_max": 100.0,
+            "source_ess": 5.07,
+            "test_ess": 40.72,
+            "fraction_clipped_src": 0.0,
+            "fraction_clipped_tgt": 0.0117,
+            "raw_source_weight_stats": {
+              "min": 0.0587,
+              "max": 17.2359,
+              "mean": 1.2982,
+              "median": 0.3169
+            },
+            "raw_test_weight_stats": {
+              "min": 0.1059,
+              "max": 405.3561,
+              "mean": 8.4589,
+              "median": 1.9532
+            }
+          }
+        }
+      }
+    }
   },
   "E3_JointShift": {
-    "violation_rate": 0.0,
-    "supported_fraction": 0.0096,
-    "mean_overcommitment": 0.0,
-    "mean_weight": 0.2669,
-    "max_weight": 1.8047
+    "violation_rate": 0.0097,
+    "supported_fraction": 0.0159,
+    "mean_overcommitment": 0.007,
+    "source_ess": 22.07,
+    "test_ess": 29.18,
+    "protocols": {
+      "Protocol_A_NonTransductive": {
+        "tight_clip": {
+          "violation_rate": 0.0097,
+          "supported_fraction": 0.0159,
+          "mean_overcommitment": 0.007,
+          "mean_lower_bound": 0.8473,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 111,
+            "clip_weight_min": 0.1,
+            "clip_weight_max": 10.0,
+            "source_ess": 22.07,
+            "test_ess": 29.18,
+            "fraction_clipped_src": 0.7879,
+            "fraction_clipped_tgt": 0.5631,
+            "raw_source_weight_stats": {
+              "min": 0.0005,
+              "max": 0.5442,
+              "mean": 0.0679,
+              "median": 0.0145
+            },
+            "raw_test_weight_stats": {
+              "min": 0.0019,
+              "max": 224.4556,
+              "mean": 7.831,
+              "median": 0.2502
+            }
+          }
+        },
+        "wide_clip": {
+          "violation_rate": 0.0097,
+          "supported_fraction": 0.0083,
+          "mean_overcommitment": 0.007,
+          "mean_lower_bound": 0.4465,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 111,
+            "clip_weight_min": 0.01,
+            "clip_weight_max": 100.0,
+            "source_ess": 8.64,
+            "test_ess": 11.59,
+            "fraction_clipped_src": 0.4242,
+            "fraction_clipped_tgt": 0.1456,
+            "raw_source_weight_stats": {
+              "min": 0.0005,
+              "max": 0.5442,
+              "mean": 0.0679,
+              "median": 0.0145
+            },
+            "raw_test_weight_stats": {
+              "min": 0.0019,
+              "max": 224.4556,
+              "mean": 7.831,
+              "median": 0.2502
+            }
+          }
+        }
+      },
+      "Protocol_B_Transductive": {
+        "tight_clip": {
+          "violation_rate": 0.0,
+          "supported_fraction": 0.0096,
+          "mean_overcommitment": 0.0,
+          "mean_lower_bound": 0.5113,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 103,
+            "clip_weight_min": 0.1,
+            "clip_weight_max": 10.0,
+            "source_ess": 11.04,
+            "test_ess": 76.13,
+            "fraction_clipped_src": 0.5455,
+            "fraction_clipped_tgt": 0.3981,
+            "raw_source_weight_stats": {
+              "min": 0.0079,
+              "max": 1.8047,
+              "mean": 0.2356,
+              "median": 0.0955
+            },
+            "raw_test_weight_stats": {
+              "min": 0.1317,
+              "max": 3203.5631,
+              "mean": 147.1993,
+              "median": 7.2135
+            }
+          }
+        },
+        "wide_clip": {
+          "violation_rate": 0.0,
+          "supported_fraction": 0.0085,
+          "mean_overcommitment": 0.0,
+          "mean_lower_bound": 0.4517,
+          "diagnostics": {
+            "source_n": 33,
+            "target_ref_n": 103,
+            "clip_weight_min": 0.01,
+            "clip_weight_max": 100.0,
+            "source_ess": 8.78,
+            "test_ess": 31.24,
+            "fraction_clipped_src": 0.0606,
+            "fraction_clipped_tgt": 0.0874,
+            "raw_source_weight_stats": {
+              "min": 0.0079,
+              "max": 1.8047,
+              "mean": 0.2356,
+              "median": 0.0955
+            },
+            "raw_test_weight_stats": {
+              "min": 0.1317,
+              "max": 3203.5631,
+              "mean": 147.1993,
+              "median": 7.2135
+            }
+          }
+        }
+      }
+    }
   }
 }

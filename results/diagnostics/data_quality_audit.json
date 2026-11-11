@@ -1,0 +1,302 @@
+{
+  "audit_timestamp": "2026-11-11T22:00:00Z",
+  "total_causal_forecast_instances": 1001,
+  "datasets": {
+    "8224890": {
+      "name": "Zenodo_8224890_2021",
+      "total_rows": 503,
+      "unique_dates": 16,
+      "date_list": [
+        "04.01.2021",
+        "05.01.2021",
+        "06.01.2021",
+        "07.01.2021",
+        "08.01.2021",
+        "11.01.2021",
+        "13.12.2020",
+        "14.01.2021",
+        "14.12.2020",
+        "15.12.2020",
+        "16.12.2020",
+        "17.12.2020",
+        "24.01.2021",
+        "25.01.2021",
+        "26.01.2021",
+        "27.01.2021"
+      ],
+      "operators": {
+        "Op2": 353,
+        "Op1": 150
+      },
+      "missingness": {
+        "session_id": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "campaign": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "sess_num": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "date": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "t_start": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "t_end": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "duration_s": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "operator": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "scenario": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "y_lag1": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "y_lag2": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "has_lag2": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "lag_age_s": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "prev_duration_s": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "has_lte": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "has_nr": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "group_id": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "rsrp": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "rsrq": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "sinr": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "ss_rsrp": {
+          "null_count": 319,
+          "null_pct": 63.42
+        },
+        "ss_rsrq": {
+          "null_count": 319,
+          "null_pct": 63.42
+        },
+        "ss_sinr": {
+          "null_count": 319,
+          "null_pct": 63.42
+        },
+        "pci_lte": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "pci_5g": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "target_y": {
+          "null_count": 0,
+          "null_pct": 0.0
+        }
+      },
+      "throughput_stats": {
+        "mean": 32.57589045725646,
+        "std": 48.92885460751534,
+        "min": 0.0,
+        "p10": 0.16294000000000092,
+        "p25": 4.0267,
+        "median": 10.273299999999999,
+        "p75": 31.2299,
+        "p90": 113.68870000000001,
+        "max": 225.3159,
+        "zeros_count": 2,
+        "sub_1mbps_count": 63
+      },
+      "freshness_stats": {
+        "mean_lag_age_s": 0.16936580516898608,
+        "median_lag_age_s": 0.117,
+        "min_lag_age_s": 0.0,
+        "max_lag_age_s": 1.198
+      },
+      "telemetry_groups": {
+        "2": 319,
+        "3": 184
+      }
+    },
+    "14073311": {
+      "name": "Zenodo_14073311_2023",
+      "total_rows": 498,
+      "unique_dates": 12,
+      "date_list": [
+        "04.07.2023",
+        "05.05.2023",
+        "05.07.2023",
+        "08.06.2023",
+        "09.05.2023",
+        "10.06.2023",
+        "16.06.2023",
+        "20.04.2023",
+        "25.06.2023",
+        "27.05.2023",
+        "29.03.2023",
+        "31.03.2023"
+      ],
+      "operators": {
+        "Op1": 284,
+        "Op2": 214
+      },
+      "missingness": {
+        "file": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "campaign": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "test_id_in_file": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "operator": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "scenario": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "date": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "t_start": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "t_end": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "duration_s": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "has_lte": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "has_nr": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "group_id": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "rsrp": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "rsrq": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "sinr": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "ss_rsrp": {
+          "null_count": 266,
+          "null_pct": 53.41
+        },
+        "ss_rsrq": {
+          "null_count": 266,
+          "null_pct": 53.41
+        },
+        "ss_sinr": {
+          "null_count": 265,
+          "null_pct": 53.21
+        },
+        "target_y": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "y_lag1": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "prev_duration_s": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "lag_age_s": {
+          "null_count": 0,
+          "null_pct": 0.0
+        },
+        "session_id": {
+          "null_count": 0,
+          "null_pct": 0.0
+        }
+      },
+      "throughput_stats": {
+        "mean": 35.02641224899599,
+        "std": 45.425950186245416,
+        "min": 0.0,
+        "p10": 4.774950000000003,
+        "p25": 7.3,
+        "median": 16.1417,
+        "p75": 39.3478,
+        "p90": 107.87154,
+        "max": 266.4095,
+        "zeros_count": 23,
+        "sub_1mbps_count": 35
+      },
+      "freshness_stats": {
+        "mean_lag_age_s": 0.7078212851405623,
+        "median_lag_age_s": 0.501,
+        "min_lag_age_s": 0.492,
+        "max_lag_age_s": 2.5
+      },
+      "telemetry_groups": {
+        "2": 266,
+        "3": 232
+      }
+    }
+  }
+}

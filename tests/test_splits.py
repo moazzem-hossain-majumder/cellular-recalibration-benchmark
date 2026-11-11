@@ -16,7 +16,7 @@ def test_split_independence_and_disjointness():
     op1_df = fdf[fdf['operator'] == 'Op1'].copy()
     op2_df = fdf[fdf['operator'] == 'Op2'].copy()
     
-    splits = create_experiment_splits(op1_df, op2_df, budgets=[0, 1, 2, 5, 10])
+    splits = create_experiment_splits(op1_df, op2_df, budgets=[0, 1, 2, 5, 10], experiment_type="transfer")
     
     # 1. Check that source splits are disjoint in dates
     train_dates = set(splits.train['date'].unique())
@@ -47,7 +47,7 @@ def test_e0_within_domain_split_disjointness():
     op1_df = fdf[fdf['operator'] == 'Op1'].copy()
     
     # E0: Within-domain splits
-    splits = create_experiment_splits(op1_df, op1_df, budgets=[0, 1, 2, 5, 8, 9, 10])
+    splits = create_experiment_splits(op1_df, op1_df, budgets=[0, 1, 2, 5, 8, 9, 10], experiment_type="within_domain")
     
     s_tr = set(splits.train['session_id'])
     s_va = set(splits.val['session_id'])
@@ -86,7 +86,7 @@ def test_synthetic_e0_partitions_are_disjoint_and_budgets_are_explicit():
             "has_nr": 0,
         })
     frame = pd.DataFrame(rows)
-    splits = create_experiment_splits(frame, frame, budgets=[0, 1, 2, 5, 8, 9, 10, 15])
+    splits = create_experiment_splits(frame, frame, budgets=[0, 1, 2, 5, 8, 9, 10, 15], experiment_type="within_domain")
 
     parts = [splits.train, splits.val, splits.source_calib,
              splits.target_calib_pool, splits.target_test]
@@ -117,7 +117,7 @@ def test_transfer_domains_with_reused_local_session_ids_are_not_misclassified_as
         return pd.DataFrame(rows)
     source = make_frame(1, 10)
     target = make_frame(11, 100)
-    splits = create_experiment_splits(source, target, budgets=[0, 1, 2, 5, 8, 9, 10, 15])
+    splits = create_experiment_splits(source, target, budgets=[0, 1, 2, 5, 8, 9, 10, 15], experiment_type="transfer")
     assert len(splits.train) > 0
     assert len(splits.source_calib) > 0
     assert len(splits.target_calib_pool) > 0
@@ -141,8 +141,8 @@ def test_explicit_regime_and_within_domain_parameter():
     frame = pd.DataFrame(rows)
     frame_copy = frame.copy()  # Separate dataframe object (frame is not frame_copy)
     
-    # Passing regime='E0' should force within-domain 5-way partition
-    splits = create_experiment_splits(frame, frame_copy, budgets=[0, 1, 2, 5], regime='E0_WithinDomain')
+    # Passing experiment_type='within_domain' enforces within-domain 5-way partition
+    splits = create_experiment_splits(frame, frame_copy, budgets=[0, 1, 2, 5], regime='E0_WithinDomain', experiment_type="within_domain")
     parts = [splits.train, splits.val, splits.source_calib, splits.target_calib_pool, splits.target_test]
     for i, left in enumerate(parts):
         for right in parts[i + 1:]:

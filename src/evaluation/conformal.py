@@ -1,7 +1,18 @@
 """Conformal prediction and calibration rules for one-sided cellular throughput lower bounds."""
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 import pandas as pd
+
+def compute_effective_sample_size(weights: np.ndarray) -> float:
+    """Compute Kish's Effective Sample Size (ESS): (sum w_i)^2 / sum (w_i^2)."""
+    w = np.asarray(weights, dtype=float)
+    if len(w) == 0:
+        return 0.0
+    sum_w = float(np.sum(w))
+    sum_w_sq = float(np.sum(w ** 2))
+    if sum_w_sq <= 0.0:
+        return 0.0
+    return float((sum_w ** 2) / sum_w_sq)
 
 def compute_conformal_quantile(scores: np.ndarray, alpha: float = 0.10) -> float:
     """Compute (1 - alpha) conformal quantile of signed overprediction scores."""
@@ -123,9 +134,19 @@ class CovariateShiftConformalCalibrator:
         self.clip_weight_max = clip_weight_max
         self.clip_weight_min = clip_weight_min
         self.source_scores: np.ndarray = np.array([])
+        self.raw_source_weights: np.ndarray = np.array([])
         self.source_weights: np.ndarray = np.array([])
+        self.raw_test_weights: np.ndarray = np.array([])
+        self.test_weights: np.ndarray = np.array([])
         self.discriminator = None
+        self.scaler = None
         self.feature_cols: List[str] = []
+        self.n_source: int = 0
+        self.n_target_ref: int = 0
+        self.source_ess: float = 0.0
+        self.test_ess: float = 0.0
+        self.fraction_clipped_src: float = 0.0
+        self.fraction_clipped_tgt: float = 0.0
 
     def fit_weights_and_scores(self, X_source_calib: pd.DataFrame, scores_source: np.ndarray,
                                X_target_ref: pd.DataFrame, feature_cols: List[str]):
@@ -135,6 +156,8 @@ class CovariateShiftConformalCalibrator:
         
         self.feature_cols = feature_cols
         self.source_scores = np.asarray(scores_source, dtype=float)
+        self.n_source = len(X_source_calib)
+        self.n_target_ref = len(X_target_ref)
         
         # Prepare feature matrices with zero imputation and scaling
         X_src = X_source_calib[self.feature_cols].fillna(0.0).to_numpy(dtype=float)
@@ -158,7 +181,13 @@ class CovariateShiftConformalCalibrator:
         probs_src = self.discriminator.predict_proba(X_src_scaled)[:, 1]
         probs_src = np.clip(probs_src, 1e-4, 1.0 - 1e-4)
         raw_weights_src = (probs_src / (1.0 - probs_src)) * self.prior_ratio
+        self.raw_source_weights = raw_weights_src
         self.source_weights = np.clip(raw_weights_src, self.clip_weight_min, self.clip_weight_max)
+        
+        # Diagnostics for source
+        self.source_ess = compute_effective_sample_size(self.source_weights)
+        is_clipped_src = (raw_weights_src <= self.clip_weight_min) | (raw_weights_src >= self.clip_weight_max)
+        self.fraction_clipped_src = float(np.mean(is_clipped_src)) if len(is_clipped_src) > 0 else 0.0
         return self
 
     def predict_lower_bound(self, y_pred_test: np.ndarray, X_test: pd.DataFrame) -> np.ndarray:
@@ -172,9 +201,15 @@ class CovariateShiftConformalCalibrator:
         probs_te = np.clip(probs_te, 1e-4, 1.0 - 1e-4)
         prior_ratio = getattr(self, 'prior_ratio', 1.0)
         raw_weights_te = (probs_te / (1.0 - probs_te)) * prior_ratio
+        self.raw_test_weights = raw_weights_te
         weights_te = np.clip(raw_weights_te, self.clip_weight_min, self.clip_weight_max)
+        self.test_weights = weights_te
         
-        n_src = len(self.source_scores)
+        # Diagnostics for test
+        self.test_ess = compute_effective_sample_size(weights_te)
+        is_clipped_tgt = (raw_weights_te <= self.clip_weight_min) | (raw_weights_te >= self.clip_weight_max)
+        self.fraction_clipped_tgt = float(np.mean(is_clipped_tgt)) if len(is_clipped_tgt) > 0 else 0.0
+        
         lower_bounds = np.zeros(len(y_pred_test), dtype=float)
         
         # Sort source scores
@@ -194,10 +229,33 @@ class CovariateShiftConformalCalibrator:
                 q_weighted = sorted_scores[valid_idx[0]]
                 lower_bounds[i] = max(0.0, y_pred_test[i] - q_weighted)
             else:
-                # If sum of source probabilities is strictly less than 1 - alpha,
-                # the quantile falls on the point mass at +inf, yielding a lower bound of 0.0
                 lower_bounds[i] = 0.0
             
         return lower_bounds
+
+    def get_diagnostics(self) -> Dict[str, Any]:
+        """Return diagnostic dictionary of weights, ESS, and clipping fractions."""
+        return {
+            "source_n": int(self.n_source),
+            "target_ref_n": int(self.n_target_ref),
+            "clip_weight_min": float(self.clip_weight_min),
+            "clip_weight_max": float(self.clip_weight_max),
+            "source_ess": round(float(self.source_ess), 2),
+            "test_ess": round(float(self.test_ess), 2),
+            "fraction_clipped_src": round(float(self.fraction_clipped_src), 4),
+            "fraction_clipped_tgt": round(float(self.fraction_clipped_tgt), 4),
+            "raw_source_weight_stats": {
+                "min": round(float(np.min(self.raw_source_weights)), 4) if len(self.raw_source_weights) else 0.0,
+                "max": round(float(np.max(self.raw_source_weights)), 4) if len(self.raw_source_weights) else 0.0,
+                "mean": round(float(np.mean(self.raw_source_weights)), 4) if len(self.raw_source_weights) else 0.0,
+                "median": round(float(np.median(self.raw_source_weights)), 4) if len(self.raw_source_weights) else 0.0,
+            },
+            "raw_test_weight_stats": {
+                "min": round(float(np.min(self.raw_test_weights)), 4) if len(self.raw_test_weights) else 0.0,
+                "max": round(float(np.max(self.raw_test_weights)), 4) if len(self.raw_test_weights) else 0.0,
+                "mean": round(float(np.mean(self.raw_test_weights)), 4) if len(self.raw_test_weights) else 0.0,
+                "median": round(float(np.median(self.raw_test_weights)), 4) if len(self.raw_test_weights) else 0.0,
+            }
+        }
 
 

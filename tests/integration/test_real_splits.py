@@ -14,7 +14,7 @@ def test_real_8224890_split_disjointness():
     op1_df = fdf[fdf['operator'] == 'Op1'].copy()
     op2_df = fdf[fdf['operator'] == 'Op2'].copy()
     
-    splits = create_experiment_splits(op1_df, op2_df, budgets=[0, 1, 2, 5, 10])
+    splits = create_experiment_splits(op1_df, op2_df, budgets=[0, 1, 2, 5, 10], experiment_type="transfer")
     
     train_dates = set(splits.train['date'].unique())
     val_dates = set(splits.val['date'].unique())

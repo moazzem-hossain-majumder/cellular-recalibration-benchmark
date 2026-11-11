@@ -36,7 +36,7 @@ def run_ablations():
     
     source_df = fdf[fdf['operator'] == 'Op1'].copy()
     target_df = fdf[fdf['operator'] == 'Op2'].copy()
-    splits = create_experiment_splits(source_df, target_df, budgets=[10])
+    splits = create_experiment_splits(source_df, target_df, budgets=[10], experiment_type='transfer')
     
     X_tr = splits.train
     y_tr = X_tr['target_y'].to_numpy(dtype=float)
@@ -145,7 +145,10 @@ def run_freshness_sensitivity() -> Dict:
         
         window_dict = {}
         for reg_name, (s_df, t_df) in regimes.items():
-            splits = create_experiment_splits(s_df, t_df, budgets=[0, 10], regime=reg_name)
+            splits = create_experiment_splits(
+                s_df, t_df, budgets=[0, 10], regime=reg_name,
+                experiment_type='within_domain' if reg_name.startswith('E0') else 'transfer'
+            )
             model = HistGradientBoostingThroughputPredictor().fit(splits.train, splits.train['target_y'].to_numpy(dtype=float))
             
             y_pred_src_cal = model.predict(splits.source_calib)
@@ -203,7 +206,10 @@ def run_multi_alpha_frontier() -> Dict:
     frontier_data = {reg: {'alphas': alphas, 'global': {'V': [], 'U': []}, 'proposed': {'V': [], 'U': []}} for reg in regimes}
     
     for reg_name, (s_df, t_df) in regimes.items():
-        splits = create_experiment_splits(s_df, t_df, budgets=[10], regime=reg_name)
+        splits = create_experiment_splits(
+            s_df, t_df, budgets=[10], regime=reg_name,
+            experiment_type='within_domain' if reg_name.startswith('E0') else 'transfer'
+        )
         model = HistGradientBoostingThroughputPredictor().fit(splits.train, splits.train['target_y'].to_numpy(dtype=float))
         
         y_te = splits.target_test['target_y'].to_numpy(dtype=float)
@@ -302,7 +308,7 @@ def run_covariate_shift_benchmark() -> Dict:
         'E3_JointShift': fdf_140[fdf_140['operator'] == 'Op2'].copy()
     }
     
-    splits_e0 = create_experiment_splits(source_df, source_df, budgets=[0], regime='E0_WithinDomain')
+    splits_e0 = create_experiment_splits(source_df, source_df, budgets=[0], regime='E0_WithinDomain', experiment_type='within_domain')
     model = HistGradientBoostingThroughputPredictor().fit(splits_e0.train, splits_e0.train['target_y'].to_numpy(dtype=float))
     
     src_cal = splits_e0.source_calib
@@ -314,24 +320,49 @@ def run_covariate_shift_benchmark() -> Dict:
     cs_results = {}
     
     for r_name, tgt_df in regimes.items():
-        splits = create_experiment_splits(source_df, tgt_df, budgets=[0], regime=r_name)
+        splits = create_experiment_splits(
+            source_df, tgt_df, budgets=[0], regime=r_name,
+            experiment_type='within_domain' if r_name.startswith('E0') else 'transfer'
+        )
         test_df = splits.target_test
+        target_cal_pool = splits.target_calib_pool
         y_test = test_df['target_y'].to_numpy(dtype=float)
         y_test_pred = model.predict(test_df)
         
-        calib_cs = CovariateShiftConformalCalibrator(alpha=0.10)
-        calib_cs.fit_weights_and_scores(src_cal, src_scores, test_df, feature_cols=feat_cols)
-        bounds_cs = calib_cs.predict_lower_bound(y_test_pred, test_df)
+        reg_out = {}
+        for proto_name, ref_df in [('Protocol_A_NonTransductive', target_cal_pool),
+                                   ('Protocol_B_Transductive', test_df)]:
+            reg_out[proto_name] = {}
+            for clip_label, (c_min, c_max) in [('tight_clip', (0.1, 10.0)),
+                                               ('wide_clip', (0.01, 100.0))]:
+                calib_cs = CovariateShiftConformalCalibrator(
+                    alpha=0.10, clip_weight_min=c_min, clip_weight_max=c_max
+                )
+                calib_cs.fit_weights_and_scores(src_cal, src_scores, ref_df, feature_cols=feat_cols)
+                bounds_cs = calib_cs.predict_lower_bound(y_test_pred, test_df)
+                m_cs = compute_reliability_metrics(y_test, y_test_pred, bounds_cs)
+                diag = calib_cs.get_diagnostics()
+                reg_out[proto_name][clip_label] = {
+                    'violation_rate': round(m_cs.violation_rate, 4),
+                    'supported_fraction': round(m_cs.supported_rate_fraction, 4),
+                    'mean_overcommitment': round(m_cs.mean_overcommitment, 4),
+                    'mean_lower_bound': round(float(np.mean(bounds_cs)), 4),
+                    'diagnostics': diag
+                }
         
-        m_cs = compute_reliability_metrics(y_test, y_test_pred, bounds_cs)
+        # Primary benchmark: Protocol A with tight clipping
+        prim = reg_out['Protocol_A_NonTransductive']['tight_clip']
         cs_results[r_name] = {
-            'violation_rate': round(m_cs.violation_rate, 4),
-            'supported_fraction': round(m_cs.supported_rate_fraction, 4),
-            'mean_overcommitment': round(m_cs.mean_overcommitment, 4),
-            'mean_weight': round(float(np.mean(calib_cs.source_weights)), 4),
-            'max_weight': round(float(np.max(calib_cs.source_weights)), 4)
+            'violation_rate': prim['violation_rate'],
+            'supported_fraction': prim['supported_fraction'],
+            'mean_overcommitment': prim['mean_overcommitment'],
+            'source_ess': prim['diagnostics']['source_ess'],
+            'test_ess': prim['diagnostics']['test_ess'],
+            'protocols': reg_out
         }
-        print(f'  {r_name:24s} | CS-CP: V={m_cs.violation_rate:.3f}, U={m_cs.supported_rate_fraction:.3f} (Mean w={np.mean(calib_cs.source_weights):.2f})')
+        print(f"  {r_name:24s} | Protocol A (Non-Transductive): V={prim['violation_rate']:.3f}, U={prim['supported_fraction']:.3f}, Src-ESS={prim['diagnostics']['source_ess']:.1f}")
+        proto_b = reg_out['Protocol_B_Transductive']['tight_clip']
+        print(f"  {' '*24} | Protocol B (Transductive):     V={proto_b['violation_rate']:.3f}, U={proto_b['supported_fraction']:.3f}, Src-ESS={proto_b['diagnostics']['source_ess']:.1f}")
         
     with open(RESULTS_DIR / 'covariate_shift_conformal.json', 'w') as f:
         json.dump(cs_results, f, indent=2)

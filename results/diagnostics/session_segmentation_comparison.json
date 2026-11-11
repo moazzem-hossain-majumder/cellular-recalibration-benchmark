@@ -1,0 +1,1773 @@
+{
+  "audit_metadata": {
+    "generated_at": "2026-11-11T16:47:49.563824Z",
+    "dataset_id": "14073311",
+    "dataset_title": "Chronicles 2023 Cellular Measurement Campaign",
+    "total_files_audited": 43,
+    "geographic_region": "Rome, Italy",
+    "target_operators": [
+      "Op1 (Iliad)",
+      "Op2 (TIM/Vodafone)"
+    ],
+    "numeric_prevalidation": "clean_numeric applied; NaN and negative values strictly filtered prior to segmentation"
+  },
+  "strategy_definitions": {
+    "threshold_reset": {
+      "description": "Speedtest boundary triggered by active download completion: throughput drop < -5.0 Mbps to below 5.0 Mbps ceiling.",
+      "role": "Benchmark Baseline (Primary Protocol)"
+    },
+    "relative_drop": {
+      "description": "More sensitive reset condition: throughput drop < -2.0 Mbps down to below 1.0 Mbps ceiling.",
+      "role": "Sensitivity Comparison Strategy"
+    },
+    "active_burst": {
+      "description": "Continuous active download activity > 1.0 Mbps delimited by idle periods exceeding 10.0 seconds.",
+      "role": "Continuous Duty Cycle Alternative"
+    }
+  },
+  "cross_strategy_correlations": {
+    "corr_threshold_reset_vs_relative_drop": 0.8365,
+    "corr_threshold_reset_vs_active_burst": 0.6603
+  },
+  "aggregate_strategy_summary": {
+    "threshold_reset": {
+      "total_sessions": 584,
+      "mean_sessions_per_trace": 6.79,
+      "median_sessions_per_trace": 6.0,
+      "min_sessions_per_trace": 1,
+      "max_sessions_per_trace": 30,
+      "duration_stats_seconds": {
+        "mean": 89.37,
+        "median": 76.0,
+        "min": 0.0,
+        "max": 1711.0,
+        "iqr": 32.62
+      },
+      "final_throughput_stats_mbps": {
+        "mean": 41.92,
+        "median": 19.65,
+        "min": 0.0,
+        "max": 266.41
+      }
+    },
+    "relative_drop": {
+      "total_sessions": 712,
+      "mean_sessions_per_trace": 8.28,
+      "median_sessions_per_trace": 7.0,
+      "min_sessions_per_trace": 1,
+      "max_sessions_per_trace": 35,
+      "duration_stats_seconds": {
+        "mean": 73.17,
+        "median": 72.0,
+        "min": 0.0,
+        "max": 547.0,
+        "iqr": 33.5
+      },
+      "final_throughput_stats_mbps": {
+        "mean": 34.86,
+        "median": 11.57,
+        "min": 0.0,
+        "max": 266.41
+      }
+    },
+    "active_burst": {
+      "total_sessions": 930,
+      "mean_sessions_per_trace": 10.81,
+      "median_sessions_per_trace": 9.0,
+      "min_sessions_per_trace": 3,
+      "max_sessions_per_trace": 37,
+      "duration_stats_seconds": {
+        "mean": 55.99,
+        "median": 53.0,
+        "min": 0.5,
+        "max": 137.5,
+        "iqr": 31.74
+      },
+      "final_throughput_stats_mbps": {
+        "mean": 1.32,
+        "median": 0.1,
+        "min": 0.0,
+        "max": 107.72
+      }
+    }
+  },
+  "per_file_trace_audit": [
+    {
+      "file_id": 1,
+      "filename": "Location_11_IS_Ookla_TV_TTI_1.csv",
+      "scenario": "IS",
+      "date": "16.06.2023",
+      "total_raw_rows": 7665,
+      "operators": {
+        "Op1": {
+          "valid_rows": 811,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 6
+            },
+            "relative_drop": {
+              "sessions_detected": 6
+            },
+            "active_burst": {
+              "sessions_detected": 7
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 767,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 6
+            },
+            "relative_drop": {
+              "sessions_detected": 6
+            },
+            "active_burst": {
+              "sessions_detected": 6
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 2,
+      "filename": "Location_11_IS_Ookla_TV_TTI_2.csv",
+      "scenario": "IS",
+      "date": "16.06.2023",
+      "total_raw_rows": 7536,
+      "operators": {
+        "Op1": {
+          "valid_rows": 838,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 5
+            },
+            "relative_drop": {
+              "sessions_detected": 5
+            },
+            "active_burst": {
+              "sessions_detected": 7
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 754,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 5
+            },
+            "relative_drop": {
+              "sessions_detected": 5
+            },
+            "active_burst": {
+              "sessions_detected": 6
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 3,
+      "filename": "Location_11_IS_Ookla_TV_TTI_3.csv",
+      "scenario": "IS",
+      "date": "16.06.2023",
+      "total_raw_rows": 8509,
+      "operators": {
+        "Op1": {
+          "valid_rows": 927,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 5
+            },
+            "relative_drop": {
+              "sessions_detected": 6
+            },
+            "active_burst": {
+              "sessions_detected": 8
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 897,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 4
+            },
+            "relative_drop": {
+              "sessions_detected": 4
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 4,
+      "filename": "Location_12_IS_Ookla_TV_TTI_0.csv",
+      "scenario": "IS",
+      "date": "20.06.2023",
+      "total_raw_rows": 2144,
+      "operators": {
+        "Op1": {
+          "valid_rows": 195,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 1
+            },
+            "relative_drop": {
+              "sessions_detected": 1
+            },
+            "active_burst": {
+              "sessions_detected": 4
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 163,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 1
+            },
+            "relative_drop": {
+              "sessions_detected": 1
+            },
+            "active_burst": {
+              "sessions_detected": 3
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 5,
+      "filename": "Location_13_IS_Ookla_TV_TTI_0.csv",
+      "scenario": "IS",
+      "date": "05.07.2023",
+      "total_raw_rows": 10784,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1123,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1125,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 8
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 6,
+      "filename": "Location_13_IS_Ookla_TV_TTI_1.csv",
+      "scenario": "IS",
+      "date": "05.07.2023",
+      "total_raw_rows": 8554,
+      "operators": {
+        "Op1": {
+          "valid_rows": 964,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 6
+            },
+            "relative_drop": {
+              "sessions_detected": 6
+            },
+            "active_burst": {
+              "sessions_detected": 8
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 971,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 6
+            },
+            "relative_drop": {
+              "sessions_detected": 6
+            },
+            "active_burst": {
+              "sessions_detected": 7
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 7,
+      "filename": "Location_15_IS_Ookla_TV_TTI_0.csv",
+      "scenario": "IS",
+      "date": "04.07.2023",
+      "total_raw_rows": 10263,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1082,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 1
+            },
+            "relative_drop": {
+              "sessions_detected": 1
+            },
+            "active_burst": {
+              "sessions_detected": 12
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1107,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 8
+            },
+            "relative_drop": {
+              "sessions_detected": 8
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 8,
+      "filename": "Location_15_IS_Ookla_TV_TTI_1.csv",
+      "scenario": "IS",
+      "date": "04.07.2023",
+      "total_raw_rows": 6266,
+      "operators": {
+        "Op1": {
+          "valid_rows": 679,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 1
+            },
+            "relative_drop": {
+              "sessions_detected": 1
+            },
+            "active_burst": {
+              "sessions_detected": 5
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 677,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 3
+            },
+            "relative_drop": {
+              "sessions_detected": 3
+            },
+            "active_burst": {
+              "sessions_detected": 5
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 9,
+      "filename": "Location_1_IS_Ookla_TV_TTI_0.csv",
+      "scenario": "IS",
+      "date": "29.03.2023",
+      "total_raw_rows": 14975,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1623,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 10
+            },
+            "relative_drop": {
+              "sessions_detected": 10
+            },
+            "active_burst": {
+              "sessions_detected": 10
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1559,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 11
+            },
+            "relative_drop": {
+              "sessions_detected": 11
+            },
+            "active_burst": {
+              "sessions_detected": 13
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 10,
+      "filename": "Location_1_IS_Ookla_TV_TTI_1.csv",
+      "scenario": "IS",
+      "date": "29.03.2023",
+      "total_raw_rows": 13267,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1411,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 9
+            },
+            "relative_drop": {
+              "sessions_detected": 9
+            },
+            "active_burst": {
+              "sessions_detected": 10
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1446,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 9
+            },
+            "relative_drop": {
+              "sessions_detected": 9
+            },
+            "active_burst": {
+              "sessions_detected": 10
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 11,
+      "filename": "Location_1_IS_Ookla_TV_TTI_10.csv",
+      "scenario": "IS",
+      "date": "05.05.2023",
+      "total_raw_rows": 30389,
+      "operators": {
+        "Op1": {
+          "valid_rows": 3365,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 28
+            },
+            "relative_drop": {
+              "sessions_detected": 32
+            },
+            "active_burst": {
+              "sessions_detected": 33
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 3329,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 10
+            },
+            "relative_drop": {
+              "sessions_detected": 26
+            },
+            "active_burst": {
+              "sessions_detected": 34
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 12,
+      "filename": "Location_1_IS_Ookla_TV_TTI_11.csv",
+      "scenario": "IS",
+      "date": "09.05.2023",
+      "total_raw_rows": 8138,
+      "operators": {
+        "Op1": {
+          "valid_rows": 849,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 6
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 8
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 849,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 4
+            },
+            "relative_drop": {
+              "sessions_detected": 6
+            },
+            "active_burst": {
+              "sessions_detected": 7
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 13,
+      "filename": "Location_1_IS_Ookla_TV_TTI_12.csv",
+      "scenario": "IS",
+      "date": "09.05.2023",
+      "total_raw_rows": 9668,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1056,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 8
+            },
+            "active_burst": {
+              "sessions_detected": 8
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1039,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 14,
+      "filename": "Location_1_IS_Ookla_TV_TTI_13.csv",
+      "scenario": "IS",
+      "date": "09.05.2023",
+      "total_raw_rows": 12791,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1469,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 6
+            },
+            "relative_drop": {
+              "sessions_detected": 11
+            },
+            "active_burst": {
+              "sessions_detected": 12
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1466,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 8
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 14
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 15,
+      "filename": "Location_1_IS_Ookla_TV_TTI_14.csv",
+      "scenario": "IS",
+      "date": "09.05.2023",
+      "total_raw_rows": 4470,
+      "operators": {
+        "Op1": {
+          "valid_rows": 477,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 3
+            },
+            "relative_drop": {
+              "sessions_detected": 3
+            },
+            "active_burst": {
+              "sessions_detected": 3
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 532,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 3
+            },
+            "relative_drop": {
+              "sessions_detected": 3
+            },
+            "active_burst": {
+              "sessions_detected": 5
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 16,
+      "filename": "Location_1_IS_Ookla_TV_TTI_15.csv",
+      "scenario": "IS",
+      "date": "09.05.2023",
+      "total_raw_rows": 10187,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1135,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 6
+            },
+            "relative_drop": {
+              "sessions_detected": 6
+            },
+            "active_burst": {
+              "sessions_detected": 6
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1112,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 7
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 17,
+      "filename": "Location_1_IS_Ookla_TV_TTI_16.csv",
+      "scenario": "IS",
+      "date": "09.05.2023",
+      "total_raw_rows": 8871,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1014,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 8
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 987,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 5
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 8
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 18,
+      "filename": "Location_1_IS_Ookla_TV_TTI_17.csv",
+      "scenario": "IS",
+      "date": "09.05.2023",
+      "total_raw_rows": 6396,
+      "operators": {
+        "Op1": {
+          "valid_rows": 639,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 4
+            },
+            "relative_drop": {
+              "sessions_detected": 5
+            },
+            "active_burst": {
+              "sessions_detected": 7
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 686,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 3
+            },
+            "relative_drop": {
+              "sessions_detected": 3
+            },
+            "active_burst": {
+              "sessions_detected": 6
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 19,
+      "filename": "Location_1_IS_Ookla_TV_TTI_18.csv",
+      "scenario": "IS",
+      "date": "09.05.2023",
+      "total_raw_rows": 9293,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1021,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 4
+            },
+            "relative_drop": {
+              "sessions_detected": 8
+            },
+            "active_burst": {
+              "sessions_detected": 10
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1046,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 3
+            },
+            "relative_drop": {
+              "sessions_detected": 4
+            },
+            "active_burst": {
+              "sessions_detected": 10
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 20,
+      "filename": "Location_1_IS_Ookla_TV_TTI_19.csv",
+      "scenario": "IS",
+      "date": "09.05.2023",
+      "total_raw_rows": 9885,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1014,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 976,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 12
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 21,
+      "filename": "Location_1_IS_Ookla_TV_TTI_2.csv",
+      "scenario": "IS",
+      "date": "31.03.2023",
+      "total_raw_rows": 10871,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1184,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1180,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 5
+            },
+            "relative_drop": {
+              "sessions_detected": 5
+            },
+            "active_burst": {
+              "sessions_detected": 7
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 22,
+      "filename": "Location_1_IS_Ookla_TV_TTI_20.csv",
+      "scenario": "IS",
+      "date": "09.05.2023",
+      "total_raw_rows": 12903,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1274,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 9
+            },
+            "relative_drop": {
+              "sessions_detected": 9
+            },
+            "active_burst": {
+              "sessions_detected": 13
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1345,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 9
+            },
+            "relative_drop": {
+              "sessions_detected": 9
+            },
+            "active_burst": {
+              "sessions_detected": 14
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 23,
+      "filename": "Location_1_IS_Ookla_TV_TTI_21.csv",
+      "scenario": "IS",
+      "date": "05.05.2023",
+      "total_raw_rows": 10322,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1157,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 9
+            },
+            "relative_drop": {
+              "sessions_detected": 11
+            },
+            "active_burst": {
+              "sessions_detected": 12
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1095,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 4
+            },
+            "relative_drop": {
+              "sessions_detected": 5
+            },
+            "active_burst": {
+              "sessions_detected": 12
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 24,
+      "filename": "Location_1_IS_Ookla_TV_TTI_3.csv",
+      "scenario": "IS",
+      "date": "31.03.2023",
+      "total_raw_rows": 14014,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1553,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 8
+            },
+            "relative_drop": {
+              "sessions_detected": 10
+            },
+            "active_burst": {
+              "sessions_detected": 13
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1515,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 6
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 14
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 25,
+      "filename": "Location_1_IS_Ookla_TV_TTI_4.csv",
+      "scenario": "IS",
+      "date": "31.03.2023",
+      "total_raw_rows": 11139,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1256,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 5
+            },
+            "relative_drop": {
+              "sessions_detected": 8
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1205,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 5
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 10
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 26,
+      "filename": "Location_1_IS_Ookla_TV_TTI_7.csv",
+      "scenario": "IS",
+      "date": "20.04.2023",
+      "total_raw_rows": 15092,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1636,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 9
+            },
+            "relative_drop": {
+              "sessions_detected": 16
+            },
+            "active_burst": {
+              "sessions_detected": 17
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1580,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 5
+            },
+            "relative_drop": {
+              "sessions_detected": 11
+            },
+            "active_burst": {
+              "sessions_detected": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 27,
+      "filename": "Location_1_IS_Ookla_TV_TTI_8.csv",
+      "scenario": "IS",
+      "date": "05.05.2023",
+      "total_raw_rows": 10322,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1157,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 9
+            },
+            "relative_drop": {
+              "sessions_detected": 11
+            },
+            "active_burst": {
+              "sessions_detected": 12
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1095,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 4
+            },
+            "relative_drop": {
+              "sessions_detected": 5
+            },
+            "active_burst": {
+              "sessions_detected": 12
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 28,
+      "filename": "Location_1_IS_Ookla_TV_TTI_9.csv",
+      "scenario": "IS",
+      "date": "05.05.2023",
+      "total_raw_rows": 7024,
+      "operators": {
+        "Op1": {
+          "valid_rows": 800,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 6
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 769,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 3
+            },
+            "relative_drop": {
+              "sessions_detected": 6
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 29,
+      "filename": "Location_2_IS_Ookla_TV_TTI_0.csv",
+      "scenario": "IS",
+      "date": "05.05.2023",
+      "total_raw_rows": 27306,
+      "operators": {
+        "Op1": {
+          "valid_rows": 2853,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 20
+            },
+            "relative_drop": {
+              "sessions_detected": 27
+            },
+            "active_burst": {
+              "sessions_detected": 28
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 2855,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 11
+            },
+            "relative_drop": {
+              "sessions_detected": 23
+            },
+            "active_burst": {
+              "sessions_detected": 31
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 30,
+      "filename": "Location_2_IS_Ookla_TV_TTI_1.csv",
+      "scenario": "IS",
+      "date": "05.05.2023",
+      "total_raw_rows": 38175,
+      "operators": {
+        "Op1": {
+          "valid_rows": 3727,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 30
+            },
+            "relative_drop": {
+              "sessions_detected": 35
+            },
+            "active_burst": {
+              "sessions_detected": 36
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 3751,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 3
+            },
+            "relative_drop": {
+              "sessions_detected": 25
+            },
+            "active_burst": {
+              "sessions_detected": 37
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 31,
+      "filename": "Location_2_IS_Ookla_TV_TTI_2.csv",
+      "scenario": "IS",
+      "date": "05.05.2023",
+      "total_raw_rows": 8651,
+      "operators": {
+        "Op1": {
+          "valid_rows": 853,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 8
+            },
+            "relative_drop": {
+              "sessions_detected": 8
+            },
+            "active_burst": {
+              "sessions_detected": 10
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 850,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 2
+            },
+            "relative_drop": {
+              "sessions_detected": 5
+            },
+            "active_burst": {
+              "sessions_detected": 10
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 32,
+      "filename": "Location_4_OD_Ookla_TV_TTI_0.csv",
+      "scenario": "OD",
+      "date": "05.07.2023",
+      "total_raw_rows": 8763,
+      "operators": {
+        "Op1": {
+          "valid_rows": 890,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 4
+            },
+            "relative_drop": {
+              "sessions_detected": 6
+            },
+            "active_burst": {
+              "sessions_detected": 6
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 897,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 4
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 8
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 33,
+      "filename": "Location_4_OD_Ookla_TV_TTI_1.csv",
+      "scenario": "OD",
+      "date": "05.07.2023",
+      "total_raw_rows": 7992,
+      "operators": {
+        "Op1": {
+          "valid_rows": 762,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 3
+            },
+            "relative_drop": {
+              "sessions_detected": 4
+            },
+            "active_burst": {
+              "sessions_detected": 6
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 764,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 5
+            },
+            "relative_drop": {
+              "sessions_detected": 6
+            },
+            "active_burst": {
+              "sessions_detected": 6
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 34,
+      "filename": "Location_4_OD_Ookla_TV_TTI_2.csv",
+      "scenario": "OD",
+      "date": "05.07.2023",
+      "total_raw_rows": 8069,
+      "operators": {
+        "Op1": {
+          "valid_rows": 818,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 3
+            },
+            "relative_drop": {
+              "sessions_detected": 3
+            },
+            "active_burst": {
+              "sessions_detected": 6
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 822,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 3
+            },
+            "relative_drop": {
+              "sessions_detected": 3
+            },
+            "active_burst": {
+              "sessions_detected": 6
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 35,
+      "filename": "Location_7_OD_Ookla_TV_TTI_0.csv",
+      "scenario": "OD",
+      "date": "25.06.2023",
+      "total_raw_rows": 8224,
+      "operators": {
+        "Op1": {
+          "valid_rows": 444,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 3
+            },
+            "relative_drop": {
+              "sessions_detected": 3
+            },
+            "active_burst": {
+              "sessions_detected": 5
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 837,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 6
+            },
+            "relative_drop": {
+              "sessions_detected": 6
+            },
+            "active_burst": {
+              "sessions_detected": 6
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 36,
+      "filename": "Location_7_OD_Ookla_TV_TTI_1.csv",
+      "scenario": "OD",
+      "date": "25.06.2023",
+      "total_raw_rows": 11104,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1095,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 8
+            },
+            "relative_drop": {
+              "sessions_detected": 8
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1174,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 8
+            },
+            "relative_drop": {
+              "sessions_detected": 8
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 37,
+      "filename": "Location_7_OD_Ookla_TV_TTI_2.csv",
+      "scenario": "OD",
+      "date": "25.06.2023",
+      "total_raw_rows": 12394,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1260,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 8
+            },
+            "relative_drop": {
+              "sessions_detected": 8
+            },
+            "active_burst": {
+              "sessions_detected": 12
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1258,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 8
+            },
+            "relative_drop": {
+              "sessions_detected": 8
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 38,
+      "filename": "Location_8_IS_Ookla_TV_TTI_0.csv",
+      "scenario": "IS",
+      "date": "27.05.2023",
+      "total_raw_rows": 13442,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1289,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 10
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1292,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 8
+            },
+            "relative_drop": {
+              "sessions_detected": 8
+            },
+            "active_burst": {
+              "sessions_detected": 11
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 39,
+      "filename": "Location_8_IS_Ookla_TV_TTI_1.csv",
+      "scenario": "IS",
+      "date": "27.05.2023",
+      "total_raw_rows": 17272,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1745,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 12
+            },
+            "relative_drop": {
+              "sessions_detected": 12
+            },
+            "active_burst": {
+              "sessions_detected": 13
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1780,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 11
+            },
+            "relative_drop": {
+              "sessions_detected": 11
+            },
+            "active_burst": {
+              "sessions_detected": 12
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 40,
+      "filename": "Location_8_IS_Ookla_TV_TTI_2.csv",
+      "scenario": "IS",
+      "date": "27.05.2023",
+      "total_raw_rows": 14811,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1492,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 11
+            },
+            "relative_drop": {
+              "sessions_detected": 11
+            },
+            "active_burst": {
+              "sessions_detected": 12
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1483,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 10
+            },
+            "relative_drop": {
+              "sessions_detected": 10
+            },
+            "active_burst": {
+              "sessions_detected": 12
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 41,
+      "filename": "Location_9_OD_Ookla_TV_TTI_0.csv",
+      "scenario": "OD",
+      "date": "08.06.2023",
+      "total_raw_rows": 10953,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1029,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 5
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 11
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1033,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 9
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 42,
+      "filename": "Location_9_OD_Ookla_TV_TTI_1.csv",
+      "scenario": "OD",
+      "date": "10.06.2023",
+      "total_raw_rows": 10781,
+      "operators": {
+        "Op1": {
+          "valid_rows": 994,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 7
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 984,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 6
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 8
+            }
+          }
+        }
+      }
+    },
+    {
+      "file_id": 43,
+      "filename": "Location_9_OD_Ookla_TV_TTI_2.csv",
+      "scenario": "OD",
+      "date": "10.06.2023",
+      "total_raw_rows": 10931,
+      "operators": {
+        "Op1": {
+          "valid_rows": 1006,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 8
+            }
+          }
+        },
+        "Op2": {
+          "valid_rows": 1081,
+          "non_negative_verified": true,
+          "strategies": {
+            "threshold_reset": {
+              "sessions_detected": 7
+            },
+            "relative_drop": {
+              "sessions_detected": 7
+            },
+            "active_burst": {
+              "sessions_detected": 8
+            }
+          }
+        }
+      }
+    }
+  ]
+}
