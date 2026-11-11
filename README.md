@@ -1,7 +1,7 @@
 # Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry
 
-[![IEEE Publication Ready](https://img.shields.io/badge/IEEE%20Format-Publication%20Ready-blue.svg)](paper/manuscript.pdf)
-[![Reproducibility](https://img.shields.io/badge/Reproducibility-Verified-success.svg)](scripts/reproduce_experiments.py)
+[![Research Status](https://img.shields.io/badge/Research-Under%20Validation-orange.svg)](paper/manuscript.tex)
+[![Reproducibility](https://img.shields.io/badge/Reproducibility-Re--run%20Required-lightgrey.svg)](scripts/reproduce_experiments.py)
 [![License: CC BY 4.0](https://img.shields.io/badge/Data%20License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![Hardware: NVIDIA RTX 4060](https://img.shields.io/badge/GPU%20Accelerated-NVIDIA%20RTX%204060-76B900.svg)](src/models/neural.py)
 
@@ -9,6 +9,8 @@ Official repository for the telecommunications research study:
 **"How Much Recalibration Is Enough? Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry"**
 
 ---
+
+> **Research status — not submission-ready:** This repository is undergoing a split-integrity correction. E0 previously reused the same observations for source calibration and target calibration prefixes. The code is being corrected to separate these partitions, which changes the experiment and invalidates the currently reported E0 metrics. Re-run the full pipeline and regenerate every manuscript table/figure before using numerical claims or submitting the paper. The README's historical metrics below are retained only as unverified prior-run outputs until that rerun is completed.
 
 ## 1. Research Overview
 
@@ -32,7 +34,7 @@ This degradation is compounded by **natural telemetry missingness**: in operatio
 - **Missingness-Aware Calibration Advantage:** In within-domain evaluation, our proposed coarse missingness-aware calibration prevents over-penalization, achieving a statistically significant supported-rate increase of $\Delta U = +0.085$ [95% CI: $+0.065, +0.113$] ($p < 0.001$). Under severe cross-operator shift, simple global target recalibration at $K=10$ provides equally robust coverage.
 - **Covariate-Shift Conformal Prediction (CS-CP):** Incorporating domain-discriminator importance weighting (Tibshirani et al., *NeurIPS* 2019) effectively counters joint distribution shifts (Regime E3), recovering $V = 0.078 \le 0.10$ while sustaining $U = 11.1\%$ capacity where un-adapted split-conformal prediction collapsed to $U = 0.6\%$.
 - **SLA Economic Loss Optimization:** End-to-end operational loss analysis under $Cost(\lambda) = \lambda \cdot V + (1 - \lambda) \cdot (1 - U)$ proves that conformal calibration slashes economic penalty costs by up to **83.8%** across penalty-weighted regimes ($\lambda \ge 0.50$).
-- **Hardware Acceleration:** The PyTorch Deep Tabular ResNet executed on an **NVIDIA GeForce RTX 4060 GPU** trains 60 epochs in **0.91 seconds** (24.8 MB peak VRAM), providing high-throughput inference for real-time radio telemetry processing.
+- **Hardware profiling:** The pipeline records runtime and memory metrics when available. Published hardware figures should be retained only after a clean rerun on documented hardware and software versions.
 
 ---
 
