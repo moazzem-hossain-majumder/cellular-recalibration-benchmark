@@ -62,15 +62,9 @@ def create_experiment_splits(source_df: pd.DataFrame, target_df: pd.DataFrame,
     Transfer regimes use source 60/20/20 and target 40/60 chronological blocks.
     """
 
-    # Detect whether this is a within-domain experiment (overlapping session pool)
-    has_sid_src = 'session_id' in source_df.columns
-    has_sid_tgt = 'session_id' in target_df.columns
-    if has_sid_src and has_sid_tgt:
-        overlap_sessions = set(source_df['session_id']).intersection(set(target_df['session_id']))
-        is_within_domain = len(overlap_sessions) > 0
-    else:
-        is_within_domain = (source_df is target_df or len(source_df) == len(target_df))
-        overlap_sessions = set()
+    # Detect E0 by shared dataframe identity, not by session_id overlap:
+    # IDs can restart at zero in independently loaded campaigns.
+    is_within_domain = source_df is target_df
     
     if is_within_domain:
         # Five disjoint chronological blocks are necessary here: the frozen
@@ -85,9 +79,8 @@ def create_experiment_splits(source_df: pd.DataFrame, target_df: pd.DataFrame,
         calib_pool_df = e0_splits[3]
         test_df = e0_splits[4]
     else:
-        # Transfer regime: source and target are already distinct domains
-        if has_sid_src and has_sid_tgt:
-            assert len(overlap_sessions) == 0, "Source and target unexpectedly share session IDs in transfer regime!"
+        # Transfer regime: source and target are distinct domains. Their local
+        # session IDs and dates may legitimately collide across datasets.
         # Source partitions (60 / 20 / 20)
         source_splits = partition_by_chronological_days(source_df, (0.60, 0.20, 0.20))
         train_df, val_df, source_calib_df = source_splits[0], source_splits[1], source_splits[2]
