@@ -26,7 +26,7 @@ This degradation is compounded by **natural telemetry missingness**: in operatio
 
 ---
 
-## 2. Key Empirical Findings
+## 2. Historical Metrics from a Prior Run (UNVERIFIED — Do Not Cite)
 
 - **Uncalibrated Point Prediction Breakdown:** Relying on uncalibrated point estimates results in a catastrophic **61.1% service violation rate** under cross-operator transfer (Op1 $\to$ Op2) and 26.6% under temporal shift.
 - **Conformal Reliability Restoration:** Split-conformal calibration immediately recovers conservative nominal reliability ($V \le 10\%$) across both within-domain and transfer regimes.
@@ -130,13 +130,15 @@ pytest tests/
 
 ---
 
-## 6. Telecommunications Industry Relevance (Bangladesh MNOs)
+## 6. Potential Telecommunications Industry Relevance (Bangladesh)
 
-This research directly addresses operational challenges faced by telecommunications operators in emerging mobile markets such as Bangladesh (**Grameenphone, Banglalink, Robi Axiata, and Teletalk**). A dedicated field study report is available in [`docs/bangladesh_telecom_case_study.md`](docs/bangladesh_telecom_case_study.md):
-1. **Drive-Test Campaign Planning:** Proves that operators need a minimum of $K \ge 10$ full drive-test sessions when transferring models across administrative circles (Dhaka, Chittagong, Sylhet) or network vendor updates (Ericsson vs Huawei).
-2. **BTRC Regulatory Compliance:** Directly maps to Bangladesh Telecommunication Regulatory Commission (BTRC) QoS parameters (20 Mbps threshold in urban centers), preventing subscriber SLA breach penalties.
-3. **Preventing Overcommitment Violations:** Establishes that uncalibrated throughput models experience a 61% violation rate, whereas conformal prediction guarantees nominal service commitments ($\le 10\%$).
-4. **Telemetry Quality Assurance:** Provides methods to handle natural 5G telemetry gaps without discarding logs or corrupting models with artificial zero imputations.
+The benchmark uses public commercial measurements collected in Rome, Italy. It may help develop transferable evaluation practices for operators in Bangladesh, including Grameenphone, Banglalink, Robi Axiata, and Teletalk, but it is **not evidence about those operators' own networks**.
+
+- **Campaign planning:** The study can inform a future budget-sizing experiment. It does not establish a minimum number of drive-test sessions for Bangladesh regions, administrative circles, or specific vendors.
+- **QoS/SLA interpretation:** The supported-rate and violation metrics are offline research proxies. They do not establish compliance with BTRC thresholds, avoid penalties, or guarantee service levels in deployment.
+- **Telemetry quality:** The code evaluates naturally missing radio features in the selected public datasets. Local data, protocol validation, and independent testing would be needed before adapting it to an operator's telemetry.
+
+Any Bangladesh-specific operational claim requires authorized local measurements and independent validation.
 
 ---
 
