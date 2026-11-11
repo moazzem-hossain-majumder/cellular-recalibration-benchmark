@@ -71,12 +71,6 @@ def test_e0_within_domain_split_disjointness():
     d_tgt_cal = set(splits.target_calib_pool['date'].unique())
     assert d_src_cal.isdisjoint(d_tgt_cal), "E0 source-calibration dates overlap target-calibration dates!"
 
-if __name__ == '__main__':
-    test_split_independence_and_disjointness()
-    test_e0_within_domain_split_disjointness()
-    print('Split integrity tests PASSED.')
-
-
 
 def test_synthetic_e0_partitions_are_disjoint_and_budgets_are_explicit():
     """No data download needed: exercise E0 separation and unsupported K handling."""
@@ -129,3 +123,11 @@ def test_transfer_domains_with_reused_local_session_ids_are_not_misclassified_as
     assert len(splits.target_calib_pool) > 0
     assert len(splits.target_test) > 0
     assert splits.target_prefix_sessions[15] is None
+
+
+if __name__ == '__main__':
+    test_split_independence_and_disjointness()
+    test_e0_within_domain_split_disjointness()
+    test_synthetic_e0_partitions_are_disjoint_and_budgets_are_explicit()
+    test_transfer_domains_with_reused_local_session_ids_are_not_misclassified_as_e0()
+    print('Split integrity tests PASSED.')
