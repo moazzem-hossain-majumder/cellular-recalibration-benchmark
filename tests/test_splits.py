@@ -125,9 +125,35 @@ def test_transfer_domains_with_reused_local_session_ids_are_not_misclassified_as
     assert splits.target_prefix_sessions[15] is None
 
 
+def test_explicit_regime_and_within_domain_parameter():
+    """Verify that passing regime='E0' or is_within_domain=True on copied data enforces 5-way split."""
+    import pandas as pd
+    rows = []
+    for day in range(10):
+        rows.append({
+            "session_id": day + 1,
+            "date": f"2026-01-{day + 1:02d}",
+            "t_start": pd.Timestamp("2026-01-01") + pd.Timedelta(days=day),
+            "target_y": float(day + 1),
+            "group_id": 2,
+            "has_nr": 0,
+        })
+    frame = pd.DataFrame(rows)
+    frame_copy = frame.copy()  # Separate dataframe object (frame is not frame_copy)
+    
+    # Passing regime='E0' should force within-domain 5-way partition
+    splits = create_experiment_splits(frame, frame_copy, budgets=[0, 1, 2, 5], regime='E0_WithinDomain')
+    parts = [splits.train, splits.val, splits.source_calib, splits.target_calib_pool, splits.target_test]
+    for i, left in enumerate(parts):
+        for right in parts[i + 1:]:
+            assert set(left["session_id"]).isdisjoint(set(right["session_id"]))
+            assert set(left["date"]).isdisjoint(set(right["date"]))
+
+
 if __name__ == '__main__':
     test_split_independence_and_disjointness()
     test_e0_within_domain_split_disjointness()
     test_synthetic_e0_partitions_are_disjoint_and_budgets_are_explicit()
     test_transfer_domains_with_reused_local_session_ids_are_not_misclassified_as_e0()
+    test_explicit_regime_and_within_domain_parameter()
     print('Split integrity tests PASSED.')

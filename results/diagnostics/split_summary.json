@@ -1,0 +1,458 @@
+{
+  "E0_WithinDomain_Op1_2021": {
+    "experiment_name": "E0_WithinDomain_Op1_2021",
+    "dataset_id": "8224890_to_14073311",
+    "partitions": {
+      "train": {
+        "n_samples": 57,
+        "n_sessions": 57,
+        "n_days": 2,
+        "dates": [
+          "04.01.2021",
+          "17.12.2020"
+        ],
+        "mean_y": 17.97545438596491,
+        "min_y": 0.0002,
+        "max_y": 129.1807
+      },
+      "val": {
+        "n_samples": 9,
+        "n_sessions": 9,
+        "n_days": 1,
+        "dates": [
+          "05.01.2021"
+        ],
+        "mean_y": 5.06331111111111,
+        "min_y": 0.0008,
+        "max_y": 20.1248
+      },
+      "source_calib": {
+        "n_samples": 33,
+        "n_sessions": 33,
+        "n_days": 1,
+        "dates": [
+          "06.01.2021"
+        ],
+        "mean_y": 20.751293939393943,
+        "min_y": 4.252,
+        "max_y": 138.7562
+      },
+      "target_calib_pool": {
+        "n_samples": 10,
+        "n_sessions": 10,
+        "n_days": 1,
+        "dates": [
+          "11.01.2021"
+        ],
+        "mean_y": 50.93141000000001,
+        "min_y": 8.9975,
+        "max_y": 103.1362
+      },
+      "target_test": {
+        "n_samples": 41,
+        "n_sessions": 41,
+        "n_days": 2,
+        "dates": [
+          "14.01.2021",
+          "27.01.2021"
+        ],
+        "mean_y": 49.28044634146342,
+        "min_y": 1.1750999999999998,
+        "max_y": 188.75629999999998
+      }
+    },
+    "budget_availability": {
+      "0": {
+        "available": true,
+        "n_samples": 0,
+        "n_sessions": 0
+      },
+      "1": {
+        "available": true,
+        "n_samples": 1,
+        "n_sessions": 1
+      },
+      "2": {
+        "available": true,
+        "n_samples": 2,
+        "n_sessions": 2
+      },
+      "5": {
+        "available": true,
+        "n_samples": 5,
+        "n_sessions": 5
+      },
+      "8": {
+        "available": true,
+        "n_samples": 8,
+        "n_sessions": 8
+      },
+      "9": {
+        "available": true,
+        "n_samples": 9,
+        "n_sessions": 9
+      },
+      "10": {
+        "available": true,
+        "n_samples": 10,
+        "n_sessions": 10
+      },
+      "15": {
+        "available": false,
+        "n_samples": 0,
+        "n_sessions": 0
+      }
+    }
+  },
+  "E1_CampaignTransfer_Op1_2023": {
+    "experiment_name": "E1_CampaignTransfer_Op1_2023",
+    "dataset_id": "8224890_to_14073311",
+    "partitions": {
+      "train": {
+        "n_samples": 99,
+        "n_sessions": 99,
+        "n_days": 4,
+        "dates": [
+          "04.01.2021",
+          "05.01.2021",
+          "06.01.2021",
+          "17.12.2020"
+        ],
+        "mean_y": 17.726903030303028,
+        "min_y": 0.0002,
+        "max_y": 138.7562
+      },
+      "val": {
+        "n_samples": 30,
+        "n_sessions": 30,
+        "n_days": 2,
+        "dates": [
+          "11.01.2021",
+          "14.01.2021"
+        ],
+        "mean_y": 59.83329333333334,
+        "min_y": 8.9975,
+        "max_y": 188.75629999999998
+      },
+      "source_calib": {
+        "n_samples": 21,
+        "n_sessions": 21,
+        "n_days": 1,
+        "dates": [
+          "27.01.2021"
+        ],
+        "mean_y": 34.991123809523806,
+        "min_y": 1.1750999999999998,
+        "max_y": 129.3532
+      },
+      "target_calib_pool": {
+        "n_samples": 145,
+        "n_sessions": 145,
+        "n_days": 4,
+        "dates": [
+          "05.05.2023",
+          "20.04.2023",
+          "29.03.2023",
+          "31.03.2023"
+        ],
+        "mean_y": 26.387126206896554,
+        "min_y": 0.0,
+        "max_y": 174.27360000000002
+      },
+      "target_test": {
+        "n_samples": 139,
+        "n_sessions": 139,
+        "n_days": 7,
+        "dates": [
+          "05.07.2023",
+          "08.06.2023",
+          "09.05.2023",
+          "10.06.2023",
+          "16.06.2023",
+          "25.06.2023",
+          "27.05.2023"
+        ],
+        "mean_y": 39.73163597122302,
+        "min_y": 0.0,
+        "max_y": 252.4515
+      }
+    },
+    "budget_availability": {
+      "0": {
+        "available": true,
+        "n_samples": 0,
+        "n_sessions": 0
+      },
+      "1": {
+        "available": true,
+        "n_samples": 1,
+        "n_sessions": 1
+      },
+      "2": {
+        "available": true,
+        "n_samples": 2,
+        "n_sessions": 2
+      },
+      "5": {
+        "available": true,
+        "n_samples": 5,
+        "n_sessions": 5
+      },
+      "8": {
+        "available": true,
+        "n_samples": 8,
+        "n_sessions": 8
+      },
+      "9": {
+        "available": true,
+        "n_samples": 9,
+        "n_sessions": 9
+      },
+      "10": {
+        "available": true,
+        "n_samples": 10,
+        "n_sessions": 10
+      },
+      "15": {
+        "available": true,
+        "n_samples": 15,
+        "n_sessions": 15
+      }
+    }
+  },
+  "E2_CrossOperator_Op2_2021": {
+    "experiment_name": "E2_CrossOperator_Op2_2021",
+    "dataset_id": "8224890_to_14073311",
+    "partitions": {
+      "train": {
+        "n_samples": 99,
+        "n_sessions": 99,
+        "n_days": 4,
+        "dates": [
+          "04.01.2021",
+          "05.01.2021",
+          "06.01.2021",
+          "17.12.2020"
+        ],
+        "mean_y": 17.726903030303028,
+        "min_y": 0.0002,
+        "max_y": 138.7562
+      },
+      "val": {
+        "n_samples": 30,
+        "n_sessions": 30,
+        "n_days": 2,
+        "dates": [
+          "11.01.2021",
+          "14.01.2021"
+        ],
+        "mean_y": 59.83329333333334,
+        "min_y": 8.9975,
+        "max_y": 188.75629999999998
+      },
+      "source_calib": {
+        "n_samples": 21,
+        "n_sessions": 21,
+        "n_days": 1,
+        "dates": [
+          "27.01.2021"
+        ],
+        "mean_y": 34.991123809523806,
+        "min_y": 1.1750999999999998,
+        "max_y": 129.3532
+      },
+      "target_calib_pool": {
+        "n_samples": 97,
+        "n_sessions": 97,
+        "n_days": 5,
+        "dates": [
+          "13.12.2020",
+          "14.12.2020",
+          "15.12.2020",
+          "16.12.2020",
+          "17.12.2020"
+        ],
+        "mean_y": 44.614,
+        "min_y": 0.0002,
+        "max_y": 207.65220000000002
+      },
+      "target_test": {
+        "n_samples": 256,
+        "n_sessions": 256,
+        "n_days": 8,
+        "dates": [
+          "05.01.2021",
+          "06.01.2021",
+          "07.01.2021",
+          "08.01.2021",
+          "24.01.2021",
+          "25.01.2021",
+          "26.01.2021",
+          "27.01.2021"
+        ],
+        "mean_y": 30.364605859374997,
+        "min_y": 0.0,
+        "max_y": 225.3159
+      }
+    },
+    "budget_availability": {
+      "0": {
+        "available": true,
+        "n_samples": 0,
+        "n_sessions": 0
+      },
+      "1": {
+        "available": true,
+        "n_samples": 1,
+        "n_sessions": 1
+      },
+      "2": {
+        "available": true,
+        "n_samples": 2,
+        "n_sessions": 2
+      },
+      "5": {
+        "available": true,
+        "n_samples": 5,
+        "n_sessions": 5
+      },
+      "8": {
+        "available": true,
+        "n_samples": 8,
+        "n_sessions": 8
+      },
+      "9": {
+        "available": true,
+        "n_samples": 9,
+        "n_sessions": 9
+      },
+      "10": {
+        "available": true,
+        "n_samples": 10,
+        "n_sessions": 10
+      },
+      "15": {
+        "available": true,
+        "n_samples": 15,
+        "n_sessions": 15
+      }
+    }
+  },
+  "E3_JointShift_Op2_2023": {
+    "experiment_name": "E3_JointShift_Op2_2023",
+    "dataset_id": "8224890_to_14073311",
+    "partitions": {
+      "train": {
+        "n_samples": 99,
+        "n_sessions": 99,
+        "n_days": 4,
+        "dates": [
+          "04.01.2021",
+          "05.01.2021",
+          "06.01.2021",
+          "17.12.2020"
+        ],
+        "mean_y": 17.726903030303028,
+        "min_y": 0.0002,
+        "max_y": 138.7562
+      },
+      "val": {
+        "n_samples": 30,
+        "n_sessions": 30,
+        "n_days": 2,
+        "dates": [
+          "11.01.2021",
+          "14.01.2021"
+        ],
+        "mean_y": 59.83329333333334,
+        "min_y": 8.9975,
+        "max_y": 188.75629999999998
+      },
+      "source_calib": {
+        "n_samples": 21,
+        "n_sessions": 21,
+        "n_days": 1,
+        "dates": [
+          "27.01.2021"
+        ],
+        "mean_y": 34.991123809523806,
+        "min_y": 1.1750999999999998,
+        "max_y": 129.3532
+      },
+      "target_calib_pool": {
+        "n_samples": 111,
+        "n_sessions": 111,
+        "n_days": 5,
+        "dates": [
+          "05.05.2023",
+          "09.05.2023",
+          "20.04.2023",
+          "29.03.2023",
+          "31.03.2023"
+        ],
+        "mean_y": 23.75006576576577,
+        "min_y": 0.0,
+        "max_y": 120.0157
+      },
+      "target_test": {
+        "n_samples": 103,
+        "n_sessions": 103,
+        "n_days": 7,
+        "dates": [
+          "04.07.2023",
+          "05.07.2023",
+          "08.06.2023",
+          "10.06.2023",
+          "16.06.2023",
+          "25.06.2023",
+          "27.05.2023"
+        ],
+        "mean_y": 52.990925242718454,
+        "min_y": 0.0009000000000000001,
+        "max_y": 266.4095
+      }
+    },
+    "budget_availability": {
+      "0": {
+        "available": true,
+        "n_samples": 0,
+        "n_sessions": 0
+      },
+      "1": {
+        "available": true,
+        "n_samples": 1,
+        "n_sessions": 1
+      },
+      "2": {
+        "available": true,
+        "n_samples": 2,
+        "n_sessions": 2
+      },
+      "5": {
+        "available": true,
+        "n_samples": 5,
+        "n_sessions": 5
+      },
+      "8": {
+        "available": true,
+        "n_samples": 8,
+        "n_sessions": 8
+      },
+      "9": {
+        "available": true,
+        "n_samples": 9,
+        "n_sessions": 9
+      },
+      "10": {
+        "available": true,
+        "n_samples": 10,
+        "n_sessions": 10
+      },
+      "15": {
+        "available": true,
+        "n_samples": 15,
+        "n_sessions": 15
+      }
+    }
+  }
+}

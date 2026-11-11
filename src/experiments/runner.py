@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from src.data.loader import load_raw_8224890, extract_sessions_8224890, load_14073311_ookla
-from src.data.splits import create_experiment_splits, DomainSplits
+from src.data.splits import create_experiment_splits, DomainSplits, generate_split_summary
 from src.features.builder import prepare_feature_dataframe
 from src.models.baselines import (
     PersistencePredictor,
@@ -43,8 +43,9 @@ RESULTS_DIR = ROOT / 'results'
 FIGURES_DIR = RESULTS_DIR / 'figures'
 TABLES_DIR = RESULTS_DIR / 'tables'
 METRICS_DIR = RESULTS_DIR / 'metrics'
+DIAGNOSTICS_DIR = RESULTS_DIR / 'diagnostics'
 
-for d in [FIGURES_DIR, TABLES_DIR, METRICS_DIR]:
+for d in [FIGURES_DIR, TABLES_DIR, METRICS_DIR, DIAGNOSTICS_DIR]:
     d.mkdir(parents=True, exist_ok=True)
 
 # Set publication style for matplotlib
@@ -90,7 +91,7 @@ def run_all_experiments() -> Dict:
     
     # 3. Model Benchmark on Source Development Split
     print('\n[2/6] Training & Profiling Point Predictors on Source (including RTX 4060 GPU)...')
-    e0_splits = create_experiment_splits(source_df, source_df, budgets=budgets)
+    e0_splits = create_experiment_splits(source_df, source_df, budgets=budgets, regime='E0_WithinDomain_Op1_2021')
     X_train, y_train = e0_splits.train, e0_splits.train['target_y'].to_numpy(dtype=float)
     X_val, y_val = e0_splits.val, e0_splits.val['target_y'].to_numpy(dtype=float)
     
@@ -147,7 +148,8 @@ def run_all_experiments() -> Dict:
     
     for regime_name, (src_d, tgt_d) in regimes.items():
         print(f'\n  --- Evaluating Regime: {regime_name} ---')
-        splits = create_experiment_splits(src_d, tgt_d, budgets=budgets)
+        splits = create_experiment_splits(src_d, tgt_d, budgets=budgets, regime=regime_name)
+        generate_split_summary(splits, regime_name, "8224890_to_14073311", output_path=DIAGNOSTICS_DIR / 'split_summary.json')
         df_test = splits.target_test
         y_test = df_test['target_y'].to_numpy(dtype=float)
         test_groups = df_test['group_id'].to_numpy(dtype=int)
@@ -241,7 +243,7 @@ def run_all_experiments() -> Dict:
     bootstrap_results = {}
     for regime_name in regimes.keys():
         sub_e = calib_df[(calib_df['regime'] == regime_name) & (calib_df['budget_K'] == 10)]
-        splits = create_experiment_splits(regimes[regime_name][0], regimes[regime_name][1], budgets=[10])
+        splits = create_experiment_splits(regimes[regime_name][0], regimes[regime_name][1], budgets=[10], regime=regime_name)
         df_test = splits.target_test
         y_test = df_test['target_y'].to_numpy(dtype=float)
         test_groups = df_test['group_id'].to_numpy(dtype=int)
@@ -285,7 +287,7 @@ def run_all_experiments() -> Dict:
     print('\n[5/6] Running Online Adaptive Conformal Inference (Gibbs & Candes) Simulation...')
     aci_sims = {}
     for regime_name, (src_d, tgt_d) in regimes.items():
-        splits = create_experiment_splits(src_d, tgt_d, budgets=[0])
+        splits = create_experiment_splits(src_d, tgt_d, budgets=[0], regime=regime_name)
         df_test = splits.target_test.sort_values('t_start').reset_index(drop=True)
         y_test = df_test['target_y'].to_numpy(dtype=float)
         y_preds = primary_predictor.predict(df_test)

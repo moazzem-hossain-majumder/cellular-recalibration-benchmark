@@ -1,0 +1,26 @@
+{
+  "mask_NR_0pct": {
+    "mask_fraction": 0.0,
+    "violation_rate": 0.0859,
+    "supported_fraction": 0.1785,
+    "mean_overcommitment": 0.9417
+  },
+  "mask_NR_10pct": {
+    "mask_fraction": 0.1,
+    "violation_rate": 0.0703,
+    "supported_fraction": 0.1631,
+    "mean_overcommitment": 0.7006
+  },
+  "mask_NR_30pct": {
+    "mask_fraction": 0.3,
+    "violation_rate": 0.0625,
+    "supported_fraction": 0.1356,
+    "mean_overcommitment": 0.7173
+  },
+  "mask_NR_50pct": {
+    "mask_fraction": 0.5,
+    "violation_rate": 0.043,
+    "supported_fraction": 0.1148,
+    "mean_overcommitment": 0.6205
+  }
+}

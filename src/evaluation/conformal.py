@@ -187,15 +187,16 @@ class CovariateShiftConformalCalibrator:
             denom = np.sum(sorted_src_weights) + w_te
             p_src = sorted_src_weights / denom
             
-            # Cumulative probability function of sorted scores
+            # Cumulative probability function of sorted scores (Tibshirani et al. 2019 Eq. 3)
             cum_p = np.cumsum(p_src)
             valid_idx = np.where(cum_p >= (1.0 - self.alpha))[0]
             if len(valid_idx) > 0:
                 q_weighted = sorted_scores[valid_idx[0]]
+                lower_bounds[i] = max(0.0, y_pred_test[i] - q_weighted)
             else:
-                q_weighted = sorted_scores[-1]
-                
-            lower_bounds[i] = max(0.0, y_pred_test[i] - q_weighted)
+                # If sum of source probabilities is strictly less than 1 - alpha,
+                # the quantile falls on the point mass at +inf, yielding a lower bound of 0.0
+                lower_bounds[i] = 0.0
             
         return lower_bounds
 
