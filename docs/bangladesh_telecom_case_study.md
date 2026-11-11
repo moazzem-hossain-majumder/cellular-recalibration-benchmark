@@ -10,13 +10,15 @@
 
 ## 1. Executive Summary and National Context
 
-As mobile operators in Bangladesh transition from mature 4G Long Term Evolution (LTE) infrastructure to commercial 5G Non-Standalone (NSA) 3GPP Option 3X dual-connectivity deployments, predictive radio resource management (RRM) has become essential for operational competitiveness and regulatory compliance.
+> **Important Scope and Provenance Notice:** The empirical measurements supporting our research benchmark were collected exclusively in commercial deployments in Rome, Italy (PERFORM consortium, Zenodo 8224890 and 14073311). This document presents a **prospective conceptual case study** illustrating how our uncertainty quantification framework and sample-budget principles could be applied to emerging cellular markets, using Bangladesh as an illustrative scenario. This work does *not* claim to have tested Bangladeshi networks, does *not* prove BTRC compliance, and does *not* establish empirical calibration budgets for specific Bangladeshi cities or morphological clusters without local measurement collection.
 
-However, cellular throughput predictors trained on one geographical cluster or vendor equipment (e.g., Ericsson vs. Huawei vs. ZTE) suffer severe performance breakdown when transferred across operational domains:
-- **Uncalibrated ML point estimates exhibit service violation rates between 26% and 61%** across network transfer boundaries.
+As mobile operators transition from mature 4G Long Term Evolution (LTE) infrastructure to commercial 5G Non-Standalone (NSA) 3GPP Option 3X dual-connectivity deployments, predictive radio resource management (RRM) becomes an important consideration for operational reliability and service-level assurances.
+
+In our empirical benchmark on commercial traces:
+- **Uncalibrated ML point estimates exhibit service violation rates between 33% and 62%** across network transfer boundaries.
 - **5G New Radio (NR) telemetry is naturally absent in 63.4% of operational measurement windows** due to dynamic secondary bearer release, coverage holes, and discontinuous reception (DRX).
 
-This report translates the empirical findings and mathematical proofs of our benchmark into concrete, actionable engineering blueprints and regulatory compliance strategies for Bangladeshi mobile network operators (MNOs).
+This case study discusses how the split-conformal calibration methodology and finite-sample budget principles could theoretically be applied by network planners in prospective emerging market environments.
 
 ---
 
@@ -31,7 +33,7 @@ The **Bangladesh Telecommunication Regulatory Commission (BTRC)** enforces stric
 | **Call / Session Drop Rate** | $\le 2.0\%$ | Public QoS audit failure; mandatory remediation orders | Pre-test lag freshness cutoff $\Delta t \le 60\text{ s}$ to detect degrading cells |
 | **Throughput Measurement Latency** | Instantaneous logging interval | Automated BTRC Monitoring Vehicle drive verification | Forward-causal lag protocol with zero contemporaneous leakage |
 
-Deploying uncalibrated machine learning models for proactive rate allocation or SLA commitments exposes operators to a **30% to 60% probability of BTRC QoS non-compliance**, directly triggering regulatory penalties.
+Deploying uncalibrated machine learning models for proactive rate allocation or SLA commitments exposes operators to an estimated 33% to 62% violation probability under domain shift, illustrating the operational risk of using uncalibrated predictions under strict QoS standards. Conformal calibration provides an explicit mechanism for bounding empirical violation rates within specified tolerances.
 
 ---
 
@@ -90,9 +92,9 @@ Our proof of Lemma 1 establishes that at nominal error rate $\alpha = 0.10$, any
 $$k = \lceil (n + 1)(1 - \alpha) \rceil \le n \iff \lceil (n+1) \cdot 0.90 \rceil \le n \implies n \ge 9$$
 
 **Operational Takeaway for Planning Engineers:**
-- Running small drive tests with $K \in \{1, 2, 5\}$ sessions provides **zero statistical benefit** for local conformal recalibration, as the calibrator is forced by finite-sample bounds to fall back to the source distribution.
-- Mobile operators should never schedule drive-test routes that collect fewer than **10 complete measurement sessions per morphological cluster**.
-- Consolidating drive-test routes to guarantee $K \ge 10$ saves millions of BDT in wasted RF engineer hours while unlocking true local calibration adaptation.
+- Running small drive tests with $K \in \{1, 2, 5, 8\}$ sessions falls back to the source distribution because finite-sample bounds require $n \ge 9$ target samples to activate target-domain order statistics. While source fallback provides non-target calibration, target-specific recalibration only activates at $K \ge 9$.
+- Mobile operators should plan drive-test routes that collect at least **10 complete measurement sessions per target area** to ensure target-specific recalibration can activate with valid empirical quantile support.
+- Consolidating drive-test routes to guarantee $K \ge 10$ ensures that measurement resources produce actionable target-domain calibration adjustments rather than relying exclusively on source fallbacks.
 
 ---
 

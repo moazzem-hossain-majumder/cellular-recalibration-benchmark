@@ -29,7 +29,7 @@ def generate_web_demo():
     }
     
     # Pre-train common predictor
-    e0_splits = create_experiment_splits(source_df, source_df, budgets=[10])
+    e0_splits = create_experiment_splits(source_df, source_df, budgets=[10], experiment_type='within_domain')
     model = HistGradientBoostingThroughputPredictor().fit(
         e0_splits.train, e0_splits.train['target_y'].to_numpy(dtype=float)
     )
@@ -41,7 +41,10 @@ def generate_web_demo():
     # Collect trace data for first 25 test sessions in each regime
     session_traces = {}
     for r_key, (r_title, s_df, t_df) in regimes.items():
-        splits = create_experiment_splits(s_df, t_df, budgets=[0, 2, 5, 10])
+        splits = create_experiment_splits(
+            s_df, t_df, budgets=[0, 2, 5, 10],
+            experiment_type='within_domain' if r_key == 'E0' else 'transfer'
+        )
         test_df = splits.target_test.reset_index(drop=True)
         y_test = test_df['target_y'].to_numpy(dtype=float)
         y_pred = model.predict(test_df)
@@ -315,45 +318,45 @@ def generate_web_demo():
       <tbody>
         <tr>
           <td><strong>Persistence (Lag Baseline)</strong></td>
-          <td>55.96</td>
-          <td>75.03</td>
+          <td>3.22</td>
+          <td>7.21</td>
           <td>&lt; 0.001 s</td>
           <td>Host CPU</td>
         </tr>
         <tr>
           <td><strong>Ridge Regression (L2)</strong></td>
-          <td>46.96</td>
-          <td>63.20</td>
-          <td>0.045 s</td>
+          <td>6.03</td>
+          <td>8.78</td>
+          <td>0.033 s</td>
           <td>Host CPU</td>
         </tr>
         <tr>
           <td><strong>HistGradientBoosting (Primary)</strong></td>
-          <td><span style="color: var(--accent-green); font-weight: 600;">45.66</span></td>
-          <td><span style="color: var(--accent-green); font-weight: 600;">62.67</span></td>
-          <td>1.493 s</td>
+          <td><span style="color: var(--accent-green); font-weight: 600;">11.00</span></td>
+          <td><span style="color: var(--accent-green); font-weight: 600;">12.00</span></td>
+          <td>2.221 s</td>
           <td>Host CPU (Native NaN Handling)</td>
         </tr>
         <tr>
           <td><strong>BAMMO (Jacobson et al. 2025)</strong></td>
-          <td>51.48</td>
-          <td>67.30</td>
-          <td>0.430 s</td>
+          <td>15.46</td>
+          <td>23.86</td>
+          <td>0.311 s</td>
           <td>Host CPU (Pattern Base Learners)</td>
         </tr>
         <tr>
           <td><strong>Quantile GBM (p10 Pinball)</strong></td>
-          <td>54.01</td>
-          <td>73.21</td>
-          <td>0.107 s</td>
+          <td>5.01</td>
+          <td>8.68</td>
+          <td>0.067 s</td>
           <td>Host CPU</td>
         </tr>
         <tr>
           <td><strong>GPU ThroughputResNet (PyTorch)</strong></td>
-          <td>50.41</td>
-          <td>70.28</td>
-          <td>1.046 s</td>
-          <td><strong style="color: var(--accent-purple);">NVIDIA GeForce RTX 4060 (24.8 MB VRAM)</strong></td>
+          <td>5.85</td>
+          <td>8.33</td>
+          <td>0.692 s</td>
+          <td><strong style="color: var(--accent-purple);">NVIDIA GeForce RTX 4060 (24.7 MB VRAM)</strong></td>
         </tr>
       </tbody>
     </table>

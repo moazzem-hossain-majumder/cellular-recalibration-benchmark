@@ -1,0 +1,128 @@
+{
+  "reset": {
+    "total_extracted_sessions": 584,
+    "duration_distribution": {
+      "min_s": 0.0,
+      "median_s": 75.9985,
+      "mean_s": 89.37495719178082,
+      "max_s": 1710.999,
+      "zero_duration_sessions": 3,
+      "short_sessions_under_10s": 11,
+      "normal_sessions_10_to_180s": 540,
+      "long_sessions_over_180s": 30
+    },
+    "throughput_distribution": {
+      "min_mbps": 0.0,
+      "median_mbps": 19.6478,
+      "mean_mbps": 41.917401541095884,
+      "max_mbps": 266.4095,
+      "low_throughput_under_1mbps": 38,
+      "zero_throughput_sessions": 23
+    },
+    "causal_forecast_pairs": {
+      "total_causal_pairs": 498,
+      "e1_op1_2023_instances": 284,
+      "e3_op2_2023_instances": 214
+    },
+    "downstream_evaluation": {
+      "e1_campaign_transfer": {
+        "instance_count": 284,
+        "mae_histgbm": 24.56,
+        "mae_persistence": 25.07,
+        "conformal_violation_rate_k0": 0.1479,
+        "conformal_supported_fraction_k0": 0.1655
+      },
+      "e3_joint_shift": {
+        "instance_count": 214,
+        "mae_histgbm": 27.41,
+        "mae_persistence": 24.08,
+        "conformal_violation_rate_k0": 0.2523,
+        "conformal_supported_fraction_k0": 0.2559
+      }
+    }
+  },
+  "relative_drop": {
+    "total_extracted_sessions": 712,
+    "duration_distribution": {
+      "min_s": 0.0,
+      "median_s": 72.0,
+      "mean_s": 73.1663988764045,
+      "max_s": 546.999,
+      "zero_duration_sessions": 3,
+      "short_sessions_under_10s": 13,
+      "normal_sessions_10_to_180s": 682,
+      "long_sessions_over_180s": 14
+    },
+    "throughput_distribution": {
+      "min_mbps": 0.0,
+      "median_mbps": 11.56725,
+      "mean_mbps": 34.85629761235955,
+      "max_mbps": 266.4095,
+      "low_throughput_under_1mbps": 38,
+      "zero_throughput_sessions": 23
+    },
+    "causal_forecast_pairs": {
+      "total_causal_pairs": 626,
+      "e1_op1_2023_instances": 336,
+      "e3_op2_2023_instances": 290
+    },
+    "downstream_evaluation": {
+      "e1_campaign_transfer": {
+        "instance_count": 336,
+        "mae_histgbm": 21.62,
+        "mae_persistence": 21.8,
+        "conformal_violation_rate_k0": 0.1339,
+        "conformal_supported_fraction_k0": 0.1591
+      },
+      "e3_joint_shift": {
+        "instance_count": 290,
+        "mae_histgbm": 22.67,
+        "mae_persistence": 19.98,
+        "conformal_violation_rate_k0": 0.2172,
+        "conformal_supported_fraction_k0": 0.236
+      }
+    }
+  },
+  "active_burst": {
+    "total_extracted_sessions": 930,
+    "duration_distribution": {
+      "min_s": 0.5,
+      "median_s": 53.0005,
+      "mean_s": 55.991843010752696,
+      "max_s": 137.5,
+      "zero_duration_sessions": 0,
+      "short_sessions_under_10s": 57,
+      "normal_sessions_10_to_180s": 873,
+      "long_sessions_over_180s": 0
+    },
+    "throughput_distribution": {
+      "min_mbps": 0.0,
+      "median_mbps": 0.1,
+      "mean_mbps": 1.3191022580645162,
+      "max_mbps": 107.71560000000001,
+      "low_throughput_under_1mbps": 822,
+      "zero_throughput_sessions": 183
+    },
+    "causal_forecast_pairs": {
+      "total_causal_pairs": 844,
+      "e1_op1_2023_instances": 415,
+      "e3_op2_2023_instances": 429
+    },
+    "downstream_evaluation": {
+      "e1_campaign_transfer": {
+        "instance_count": 415,
+        "mae_histgbm": 13.33,
+        "mae_persistence": 1.4,
+        "conformal_violation_rate_k0": 0.4024,
+        "conformal_supported_fraction_k0": 0.106
+      },
+      "e3_joint_shift": {
+        "instance_count": 429,
+        "mae_histgbm": 14.99,
+        "mae_persistence": 1.56,
+        "conformal_violation_rate_k0": 0.4918,
+        "conformal_supported_fraction_k0": 0.149
+      }
+    }
+  }
+}

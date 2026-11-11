@@ -160,15 +160,15 @@ python scripts/build_paper_html.py
 
 ---
 
-## 6. Telecommunications Industry Relevance & Prospective Transfer (Bangladesh)
+## 6. Practical Implications for Network Operators
 
-The benchmark uses verified public commercial drive-test measurements collected in Rome, Italy. It establishes rigorous evaluation practices for network operators deploying 4G LTE and 5G NSA infrastructure, including operators in developing telecommunications markets such as Bangladesh (Grameenphone, Banglalink, Robi Axiata, and Teletalk).
+The empirical findings from our benchmark yield practical principles for mobile network operators deploying or upgrading 4G LTE and 5G NSA infrastructure:
 
-- **Drive-Test Campaign Planning ($K \ge 10$ Rule):** Drive-test benchmarking and optimization campaigns are financially and operationally intensive. Our proof of Lemma 1 establishes that collecting fewer than $K=9$ sessions provides zero statistical benefit for local split-conformal calibration at $\alpha=0.10$. Optimization teams must budget at least $K \ge 10$ full drive-test sessions per morphological cluster to activate statistically valid local recalibration.
-- **Risk-Aware SLA Enforcement:** Telecommunications regulatory authorities (such as the Bangladesh Telecommunication Regulatory Commission, BTRC) mandate strict QoS benchmark thresholds for mobile broadband delivery ($\ge 7\text{ Mbps}$ 4G DL, $< 2\%$ drop rate). Deploying uncalibrated ML predictors exposes operators to a 33% to 62% service failure probability under network upgrade cycles. Conformal calibration provides a zero-overhead mathematical safeguard guaranteeing user-defined SLA violation tolerances.
-- **Telemetry Missingness Management:** In developing markets where 5G rollout occurs incrementally over existing 4G anchors, secondary 5G NR carriers are naturally absent in >60% of drive logs. Operators must avoid naive zero-imputation and adopt models with native missingness branching combined with group-stratified conformal bounds. (See detailed technical analysis in `docs/bangladesh_telecom_case_study.md`).
+- **Drive-Test Campaign Sizing ($K \ge 10$ Guideline):** Drive-test benchmarking campaigns are financially and operationally intensive. Lemma 1 establishes that split-conformal calibration at $\alpha=0.10$ requires at least $K=9$ target sessions to produce a finite empirical quantile. For $K \le 8$, algorithms necessarily fall back to source-domain calibration, which provides useful but non-target-specific bounds. We recommend budgeting at least $K \ge 10$ sessions per target deployment area to activate target-specific recalibration with at least one degree of quantile freedom.
+- **Risk-Aware SLA Enforcement:** Deploying uncalibrated ML predictors exposes operators to a 33% to 62% service failure probability under domain shift. Split-conformal calibration provides a lightweight mathematical safeguard guaranteeing user-defined SLA violation tolerances.
+- **Telemetry Missingness Management:** In networks where 5G rollout occurs incrementally over existing 4G anchors, secondary 5G NR carriers are naturally absent in >60% of drive logs. Operators should avoid naive zero-imputation and adopt models with native missingness branching combined with group-stratified conformal bounds.
 
-*Note on Data Provenance:* The empirical data originates exclusively from commercial campaigns in Rome, Italy. All Bangladesh telecommunications applications are presented strictly as prospective transfer case studies.
+*Note on Data Provenance:* The empirical data originates exclusively from commercial campaigns in Rome, Italy. Any application of these findings to other geographical markets or regulatory jurisdictions represents prospective external validation requiring dedicated local empirical data.
 
 ---
 

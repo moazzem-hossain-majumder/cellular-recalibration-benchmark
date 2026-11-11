@@ -587,9 +587,9 @@ p.no-indent {{
     <div class="figure-caption"><span class="figure-caption-bold">Fig. 5.</span> Operational SLA economic loss versus breach penalty weight $\\lambda$. Conformal recalibration dominates uncalibrated predictors for all $\\lambda \\ge 0.35$, reducing penalty losses by up to 83.8%.</div>
 </div>
 
-<h2 class="section-head">V. Operational Deployment & Case Study</h2>
-<p>The empirical findings translate into concrete principles for mobile operators deploying 4G/5G infrastructure in emerging markets (such as Grameenphone, Banglalink, and Robi Axiata in Bangladesh):</p>
-<p><strong>1) Drive-Test Sizing ($K \\ge 10$ Rule):</strong> Operators must budget at least $K=10$ full drive-test sessions per morphological cluster to activate statistically valid local recalibration. Fewer sessions provide zero mathematical benefit for local quantile estimation under Lemma 1.</p>
+<h2 class="section-head">V. Practical Implications for Network Operators</h2>
+<p>The empirical findings yield practical principles for mobile operators deploying or upgrading 4G/5G infrastructure:</p>
+<p><strong>1) Drive-Test Sizing ($K \\ge 10$ Guideline):</strong> Lemma 1 establishes that split-conformal calibration at $\\alpha=0.10$ requires at least $K=9$ target sessions to produce a finite empirical quantile. For $K \\le 8$, calibrators necessarily fall back to source-domain calibration. We recommend budgeting at least $K \\ge 10$ sessions per target deployment area to activate target-specific recalibration.</p>
 <p><strong>2) Outlier Stall Defense:</strong> Under extreme distribution shifts, operators should apply Bayes prior-corrected Covariate-Shift Conformal Prediction (CS-CP) using target unlabeled radio features to prevent discrete outlier network stalls from collapsing supported lower bounds to zero.</p>
 <p><strong>3) Telemetry Missingness:</strong> Rather than discarding logs with missing secondary 5G carriers, operators should leverage native missingness branching combined with subgroup-aware calibration.</p>
 
