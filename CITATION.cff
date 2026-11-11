@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this benchmark or software, please cite it as below."
+authors:
+  - family-names: "Majumder"
+    given-names: "Md. Moazzem Hossain"
+    email: "moazzemhossain1510@gmail.com"
+title: "How Much Recalibration Is Enough? Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry"
+version: 1.0.0
+date-released: 2026-11-11
+url: "https://github.com/moazzem-hossain-majumder/cellular-recalibration-benchmark"
+keywords:
+  - "5G Non-Standalone"
+  - "Cellular Throughput"
+  - "Conformal Prediction"
+  - "Missing Telemetry"
+  - "Transfer Learning"
+  - "Radio Resource Management"
+

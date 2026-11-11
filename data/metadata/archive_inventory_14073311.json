@@ -1,0 +1,1808 @@
+[
+  {
+    "zip_member": "Active Performance Dataset - 1/",
+    "extracted_path": "Active Performance Dataset - 1",
+    "size": 0,
+    "is_dir": true,
+    "crc": 0
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests",
+    "size": 0,
+    "is_dir": true,
+    "crc": 0
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests",
+    "size": 0,
+    "is_dir": true,
+    "crc": 0
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests",
+    "size": 0,
+    "is_dir": true,
+    "crc": 0
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests",
+    "size": 0,
+    "is_dir": true,
+    "crc": 0
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy",
+    "size": 0,
+    "is_dir": true,
+    "crc": 0
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy",
+    "size": 0,
+    "is_dir": true,
+    "crc": 0
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy",
+    "size": 0,
+    "is_dir": true,
+    "crc": 0
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy",
+    "size": 0,
+    "is_dir": true,
+    "crc": 0
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_IT_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_IT_TV_TTI_2.csv",
+    "size": 8800307,
+    "is_dir": false,
+    "crc": 3776280651
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_CH_TV_TTI_0.csv",
+    "size": 6665588,
+    "is_dir": false,
+    "crc": 667318170
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_CH_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_CH_TV_TTI_LTE_Only_0.csv",
+    "size": 8753311,
+    "is_dir": false,
+    "crc": 1078397975
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_SE_TV_TTI_2.csv",
+    "size": 5569601,
+    "is_dir": false,
+    "crc": 794795646
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_SE_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_SE_TV_TTI_3.csv",
+    "size": 7558942,
+    "is_dir": false,
+    "crc": 3056787446
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_IT_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_IT_TV_TTI_2.csv",
+    "size": 7982835,
+    "is_dir": false,
+    "crc": 153853194
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_CH_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_CH_TV_TTI_LTE_Only_0.csv",
+    "size": 6123759,
+    "is_dir": false,
+    "crc": 3146533344
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_CH_TV_TTI_1.csv",
+    "size": 7495636,
+    "is_dir": false,
+    "crc": 1289721280
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_IT_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_IT_TV_TTI_1.csv",
+    "size": 8852278,
+    "is_dir": false,
+    "crc": 716254157
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_IT_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_IT_TV_TTI_0.csv",
+    "size": 9203192,
+    "is_dir": false,
+    "crc": 2192837006
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_SE_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_SE_TV_TTI_1.csv",
+    "size": 11228956,
+    "is_dir": false,
+    "crc": 2430470541
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_SE_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_SE_TV_TTI_0.csv",
+    "size": 9742871,
+    "is_dir": false,
+    "crc": 2487714217
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_IT_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_IT_TV_TTI_1.csv",
+    "size": 8545947,
+    "is_dir": false,
+    "crc": 853999524
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_CH_TV_TTI_2.csv",
+    "size": 8407480,
+    "is_dir": false,
+    "crc": 11881894
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_IT_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_IT_TV_TTI_0.csv",
+    "size": 8972850,
+    "is_dir": false,
+    "crc": 978813197
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_IT_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_IT_TV_TTI_2.csv",
+    "size": 10174969,
+    "is_dir": false,
+    "crc": 4023905087
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_SE_TV_TTI_2.csv",
+    "size": 11051545,
+    "is_dir": false,
+    "crc": 3974521433
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_2.csv",
+    "size": 8070759,
+    "is_dir": false,
+    "crc": 2726383044
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_SE_TV_TTI_4.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_SE_TV_TTI_4.csv",
+    "size": 8704043,
+    "is_dir": false,
+    "crc": 3254286507
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_1.csv",
+    "size": 7097633,
+    "is_dir": false,
+    "crc": 1061204114
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_SE_TV_TTI_2.csv",
+    "size": 9214629,
+    "is_dir": false,
+    "crc": 2545105740
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_SE_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_SE_TV_TTI_0.csv",
+    "size": 10080891,
+    "is_dir": false,
+    "crc": 1991368666
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_IT_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_IT_TV_TTI_1.csv",
+    "size": 9665762,
+    "is_dir": false,
+    "crc": 2853174869
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_SE_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_SE_TV_TTI_1.csv",
+    "size": 11700642,
+    "is_dir": false,
+    "crc": 1036558928
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_1.csv",
+    "size": 8232478,
+    "is_dir": false,
+    "crc": 2730244401
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_3.csv",
+    "size": 6589859,
+    "is_dir": false,
+    "crc": 1647486536
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_2.csv",
+    "size": 7108840,
+    "is_dir": false,
+    "crc": 3002720459
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "size": 7976172,
+    "is_dir": false,
+    "crc": 1401762489
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_SE_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_SE_TV_TTI_0.csv",
+    "size": 11289616,
+    "is_dir": false,
+    "crc": 3265392955
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_IT_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_IT_TV_TTI_0.csv",
+    "size": 9965378,
+    "is_dir": false,
+    "crc": 1534820873
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_SE_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_SE_TV_TTI_1.csv",
+    "size": 8711543,
+    "is_dir": false,
+    "crc": 2118664782
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_SE_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_SE_TV_TTI_LTE_Only_0.csv",
+    "size": 7009122,
+    "is_dir": false,
+    "crc": 1075770283
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_SE_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_SE_TV_TTI_0.csv",
+    "size": 14509011,
+    "is_dir": false,
+    "crc": 2231469415
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_SE_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_SE_TV_TTI_1.csv",
+    "size": 14454235,
+    "is_dir": false,
+    "crc": 3808762331
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_SE_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_SE_TV_TTI_LTE_Only_0.csv",
+    "size": 8372540,
+    "is_dir": false,
+    "crc": 2978951085
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_4.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_4.csv",
+    "size": 10313957,
+    "is_dir": false,
+    "crc": 3249448837
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_SE_TV_TTI_2.csv",
+    "size": 15075895,
+    "is_dir": false,
+    "crc": 4167654582
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_7_OD_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "size": 6212455,
+    "is_dir": false,
+    "crc": 1500277576
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_1.csv",
+    "size": 7299890,
+    "is_dir": false,
+    "crc": 1091260134
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_IT_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_IT_TV_TTI_0.csv",
+    "size": 9545970,
+    "is_dir": false,
+    "crc": 1946802066
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_2.csv",
+    "size": 9276475,
+    "is_dir": false,
+    "crc": 1660007767
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_IT_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_IT_TV_TTI_1.csv",
+    "size": 9410927,
+    "is_dir": false,
+    "crc": 2331727635
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_2.csv",
+    "size": 12767411,
+    "is_dir": false,
+    "crc": 3363255398
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "size": 14002818,
+    "is_dir": false,
+    "crc": 1558391134
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_1.csv",
+    "size": 13979073,
+    "is_dir": false,
+    "crc": 762522004
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_3.csv",
+    "size": 6876775,
+    "is_dir": false,
+    "crc": 2817690653
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_IT_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_IT_TV_TTI_2.csv",
+    "size": 10442190,
+    "is_dir": false,
+    "crc": 307887477
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_CH_TV_TTI_2.csv",
+    "size": 8402117,
+    "is_dir": false,
+    "crc": 1070477536
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_SE_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_SE_TV_TTI_0.csv",
+    "size": 7197690,
+    "is_dir": false,
+    "crc": 2686081034
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_SE_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_SE_TV_TTI_1.csv",
+    "size": 6439004,
+    "is_dir": false,
+    "crc": 989446163
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_CH_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_CH_TV_TTI_3.csv",
+    "size": 8943598,
+    "is_dir": false,
+    "crc": 259511920
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_CH_TV_TTI_1.csv",
+    "size": 8567358,
+    "is_dir": false,
+    "crc": 2860074678
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_SE_TV_TTI_2.csv",
+    "size": 7297737,
+    "is_dir": false,
+    "crc": 3292886712
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_CH_TV_TTI_2.csv",
+    "size": 10471269,
+    "is_dir": false,
+    "crc": 784675947
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_1.csv",
+    "size": 8506079,
+    "is_dir": false,
+    "crc": 1838178994
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_IT_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_IT_TV_TTI_0.csv",
+    "size": 7537940,
+    "is_dir": false,
+    "crc": 1524457435
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_CH_TV_TTI_4.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_CH_TV_TTI_4.csv",
+    "size": 8074119,
+    "is_dir": false,
+    "crc": 1422481642
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_7_OD_Interactivity_VR_SE_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_VR_SE_TV_TTI_0.csv",
+    "size": 7916603,
+    "is_dir": false,
+    "crc": 4146652784
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_CH_TV_TTI_LTE_only_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_CH_TV_TTI_LTE_only_1.csv",
+    "size": 9738545,
+    "is_dir": false,
+    "crc": 3630499825
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_CH_TV_TTI_2.csv",
+    "size": 8940422,
+    "is_dir": false,
+    "crc": 429939837
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_CH_TV_TTI_LTE_only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_CH_TV_TTI_LTE_only_0.csv",
+    "size": 12034010,
+    "is_dir": false,
+    "crc": 712050418
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_7_OD_Interactivity_VR_SE_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_VR_SE_TV_TTI_1.csv",
+    "size": 8783289,
+    "is_dir": false,
+    "crc": 79180670
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_IT_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_IT_TV_TTI_1.csv",
+    "size": 8604384,
+    "is_dir": false,
+    "crc": 416459622
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_0.csv",
+    "size": 8718014,
+    "is_dir": false,
+    "crc": 2061071908
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_CH_TV_TTI_1.csv",
+    "size": 11968436,
+    "is_dir": false,
+    "crc": 2759577439
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_SE_TV_TTI_LTE_Only_2.csv",
+    "size": 8420853,
+    "is_dir": false,
+    "crc": 2343947937
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_CH_TV_TTI_LTE_only_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_CH_TV_TTI_LTE_only_2.csv",
+    "size": 10166244,
+    "is_dir": false,
+    "crc": 843866511
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_CH_TV_TTI_0.csv",
+    "size": 8810627,
+    "is_dir": false,
+    "crc": 1102521600
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_7_OD_Interactivity_VR_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_VR_SE_TV_TTI_2.csv",
+    "size": 8055399,
+    "is_dir": false,
+    "crc": 2227444015
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_CH_TV_TTI_1.csv",
+    "size": 8696545,
+    "is_dir": false,
+    "crc": 2257339910
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_IT_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_IT_TV_TTI_2.csv",
+    "size": 9178118,
+    "is_dir": false,
+    "crc": 1996729422
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_CH_TV_TTI_0.csv",
+    "size": 11083794,
+    "is_dir": false,
+    "crc": 2779370053
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_7_OD_Interactivity_VR_SE_TV_TTI_LTE_Only_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_VR_SE_TV_TTI_LTE_Only_1.csv",
+    "size": 6550458,
+    "is_dir": false,
+    "crc": 1140836462
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_CH_TV_TTI_0.csv",
+    "size": 12295032,
+    "is_dir": false,
+    "crc": 526218774
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_CH_TV_TTI_1.csv",
+    "size": 11863359,
+    "is_dir": false,
+    "crc": 4180828724
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_7_OD_Interactivity_VR_SE_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_VR_SE_TV_TTI_LTE_Only_0.csv",
+    "size": 7040081,
+    "is_dir": false,
+    "crc": 1225735350
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_4_OD_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "size": 7511495,
+    "is_dir": false,
+    "crc": 3486863937
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_9_OD_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "size": 7186790,
+    "is_dir": false,
+    "crc": 2642419888
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_CH_TV_TTI_2.csv",
+    "size": 13389616,
+    "is_dir": false,
+    "crc": 3576003405
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_SE_TV_TTI_LTE_only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_SE_TV_TTI_LTE_only_0.csv",
+    "size": 9780199,
+    "is_dir": false,
+    "crc": 935576628
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_0.csv",
+    "size": 9075154,
+    "is_dir": false,
+    "crc": 45574839
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_2.csv",
+    "size": 8738181,
+    "is_dir": false,
+    "crc": 413897142
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_1.csv",
+    "size": 8977769,
+    "is_dir": false,
+    "crc": 2431554211
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_SE_TV_TTI_LTE_only_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_SE_TV_TTI_LTE_only_1.csv",
+    "size": 10527387,
+    "is_dir": false,
+    "crc": 1855722417
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_1.csv",
+    "size": 8412144,
+    "is_dir": false,
+    "crc": 3271504762
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_1_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_VR_IT_TV_TTI_LTE_Only_0.csv",
+    "size": 13235372,
+    "is_dir": false,
+    "crc": 2765876173
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_8_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_VR_CH_TV_TTI_LTE_Only_2.csv",
+    "size": 9341330,
+    "is_dir": false,
+    "crc": 1825455598
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/AR:VR Cloud Gaming Interactivity Tests /Op1 and Op2 - Italy/Location_2_IS_Interactivity_VR_SE_TV_TTI_LTE_only_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\AR_VR Cloud Gaming Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_VR_SE_TV_TTI_LTE_only_2.csv",
+    "size": 10417252,
+    "is_dir": false,
+    "crc": 2045092111
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_2_IS_Capacity_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Capacity_TV_TTI_3.csv",
+    "size": 10119499,
+    "is_dir": false,
+    "crc": 1399082050
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_2_IS_Capacity_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Capacity_TV_TTI_2.csv",
+    "size": 11115600,
+    "is_dir": false,
+    "crc": 121666758
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_2_IS_Capacity_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Capacity_TV_TTI_0.csv",
+    "size": 11276594,
+    "is_dir": false,
+    "crc": 3748265948
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_6_IS_Capacity_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_6_IS_Capacity_TV_TTI_1.csv",
+    "size": 9004268,
+    "is_dir": false,
+    "crc": 180767606
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_2_IS_Capacity_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Capacity_TV_TTI_1.csv",
+    "size": 13837940,
+    "is_dir": false,
+    "crc": 128859525
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_15_IS_Capacity_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_15_IS_Capacity_TV_TTI_1.csv",
+    "size": 6378109,
+    "is_dir": false,
+    "crc": 1477005126
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_15_IS_Capacity_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_15_IS_Capacity_TV_TTI_0.csv",
+    "size": 8180563,
+    "is_dir": false,
+    "crc": 1070576357
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_2_IS_Capacity_TV_TTI_4.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Capacity_TV_TTI_4.csv",
+    "size": 10666065,
+    "is_dir": false,
+    "crc": 2970694502
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_11_IS_Capacity_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_11_IS_Capacity_TV_TTI_1.csv",
+    "size": 5858843,
+    "is_dir": false,
+    "crc": 143020979
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_11_IS_Capacity_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_11_IS_Capacity_TV_TTI_3.csv",
+    "size": 7341966,
+    "is_dir": false,
+    "crc": 461849541
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_11_IS_Capacity_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_11_IS_Capacity_TV_TTI_2.csv",
+    "size": 6960746,
+    "is_dir": false,
+    "crc": 1253738012
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_10_OD_Capacity_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_10_OD_Capacity_TV_TTI_0.csv",
+    "size": 10668373,
+    "is_dir": false,
+    "crc": 2235403711
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_7_OD_Capacity_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Capacity_TV_TTI_1.csv",
+    "size": 6517003,
+    "is_dir": false,
+    "crc": 1007498719
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_7_OD_Capacity_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Capacity_TV_TTI_0.csv",
+    "size": 9324038,
+    "is_dir": false,
+    "crc": 1959449564
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_7_OD_Capacity_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Capacity_TV_TTI_2.csv",
+    "size": 8068195,
+    "is_dir": false,
+    "crc": 1660509746
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_1_IS_Capacity_TV_TTI_6.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Capacity_TV_TTI_6.csv",
+    "size": 9865521,
+    "is_dir": false,
+    "crc": 519066992
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_12_IS_Capacity_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_12_IS_Capacity_TV_TTI_3.csv",
+    "size": 6849494,
+    "is_dir": false,
+    "crc": 623007964
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_12_IS_Capacity_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_12_IS_Capacity_TV_TTI_2.csv",
+    "size": 7311574,
+    "is_dir": false,
+    "crc": 2215711798
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_1_IS_Capacity_TV_TTI_5.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Capacity_TV_TTI_5.csv",
+    "size": 27631537,
+    "is_dir": false,
+    "crc": 1978610749
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_12_IS_Capacity_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_12_IS_Capacity_TV_TTI_1.csv",
+    "size": 7684918,
+    "is_dir": false,
+    "crc": 3740497767
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_1_IS_Capacity_TV_TTI_4.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Capacity_TV_TTI_4.csv",
+    "size": 14433544,
+    "is_dir": false,
+    "crc": 84213341
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_9_OD_Capacity_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Capacity_TV_TTI_1.csv",
+    "size": 10104877,
+    "is_dir": false,
+    "crc": 2732689319
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_1_IS_Capacity_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Capacity_TV_TTI_0.csv",
+    "size": 8515369,
+    "is_dir": false,
+    "crc": 3097678738
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_1_IS_Capacity_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Capacity_TV_TTI_1.csv",
+    "size": 6767772,
+    "is_dir": false,
+    "crc": 1935342328
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_9_OD_Capacity_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Capacity_TV_TTI_0.csv",
+    "size": 10397053,
+    "is_dir": false,
+    "crc": 2189260535
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_1_IS_Capacity_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Capacity_TV_TTI_3.csv",
+    "size": 7106639,
+    "is_dir": false,
+    "crc": 3485470598
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_9_OD_Capacity_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Capacity_TV_TTI_2.csv",
+    "size": 10006505,
+    "is_dir": false,
+    "crc": 2879198233
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_1_IS_Capacity_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Capacity_TV_TTI_2.csv",
+    "size": 7681436,
+    "is_dir": false,
+    "crc": 4048780677
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_8_IS_Capacity_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Capacity_TV_TTI_2.csv",
+    "size": 10688327,
+    "is_dir": false,
+    "crc": 887931658
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_4_OD_Capacity_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Capacity_TV_TTI_2.csv",
+    "size": 7149841,
+    "is_dir": false,
+    "crc": 3840617709
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_8_IS_Capacity_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Capacity_TV_TTI_1.csv",
+    "size": 10593821,
+    "is_dir": false,
+    "crc": 527012566
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_4_OD_Capacity_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Capacity_TV_TTI_1.csv",
+    "size": 7252548,
+    "is_dir": false,
+    "crc": 1575869318
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_4_OD_Capacity_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Capacity_TV_TTI_0.csv",
+    "size": 7976018,
+    "is_dir": false,
+    "crc": 1248965674
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_8_IS_Capacity_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Capacity_TV_TTI_0.csv",
+    "size": 22527547,
+    "is_dir": false,
+    "crc": 3415124738
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_13_IS_Capacity_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_13_IS_Capacity_TV_TTI_1.csv",
+    "size": 8360286,
+    "is_dir": false,
+    "crc": 3551084890
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy/Location_13_IS_Capacity_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Capacity Tests\\Op1 and Op2 - Italy\\Location_13_IS_Capacity_TV_TTI_0.csv",
+    "size": 8495082,
+    "is_dir": false,
+    "crc": 2481862785
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_4_OD_Ookla_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_4_OD_Ookla_TV_TTI_2.csv",
+    "size": 6495443,
+    "is_dir": false,
+    "crc": 3000251367
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_4_OD_Ookla_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_4_OD_Ookla_TV_TTI_0.csv",
+    "size": 7046119,
+    "is_dir": false,
+    "crc": 1360271661
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_4_OD_Ookla_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_4_OD_Ookla_TV_TTI_1.csv",
+    "size": 6436311,
+    "is_dir": false,
+    "crc": 3711507368
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_8.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_8.csv",
+    "size": 8284853,
+    "is_dir": false,
+    "crc": 4238557269
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_9.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_9.csv",
+    "size": 5614376,
+    "is_dir": false,
+    "crc": 931160652
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_12_IS_Ookla_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_12_IS_Ookla_TV_TTI_0.csv",
+    "size": 1733744,
+    "is_dir": false,
+    "crc": 2880474036
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_12.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_12.csv",
+    "size": 7749388,
+    "is_dir": false,
+    "crc": 3421925809
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_2_IS_Ookla_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_2_IS_Ookla_TV_TTI_2.csv",
+    "size": 6962900,
+    "is_dir": false,
+    "crc": 3641547538
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_13.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_13.csv",
+    "size": 10226016,
+    "is_dir": false,
+    "crc": 1960236336
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_11.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_11.csv",
+    "size": 6502809,
+    "is_dir": false,
+    "crc": 3886119536
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_2_IS_Ookla_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_2_IS_Ookla_TV_TTI_0.csv",
+    "size": 22028354,
+    "is_dir": false,
+    "crc": 350324180
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_2_IS_Ookla_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_2_IS_Ookla_TV_TTI_1.csv",
+    "size": 30770354,
+    "is_dir": false,
+    "crc": 1563887689
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_10.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_10.csv",
+    "size": 24252749,
+    "is_dir": false,
+    "crc": 4045870518
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_14.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_14.csv",
+    "size": 3585920,
+    "is_dir": false,
+    "crc": 1183046787
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_8_IS_Ookla_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_8_IS_Ookla_TV_TTI_1.csv",
+    "size": 13891124,
+    "is_dir": false,
+    "crc": 1784524141
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_8_IS_Ookla_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_8_IS_Ookla_TV_TTI_0.csv",
+    "size": 10824876,
+    "is_dir": false,
+    "crc": 791478618
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_15.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_15.csv",
+    "size": 8139183,
+    "is_dir": false,
+    "crc": 3430798116
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_17.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_17.csv",
+    "size": 5139683,
+    "is_dir": false,
+    "crc": 2284702660
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_8_IS_Ookla_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_8_IS_Ookla_TV_TTI_2.csv",
+    "size": 11898713,
+    "is_dir": false,
+    "crc": 2281818623
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_16.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_16.csv",
+    "size": 7101211,
+    "is_dir": false,
+    "crc": 1022263264
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_11_IS_Ookla_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_11_IS_Ookla_TV_TTI_1.csv",
+    "size": 6168118,
+    "is_dir": false,
+    "crc": 3583581671
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_18.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_18.csv",
+    "size": 7441287,
+    "is_dir": false,
+    "crc": 1551444370
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_11_IS_Ookla_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_11_IS_Ookla_TV_TTI_3.csv",
+    "size": 6834984,
+    "is_dir": false,
+    "crc": 1487007569
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_11_IS_Ookla_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_11_IS_Ookla_TV_TTI_2.csv",
+    "size": 6068547,
+    "is_dir": false,
+    "crc": 1484066280
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_19.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_19.csv",
+    "size": 7923228,
+    "is_dir": false,
+    "crc": 936330215
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_21.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_21.csv",
+    "size": 8284853,
+    "is_dir": false,
+    "crc": 4238557269
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_7_OD_Ookla_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_7_OD_Ookla_TV_TTI_1.csv",
+    "size": 8949303,
+    "is_dir": false,
+    "crc": 2698921568
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_13_IS_Ookla_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_13_IS_Ookla_TV_TTI_1.csv",
+    "size": 6901913,
+    "is_dir": false,
+    "crc": 324556370
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_13_IS_Ookla_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_13_IS_Ookla_TV_TTI_0.csv",
+    "size": 8735631,
+    "is_dir": false,
+    "crc": 1068951787
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_7_OD_Ookla_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_7_OD_Ookla_TV_TTI_0.csv",
+    "size": 6614636,
+    "is_dir": false,
+    "crc": 3043239931
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_20.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_20.csv",
+    "size": 10311754,
+    "is_dir": false,
+    "crc": 3894167625
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_7_OD_Ookla_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_7_OD_Ookla_TV_TTI_2.csv",
+    "size": 9974763,
+    "is_dir": false,
+    "crc": 1972811457
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_9_OD_Ookla_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_9_OD_Ookla_TV_TTI_0.csv",
+    "size": 8836076,
+    "is_dir": false,
+    "crc": 3934746436
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_7.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_7.csv",
+    "size": 12007854,
+    "is_dir": false,
+    "crc": 2302311948
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_9_OD_Ookla_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_9_OD_Ookla_TV_TTI_1.csv",
+    "size": 8710735,
+    "is_dir": false,
+    "crc": 1270088946
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_15_IS_Ookla_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_15_IS_Ookla_TV_TTI_0.csv",
+    "size": 8290864,
+    "is_dir": false,
+    "crc": 436586439
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_4.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_4.csv",
+    "size": 8855398,
+    "is_dir": false,
+    "crc": 1284462744
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_9_OD_Ookla_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_9_OD_Ookla_TV_TTI_2.csv",
+    "size": 8832409,
+    "is_dir": false,
+    "crc": 3927374184
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_15_IS_Ookla_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_15_IS_Ookla_TV_TTI_1.csv",
+    "size": 5058868,
+    "is_dir": false,
+    "crc": 1168128993
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_1.csv",
+    "size": 10558763,
+    "is_dir": false,
+    "crc": 4083085754
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_0.csv",
+    "size": 11917754,
+    "is_dir": false,
+    "crc": 2519039339
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_2.csv",
+    "size": 8646900,
+    "is_dir": false,
+    "crc": 792462265
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy/Location_1_IS_Ookla_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\Ookla Speedtests\\Op1 and Op2 - Italy\\Location_1_IS_Ookla_TV_TTI_3.csv",
+    "size": 11149403,
+    "is_dir": false,
+    "crc": 1683678179
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "size": 8759483,
+    "is_dir": false,
+    "crc": 2570620623
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_IT_TV_TTI_4.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_IT_TV_TTI_4.csv",
+    "size": 8883868,
+    "is_dir": false,
+    "crc": 1221584862
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_9_OD_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "size": 8843390,
+    "is_dir": false,
+    "crc": 3329609038
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_12_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_12_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "size": 7027759,
+    "is_dir": false,
+    "crc": 1789610719
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_9_OD_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "size": 8835750,
+    "is_dir": false,
+    "crc": 1309984564
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_4_OD_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "size": 6517266,
+    "is_dir": false,
+    "crc": 3020427982
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_8_IS_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "size": 9348402,
+    "is_dir": false,
+    "crc": 1051098228
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_SE_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_SE_TV_TTI_3.csv",
+    "size": 11892232,
+    "is_dir": false,
+    "crc": 946007340
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_SE_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_SE_TV_TTI_1.csv",
+    "size": 12611393,
+    "is_dir": false,
+    "crc": 769138892
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_8_IS_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "size": 9682063,
+    "is_dir": false,
+    "crc": 2033400181
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_4_OD_Interactivity_eGaming_SE_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_eGaming_SE_TV_TTI_0.csv",
+    "size": 7082969,
+    "is_dir": false,
+    "crc": 213538374
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_12_IS_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_12_IS_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "size": 6497079,
+    "is_dir": false,
+    "crc": 994541275
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_12_IS_Interactivity_eGaming_CH_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_12_IS_Interactivity_eGaming_CH_TV_TTI_3.csv",
+    "size": 5780798,
+    "is_dir": false,
+    "crc": 1509806973
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_9_OD_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "size": 8798012,
+    "is_dir": false,
+    "crc": 4145693822
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_4_OD_Interactivity_eGaming_SE_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_eGaming_SE_TV_TTI_1.csv",
+    "size": 6906437,
+    "is_dir": false,
+    "crc": 3091604911
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_8_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "size": 10215831,
+    "is_dir": false,
+    "crc": 1780998158
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_SE_TV_TTI_4.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_SE_TV_TTI_4.csv",
+    "size": 11236987,
+    "is_dir": false,
+    "crc": 4189141941
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "size": 14614462,
+    "is_dir": false,
+    "crc": 1042233549
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_IT_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_IT_TV_TTI_3.csv",
+    "size": 8715230,
+    "is_dir": false,
+    "crc": 4025771435
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_SE_TV_TTI_5.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_SE_TV_TTI_5.csv",
+    "size": 8512491,
+    "is_dir": false,
+    "crc": 4071932772
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_4_OD_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "size": 6909746,
+    "is_dir": false,
+    "crc": 1387505421
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_4_OD_Interactivity_eGaming_IT_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_eGaming_IT_TV_TTI_0.csv",
+    "size": 7272996,
+    "is_dir": false,
+    "crc": 3625899758
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_SE_TV_TTI_7.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_SE_TV_TTI_7.csv",
+    "size": 5210075,
+    "is_dir": false,
+    "crc": 372197445
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "size": 2145187,
+    "is_dir": false,
+    "crc": 1650640091
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_SE_TV_TTI_6.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_SE_TV_TTI_6.csv",
+    "size": 6998915,
+    "is_dir": false,
+    "crc": 904014213
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_4_OD_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "size": 6148489,
+    "is_dir": false,
+    "crc": 2290125368
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_2_IS_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "size": 11597711,
+    "is_dir": false,
+    "crc": 2692669557
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_7_OD_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "size": 5667204,
+    "is_dir": false,
+    "crc": 3265798553
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_2_IS_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "size": 11649047,
+    "is_dir": false,
+    "crc": 397878965
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_8.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_8.csv",
+    "size": 12943822,
+    "is_dir": false,
+    "crc": 2641909312
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_7_OD_Interactivity_eGaming_IT_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_eGaming_IT_TV_TTI_0.csv",
+    "size": 7987360,
+    "is_dir": false,
+    "crc": 155656140
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_7_OD_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "size": 6911795,
+    "is_dir": false,
+    "crc": 2568878001
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_9.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_9.csv",
+    "size": 9801132,
+    "is_dir": false,
+    "crc": 91259906
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_2_IS_Interactivity_eGaming_IT_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_eGaming_IT_TV_TTI_0.csv",
+    "size": 11552560,
+    "is_dir": false,
+    "crc": 196046558
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_11_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_11_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "size": 6674398,
+    "is_dir": false,
+    "crc": 766505402
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_2_IS_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "size": 9627197,
+    "is_dir": false,
+    "crc": 1911343286
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_7_OD_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "size": 8606182,
+    "is_dir": false,
+    "crc": 3866348924
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_15_IS_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_15_IS_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "size": 11262712,
+    "is_dir": false,
+    "crc": 860577605
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_11_IS_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_11_IS_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "size": 6140680,
+    "is_dir": false,
+    "crc": 1778612870
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_2_IS_Interactivity_eGaming_SE_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_eGaming_SE_TV_TTI_1.csv",
+    "size": 9158972,
+    "is_dir": false,
+    "crc": 1616985570
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_10_OD_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_10_OD_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "size": 13484908,
+    "is_dir": false,
+    "crc": 3107363917
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_2_IS_Interactivity_eGaming_SE_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_eGaming_SE_TV_TTI_0.csv",
+    "size": 9332466,
+    "is_dir": false,
+    "crc": 836549437
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_11_IS_Interactivity_eGaming_CH_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_11_IS_Interactivity_eGaming_CH_TV_TTI_3.csv",
+    "size": 6226802,
+    "is_dir": false,
+    "crc": 1918287170
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_15_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_15_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "size": 7404153,
+    "is_dir": false,
+    "crc": 4054230358
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_4_OD_Interactivity_eGaming_CH_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_eGaming_CH_TV_TTI_3.csv",
+    "size": 6527354,
+    "is_dir": false,
+    "crc": 3288787747
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_9_OD_Interactivity_eGaming_SE_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_eGaming_SE_TV_TTI_0.csv",
+    "size": 9821238,
+    "is_dir": false,
+    "crc": 1711515904
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "size": 9435413,
+    "is_dir": false,
+    "crc": 1153283593
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_3.csv",
+    "size": 9386252,
+    "is_dir": false,
+    "crc": 2566605441
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_8_IS_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "size": 11690442,
+    "is_dir": false,
+    "crc": 1982433319
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_9_OD_Interactivity_eGaming_SE_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_eGaming_SE_TV_TTI_1.csv",
+    "size": 9508208,
+    "is_dir": false,
+    "crc": 3494548456
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_4_OD_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "size": 3514164,
+    "is_dir": false,
+    "crc": 372338556
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_4_OD_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "size": 3516144,
+    "is_dir": false,
+    "crc": 2003131832
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_8_IS_Interactivity_eGaming_SE_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_eGaming_SE_TV_TTI_0.csv",
+    "size": 10059574,
+    "is_dir": false,
+    "crc": 313090428
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "size": 7874440,
+    "is_dir": false,
+    "crc": 4155382831
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_8_IS_Interactivity_eGaming_SE_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_eGaming_SE_TV_TTI_1.csv",
+    "size": 10047972,
+    "is_dir": false,
+    "crc": 1440752745
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_9_OD_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_eGaming_SE_TV_TTI_2.csv",
+    "size": 9654110,
+    "is_dir": false,
+    "crc": 2779869893
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_4_OD_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_4_OD_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "size": 3618363,
+    "is_dir": false,
+    "crc": 1924126693
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_4.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_4.csv",
+    "size": 11959413,
+    "is_dir": false,
+    "crc": 3663518320
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_9_OD_Interactivity_eGaming_IT_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_eGaming_IT_TV_TTI_0.csv",
+    "size": 8446353,
+    "is_dir": false,
+    "crc": 3084432075
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_11.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_11.csv",
+    "size": 8487757,
+    "is_dir": false,
+    "crc": 2608446705
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_10.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_10.csv",
+    "size": 16170472,
+    "is_dir": false,
+    "crc": 1241527874
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_9_OD_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "size": 9546937,
+    "is_dir": false,
+    "crc": 662056532
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_5.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_5.csv",
+    "size": 12251560,
+    "is_dir": false,
+    "crc": 3676449363
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_8_IS_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "size": 10164845,
+    "is_dir": false,
+    "crc": 4263477043
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_8_IS_Interactivity_eGaming_IT_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_eGaming_IT_TV_TTI_0.csv",
+    "size": 11211980,
+    "is_dir": false,
+    "crc": 1796927354
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_13_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_13_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "size": 7776763,
+    "is_dir": false,
+    "crc": 3938866811
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_7.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_7.csv",
+    "size": 58850490,
+    "is_dir": false,
+    "crc": 3803541979
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_12.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_12.csv",
+    "size": 6832239,
+    "is_dir": false,
+    "crc": 352634091
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_9_OD_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_9_OD_Interactivity_eGaming_IT_TV_TTI_2.csv",
+    "size": 8713087,
+    "is_dir": false,
+    "crc": 3595168596
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_CH_TV_TTI_6.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_CH_TV_TTI_6.csv",
+    "size": 15106861,
+    "is_dir": false,
+    "crc": 364047009
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_13_IS_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_13_IS_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "size": 8406498,
+    "is_dir": false,
+    "crc": 775621166
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_8_IS_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_8_IS_Interactivity_eGaming_IT_TV_TTI_1.csv",
+    "size": 9804497,
+    "is_dir": false,
+    "crc": 253983467
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_2_IS_Interactivity_eGaming_CH_TV_TTI_4.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_eGaming_CH_TV_TTI_4.csv",
+    "size": 9959552,
+    "is_dir": false,
+    "crc": 2189137999
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_6_IS_Interactivity_eGamming_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_6_IS_Interactivity_eGamming_CH_TV_TTI_1.csv",
+    "size": 10037158,
+    "is_dir": false,
+    "crc": 182071866
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_1_IS_Interactivity_eGaming_SE_TV_TTI_8.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_1_IS_Interactivity_eGaming_SE_TV_TTI_8.csv",
+    "size": 6592856,
+    "is_dir": false,
+    "crc": 3782027523
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_2_IS_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "size": 10183770,
+    "is_dir": false,
+    "crc": 4100798924
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_7_OD_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_eGaming_CH_TV_TTI_2.csv",
+    "size": 6968470,
+    "is_dir": false,
+    "crc": 4195469773
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_2_IS_Interactivity_eGaming_CH_TV_TTI_3.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_eGaming_CH_TV_TTI_3.csv",
+    "size": 13088263,
+    "is_dir": false,
+    "crc": 3922071942
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_2_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "size": 10109217,
+    "is_dir": false,
+    "crc": 2294051580
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_7_OD_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "size": 8571582,
+    "is_dir": false,
+    "crc": 2256718085
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_7_OD_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_7_OD_Interactivity_eGaming_CH_TV_TTI_1.csv",
+    "size": 6366115,
+    "is_dir": false,
+    "crc": 2253095425
+  },
+  {
+    "zip_member": "Active Performance Dataset - 1/eGaming real-time Interactivity Tests/Op1 and Op2 - Italy/Location_2_IS_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "extracted_path": "Active Performance Dataset - 1\\eGaming real-time Interactivity Tests\\Op1 and Op2 - Italy\\Location_2_IS_Interactivity_eGaming_CH_TV_TTI_0.csv",
+    "size": 16272215,
+    "is_dir": false,
+    "crc": 872165663
+  }
+]

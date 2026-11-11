@@ -1,0 +1,53 @@
+# IEEE Submission Cover Letter
+
+**Date:** November 2026  
+**To:** Editor-in-Chief, *IEEE Transactions on Network and Service Management*  
+*(Alternative Consideration: IEEE Open Journal of the Communications Society / IEEE Access)*  
+**From:** Md. Moazzem Hossain Majumder, Independent Researcher in Telecommunications and Applied Machine Learning  
+**Email:** moazzemhossain1510@gmail.com  
+
+---
+
+### Manuscript Title:
+**"How Much Recalibration Is Enough? Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry"**
+
+---
+
+### Context and Motivation
+Accurate user equipment (UE) downlink throughput forecasting is foundational to proactive radio resource management (RRM), adaptive bitrate streaming (DASH), and service assurance in modern 4G Long Term Evolution (LTE) and 5G Non-Standalone (NSA) cellular networks. However, machine learning throughput predictors trained on one commercial network frequently fail catastrophically when transferred across operators or measurement campaigns, incurring service violation rates between 26% and 61%.
+
+This breakdown is compounded by **natural telemetry missingness**: in operational 3GPP Option 3X EN-DC drive tests, secondary 5G New Radio (NR) synchronization indicators are unobserved in over 60% of logged windows due to discontinuous reception and dynamic bearer release. Conventional supervised models optimize symmetric point errors (MAE/MSE), creating overconfident commitments that degrade Quality of Service (QoS).
+
+---
+
+### Core Technical Contributions
+1. **Leak-Free Forward-Causal Protocol under 5G NSA Missingness:** We formulate an un-leakable, forward-causal forecasting benchmark on 1,132 commercial Speedtest sessions from operational 5G NSA networks in Rome, Italy (Zenodo records 8224890 and 14073311), strictly enforcing pre-test radio lookback windows ($[a_j - 60\text{s}, a_j]$) and pre-test completed lag freshness ($\Delta t \le 60\text{ s}$).
+2. **Finite-Sample Conformal Budget Bound (Lemma 1):** We prove and empirically validate that split-conformal calibration at nominal error $\alpha = 0.10$ requires at least $n \ge 9$ target calibration sessions ($k = \lceil (n+1)(1-\alpha) \rceil \le n$). For campaigns with budgets $K \le 8$, target-only conformal quantiles are mathematically undefined, requiring a principled source-fallback hierarchy.
+3. **Multi-Domain Transfer Benchmark:** We evaluate linear regression, boosted decision trees, BAMMO (Jacobson et al., *JRSS-C* 2025), and a PyTorch Deep Tabular ResNet (profiled on an NVIDIA GeForce RTX 4060 GPU with CUDA mixed precision) across four transfer regimes: within-domain (E0), 2.5-year temporal transfer (E1), cross-operator transfer (E2), and joint shift (E3).
+4. **Covariate-Shift Conformal Transfer & SLA Modeling:** We benchmark Covariate-Shift Conformal Prediction (Tibshirani et al., *NeurIPS* 2019) and formalize an operational SLA economic loss function $\text{Cost}(\lambda) = \lambda V + (1-\lambda)(1-U)$, demonstrating that conformal recalibration reduces operational SLA losses by up to 83.8%.
+5. **Statistical Rigor and Full Reproducibility:** All paired differences are validated using 2,000 paired day-cluster bootstrap resamples. The entire experimental benchmark is automated and reproducible in under 400 seconds via public, pinned scripts.
+
+---
+
+### Author Declarations
+- This manuscript represents original work that has not been published previously and is not under consideration for publication elsewhere.
+- All authors have approved the submission.
+- All experimental datasets are from open-access releases under Creative Commons Attribution 4.0 International (CC BY 4.0) with cryptographically verified checksums.
+- The complete source code, test suite, and interactive demonstration dashboard are made openly available to guarantee 100% independent reproducibility.
+
+---
+
+### Suggested Expert Peer Reviewers
+1. **Prof. Konstantinos Kousias** (Simula Metropolitan Center / University of Oslo) — *Expertise: Cellular measurements, 5G NSA performance benchmarking, and active throughput datasets.*
+2. **Prof. Giuseppe Caso** (Ericsson Research / Sapienza University of Rome) — *Expertise: 5G network performance, mobile drive-test analysis, and empirical modeling.*
+3. **Prof. Yaniv Romano** (Technion – Israel Institute of Technology) — *Expertise: Conformal prediction, distribution-free uncertainty quantification, and predictive inference.*
+4. **Dr. Margaux Zaffran** (INRIA / École Polytechnique) — *Expertise: Conformal prediction under missing values and pattern-conditioned inference.*
+5. **Prof. Tyler Jacobson** (University of Minnesota) — *Expertise: BAMMO, boosted additive modeling, and missing telemetry in 5G millimeter-wave throughput.*
+
+---
+
+Sincerely yours,  
+**Md. Moazzem Hossain Majumder**  
+Corresponding Author  
+Email: moazzemhossain1510@gmail.com  
+

@@ -1,0 +1,189 @@
+{
+  "created": "2024-11-13T08:50:15.838915+00:00",
+  "modified": "2025-09-26T13:42:02.191512+00:00",
+  "id": 14073311,
+  "conceptrecid": "14073310",
+  "doi": "10.5281/zenodo.14073311",
+  "conceptdoi": "10.5281/zenodo.14073310",
+  "doi_url": "https://doi.org/10.5281/zenodo.14073311",
+  "metadata": {
+    "title": "Dataset (active) - The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution",
+    "doi": "10.5281/zenodo.14073311",
+    "publication_date": "2024-11-17",
+    "description": "<p><strong>%%%% 26/09/2025 - NOTE: This entry only includes the active measurements conducted in the following work. </strong></p>\n<p><strong>The passive measurements can be found in https://doi.org/10.5281/zenodo.17208870</strong></p>\n<p>&nbsp;</p>\n<p>The present dataset is open-sourced with the paper \"The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution\".</p>\n<p>The paper is authored by Giuseppe Caso, Mohammad Rajiullah, Konstantinos Kousias, Usman Ali, Nadir Bouzar, Luca De Nardis, Anna Brunstrom, Ozgu Alay, Marco Neri, and Maria-Gabriella Di Benedetto</p>\n<p>If you use the dataset for your own research activities and publications, please consider citing the paper as follows:&nbsp;</p>\n<p><strong>G. Caso et al., \"The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution,\" &nbsp;IEEE Open Journal of the Communications Society(IEEE OJ-COMS), pp. 1-21, 2024.</strong></p>\n<p><strong>@article{caso2024chronicles,&nbsp;<br>title={{The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution}},&nbsp;<br>author={Caso, G. and Rajiullah, M. and Kousias, K. and Ali, U. and Bouzar, N. and De Nardis, L. and Brunstrom, A. and Alay, O. and Neri, M. and Di Benedetto, M.-G.},&nbsp;<br></strong><strong>journal={IEEE Open Journal of the Communications Society},<br>pages={1--21}, <br></strong><strong>year={2024},&nbsp;<br>publisher={IEEE}<br>}</strong></p>\n<p>A detailed description of the dataset is provided in the paper, and the README file provides additional details.</p>\n<p>In the paper, an in-depth performance analysis of 5G performance is carried out, also exploiting a dataset previously collected and open-sourced at https://zenodo.org/records/8224890, and fully described in the following publication:</p>\n<p><strong>@article{kousias2023large,<br>&nbsp;title={{A Large-Scale Dataset of 4G, NB-IoT, and 5G Non-Standalone Network Measurements}},<br>&nbsp;author={Kousias, K. and Rajiullah, M. and Caso, G. and Ali, U. and Alay, O. and Brunstrom, A. and De Nardis, L. and Neri, M. and Di Benedetto, M.-G.},<br>journal={IEEE Communications Magazine},<br>volume = {62},<br>number = {5},<br>pages={44--49},<br>year={2024},<br>publisher={IEEE}<br>}</strong></p>\n<p>Contact Giuseppe Caso (giuseppe.caso@kau.se) for more information on the dataset(s) and potential access to additional data.&nbsp;</p>",
+    "access_right": "open",
+    "creators": [
+      {
+        "name": "Caso, Giuseppe",
+        "affiliation": "Karlstad University",
+        "orcid": "0000-0003-0611-5637"
+      }
+    ],
+    "contributors": [
+      {
+        "name": "Giuseppe, Caso",
+        "affiliation": "Karlstad University",
+        "type": "ContactPerson",
+        "orcid": "0000-0003-0611-5637"
+      },
+      {
+        "name": "Rajiullah, Mohammad",
+        "affiliation": "Karlstad University",
+        "type": "Editor"
+      },
+      {
+        "name": "Kousias, Konstantinos",
+        "affiliation": "University of Oslo",
+        "type": "Editor"
+      },
+      {
+        "name": "Ali, Usman",
+        "affiliation": "Sapienza University of Rome",
+        "type": "Other"
+      },
+      {
+        "name": "Bouzar, Nadir",
+        "affiliation": "Sapienza University of Rome",
+        "type": "Other"
+      },
+      {
+        "name": "De Nardis, Luca",
+        "affiliation": "Sapienza University of Rome",
+        "type": "Other"
+      },
+      {
+        "name": "Brunstrom, Anna",
+        "affiliation": "Karlstad University",
+        "type": "Other"
+      },
+      {
+        "name": "Alay, Ozgu",
+        "affiliation": "University of Oslo",
+        "type": "Other"
+      },
+      {
+        "name": "Neri, Marco",
+        "affiliation": "Rohde & Schwarz (Germany)",
+        "type": "Other"
+      },
+      {
+        "name": "Di Benedetto, Maria-Gabriella",
+        "affiliation": "Sapienza University of Rome",
+        "type": "Other"
+      },
+      {
+        "name": "Kousias, Konstantinos",
+        "affiliation": null,
+        "type": "Editor",
+        "orcid": "0000-0001-5058-4532"
+      },
+      {
+        "name": "Kousias, Konstantinos",
+        "affiliation": null,
+        "type": "Editor",
+        "orcid": "0000-0001-5058-4532"
+      }
+    ],
+    "version": "v0.1",
+    "references": [
+      "G. Caso et al., \"The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution,\" \u00a0IEEE Open Journal of the Communications Society(IEEE OJ-COMS), pp. 1-21, 2024"
+    ],
+    "language": "eng",
+    "resource_type": {
+      "title": "Dataset",
+      "type": "dataset"
+    },
+    "journal": {
+      "title": "IEEE Open Journal of the Communications Society"
+    },
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "communities": [
+      {
+        "id": "imagine-b5g"
+      },
+      {
+        "id": "perform"
+      }
+    ],
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "14073310"
+          }
+        }
+      ]
+    }
+  },
+  "title": "Dataset (active) - The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution",
+  "links": {
+    "self": "https://zenodo.org/api/records/14073311",
+    "self_html": "https://zenodo.org/records/14073311",
+    "preview_html": "https://zenodo.org/records/14073311?preview=1",
+    "doi": "https://doi.org/10.5281/zenodo.14073311",
+    "self_doi": "https://doi.org/10.5281/zenodo.14073311",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.14073311",
+    "reserve_doi": "https://zenodo.org/api/records/14073311/draft/pids/doi",
+    "parent": "https://zenodo.org/api/records/14073310",
+    "parent_html": "https://zenodo.org/records/14073310",
+    "parent_doi": "https://doi.org/10.5281/zenodo.14073310",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.14073310",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:14073311/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:14073311/sequence/default",
+    "files": "https://zenodo.org/api/records/14073311/files",
+    "media_files": "https://zenodo.org/api/records/14073311/media-files",
+    "latest": "https://zenodo.org/api/records/14073311/versions/latest",
+    "latest_html": "https://zenodo.org/records/14073311/latest",
+    "versions": "https://zenodo.org/api/records/14073311/versions",
+    "draft": "https://zenodo.org/api/records/14073311/draft",
+    "access_links": "https://zenodo.org/api/records/14073311/access/links",
+    "access_grants": "https://zenodo.org/api/records/14073311/access/grants",
+    "access_users": "https://zenodo.org/api/records/14073311/access/users",
+    "access_request": "https://zenodo.org/api/records/14073311/access/request",
+    "access": "https://zenodo.org/api/records/14073311/access",
+    "communities": "https://zenodo.org/api/records/14073311/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/14073311/communities-suggestions",
+    "request_deletion": "https://zenodo.org/api/records/14073311/request-deletion",
+    "file_modification": "https://zenodo.org/api/records/14073311/file-modification",
+    "quota_increase": "https://zenodo.org/api/records/14073311/quota-increase",
+    "requests": "https://zenodo.org/api/records/14073311/requests"
+  },
+  "updated": "2025-09-26T13:42:02.191512+00:00",
+  "recid": "14073311",
+  "revision": 16,
+  "files": [
+    {
+      "id": "7d037aa6-264e-4bdb-bc1b-665bc37686f1",
+      "key": "Active Performance Dataset - 1.zip",
+      "size": 82284534,
+      "checksum": "md5:59684dec4e26bd882cf6e6551cce50ad",
+      "links": {
+        "self": "https://zenodo.org/api/records/14073311/files/Active%20Performance%20Dataset%20-%201.zip/content"
+      }
+    }
+  ],
+  "swh": {},
+  "owners": [
+    {
+      "id": "1208296"
+    }
+  ],
+  "status": "published",
+  "stats": {
+    "downloads": 236,
+    "unique_downloads": 208,
+    "views": 977,
+    "unique_views": 861,
+    "version_downloads": 236,
+    "version_unique_downloads": 208,
+    "version_unique_views": 861,
+    "version_views": 977
+  },
+  "state": "done",
+  "submitted": true
+}

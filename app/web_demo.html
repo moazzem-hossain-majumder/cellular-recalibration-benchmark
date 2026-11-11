@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cellular Throughput Forecasting & Conformal Recalibration</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: #1e293b;
+    --border-color: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-blue: #38bdf8;
+    --accent-green: #4ade80;
+    --accent-red: #f87171;
+    --accent-purple: #c084fc;
+    --accent-orange: #fb923c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.5;
+    padding: 24px;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+  header {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--accent-blue);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  h1 { font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .subtitle { color: var(--text-secondary); font-size: 14px; max-width: 1000px; }
+  
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .kpi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.2s;
+  }
+  .kpi-card:hover { transform: translateY(-2px); border-color: var(--accent-blue); }
+  .kpi-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; }
+  .kpi-val { font-size: 28px; font-weight: 700; margin-top: 4px; }
+  .kpi-sub { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+  
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+  .card-title { font-size: 18px; font-weight: 600; }
+  
+  .controls-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .control-group { display: flex; flex-direction: column; gap: 6px; }
+  label { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+  select, input {
+    background: #0f172a;
+    border: 1px solid var(--border-color);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+  }
+  select:focus { border-color: var(--accent-blue); }
+  
+  .chart-container { position: relative; height: 360px; width: 100%; }
+  
+  table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+  th { background: #0f172a; color: var(--text-secondary); font-weight: 600; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .tag-safe { background: rgba(74, 222, 128, 0.15); color: var(--accent-green); border: 1px solid rgba(74, 222, 128, 0.3); }
+  .tag-violation { background: rgba(248, 113, 113, 0.15); color: var(--accent-red); border: 1px solid rgba(248, 113, 113, 0.3); }
+  .tag-lte { background: rgba(251, 146, 60, 0.15); color: var(--accent-orange); }
+  .tag-5g { background: rgba(192, 132, 252, 0.15); color: var(--accent-purple); }
+  
+  .alert-box {
+    background: rgba(56, 189, 248, 0.08);
+    border-left: 4px solid var(--accent-blue);
+    padding: 16px;
+    border-radius: 0 8px 8px 0;
+    margin-top: 16px;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">Research Artifact & Live Interactive Dashboard</div>
+    <h1>How Much Recalibration Is Enough?</h1>
+    <p class="subtitle">
+      Reliability and Finite-Sample Conformal Calibration of Cellular Throughput Forecasts across Networks with Missing Radio Telemetry.
+      Benchmarked across 1,132 Commercial Speedtest Sessions (Rome 2021 & 2023) and Profiled on NVIDIA GeForce RTX 4060 GPU.
+    </p>
+  </header>
+
+  <!-- Top KPI Grid -->
+  <div class="grid-4">
+    <div class="kpi-card">
+      <div class="kpi-label">Commercial Sessions</div>
+      <div class="kpi-val" style="color: var(--accent-blue);">1,132</div>
+      <div class="kpi-sub">1,001 causal forecast pairs (60s lag)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Uncalibrated Failure</div>
+      <div class="kpi-val" style="color: var(--accent-red);">26% – 61%</div>
+      <div class="kpi-sub">Empirical violations vs 10% risk target</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Conformal Safety Bound</div>
+      <div class="kpi-val" style="color: var(--accent-green);">K &ge; 9</div>
+      <div class="kpi-sub">Lemma 1: Exact split-conformal threshold</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">GPU Profiling (RTX 4060)</div>
+      <div class="kpi-val" style="color: var(--accent-purple);">1.046s</div>
+      <div class="kpi-sub">60 epochs Deep ResNet (24.8 MB VRAM)</div>
+    </div>
+  </div>
+
+  <!-- Interactive Time Series Viewer -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Live Test Session Forecast & Conformal Lower Bound Simulator</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+          Inspect consecutive test sessions under distribution shift, compare point forecasts with calibrated lower bounds.
+        </div>
+      </div>
+      <div class="controls-row">
+        <div class="control-group">
+          <label>Transfer Regime</label>
+          <select id="regimeSelect" onchange="updateDashboard()">
+            <option value="E0">E0: Within-Domain (Op1 2021)</option>
+            <option value="E1">E1: Campaign Transfer (Op1 2023)</option>
+            <option value="E2" selected>E2: Cross-Operator (Op2 2021)</option>
+            <option value="E3">E3: Joint Shift (Op2 2023)</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>Calibration Budget (K Sessions)</label>
+          <select id="budgetSelect" onchange="updateDashboard()">
+            <option value="K_0">K = 0 (Source-Only Fallback)</option>
+            <option value="K_2">K = 2 (Small Target Budget)</option>
+            <option value="K_5">K = 5 (Medium Target Budget)</option>
+            <option value="K_10" selected>K = 10 (Target Activation)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Regime Metrics Bar -->
+    <div style="display: flex; gap: 24px; padding: 12px 16px; background: #0f172a; border-radius: 8px; margin-bottom: 20px; font-size: 13px; align-items: center; flex-wrap: wrap;">
+      <div><span style="color: var(--text-secondary);">Regime Status:</span> <strong id="regimeStatusText" style="color: var(--accent-blue);">E2 Cross-Operator</strong></div>
+      <div><span style="color: var(--text-secondary);">Empirical Violation Rate ($V$):</span> <strong id="currentVText" style="color: var(--accent-green);">8.6%</strong></div>
+      <div><span style="color: var(--text-secondary);">Supported Fraction ($U$):</span> <strong id="currentUText" style="color: var(--accent-blue);">17.8%</strong></div>
+      <div><span style="color: var(--text-secondary);">Target Budget State:</span> <strong id="budgetStateText" style="color: var(--accent-purple);">Target Conformal Active (K=10)</strong></div>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="timeSeriesChart"></canvas>
+    </div>
+
+    <div class="alert-box">
+      <strong>Telecom Engineering Insight:</strong> When transferring across operators (E2) or campaigns (E1/E3), point predictions consistently overestimate throughput due to changed carrier configurations. The split-conformal lower bound contracts conservatively, ensuring fewer than 10% of sessions drop below the commitment line.
+    </div>
+  </div>
+
+  <!-- Model Performance Comparison -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Model Architecture Benchmark & Hardware Profiling</div>
+      <div style="font-size: 12px; color: var(--text-secondary);">Evaluated on 2021 Commercial Source Development Split</div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Model Architecture</th>
+          <th>Validation MAE (Mbps)</th>
+          <th>Validation RMSE (Mbps)</th>
+          <th>Training / Fit Time</th>
+          <th>Compute Hardware / Memory</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Persistence (Lag Baseline)</strong></td>
+          <td>55.96</td>
+          <td>75.03</td>
+          <td>&lt; 0.001 s</td>
+          <td>Host CPU</td>
+        </tr>
+        <tr>
+          <td><strong>Ridge Regression (L2)</strong></td>
+          <td>46.96</td>
+          <td>63.20</td>
+          <td>0.045 s</td>
+          <td>Host CPU</td>
+        </tr>
+        <tr>
+          <td><strong>HistGradientBoosting (Primary)</strong></td>
+          <td><span style="color: var(--accent-green); font-weight: 600;">45.66</span></td>
+          <td><span style="color: var(--accent-green); font-weight: 600;">62.67</span></td>
+          <td>1.493 s</td>
+          <td>Host CPU (Native NaN Handling)</td>
+        </tr>
+        <tr>
+          <td><strong>BAMMO (Jacobson et al. 2025)</strong></td>
+          <td>51.48</td>
+          <td>67.30</td>
+          <td>0.430 s</td>
+          <td>Host CPU (Pattern Base Learners)</td>
+        </tr>
+        <tr>
+          <td><strong>Quantile GBM (p10 Pinball)</strong></td>
+          <td>54.01</td>
+          <td>73.21</td>
+          <td>0.107 s</td>
+          <td>Host CPU</td>
+        </tr>
+        <tr>
+          <td><strong>GPU ThroughputResNet (PyTorch)</strong></td>
+          <td>50.41</td>
+          <td>70.28</td>
+          <td>1.046 s</td>
+          <td><strong style="color: var(--accent-purple);">NVIDIA GeForce RTX 4060 (24.8 MB VRAM)</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Advanced Conformal Transfer & Operational Economics -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Advanced Conformal Transfer & Operational Economics (Reviewer #2 Recommendations)</div>
+      <div style="font-size: 12px; color: var(--text-secondary);">Addressing Distribution Shift and Regulatory QoS Mandates</div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
+      <!-- Column 1: Covariate-Shift Conformal -->
+      <div style="background: #0f172a; padding: 18px; border-radius: 8px; border: 1px solid var(--border-color);">
+        <h3 style="font-size: 15px; color: var(--accent-blue); margin-bottom: 8px;">1. Covariate-Shift Conformal Prediction (Tibshirani et al. 2019)</h3>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+          Weights source calibration scores using likelihood ratio weights $w(x) = dP_T(x) / dP_S(x)$ from a domain discriminator, circumventing the need for target throughput labels.
+        </p>
+        <table style="font-size: 12px;">
+          <thead>
+            <tr><th>Transfer Regime</th><th>Violation Rate (V)</th><th>Supported Ratio (U)</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>E1: Campaign Transfer</strong></td><td>5.0%</td><td>8.5%</td><td><span class="tag tag-safe">V &le; 10% Safe</span></td></tr>
+            <tr><td><strong>E2: Cross-Operator</strong></td><td>6.2%</td><td>11.9%</td><td><span class="tag tag-safe">V &le; 10% Safe</span></td></tr>
+            <tr><td><strong>E3: Joint Shift</strong></td><td><strong style="color: var(--accent-green);">8.7%</strong></td><td><strong style="color: var(--accent-blue);">11.2%</strong></td><td><span class="tag tag-safe">Outlier-Resilient</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 10px; font-size: 11px; color: var(--text-secondary);">
+          *In E3, CS-CP preserves 11.2% supported capacity (vs 0.6% in split-conformal K=10) by weighting source scores rather than relying on a tiny target prefix corrupted by a zero-throughput network stall.
+        </div>
+      </div>
+
+      <!-- Column 2: SLA Economic Optimization -->
+      <div style="background: #0f172a; padding: 18px; border-radius: 8px; border: 1px solid var(--border-color);">
+        <h3 style="font-size: 15px; color: var(--accent-green); margin-bottom: 8px;">2. Operational SLA Loss: Cost(&lambda;) = &lambda; &middot; V + (1-&lambda;) &middot; (1-U)</h3>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+          Models financial tradeoff between SLA / BTRC QoS penalty risk (&lambda;) and under-utilized capacity (1-U).
+        </p>
+        <table style="font-size: 12px;">
+          <thead>
+            <tr><th>Penalty Weight (&lambda;)</th><th>Uncalibrated</th><th>Proposed Calibrator</th><th>Cost Reduction</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>&lambda; = 0.35 (Parity Threshold)</td><td>0.496</td><td>0.480</td><td>-3.2%</td></tr>
+            <tr><td>&lambda; = 0.50 (Standard SLA)</td><td>0.474</td><td>0.352</td><td><strong style="color: var(--accent-green);">-25.7%</strong></td></tr>
+            <tr><td>&lambda; = 0.80 (BTRC QoS Directives)</td><td>0.430</td><td>0.181</td><td><strong style="color: var(--accent-green);">-57.9%</strong></td></tr>
+            <tr><td>&lambda; = 1.00 (Zero-Tolerance Risk)</td><td>0.401</td><td>0.065</td><td><strong style="color: var(--accent-green);">-83.8%</strong></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 10px; font-size: 11px; color: var(--text-secondary);">
+          *Conformal recalibration establishes complete dominance for &lambda; &ge; 0.35, slashing penalty exposure for Bangladesh operators (Grameenphone, Robi, Banglalink).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session Trace Table -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Detailed Session Trace Log (First 15 Test Instances)</div>
+      <div style="font-size: 12px; color: var(--text-secondary);">Live evaluation of point forecast versus calibrated lower bound</div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Session ID</th>
+          <th>Radio State</th>
+          <th>LTE RSRP</th>
+          <th>NR SS-RSRP</th>
+          <th>Point Pred (Mbps)</th>
+          <th>Conformal Lower Bound</th>
+          <th>Actual Throughput</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="traceTableBody">
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+const sessionData = {"E0": {"title": "Within-Domain (Op1 2021)", "traces": {"K_0": [{"id": 1, "actual": 78.1, "pred": 34.0, "lb": 10.4, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -117.5, "violated": false}, {"id": 2, "actual": 15.8, "pred": 34.9, "lb": 11.3, "group": 3, "has_nr": 1, "rsrp": -102.0, "ss_rsrp": -118.8, "violated": false}, {"id": 3, "actual": 13.1, "pred": 9.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -99.0, "ss_rsrp": null, "violated": false}, {"id": 4, "actual": 12.1, "pred": 8.5, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -115.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 14.8, "pred": 3.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -108.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 20.5, "pred": 64.2, "lb": 40.7, "group": 3, "has_nr": 1, "rsrp": -104.0, "ss_rsrp": -100.1, "violated": true}, {"id": 7, "actual": 23.6, "pred": 26.7, "lb": 3.2, "group": 2, "has_nr": 0, "rsrp": -105.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 38.5, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 23.9, "pred": 26.3, "lb": 2.7, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 38.9, "pred": 28.3, "lb": 4.7, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 11, "actual": 44.8, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -105.0, "ss_rsrp": null, "violated": false}, {"id": 12, "actual": 27.0, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 42.0, "pred": 27.9, "lb": 4.3, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 14, "actual": 33.0, "pred": 25.5, "lb": 2.0, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 15, "actual": 39.0, "pred": 26.3, "lb": 2.7, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 16, "actual": 14.4, "pred": 5.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 17, "actual": 12.2, "pred": 7.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -101.0, "ss_rsrp": null, "violated": false}, {"id": 18, "actual": 15.9, "pred": 0.2, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 14.9, "pred": 6.2, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 20, "actual": 185.0, "pred": 51.1, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -102.3, "violated": false}, {"id": 21, "actual": 79.1, "pred": 51.3, "lb": 27.8, "group": 3, "has_nr": 1, "rsrp": -101.0, "ss_rsrp": -102.4, "violated": false}, {"id": 22, "actual": 103.0, "pred": 47.2, "lb": 23.7, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.2, "violated": false}, {"id": 23, "actual": 110.6, "pred": 37.0, "lb": 13.5, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.1, "violated": false}, {"id": 24, "actual": 13.4, "pred": 62.2, "lb": 38.6, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.0, "violated": true}, {"id": 25, "actual": 188.8, "pred": 9.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}], "K_2": [{"id": 1, "actual": 78.1, "pred": 34.0, "lb": 10.4, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -117.5, "violated": false}, {"id": 2, "actual": 15.8, "pred": 34.9, "lb": 11.3, "group": 3, "has_nr": 1, "rsrp": -102.0, "ss_rsrp": -118.8, "violated": false}, {"id": 3, "actual": 13.1, "pred": 9.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -99.0, "ss_rsrp": null, "violated": false}, {"id": 4, "actual": 12.1, "pred": 8.5, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -115.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 14.8, "pred": 3.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -108.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 20.5, "pred": 64.2, "lb": 40.7, "group": 3, "has_nr": 1, "rsrp": -104.0, "ss_rsrp": -100.1, "violated": true}, {"id": 7, "actual": 23.6, "pred": 26.7, "lb": 3.2, "group": 2, "has_nr": 0, "rsrp": -105.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 38.5, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 23.9, "pred": 26.3, "lb": 2.7, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 38.9, "pred": 28.3, "lb": 4.7, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 11, "actual": 44.8, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -105.0, "ss_rsrp": null, "violated": false}, {"id": 12, "actual": 27.0, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 42.0, "pred": 27.9, "lb": 4.3, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 14, "actual": 33.0, "pred": 25.5, "lb": 2.0, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 15, "actual": 39.0, "pred": 26.3, "lb": 2.7, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 16, "actual": 14.4, "pred": 5.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 17, "actual": 12.2, "pred": 7.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -101.0, "ss_rsrp": null, "violated": false}, {"id": 18, "actual": 15.9, "pred": 0.2, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 14.9, "pred": 6.2, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 20, "actual": 185.0, "pred": 51.1, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -102.3, "violated": false}, {"id": 21, "actual": 79.1, "pred": 51.3, "lb": 27.8, "group": 3, "has_nr": 1, "rsrp": -101.0, "ss_rsrp": -102.4, "violated": false}, {"id": 22, "actual": 103.0, "pred": 47.2, "lb": 23.7, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.2, "violated": false}, {"id": 23, "actual": 110.6, "pred": 37.0, "lb": 13.5, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.1, "violated": false}, {"id": 24, "actual": 13.4, "pred": 62.2, "lb": 38.6, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.0, "violated": true}, {"id": 25, "actual": 188.8, "pred": 9.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}], "K_5": [{"id": 1, "actual": 78.1, "pred": 34.0, "lb": 10.4, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -117.5, "violated": false}, {"id": 2, "actual": 15.8, "pred": 34.9, "lb": 11.3, "group": 3, "has_nr": 1, "rsrp": -102.0, "ss_rsrp": -118.8, "violated": false}, {"id": 3, "actual": 13.1, "pred": 9.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -99.0, "ss_rsrp": null, "violated": false}, {"id": 4, "actual": 12.1, "pred": 8.5, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -115.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 14.8, "pred": 3.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -108.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 20.5, "pred": 64.2, "lb": 40.7, "group": 3, "has_nr": 1, "rsrp": -104.0, "ss_rsrp": -100.1, "violated": true}, {"id": 7, "actual": 23.6, "pred": 26.7, "lb": 3.2, "group": 2, "has_nr": 0, "rsrp": -105.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 38.5, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 23.9, "pred": 26.3, "lb": 2.7, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 38.9, "pred": 28.3, "lb": 4.7, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 11, "actual": 44.8, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -105.0, "ss_rsrp": null, "violated": false}, {"id": 12, "actual": 27.0, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 42.0, "pred": 27.9, "lb": 4.3, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 14, "actual": 33.0, "pred": 25.5, "lb": 2.0, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 15, "actual": 39.0, "pred": 26.3, "lb": 2.7, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 16, "actual": 14.4, "pred": 5.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 17, "actual": 12.2, "pred": 7.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -101.0, "ss_rsrp": null, "violated": false}, {"id": 18, "actual": 15.9, "pred": 0.2, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 14.9, "pred": 6.2, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 20, "actual": 185.0, "pred": 51.1, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -102.3, "violated": false}, {"id": 21, "actual": 79.1, "pred": 51.3, "lb": 27.8, "group": 3, "has_nr": 1, "rsrp": -101.0, "ss_rsrp": -102.4, "violated": false}, {"id": 22, "actual": 103.0, "pred": 47.2, "lb": 23.7, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.2, "violated": false}, {"id": 23, "actual": 110.6, "pred": 37.0, "lb": 13.5, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.1, "violated": false}, {"id": 24, "actual": 13.4, "pred": 62.2, "lb": 38.6, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.0, "violated": true}, {"id": 25, "actual": 188.8, "pred": 9.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}], "K_10": [{"id": 1, "actual": 78.1, "pred": 34.0, "lb": 10.4, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -117.5, "violated": false}, {"id": 2, "actual": 15.8, "pred": 34.9, "lb": 11.3, "group": 3, "has_nr": 1, "rsrp": -102.0, "ss_rsrp": -118.8, "violated": false}, {"id": 3, "actual": 13.1, "pred": 9.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -99.0, "ss_rsrp": null, "violated": false}, {"id": 4, "actual": 12.1, "pred": 8.5, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -115.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 14.8, "pred": 3.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -108.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 20.5, "pred": 64.2, "lb": 40.7, "group": 3, "has_nr": 1, "rsrp": -104.0, "ss_rsrp": -100.1, "violated": true}, {"id": 7, "actual": 23.6, "pred": 26.7, "lb": 3.2, "group": 2, "has_nr": 0, "rsrp": -105.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 38.5, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 23.9, "pred": 26.3, "lb": 2.7, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 38.9, "pred": 28.3, "lb": 4.7, "group": 2, "has_nr": 0, "rsrp": -103.0, "ss_rsrp": null, "violated": false}, {"id": 11, "actual": 44.8, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -105.0, "ss_rsrp": null, "violated": false}, {"id": 12, "actual": 27.0, "pred": 25.9, "lb": 2.3, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 42.0, "pred": 27.9, "lb": 4.3, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 14, "actual": 33.0, "pred": 25.5, "lb": 2.0, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 15, "actual": 39.0, "pred": 26.3, "lb": 2.7, "group": 2, "has_nr": 0, "rsrp": -104.0, "ss_rsrp": null, "violated": false}, {"id": 16, "actual": 14.4, "pred": 5.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 17, "actual": 12.2, "pred": 7.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -101.0, "ss_rsrp": null, "violated": false}, {"id": 18, "actual": 15.9, "pred": 0.2, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 14.9, "pred": 6.2, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}, {"id": 20, "actual": 185.0, "pred": 51.1, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -102.3, "violated": false}, {"id": 21, "actual": 79.1, "pred": 51.3, "lb": 27.8, "group": 3, "has_nr": 1, "rsrp": -101.0, "ss_rsrp": -102.4, "violated": false}, {"id": 22, "actual": 103.0, "pred": 47.2, "lb": 23.7, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.2, "violated": false}, {"id": 23, "actual": 110.6, "pred": 37.0, "lb": 13.5, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.1, "violated": false}, {"id": 24, "actual": 13.4, "pred": 62.2, "lb": 38.6, "group": 3, "has_nr": 1, "rsrp": -100.0, "ss_rsrp": -101.0, "violated": true}, {"id": 25, "actual": 188.8, "pred": 9.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -100.0, "ss_rsrp": null, "violated": false}]}}, "E1": {"title": "Campaign Transfer (Op1 2023)", "traces": {"K_0": [{"id": 1, "actual": 24.7, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -82.0, "ss_rsrp": -99.2, "violated": true}, {"id": 2, "actual": 18.5, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -84.0, "ss_rsrp": null, "violated": false}, {"id": 3, "actual": 20.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 4, "actual": 17.7, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 0.0, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 12.9, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -83.0, "ss_rsrp": -99.6, "violated": true}, {"id": 7, "actual": 16.3, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 25.8, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 48.1, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 7.4, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 11, "actual": 5.3, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 12, "actual": 107.8, "pred": 1.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 0.0, "pred": 44.2, "lb": 20.7, "group": 3, "has_nr": 1, "rsrp": -95.0, "ss_rsrp": -98.6, "violated": true}, {"id": 14, "actual": 179.8, "pred": 49.8, "lb": 26.2, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -102.1, "violated": false}, {"id": 15, "actual": 158.6, "pred": 34.3, "lb": 10.7, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -104.7, "violated": false}, {"id": 16, "actual": 33.6, "pred": 34.3, "lb": 10.7, "group": 3, "has_nr": 1, "rsrp": -88.0, "ss_rsrp": -104.9, "violated": false}, {"id": 17, "actual": 26.1, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -87.0, "ss_rsrp": null, "violated": false}, {"id": 18, "actual": 30.3, "pred": 17.8, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -88.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 39.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -88.0, "ss_rsrp": null, "violated": false}, {"id": 20, "actual": 24.0, "pred": 43.0, "lb": 19.4, "group": 3, "has_nr": 1, "rsrp": -86.0, "ss_rsrp": -101.5, "violated": false}, {"id": 21, "actual": 25.7, "pred": 18.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 22, "actual": 31.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 23, "actual": 33.5, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -86.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 30.6, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 25, "actual": 10.3, "pred": 34.3, "lb": 10.7, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -107.9, "violated": true}], "K_2": [{"id": 1, "actual": 24.7, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -82.0, "ss_rsrp": -99.2, "violated": true}, {"id": 2, "actual": 18.5, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -84.0, "ss_rsrp": null, "violated": false}, {"id": 3, "actual": 20.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 4, "actual": 17.7, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 0.0, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 12.9, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -83.0, "ss_rsrp": -99.6, "violated": true}, {"id": 7, "actual": 16.3, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 25.8, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 48.1, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 7.4, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 11, "actual": 5.3, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 12, "actual": 107.8, "pred": 1.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 0.0, "pred": 44.2, "lb": 20.7, "group": 3, "has_nr": 1, "rsrp": -95.0, "ss_rsrp": -98.6, "violated": true}, {"id": 14, "actual": 179.8, "pred": 49.8, "lb": 26.2, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -102.1, "violated": false}, {"id": 15, "actual": 158.6, "pred": 34.3, "lb": 10.7, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -104.7, "violated": false}, {"id": 16, "actual": 33.6, "pred": 34.3, "lb": 10.7, "group": 3, "has_nr": 1, "rsrp": -88.0, "ss_rsrp": -104.9, "violated": false}, {"id": 17, "actual": 26.1, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -87.0, "ss_rsrp": null, "violated": false}, {"id": 18, "actual": 30.3, "pred": 17.8, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -88.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 39.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -88.0, "ss_rsrp": null, "violated": false}, {"id": 20, "actual": 24.0, "pred": 43.0, "lb": 19.4, "group": 3, "has_nr": 1, "rsrp": -86.0, "ss_rsrp": -101.5, "violated": false}, {"id": 21, "actual": 25.7, "pred": 18.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 22, "actual": 31.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 23, "actual": 33.5, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -86.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 30.6, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 25, "actual": 10.3, "pred": 34.3, "lb": 10.7, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -107.9, "violated": true}], "K_5": [{"id": 1, "actual": 24.7, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -82.0, "ss_rsrp": -99.2, "violated": true}, {"id": 2, "actual": 18.5, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -84.0, "ss_rsrp": null, "violated": false}, {"id": 3, "actual": 20.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 4, "actual": 17.7, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 0.0, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 12.9, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -83.0, "ss_rsrp": -99.6, "violated": true}, {"id": 7, "actual": 16.3, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 25.8, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 48.1, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 7.4, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 11, "actual": 5.3, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 12, "actual": 107.8, "pred": 1.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 0.0, "pred": 44.2, "lb": 20.7, "group": 3, "has_nr": 1, "rsrp": -95.0, "ss_rsrp": -98.6, "violated": true}, {"id": 14, "actual": 179.8, "pred": 49.8, "lb": 26.2, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -102.1, "violated": false}, {"id": 15, "actual": 158.6, "pred": 34.3, "lb": 10.7, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -104.7, "violated": false}, {"id": 16, "actual": 33.6, "pred": 34.3, "lb": 10.7, "group": 3, "has_nr": 1, "rsrp": -88.0, "ss_rsrp": -104.9, "violated": false}, {"id": 17, "actual": 26.1, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -87.0, "ss_rsrp": null, "violated": false}, {"id": 18, "actual": 30.3, "pred": 17.8, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -88.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 39.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -88.0, "ss_rsrp": null, "violated": false}, {"id": 20, "actual": 24.0, "pred": 43.0, "lb": 19.4, "group": 3, "has_nr": 1, "rsrp": -86.0, "ss_rsrp": -101.5, "violated": false}, {"id": 21, "actual": 25.7, "pred": 18.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 22, "actual": 31.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 23, "actual": 33.5, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -86.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 30.6, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 25, "actual": 10.3, "pred": 34.3, "lb": 10.7, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -107.9, "violated": true}], "K_10": [{"id": 1, "actual": 24.7, "pred": 49.3, "lb": 22.7, "group": 3, "has_nr": 1, "rsrp": -82.0, "ss_rsrp": -99.2, "violated": false}, {"id": 2, "actual": 18.5, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -84.0, "ss_rsrp": null, "violated": false}, {"id": 3, "actual": 20.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 4, "actual": 17.7, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 0.0, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 12.9, "pred": 49.3, "lb": 22.7, "group": 3, "has_nr": 1, "rsrp": -83.0, "ss_rsrp": -99.6, "violated": true}, {"id": 7, "actual": 16.3, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 25.8, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 48.1, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 7.4, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 11, "actual": 5.3, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 12, "actual": 107.8, "pred": 1.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 0.0, "pred": 44.2, "lb": 17.6, "group": 3, "has_nr": 1, "rsrp": -95.0, "ss_rsrp": -98.6, "violated": true}, {"id": 14, "actual": 179.8, "pred": 49.8, "lb": 23.1, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -102.1, "violated": false}, {"id": 15, "actual": 158.6, "pred": 34.3, "lb": 7.6, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -104.7, "violated": false}, {"id": 16, "actual": 33.6, "pred": 34.3, "lb": 7.6, "group": 3, "has_nr": 1, "rsrp": -88.0, "ss_rsrp": -104.9, "violated": false}, {"id": 17, "actual": 26.1, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -87.0, "ss_rsrp": null, "violated": false}, {"id": 18, "actual": 30.3, "pred": 17.8, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -88.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 39.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -88.0, "ss_rsrp": null, "violated": false}, {"id": 20, "actual": 24.0, "pred": 43.0, "lb": 16.3, "group": 3, "has_nr": 1, "rsrp": -86.0, "ss_rsrp": -101.5, "violated": false}, {"id": 21, "actual": 25.7, "pred": 18.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 22, "actual": 31.3, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 23, "actual": 33.5, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -86.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 30.6, "pred": 18.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -85.0, "ss_rsrp": null, "violated": false}, {"id": 25, "actual": 10.3, "pred": 34.3, "lb": 7.6, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -107.9, "violated": false}]}}, "E2": {"title": "Cross-Operator (Op2 2021)", "traces": {"K_0": [{"id": 1, "actual": 0.0, "pred": 24.0, "lb": 0.4, "group": 3, "has_nr": 1, "rsrp": -73.0, "ss_rsrp": -117.0, "violated": true}, {"id": 2, "actual": 9.9, "pred": 16.8, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -114.2, "violated": false}, {"id": 3, "actual": 16.1, "pred": 19.5, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -119.2, "violated": false}, {"id": 4, "actual": 0.0, "pred": 16.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 133.3, "pred": 26.4, "lb": 2.9, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -100.6, "violated": false}, {"id": 6, "actual": 0.0, "pred": 68.0, "lb": 44.4, "group": 3, "has_nr": 1, "rsrp": -66.0, "ss_rsrp": -101.3, "violated": true}, {"id": 7, "actual": 0.0, "pred": 27.8, "lb": 4.3, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -102.4, "violated": true}, {"id": 8, "actual": 158.2, "pred": 30.2, "lb": 6.6, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -96.7, "violated": false}, {"id": 9, "actual": 0.0, "pred": 48.2, "lb": 24.7, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -93.6, "violated": true}, {"id": 10, "actual": 2.9, "pred": 26.2, "lb": 2.7, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -117.5, "violated": false}, {"id": 11, "actual": 0.0, "pred": 17.1, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -120.3, "violated": false}, {"id": 12, "actual": 18.6, "pred": 31.3, "lb": 7.8, "group": 2, "has_nr": 0, "rsrp": -81.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 46.6, "pred": 21.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -89.0, "ss_rsrp": null, "violated": false}, {"id": 14, "actual": 53.6, "pred": 39.8, "lb": 16.3, "group": 3, "has_nr": 1, "rsrp": -83.0, "ss_rsrp": -105.8, "violated": false}, {"id": 15, "actual": 0.1, "pred": 29.0, "lb": 5.5, "group": 3, "has_nr": 1, "rsrp": -86.0, "ss_rsrp": -112.6, "violated": true}, {"id": 16, "actual": 5.4, "pred": 21.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -127.6, "violated": false}, {"id": 17, "actual": 10.1, "pred": 27.1, "lb": 3.5, "group": 3, "has_nr": 1, "rsrp": -94.0, "ss_rsrp": -125.3, "violated": false}, {"id": 18, "actual": 17.8, "pred": 1.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 2.2, "pred": 14.3, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -117.4, "violated": false}, {"id": 20, "actual": 3.7, "pred": 36.3, "lb": 12.7, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -109.4, "violated": true}, {"id": 21, "actual": 2.3, "pred": 21.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -99.0, "ss_rsrp": null, "violated": false}, {"id": 22, "actual": 7.4, "pred": 12.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -98.0, "ss_rsrp": null, "violated": false}, {"id": 23, "actual": 18.1, "pred": 8.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -79.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 0.1, "pred": 3.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 25, "actual": 3.7, "pred": 3.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -95.0, "ss_rsrp": null, "violated": false}], "K_2": [{"id": 1, "actual": 0.0, "pred": 24.0, "lb": 0.4, "group": 3, "has_nr": 1, "rsrp": -73.0, "ss_rsrp": -117.0, "violated": true}, {"id": 2, "actual": 9.9, "pred": 16.8, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -114.2, "violated": false}, {"id": 3, "actual": 16.1, "pred": 19.5, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -119.2, "violated": false}, {"id": 4, "actual": 0.0, "pred": 16.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 133.3, "pred": 26.4, "lb": 2.9, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -100.6, "violated": false}, {"id": 6, "actual": 0.0, "pred": 68.0, "lb": 44.4, "group": 3, "has_nr": 1, "rsrp": -66.0, "ss_rsrp": -101.3, "violated": true}, {"id": 7, "actual": 0.0, "pred": 27.8, "lb": 4.3, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -102.4, "violated": true}, {"id": 8, "actual": 158.2, "pred": 30.2, "lb": 6.6, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -96.7, "violated": false}, {"id": 9, "actual": 0.0, "pred": 48.2, "lb": 24.7, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -93.6, "violated": true}, {"id": 10, "actual": 2.9, "pred": 26.2, "lb": 2.7, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -117.5, "violated": false}, {"id": 11, "actual": 0.0, "pred": 17.1, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -120.3, "violated": false}, {"id": 12, "actual": 18.6, "pred": 31.3, "lb": 7.8, "group": 2, "has_nr": 0, "rsrp": -81.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 46.6, "pred": 21.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -89.0, "ss_rsrp": null, "violated": false}, {"id": 14, "actual": 53.6, "pred": 39.8, "lb": 16.3, "group": 3, "has_nr": 1, "rsrp": -83.0, "ss_rsrp": -105.8, "violated": false}, {"id": 15, "actual": 0.1, "pred": 29.0, "lb": 5.5, "group": 3, "has_nr": 1, "rsrp": -86.0, "ss_rsrp": -112.6, "violated": true}, {"id": 16, "actual": 5.4, "pred": 21.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -127.6, "violated": false}, {"id": 17, "actual": 10.1, "pred": 27.1, "lb": 3.5, "group": 3, "has_nr": 1, "rsrp": -94.0, "ss_rsrp": -125.3, "violated": false}, {"id": 18, "actual": 17.8, "pred": 1.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 2.2, "pred": 14.3, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -117.4, "violated": false}, {"id": 20, "actual": 3.7, "pred": 36.3, "lb": 12.7, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -109.4, "violated": true}, {"id": 21, "actual": 2.3, "pred": 21.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -99.0, "ss_rsrp": null, "violated": false}, {"id": 22, "actual": 7.4, "pred": 12.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -98.0, "ss_rsrp": null, "violated": false}, {"id": 23, "actual": 18.1, "pred": 8.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -79.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 0.1, "pred": 3.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 25, "actual": 3.7, "pred": 3.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -95.0, "ss_rsrp": null, "violated": false}], "K_5": [{"id": 1, "actual": 0.0, "pred": 24.0, "lb": 0.4, "group": 3, "has_nr": 1, "rsrp": -73.0, "ss_rsrp": -117.0, "violated": true}, {"id": 2, "actual": 9.9, "pred": 16.8, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -114.2, "violated": false}, {"id": 3, "actual": 16.1, "pred": 19.5, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -119.2, "violated": false}, {"id": 4, "actual": 0.0, "pred": 16.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 133.3, "pred": 26.4, "lb": 2.9, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -100.6, "violated": false}, {"id": 6, "actual": 0.0, "pred": 68.0, "lb": 44.4, "group": 3, "has_nr": 1, "rsrp": -66.0, "ss_rsrp": -101.3, "violated": true}, {"id": 7, "actual": 0.0, "pred": 27.8, "lb": 4.3, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -102.4, "violated": true}, {"id": 8, "actual": 158.2, "pred": 30.2, "lb": 6.6, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -96.7, "violated": false}, {"id": 9, "actual": 0.0, "pred": 48.2, "lb": 24.7, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -93.6, "violated": true}, {"id": 10, "actual": 2.9, "pred": 26.2, "lb": 2.7, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -117.5, "violated": false}, {"id": 11, "actual": 0.0, "pred": 17.1, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -120.3, "violated": false}, {"id": 12, "actual": 18.6, "pred": 31.3, "lb": 7.8, "group": 2, "has_nr": 0, "rsrp": -81.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 46.6, "pred": 21.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -89.0, "ss_rsrp": null, "violated": false}, {"id": 14, "actual": 53.6, "pred": 39.8, "lb": 16.3, "group": 3, "has_nr": 1, "rsrp": -83.0, "ss_rsrp": -105.8, "violated": false}, {"id": 15, "actual": 0.1, "pred": 29.0, "lb": 5.5, "group": 3, "has_nr": 1, "rsrp": -86.0, "ss_rsrp": -112.6, "violated": true}, {"id": 16, "actual": 5.4, "pred": 21.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -127.6, "violated": false}, {"id": 17, "actual": 10.1, "pred": 27.1, "lb": 3.5, "group": 3, "has_nr": 1, "rsrp": -94.0, "ss_rsrp": -125.3, "violated": false}, {"id": 18, "actual": 17.8, "pred": 1.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 2.2, "pred": 14.3, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -117.4, "violated": false}, {"id": 20, "actual": 3.7, "pred": 36.3, "lb": 12.7, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -109.4, "violated": true}, {"id": 21, "actual": 2.3, "pred": 21.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -99.0, "ss_rsrp": null, "violated": false}, {"id": 22, "actual": 7.4, "pred": 12.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -98.0, "ss_rsrp": null, "violated": false}, {"id": 23, "actual": 18.1, "pred": 8.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -79.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 0.1, "pred": 3.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 25, "actual": 3.7, "pred": 3.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -95.0, "ss_rsrp": null, "violated": false}], "K_10": [{"id": 1, "actual": 0.0, "pred": 24.0, "lb": 0.4, "group": 3, "has_nr": 1, "rsrp": -73.0, "ss_rsrp": -117.0, "violated": true}, {"id": 2, "actual": 9.9, "pred": 16.8, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -114.2, "violated": false}, {"id": 3, "actual": 16.1, "pred": 19.5, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -119.2, "violated": false}, {"id": 4, "actual": 0.0, "pred": 16.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 133.3, "pred": 26.4, "lb": 2.9, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -100.6, "violated": false}, {"id": 6, "actual": 0.0, "pred": 68.0, "lb": 44.4, "group": 3, "has_nr": 1, "rsrp": -66.0, "ss_rsrp": -101.3, "violated": true}, {"id": 7, "actual": 0.0, "pred": 27.8, "lb": 4.3, "group": 3, "has_nr": 1, "rsrp": -85.0, "ss_rsrp": -102.4, "violated": true}, {"id": 8, "actual": 158.2, "pred": 30.2, "lb": 6.6, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -96.7, "violated": false}, {"id": 9, "actual": 0.0, "pred": 48.2, "lb": 24.7, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -93.6, "violated": true}, {"id": 10, "actual": 2.9, "pred": 26.2, "lb": 2.7, "group": 3, "has_nr": 1, "rsrp": -89.0, "ss_rsrp": -117.5, "violated": false}, {"id": 11, "actual": 0.0, "pred": 17.1, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -120.3, "violated": false}, {"id": 12, "actual": 18.6, "pred": 31.3, "lb": 7.8, "group": 2, "has_nr": 0, "rsrp": -81.0, "ss_rsrp": null, "violated": false}, {"id": 13, "actual": 46.6, "pred": 21.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -89.0, "ss_rsrp": null, "violated": false}, {"id": 14, "actual": 53.6, "pred": 39.8, "lb": 16.3, "group": 3, "has_nr": 1, "rsrp": -83.0, "ss_rsrp": -105.8, "violated": false}, {"id": 15, "actual": 0.1, "pred": 29.0, "lb": 5.5, "group": 3, "has_nr": 1, "rsrp": -86.0, "ss_rsrp": -112.6, "violated": true}, {"id": 16, "actual": 5.4, "pred": 21.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -127.6, "violated": false}, {"id": 17, "actual": 10.1, "pred": 27.1, "lb": 3.5, "group": 3, "has_nr": 1, "rsrp": -94.0, "ss_rsrp": -125.3, "violated": false}, {"id": 18, "actual": 17.8, "pred": 1.9, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -82.0, "ss_rsrp": null, "violated": false}, {"id": 19, "actual": 2.2, "pred": 14.3, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -117.4, "violated": false}, {"id": 20, "actual": 3.7, "pred": 36.3, "lb": 12.7, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -109.4, "violated": true}, {"id": 21, "actual": 2.3, "pred": 21.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -99.0, "ss_rsrp": null, "violated": false}, {"id": 22, "actual": 7.4, "pred": 12.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -98.0, "ss_rsrp": null, "violated": false}, {"id": 23, "actual": 18.1, "pred": 8.7, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -79.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 0.1, "pred": 3.3, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 25, "actual": 3.7, "pred": 3.1, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -95.0, "ss_rsrp": null, "violated": false}]}}, "E3": {"title": "Joint Shift (Op2 2023)", "traces": {"K_0": [{"id": 1, "actual": 145.4, "pred": 33.2, "lb": 9.7, "group": 3, "has_nr": 1, "rsrp": -92.0, "ss_rsrp": -82.7, "violated": false}, {"id": 2, "actual": 13.8, "pred": 33.2, "lb": 9.7, "group": 3, "has_nr": 1, "rsrp": -92.0, "ss_rsrp": -83.5, "violated": false}, {"id": 3, "actual": 6.8, "pred": 14.7, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -83.4, "violated": false}, {"id": 4, "actual": 8.8, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 0.0, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 9.4, "pred": 49.2, "lb": 25.6, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -85.0, "violated": true}, {"id": 7, "actual": 5.7, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -92.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 6.3, "pred": 1.5, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -92.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 7.6, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 97.2, "pred": 33.2, "lb": 9.7, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -83.7, "violated": false}, {"id": 11, "actual": 127.2, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -90.0, "ss_rsrp": -86.7, "violated": false}, {"id": 12, "actual": 3.4, "pred": 49.8, "lb": 26.2, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -90.0, "violated": true}, {"id": 13, "actual": 107.9, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -103.6, "violated": false}, {"id": 14, "actual": 92.8, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -97.0, "ss_rsrp": -98.9, "violated": false}, {"id": 15, "actual": 127.3, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -97.0, "ss_rsrp": -100.6, "violated": false}, {"id": 16, "actual": 102.6, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -99.1, "violated": false}, {"id": 17, "actual": 138.2, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -100.3, "violated": false}, {"id": 18, "actual": 29.4, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -102.2, "violated": false}, {"id": 19, "actual": 104.6, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -101.0, "ss_rsrp": -97.9, "violated": false}, {"id": 20, "actual": 133.7, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -99.9, "violated": false}, {"id": 21, "actual": 156.4, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -94.8, "violated": false}, {"id": 22, "actual": 6.5, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -91.4, "violated": true}, {"id": 23, "actual": 5.7, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 10.0, "pred": 35.6, "lb": 12.0, "group": 3, "has_nr": 1, "rsrp": -112.0, "ss_rsrp": -115.7, "violated": true}, {"id": 25, "actual": 14.7, "pred": 3.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -112.0, "ss_rsrp": null, "violated": false}], "K_2": [{"id": 1, "actual": 145.4, "pred": 33.2, "lb": 9.7, "group": 3, "has_nr": 1, "rsrp": -92.0, "ss_rsrp": -82.7, "violated": false}, {"id": 2, "actual": 13.8, "pred": 33.2, "lb": 9.7, "group": 3, "has_nr": 1, "rsrp": -92.0, "ss_rsrp": -83.5, "violated": false}, {"id": 3, "actual": 6.8, "pred": 14.7, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -83.4, "violated": false}, {"id": 4, "actual": 8.8, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 0.0, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 9.4, "pred": 49.2, "lb": 25.6, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -85.0, "violated": true}, {"id": 7, "actual": 5.7, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -92.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 6.3, "pred": 1.5, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -92.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 7.6, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 97.2, "pred": 33.2, "lb": 9.7, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -83.7, "violated": false}, {"id": 11, "actual": 127.2, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -90.0, "ss_rsrp": -86.7, "violated": false}, {"id": 12, "actual": 3.4, "pred": 49.8, "lb": 26.2, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -90.0, "violated": true}, {"id": 13, "actual": 107.9, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -103.6, "violated": false}, {"id": 14, "actual": 92.8, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -97.0, "ss_rsrp": -98.9, "violated": false}, {"id": 15, "actual": 127.3, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -97.0, "ss_rsrp": -100.6, "violated": false}, {"id": 16, "actual": 102.6, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -99.1, "violated": false}, {"id": 17, "actual": 138.2, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -100.3, "violated": false}, {"id": 18, "actual": 29.4, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -102.2, "violated": false}, {"id": 19, "actual": 104.6, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -101.0, "ss_rsrp": -97.9, "violated": false}, {"id": 20, "actual": 133.7, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -99.9, "violated": false}, {"id": 21, "actual": 156.4, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -94.8, "violated": false}, {"id": 22, "actual": 6.5, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -91.4, "violated": true}, {"id": 23, "actual": 5.7, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 10.0, "pred": 35.6, "lb": 12.0, "group": 3, "has_nr": 1, "rsrp": -112.0, "ss_rsrp": -115.7, "violated": true}, {"id": 25, "actual": 14.7, "pred": 3.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -112.0, "ss_rsrp": null, "violated": false}], "K_5": [{"id": 1, "actual": 145.4, "pred": 33.2, "lb": 9.7, "group": 3, "has_nr": 1, "rsrp": -92.0, "ss_rsrp": -82.7, "violated": false}, {"id": 2, "actual": 13.8, "pred": 33.2, "lb": 9.7, "group": 3, "has_nr": 1, "rsrp": -92.0, "ss_rsrp": -83.5, "violated": false}, {"id": 3, "actual": 6.8, "pred": 14.7, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -83.4, "violated": false}, {"id": 4, "actual": 8.8, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 0.0, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 9.4, "pred": 49.2, "lb": 25.6, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -85.0, "violated": true}, {"id": 7, "actual": 5.7, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -92.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 6.3, "pred": 1.5, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -92.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 7.6, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 97.2, "pred": 33.2, "lb": 9.7, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -83.7, "violated": false}, {"id": 11, "actual": 127.2, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -90.0, "ss_rsrp": -86.7, "violated": false}, {"id": 12, "actual": 3.4, "pred": 49.8, "lb": 26.2, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -90.0, "violated": true}, {"id": 13, "actual": 107.9, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -103.6, "violated": false}, {"id": 14, "actual": 92.8, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -97.0, "ss_rsrp": -98.9, "violated": false}, {"id": 15, "actual": 127.3, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -97.0, "ss_rsrp": -100.6, "violated": false}, {"id": 16, "actual": 102.6, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -99.1, "violated": false}, {"id": 17, "actual": 138.2, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -100.3, "violated": false}, {"id": 18, "actual": 29.4, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -102.2, "violated": false}, {"id": 19, "actual": 104.6, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -101.0, "ss_rsrp": -97.9, "violated": false}, {"id": 20, "actual": 133.7, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -99.9, "violated": false}, {"id": 21, "actual": 156.4, "pred": 51.0, "lb": 27.5, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -94.8, "violated": false}, {"id": 22, "actual": 6.5, "pred": 49.3, "lb": 25.8, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -91.4, "violated": true}, {"id": 23, "actual": 5.7, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 10.0, "pred": 35.6, "lb": 12.0, "group": 3, "has_nr": 1, "rsrp": -112.0, "ss_rsrp": -115.7, "violated": true}, {"id": 25, "actual": 14.7, "pred": 3.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -112.0, "ss_rsrp": null, "violated": false}], "K_10": [{"id": 1, "actual": 145.4, "pred": 33.2, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -92.0, "ss_rsrp": -82.7, "violated": false}, {"id": 2, "actual": 13.8, "pred": 33.2, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -92.0, "ss_rsrp": -83.5, "violated": false}, {"id": 3, "actual": 6.8, "pred": 14.7, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -83.4, "violated": false}, {"id": 4, "actual": 8.8, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 5, "actual": 0.0, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 6, "actual": 9.4, "pred": 49.2, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -85.0, "violated": false}, {"id": 7, "actual": 5.7, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -92.0, "ss_rsrp": null, "violated": false}, {"id": 8, "actual": 6.3, "pred": 1.5, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -92.0, "ss_rsrp": null, "violated": false}, {"id": 9, "actual": 7.6, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -91.0, "ss_rsrp": null, "violated": false}, {"id": 10, "actual": 97.2, "pred": 33.2, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -93.0, "ss_rsrp": -83.7, "violated": false}, {"id": 11, "actual": 127.2, "pred": 49.3, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -90.0, "ss_rsrp": -86.7, "violated": false}, {"id": 12, "actual": 3.4, "pred": 49.8, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -91.0, "ss_rsrp": -90.0, "violated": false}, {"id": 13, "actual": 107.9, "pred": 51.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -103.6, "violated": false}, {"id": 14, "actual": 92.8, "pred": 51.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -97.0, "ss_rsrp": -98.9, "violated": false}, {"id": 15, "actual": 127.3, "pred": 51.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -97.0, "ss_rsrp": -100.6, "violated": false}, {"id": 16, "actual": 102.6, "pred": 51.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -99.1, "violated": false}, {"id": 17, "actual": 138.2, "pred": 51.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -100.3, "violated": false}, {"id": 18, "actual": 29.4, "pred": 51.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -98.0, "ss_rsrp": -102.2, "violated": false}, {"id": 19, "actual": 104.6, "pred": 51.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -101.0, "ss_rsrp": -97.9, "violated": false}, {"id": 20, "actual": 133.7, "pred": 51.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -99.9, "violated": false}, {"id": 21, "actual": 156.4, "pred": 51.0, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -99.0, "ss_rsrp": -94.8, "violated": false}, {"id": 22, "actual": 6.5, "pred": 49.3, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -87.0, "ss_rsrp": -91.4, "violated": false}, {"id": 23, "actual": 5.7, "pred": 0.0, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -83.0, "ss_rsrp": null, "violated": false}, {"id": 24, "actual": 10.0, "pred": 35.6, "lb": 0.0, "group": 3, "has_nr": 1, "rsrp": -112.0, "ss_rsrp": -115.7, "violated": false}, {"id": 25, "actual": 14.7, "pred": 3.6, "lb": 0.0, "group": 2, "has_nr": 0, "rsrp": -112.0, "ss_rsrp": null, "violated": false}]}}};
+
+let chartInstance = null;
+
+function updateDashboard() {
+  const regKey = document.getElementById('regimeSelect').value;
+  const budKey = document.getElementById('budgetSelect').value;
+  const data = sessionData[regKey].traces[budKey];
+  
+  // Update status bar
+  document.getElementById('regimeStatusText').innerText = sessionData[regKey].title;
+  const kVal = parseInt(budKey.replace('K_', ''));
+  if (kVal < 9) {
+    document.getElementById('budgetStateText').innerText = 'Source Fallback Active (K < 9, Lemma 1)';
+    document.getElementById('budgetStateText').style.color = 'var(--accent-orange)';
+  } else {
+    document.getElementById('budgetStateText').innerText = 'Target Conformal Active (K = ' + kVal + ')';
+    document.getElementById('budgetStateText').style.color = 'var(--accent-green)';
+  }
+  
+  const violations = data.filter(d => d.violated).length;
+  const vRate = ((violations / data.length) * 100).toFixed(1);
+  document.getElementById('currentVText').innerText = vRate + '% (' + violations + '/' + data.length + ')';
+  
+  // Render Chart
+  renderChart(data);
+  
+  // Render Table
+  renderTable(data);
+}
+
+function renderChart(data) {
+  const ctx = document.getElementById('timeSeriesChart').getContext('2d');
+  const labels = data.map(d => '#' + d.id);
+  const actuals = data.map(d => d.actual);
+  const preds = data.map(d => d.pred);
+  const lbs = data.map(d => d.lb);
+  const violationColors = data.map(d => d.violated ? 'rgba(248, 113, 113, 1)' : 'rgba(74, 222, 128, 0.8)');
+
+  if (chartInstance) chartInstance.destroy();
+
+  chartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Delivered Downlink Throughput (Actual Mbps)',
+          data: actuals,
+          borderColor: '#f8fafc',
+          backgroundColor: '#f8fafc',
+          borderWidth: 2,
+          pointRadius: 4,
+          tension: 0.1
+        },
+        {
+          label: 'Uncalibrated Point Prediction (HistGBM)',
+          data: preds,
+          borderColor: '#f87171',
+          borderDash: [5, 5],
+          backgroundColor: 'transparent',
+          borderWidth: 1.5,
+          pointRadius: 3
+        },
+        {
+          label: 'Conformal Lower Bound (Safe Guarantee)',
+          data: lbs,
+          borderColor: '#4ade80',
+          backgroundColor: 'rgba(74, 222, 128, 0.1)',
+          fill: true,
+          borderWidth: 2,
+          pointBackgroundColor: violationColors,
+          pointRadius: 5
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: { color: '#94a3b8', font: { family: 'Inter', size: 12 } }
+        },
+        tooltip: {
+          callbacks: {
+            afterBody: function(context) {
+              const idx = context[0].dataIndex;
+              const d = data[idx];
+              return 'Status: ' + (d.violated ? 'VIOLATION' : 'SAFE') + '\nRadio: ' + (d.has_nr ? '5G EN-DC' : 'LTE-Only');
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: '#334155' },
+          ticks: { color: '#94a3b8' }
+        },
+        y: {
+          grid: { color: '#334155' },
+          ticks: { color: '#94a3b8' },
+          title: { display: true, text: 'Throughput (Mbps)', color: '#94a3b8' }
+        }
+      }
+    }
+  });
+}
+
+function renderTable(data) {
+  const tbody = document.getElementById('traceTableBody');
+  tbody.innerHTML = '';
+  const rows = data.slice(0, 15);
+  for (const r of rows) {
+    const tr = document.createElement('tr');
+    const radioTag = r.has_nr ? '<span class="tag tag-5g">Dual LTE+NR</span>' : '<span class="tag tag-lte">LTE-Only (Missing NR)</span>';
+    const statusTag = r.violated ? '<span class="tag tag-violation">VIOLATION</span>' : '<span class="tag tag-safe">SAFE</span>';
+    const rsrpText = r.rsrp !== null ? r.rsrp + ' dBm' : 'Missing';
+    const ssRsrpText = r.ss_rsrp !== null ? r.ss_rsrp + ' dBm' : 'Unobserved (4G)';
+    
+    tr.innerHTML = `
+      <td><strong>Session #${r.id}</strong></td>
+      <td>${radioTag}</td>
+      <td>${rsrpText}</td>
+      <td>${ssRsrpText}</td>
+      <td>${r.pred} Mbps</td>
+      <td style="color: var(--accent-green); font-weight: 600;">${r.lb} Mbps</td>
+      <td><strong>${r.actual} Mbps</strong></td>
+      <td>${statusTag}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  updateDashboard();
+});
+</script>
+</body>
+</html>

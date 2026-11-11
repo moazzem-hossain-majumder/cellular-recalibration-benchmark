@@ -1,0 +1,30 @@
+\begin{table*}[t]
+\centering
+\caption{Reliability and Supported-Rate Fraction across Transfer Regimes and Calibration Budgets ($K$ Sessions). Evaluated at nominal risk $\alpha=0.10$ ($V \le 0.10$). CS-CP uses target unlabeled density ratios to prevent small-sample stall collapse in E3.}
+\label{tab:main_benchmark}
+\begin{tabular}{llcccccccc}
+\hline
+\textbf{Regime} & \textbf{Method} & \multicolumn{2}{c}{\textbf{Budget $K=0$}} & \multicolumn{2}{c}{\textbf{Budget $K=2$}} & \multicolumn{2}{c}{\textbf{Budget $K=5$}} & \multicolumn{2}{c}{\textbf{Budget $K=10$}} \\
+ & & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ \\
+\hline
+E0 (Within-Domain) & Uncalibrated Point & 0.46 & 0.47 & 0.46 & 0.47 & 0.46 & 0.47 & 0.46 & 0.47 \\
+ & Global Conformal & 0.10 & 0.16 & 0.10 & 0.16 & 0.10 & 0.16 & 0.05 & 0.08 \\
+ & \textbf{Proposed Missingness-Aware} & \textbf{0.10} & \textbf{0.16} & \textbf{0.10} & \textbf{0.16} & \textbf{0.10} & \textbf{0.16} & \textbf{0.10} & \textbf{0.16} \\
+\hline
+E1 (Temporal Shift) & Uncalibrated Point & 0.27 & 0.42 & 0.27 & 0.42 & 0.27 & 0.42 & 0.27 & 0.42 \\
+(2020 $\to$ 2023) & Global Conformal & 0.12 & 0.13 & 0.12 & 0.13 & 0.12 & 0.13 & 0.07 & 0.11 \\
+ & Proposed Missingness-Aware & 0.12 & 0.13 & 0.12 & 0.13 & 0.12 & 0.13 & 0.08 & 0.11 \\
+ & \textbf{Covariate-Shift Conformal (CS-CP)} & \multicolumn{6}{c}{--- Target Unlabeled Density-Weighted ---} & \textbf{0.05} & \textbf{0.09} \\
+\hline
+E2 (Cross-Operator) & Uncalibrated Point & 0.61 & 0.52 & 0.61 & 0.52 & 0.61 & 0.52 & 0.61 & 0.52 \\
+(Op1 $\to$ Op2) & Global Conformal & 0.09 & 0.18 & 0.09 & 0.18 & 0.09 & 0.18 & 0.09 & 0.20 \\
+ & Proposed Missingness-Aware & 0.09 & 0.18 & 0.09 & 0.18 & 0.09 & 0.18 & 0.09 & 0.18 \\
+ & \textbf{Covariate-Shift Conformal (CS-CP)} & \multicolumn{6}{c}{--- Target Unlabeled Density-Weighted ---} & \textbf{0.06} & \textbf{0.12} \\
+\hline
+E3 (Joint Shift) & Uncalibrated Point & 0.26 & 0.40 & 0.26 & 0.40 & 0.26 & 0.40 & 0.26 & 0.40 \\
+(Op1 $\to$ Op2 + Campaign) & Global Conformal & 0.08 & 0.15 & 0.08 & 0.15 & 0.08 & 0.15 & 0.00 & 0.01 \\
+ & Proposed Missingness-Aware & 0.08 & 0.15 & 0.08 & 0.15 & 0.08 & 0.15 & 0.00 & 0.01 \\
+ & \textbf{Covariate-Shift Conformal (CS-CP)} & \multicolumn{6}{c}{--- Target Unlabeled Density-Weighted ---} & \textbf{0.08} & \textbf{0.11} \\
+\hline
+\end{tabular}
+\end{table*}

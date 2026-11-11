@@ -1,0 +1,23 @@
+{
+  "E1_CampaignTransfer": {
+    "violation_rate": 0.0504,
+    "supported_fraction": 0.0852,
+    "mean_overcommitment": 0.311,
+    "mean_weight": 0.4604,
+    "max_weight": 2.4679
+  },
+  "E2_CrossOperator": {
+    "violation_rate": 0.0625,
+    "supported_fraction": 0.1185,
+    "mean_overcommitment": 0.4927,
+    "mean_weight": 4.059,
+    "max_weight": 10.0
+  },
+  "E3_JointShift": {
+    "violation_rate": 0.0777,
+    "supported_fraction": 0.1111,
+    "mean_overcommitment": 0.6243,
+    "mean_weight": 1.1237,
+    "max_weight": 3.517
+  }
+}
