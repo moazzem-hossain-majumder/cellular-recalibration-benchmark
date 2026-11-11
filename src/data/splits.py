@@ -28,10 +28,17 @@ def partition_by_chronological_days(df: pd.DataFrame, fractions: Tuple[float, ..
     # Calculate cutoff indices
     cutoffs = []
     cum = 0.0
-    for frac in fractions[:-1]:
+    previous_cut = 0
+    for i, frac in enumerate(fractions[:-1]):
         cum += frac
-        idx = max(1, int(round(cum * n_dates)))
+        # Keep every partition non-empty when there are enough collection days;
+        # Python's round-to-even can otherwise create duplicate cut points.
+        remaining_partitions = len(fractions) - i - 1
+        proposed = int(round(cum * n_dates))
+        idx = max(previous_cut + 1, proposed)
+        idx = min(idx, n_dates - remaining_partitions)
         cutoffs.append(idx)
+        previous_cut = idx
         
     splits = []
     start_idx = 0
