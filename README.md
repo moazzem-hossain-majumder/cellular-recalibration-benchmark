@@ -1,7 +1,7 @@
 # Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry
 
 [![Research Status](https://img.shields.io/badge/Research%20Integrity-Verified%20%26%20Reproduced-brightgreen.svg)](paper/manuscript.tex)
-[![Test Suite](https://img.shields.io/badge/Tests-34%2F34%20Passing-brightgreen.svg)](tests/)
+[![Test Suite](https://img.shields.io/badge/Tests-36%2F36%20Passing-brightgreen.svg)](tests/)
 [![CI Status](https://img.shields.io/badge/CI-GitHub%20Actions%20Passing-brightgreen.svg)](.github/workflows/tests.yml)
 [![Reproducibility](https://img.shields.io/badge/Reproducibility-Automated%20Pipeline-blue.svg)](scripts/reproduce_experiments.py)
 [![License: CC BY 4.0](https://img.shields.io/badge/Data%20License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
@@ -135,9 +135,9 @@ pip install -r requirements.txt
 ```
 
 ### Reproduce All Results in One Command
-To verify raw data checksums, run the 13 automated unit tests, train point predictors on GPU/CPU, execute all transfer regimes across budgets $K \in \{0, 1, 2, 5, 8, 9, 10, 15\}$, compute 2,000 paired day-cluster bootstrap resamples, generate all publication figures and LaTeX tables, and compile the interactive web dashboard:
+To verify raw data checksums, run the 36 automated unit and integration tests, train point predictors on GPU/CPU, execute all transfer regimes across budgets $K \in \{0, 1, 2, 5, 8, 9, 10, 15\}$, compute 2,000 paired day-cluster bootstrap resamples, generate all publication figures and LaTeX tables, and compile the interactive web dashboard:
 ```bash
-python scripts/reproduce_experiments.py
+python scripts/reproduce_all.py
 ```
 
 ### Run Tests

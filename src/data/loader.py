@@ -11,6 +11,51 @@ def clean_numeric(series: pd.Series) -> pd.Series:
     """Convert string series with '?' sentinels to float."""
     return pd.to_numeric(series.replace('?', np.nan), errors='coerce')
 
+def segment_ookla_speedtests(series: pd.Series,
+                            diff_thresh: float = -5.0,
+                            val_thresh: float = 5.0,
+                            method: str = "reset") -> pd.Series:
+    """Identify discrete Ookla Speedtest session boundaries.
+    
+    Args:
+        series: Numeric series of throughput measurements over time.
+        diff_thresh: Throughput drop threshold for reset detection (default: -5.0 Mbps).
+        val_thresh: Absolute throughput ceiling after reset (default: 5.0 Mbps).
+        method: Segmentation strategy ('reset' or 'relative_drop').
+    
+    Returns:
+        Series of integer session IDs (cumsum).
+    """
+    if method == "reset":
+        is_reset = (series.diff() < diff_thresh) & (series < val_thresh)
+    elif method == "relative_drop":
+        is_reset = (series.diff() < -2.0) & (series < 1.0)
+    else:
+        raise ValueError(f"Unknown segmentation method: {method}")
+    return is_reset.cumsum()
+
+def filter_causal_forecast_instances(df: pd.DataFrame, window_seconds: float = 60.0) -> pd.DataFrame:
+    """Enforce strict causal lag freshness, non-negativity, and valid target labels.
+    
+    1. lag_age_s must be non-null and non-negative (reject acausal clock drift / future leakage).
+    2. lag_age_s must be <= window_seconds (reject stale historical memory).
+    3. target_y must be valid and non-null (exclude missing targets from supervised forecasting).
+    
+    Args:
+        df: DataFrame containing 'lag_age_s' and 'target_y' columns.
+        window_seconds: Maximum permissible lookback horizon in seconds (default: 60s).
+    
+    Returns:
+        Filtered DataFrame free of acausal clock drift, stale historical lags, or missing targets.
+    """
+    valid_mask = (
+        pd.notna(df['lag_age_s']) &
+        (df['lag_age_s'] >= 0.0) &
+        (df['lag_age_s'] <= float(window_seconds)) &
+        pd.notna(df['target_y'])
+    )
+    return df[valid_mask].copy().reset_index(drop=True)
+
 def load_raw_8224890(csv_path: Path = None) -> pd.DataFrame:
     """Load and parse earlier campaign (Zenodo 8224890) CSV."""
     if csv_path is None:
@@ -166,17 +211,7 @@ def extract_sessions_8224890(df: pd.DataFrame, window_seconds: int = 60) -> Tupl
         })
 
     fdf = pd.DataFrame(forecast_rows)
-    # Strictly enforce causal validity and [0, window_seconds] freshness:
-    # 1. lag_age_s must be non-null and non-negative (reject acausal clock drift / future leakage)
-    # 2. lag_age_s must be <= window_seconds (reject stale historical memory)
-    # 3. target_y must be valid and non-null (exclude missing targets from supervised forecasting)
-    valid_mask = (
-        pd.notna(fdf['lag_age_s']) &
-        (fdf['lag_age_s'] >= 0.0) &
-        (fdf['lag_age_s'] <= float(window_seconds)) &
-        pd.notna(fdf['target_y'])
-    )
-    fdf = fdf[valid_mask].copy().reset_index(drop=True)
+    fdf = filter_causal_forecast_instances(fdf, window_seconds=window_seconds)
     return sdf, fdf
 
 def load_14073311_ookla(extract_dir: Path = None, window_seconds: int = 60) -> pd.DataFrame:
@@ -236,8 +271,7 @@ def load_14073311_ookla(extract_dir: Path = None, window_seconds: int = 60) -> p
             sub['val_mbps'] = clean_numeric(sub[m_col]) * scale
             
             # Identify test segments by resets: drop > 5 Mbps to < 5 Mbps
-            is_reset = (sub['val_mbps'].diff() < -5.0) & (sub['val_mbps'] < 5.0)
-            sub['test_id'] = is_reset.cumsum()
+            sub['test_id'] = segment_ookla_speedtests(sub['val_mbps'], diff_thresh=-5.0, val_thresh=5.0)
             
             # Group by test_id
             for tid, test_rows in sub.groupby('test_id'):
@@ -303,17 +337,7 @@ def load_14073311_ookla(extract_dir: Path = None, window_seconds: int = 60) -> p
             causal_rows.append(curr)
             
     fdf = pd.DataFrame(causal_rows)
-    # Strictly enforce causal validity and [0, window_seconds] freshness:
-    # 1. lag_age_s must be non-null and non-negative (reject acausal clock drift / future leakage)
-    # 2. lag_age_s must be <= window_seconds (reject stale historical memory)
-    # 3. target_y must be valid and non-null (exclude missing targets from supervised forecasting)
-    valid_mask = (
-        pd.notna(fdf['lag_age_s']) &
-        (fdf['lag_age_s'] >= 0.0) &
-        (fdf['lag_age_s'] <= float(window_seconds)) &
-        pd.notna(fdf['target_y'])
-    )
-    fdf = fdf[valid_mask].copy().reset_index(drop=True)
+    fdf = filter_causal_forecast_instances(fdf, window_seconds=window_seconds)
     fdf['session_id'] = np.arange(10000, 10000 + len(fdf))
     return fdf
 

@@ -90,6 +90,13 @@ def create_experiment_splits(source_df: pd.DataFrame,
     elif regime is not None:
         within_domain = regime.startswith('E0') or 'within' in regime.lower()
     else:
+        import warnings
+        warnings.warn(
+            "Neither 'experiment_type', 'regime', nor 'is_within_domain' was explicitly provided to create_experiment_splits(). "
+            "Falling back to dataframe matching heuristic. Please pass experiment_type='within_domain' or 'transfer' explicitly.",
+            UserWarning,
+            stacklevel=2
+        )
         # Detect E0 by shared dataframe identity or exact session/date set match
         if source_df is target_df:
             within_domain = True

@@ -353,7 +353,7 @@ Fig.~\ref{fig:fig5} illustrates the normalized operational SLA loss $\text{Cost}
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.92\columnwidth]{figures/fig5_sla_cost_curve.pdf}
-\caption{Operational SLA economic cost versus violation penalty weight $\lambda$. Conformal recalibration dominates uncalibrated predictors for all penalty regimes with $\lambda \ge 0.35$, minimizing total operational loss under BTRC QoS mandates.}
+\caption{Operational SLA economic cost versus violation penalty weight $\lambda$. Conformal recalibration dominates uncalibrated predictors for all penalty regimes with $\lambda \ge 0.35$, minimizing total operational loss across representative regulatory and commercial SLA penalty regimes (including strict mobile broadband QoS benchmarks).}
 \label{fig:fig5}
 \end{figure}
 
@@ -366,10 +366,14 @@ The empirical conclusions from our benchmark translate into concrete, actionable
 \end{enumerate}
 
 \section{Limitations and Threats to Validity}
+While our experimental benchmark demonstrates significant reliability improvements and formalizes small-sample recalibration thresholds, several methodological and operational limitations must be explicitly acknowledged:
 \begin{itemize}
-    \item \textbf{Geographical Specificity:} Measurements were collected in urban European environments (Rome). Propagation characteristics in dense Asian megacities (e.g., Dhaka) or rural topographies will exhibit distinct multi-path and clutter profiles.
-    \item \textbf{Offline Proxy:} Supported-rate fraction $U$ is an offline capacity proxy, not a live scheduler modification or user satisfaction metric.
-    \item \textbf{Protocol Dependence:} Analysis focuses on HTTP/TCP Speedtest sessions; streaming video protocols with dynamic DASH rate switching may exhibit different client-server feedback loops.
+    \item \textbf{Geographical and Environmental Specificity:} All empirical measurement traces were collected in metropolitan Rome, Italy across commercial deployments. Cellular propagation channels in dense Asian megacities (e.g., Dhaka, Bangladesh), high-rise urban canyons, or rural topographies will exhibit distinct multi-path scattering, building penetration losses, and user density profiles. Applications of our framework to other geographic regions (such as Bangladesh) represent prospective use-cases that require dedicated local empirical validation.
+    \item \textbf{Limited Independent Cluster Support:} Because drive-test measurements exhibit strong intra-day spatial and temporal autocorrelation, the calendar collection date represents the true unit of statistical independence. In Regime E0, the fixed test suffix contains only $G = 2$ distinct calendar dates, rendering paired cluster bootstrap confidence intervals degenerate ($[0.0, 0.0]$); E0 bootstrap estimates must therefore be interpreted as exploratory. While Regimes E1--E3 contain $G \in [7, 8]$ clusters, asymptotic cluster-robust inference typically benefits from larger cluster counts ($G \ge 30$).
+    \item \textbf{Heuristic Session Segmentation in 2023 Traces:} While Dataset 1 (2020--2021) contains explicit hardware-logged completion markers (\texttt{DQA Result}), Dataset 2 (2023) required session boundary reconstruction using a throughput-reset heuristic ($\Delta y < -5.0\text{ Mbps}, y < 5.0\text{ Mbps}$). Although our validation confirms an exact 1-to-1 match with active throughput bursts, tests that terminate with throughput decayed below 5.0~Mbps can occasionally merge with adjacent sessions.
+    \item \textbf{Group Sparsity and the Coverage-Utility Trade-off:} At minimal calibration budgets ($K=10$), stratifying residuals into subgroups (LTE-only vs. Dual LTE+NR) thins sample support to $N_g \approx 4\text{--}6$ sessions per group. This finite-sample thinning increases quantile variance, causing Grouped Conformal to exceed the nominal 10\% violation threshold in E1 ($V=0.122$) and E2 ($V=0.164$) while unlocking $10.5\times$ higher capacity commitment ($U=0.189$ vs. $0.018$). Operators must navigate this trade-off based on their SLA penalty structure.
+    \item \textbf{Heuristic Weight Clipping in CS-CP:} In Covariate-Shift Conformal Prediction, density ratio weights estimated via logistic discrimination are clipped to $[0.01, 100.0]$ to prevent outlier variance explosion. While this regularizer is operationally necessary for stability, clipping modifies the empirical distribution and cannot be claimed to strictly preserve asymptotic distribution-free coverage guarantees without additional theoretical bounds.
+    \item \textbf{Offline Evaluation vs. Closed-Loop Scheduler Control:} The supported-rate fraction $U$ serves as an offline capacity proxy. Deploying conformal lower bounds into real-time RAN MAC schedulers, edge MEC admission control, or client-side DASH bitrate adaptation will introduce dynamic client-network feedback loops that require live over-the-air testbed validation.
 \end{itemize}
 
 \section{Conclusion}
