@@ -24,7 +24,12 @@ def partition_by_chronological_days(df: pd.DataFrame, fractions: Tuple[float, ..
         
     date_order = df_temp.groupby('date')['t_start'].min().sort_values().index.tolist()
     n_dates = len(date_order)
-    
+    if n_dates < len(fractions):
+        raise ValueError(
+            f"Cannot create {len(fractions)} non-empty chronological partitions "
+            f"from only {n_dates} collection dates."
+        )
+
     # Calculate cutoff indices
     cutoffs = []
     cum = 0.0
