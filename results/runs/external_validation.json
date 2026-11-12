@@ -1,0 +1,12 @@
+{
+  "date_local": "2026-11-12",
+  "scope": "Irish benchmark reproduction, trace exclusions, Rome lag diagnostics and publication rebuild",
+  "analysis_archive_sha256": "f0ca9183c28a55df9e655521eb31d4754d5b88d5b523c6c93e673ea5f8c06f37",
+  "completed_irish_splits": 30,
+  "unique_test_traces": 83,
+  "validated_manuscript_tables": 9,
+  "manuscript_pages": 7,
+  "package_pages": 8,
+  "tests": {"passed": 55, "report": "results/runs/final_tests.xml"},
+  "external_environment": "results/exploratory/sirhan_external/run.json"
+}

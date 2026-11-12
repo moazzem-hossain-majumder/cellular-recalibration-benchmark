@@ -8,7 +8,8 @@ across three segmentation strategies:
 
 Generates diagnostic report: results/diagnostics/session_segmentation_comparison.json.
 """
-from datetime import datetime
+import sys
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import numpy as np
@@ -18,28 +19,8 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / 'data/extracted/14073311/Active Performance Dataset - 1/Ookla Speedtests/Op1 and Op2 - Italy'
 OUTPUT_FILE = ROOT / 'results/diagnostics/session_segmentation_comparison.json'
 
-def clean_numeric(series: pd.Series) -> pd.Series:
-    """Convert string series with '?' sentinels to float."""
-    return pd.to_numeric(series.replace('?', np.nan), errors='coerce')
-
-def segment_ookla(series: pd.Series, method: str = 'reset', timestamps: pd.Series = None) -> pd.Series:
-    """Segment series into sessions using specified method."""
-    if method == 'reset':
-        is_boundary = (series.diff() < -5.0) & (series < 5.0)
-    elif method == 'relative_drop':
-        is_boundary = (series.diff() < -2.0) & (series < 1.0)
-    elif method == 'active_burst':
-        is_active = series > 1.0
-        active_start = is_active & (~is_active.shift(1, fill_value=False))
-        if timestamps is not None and len(timestamps) == len(series):
-            time_diffs = timestamps.diff().dt.total_seconds().fillna(0.0)
-            time_gap = time_diffs > 10.0
-            is_boundary = active_start | time_gap
-        else:
-            is_boundary = active_start
-    else:
-        raise ValueError(f"Unknown method: {method}")
-    return is_boundary.cumsum()
+sys.path.insert(0,str(ROOT))
+from src.data.loader import clean_numeric, segment_ookla_speedtests
 
 def run_segmentation_audit():
     print(f"Scanning directory: {DATA_DIR}")
@@ -101,7 +82,7 @@ def run_segmentation_audit():
                 for strat_name, method in [('threshold_reset', 'reset'),
                                            ('relative_drop', 'relative_drop'),
                                            ('active_burst', 'active_burst')]:
-                    test_ids = segment_ookla(sub_vals, method=method, timestamps=sub_times)
+                    test_ids = segment_ookla_speedtests(sub_vals, method=method, timestamps=sub_times)
                     n_sessions = int(test_ids.nunique())
                     op_stat['strategies'][strat_name] = {'sessions_detected': n_sessions}
                     strategy_metrics[strat_name]['session_counts'].append(n_sessions)
@@ -160,17 +141,17 @@ def run_segmentation_audit():
     
     output_payload = {
         'audit_metadata': {
-            'generated_at': datetime.utcnow().isoformat() + 'Z',
+            'generated_at': datetime.now(timezone.utc).isoformat(),
             'dataset_id': '14073311',
             'dataset_title': 'Chronicles 2023 Cellular Measurement Campaign',
             'total_files_audited': len(csv_files),
             'geographic_region': 'Rome, Italy',
-            'target_operators': ['Op1 (Iliad)', 'Op2 (TIM/Vodafone)'],
+            'target_operators': ['Op1', 'Op2'],
             'numeric_prevalidation': 'clean_numeric applied; NaN and negative values strictly filtered prior to segmentation'
         },
         'strategy_definitions': {
             'threshold_reset': {
-                'description': 'Speedtest boundary triggered by active download completion: throughput drop < -5.0 Mbps to below 5.0 Mbps ceiling.',
+                'description': 'Heuristic boundary: throughput drop < -5.0 Mbps to below 5.0 Mbps ceiling.',
                 'role': 'Benchmark Baseline (Primary Protocol)'
             },
             'relative_drop': {
@@ -178,7 +159,7 @@ def run_segmentation_audit():
                 'role': 'Sensitivity Comparison Strategy'
             },
             'active_burst': {
-                'description': 'Continuous active download activity > 1.0 Mbps delimited by idle periods exceeding 10.0 seconds.',
+                'description': 'Start on each upward crossing of 1 Mbps or retained-row timestamp gap over 10 s. Retain trailing inactive rows.',
                 'role': 'Continuous Duty Cycle Alternative'
             }
         },
@@ -201,4 +182,3 @@ def run_segmentation_audit():
 
 if __name__ == '__main__':
     run_segmentation_audit()
-

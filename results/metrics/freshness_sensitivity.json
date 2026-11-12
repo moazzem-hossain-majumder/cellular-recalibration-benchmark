@@ -7,7 +7,7 @@
       },
       "K_10": {
         "violation_rate": 0.0,
-        "supported_fraction": 0.0949
+        "supported_fraction": 0.0739
       }
     },
     "E2_CrossOperator": {
@@ -16,8 +16,8 @@
         "supported_fraction": 0.2455
       },
       "K_10": {
-        "violation_rate": 0.1875,
-        "supported_fraction": 0.2455
+        "violation_rate": 0.1562,
+        "supported_fraction": 0.216
       }
     },
     "E1_CampaignTransfer": {
@@ -26,8 +26,8 @@
         "supported_fraction": 0.3826
       },
       "K_10": {
-        "violation_rate": 0.1871,
-        "supported_fraction": 0.2516
+        "violation_rate": 0.0791,
+        "supported_fraction": 0.1212
       }
     }
   },
@@ -48,8 +48,8 @@
         "supported_fraction": 0.1785
       },
       "K_10": {
-        "violation_rate": 0.0859,
-        "supported_fraction": 0.1785
+        "violation_rate": 0.0898,
+        "supported_fraction": 0.1959
       }
     },
     "E1_CampaignTransfer": {
@@ -58,8 +58,8 @@
         "supported_fraction": 0.135
       },
       "K_10": {
-        "violation_rate": 0.0791,
-        "supported_fraction": 0.1117
+        "violation_rate": 0.0719,
+        "supported_fraction": 0.1092
       }
     }
   },
@@ -80,8 +80,8 @@
         "supported_fraction": 0.179
       },
       "K_10": {
-        "violation_rate": 0.0859,
-        "supported_fraction": 0.179
+        "violation_rate": 0.0898,
+        "supported_fraction": 0.1965
       }
     },
     "E1_CampaignTransfer": {
@@ -90,8 +90,8 @@
         "supported_fraction": 0.1587
       },
       "K_10": {
-        "violation_rate": 0.1223,
-        "supported_fraction": 0.1587
+        "violation_rate": 0.0791,
+        "supported_fraction": 0.1275
       }
     }
   }

@@ -93,6 +93,13 @@ def generate_web_demo():
     with open(ROOT / 'results/metrics/sla_cost_analysis.json') as f:
         sla_data = json.load(f)
 
+    def row(*cells):
+        return '<tr>'+''.join(f'<td>{v}</td>' for v in cells)+'</tr>'
+    profile_rows = ''.join(row(name, f"{v['val_mae']:.2f}", f"{v['val_rmse']:.2f}", f"{v['fit_time_seconds']:.3f} s", v.get('gpu_name','CPU')) for name,v in profiles.items())
+    cs_rows = ''.join(row(name, f"{v['violation_rate']:.2%}", f"{v['supported_fraction']:.2%}", 'Protocol A') for name,v in cs_results.items())
+    costs = sla_data['costs']
+    cost_rows = ''.join(row(w,f'{a:.4f}',f'{b:.4f}',f'{(a-b)/a:.1%}') for w,a,b in zip(sla_data['lambdas'],costs['Uncalibrated'],costs['Proposed_Missingness_Aware']) if w in [.35,.5,.8,1.])
+    point_rates = calib_df.loc[calib_df.method=='Uncalibrated','violation_rate']
     # HTML template
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -236,18 +243,18 @@ def generate_web_demo():
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Uncalibrated Failure</div>
-      <div class="kpi-val" style="color: var(--accent-red);">26% – 61%</div>
+      <div class="kpi-val" style="color: var(--accent-red);">{point_rates.min():.0%} – {point_rates.max():.0%}</div>
       <div class="kpi-sub">Empirical violations vs 10% risk target</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Conformal Safety Bound</div>
+      <div class="kpi-label">Finite target rank</div>
       <div class="kpi-val" style="color: var(--accent-green);">K &ge; 9</div>
-      <div class="kpi-sub">Lemma 1: Exact split-conformal threshold</div>
+      <div class="kpi-sub">At nominal error 0.10</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">GPU Profiling (RTX 4060)</div>
-      <div class="kpi-val" style="color: var(--accent-purple);">1.046s</div>
-      <div class="kpi-sub">60 epochs Deep ResNet (24.8 MB VRAM)</div>
+      <div class="kpi-val" style="color: var(--accent-purple);">{profiles['GPU_ThroughputResNet']['fit_time_seconds']:.3f}s</div>
+      <div class="kpi-sub">Measured fit time for the neural baseline</div>
     </div>
   </div>
 
@@ -295,7 +302,7 @@ def generate_web_demo():
     </div>
 
     <div class="alert-box">
-      <strong>Telecom Engineering Insight:</strong> When transferring across operators (E2) or campaigns (E1/E3), point predictions consistently overestimate throughput due to changed carrier configurations. The split-conformal lower bound contracts conservatively, ensuring fewer than 10% of sessions drop below the commitment line.
+      <strong>Telecom Engineering Insight:</strong> The chart displays the first 25 held-out sessions. The manuscript reports the full test suffix.
     </div>
   </div>
 
@@ -316,57 +323,16 @@ def generate_web_demo():
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><strong>Persistence (Lag Baseline)</strong></td>
-          <td>3.22</td>
-          <td>7.21</td>
-          <td>&lt; 0.001 s</td>
-          <td>Host CPU</td>
-        </tr>
-        <tr>
-          <td><strong>Ridge Regression (L2)</strong></td>
-          <td>6.03</td>
-          <td>8.78</td>
-          <td>0.033 s</td>
-          <td>Host CPU</td>
-        </tr>
-        <tr>
-          <td><strong>HistGradientBoosting (Primary)</strong></td>
-          <td><span style="color: var(--accent-green); font-weight: 600;">11.00</span></td>
-          <td><span style="color: var(--accent-green); font-weight: 600;">12.00</span></td>
-          <td>2.221 s</td>
-          <td>Host CPU (Native NaN Handling)</td>
-        </tr>
-        <tr>
-          <td><strong>BAMMO (Jacobson et al. 2025)</strong></td>
-          <td>15.46</td>
-          <td>23.86</td>
-          <td>0.311 s</td>
-          <td>Host CPU (Pattern Base Learners)</td>
-        </tr>
-        <tr>
-          <td><strong>Quantile GBM (p10 Pinball)</strong></td>
-          <td>5.01</td>
-          <td>8.68</td>
-          <td>0.067 s</td>
-          <td>Host CPU</td>
-        </tr>
-        <tr>
-          <td><strong>GPU ThroughputResNet (PyTorch)</strong></td>
-          <td>5.85</td>
-          <td>8.33</td>
-          <td>0.692 s</td>
-          <td><strong style="color: var(--accent-purple);">NVIDIA GeForce RTX 4060 (24.7 MB VRAM)</strong></td>
-        </tr>
-      </tbody>
+        {profile_rows}
+</tbody>
     </table>
   </div>
 
   <!-- Advanced Conformal Transfer & Operational Economics -->
   <div class="card">
     <div class="card-header">
-      <div class="card-title">Advanced Conformal Transfer & Operational Economics (Reviewer #2 Recommendations)</div>
-      <div style="font-size: 12px; color: var(--text-secondary);">Addressing Distribution Shift and Regulatory QoS Mandates</div>
+      <div class="card-title">Transfer calibration and offline cost</div>
+      <div style="font-size: 12px; color: var(--text-secondary);">Observed campaign measurements</div>
     </div>
     
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
@@ -381,13 +347,11 @@ def generate_web_demo():
             <tr><th>Transfer Regime</th><th>Violation Rate (V)</th><th>Supported Ratio (U)</th><th>Status</th></tr>
           </thead>
           <tbody>
-            <tr><td><strong>E1: Campaign Transfer</strong></td><td>5.0%</td><td>8.5%</td><td><span class="tag tag-safe">V &le; 10% Safe</span></td></tr>
-            <tr><td><strong>E2: Cross-Operator</strong></td><td>6.2%</td><td>11.9%</td><td><span class="tag tag-safe">V &le; 10% Safe</span></td></tr>
-            <tr><td><strong>E3: Joint Shift</strong></td><td><strong style="color: var(--accent-green);">8.7%</strong></td><td><strong style="color: var(--accent-blue);">11.2%</strong></td><td><span class="tag tag-safe">Outlier-Resilient</span></td></tr>
-          </tbody>
+            {cs_rows}
+</tbody>
         </table>
         <div style="margin-top: 10px; font-size: 11px; color: var(--text-secondary);">
-          *In E3, CS-CP preserves 11.2% supported capacity (vs 0.6% in split-conformal K=10) by weighting source scores rather than relying on a tiny target prefix corrupted by a zero-throughput network stall.
+          These empirical rates use calibration-pool covariates and clipped weights.
         </div>
       </div>
 
@@ -395,21 +359,18 @@ def generate_web_demo():
       <div style="background: #0f172a; padding: 18px; border-radius: 8px; border: 1px solid var(--border-color);">
         <h3 style="font-size: 15px; color: var(--accent-green); margin-bottom: 8px;">2. Operational SLA Loss: Cost(&lambda;) = &lambda; &middot; V + (1-&lambda;) &middot; (1-U)</h3>
         <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
-          Models financial tradeoff between SLA / BTRC QoS penalty risk (&lambda;) and under-utilized capacity (1-U).
+          Weights empirical violations and the unsupported fraction.
         </p>
         <table style="font-size: 12px;">
           <thead>
             <tr><th>Penalty Weight (&lambda;)</th><th>Uncalibrated</th><th>Proposed Calibrator</th><th>Cost Reduction</th></tr>
           </thead>
           <tbody>
-            <tr><td>&lambda; = 0.35 (Parity Threshold)</td><td>0.496</td><td>0.480</td><td>-3.2%</td></tr>
-            <tr><td>&lambda; = 0.50 (Standard SLA)</td><td>0.474</td><td>0.352</td><td><strong style="color: var(--accent-green);">-25.7%</strong></td></tr>
-            <tr><td>&lambda; = 0.80 (BTRC QoS Directives)</td><td>0.430</td><td>0.181</td><td><strong style="color: var(--accent-green);">-57.9%</strong></td></tr>
-            <tr><td>&lambda; = 1.00 (Zero-Tolerance Risk)</td><td>0.401</td><td>0.065</td><td><strong style="color: var(--accent-green);">-83.8%</strong></td></tr>
-          </tbody>
+            {cost_rows}
+</tbody>
         </table>
         <div style="margin-top: 10px; font-size: 11px; color: var(--text-secondary);">
-          *Conformal recalibration establishes complete dominance for &lambda; &ge; 0.35, slashing penalty exposure for Bangladesh operators (Grameenphone, Robi, Banglalink).
+          The cost averages the four observed regimes at ten target sessions.
         </div>
       </div>
     </div>
@@ -507,7 +468,7 @@ function renderChart(data) {{
           pointRadius: 3
         }},
         {{
-          label: 'Conformal Lower Bound (Safe Guarantee)',
+          label: 'Calibrated Lower Forecast',
           data: lbs,
           borderColor: '#4ade80',
           backgroundColor: 'rgba(74, 222, 128, 0.1)',

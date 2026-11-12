@@ -16,6 +16,8 @@ def compute_effective_sample_size(weights: np.ndarray) -> float:
 
 def compute_conformal_quantile(scores: np.ndarray, alpha: float = 0.10) -> float:
     """Compute (1 - alpha) conformal quantile of signed overprediction scores."""
+    if not 0 < alpha < 1:
+        raise ValueError('alpha must be between zero and one')
     n = len(scores)
     if n == 0:
         return float('inf')
@@ -68,6 +70,8 @@ class GroupedConformalCalibrator:
         scores = y_pred - y_true
         self.pooled_q = compute_conformal_quantile(scores, self.alpha)
         
+        self.group_quantiles.clear()
+        self.group_counts.clear()
         unique_groups = np.unique(group_ids)
         for g in unique_groups:
             mask = (group_ids == g)
@@ -94,6 +98,8 @@ class GroupedConformalCalibrator:
             g = int(group_ids[i])
             # Hierarchy: group quantile -> pooled target quantile -> source fallback
             q = self.group_quantiles.get(g, self.pooled_q)
+            if np.isinf(q):
+                q = self.pooled_q
             if np.isinf(q):
                 q = self.fallback_source_q
                 
@@ -257,5 +263,3 @@ class CovariateShiftConformalCalibrator:
                 "median": round(float(np.median(self.raw_test_weights)), 4) if len(self.raw_test_weights) else 0.0,
             }
         }
-
-

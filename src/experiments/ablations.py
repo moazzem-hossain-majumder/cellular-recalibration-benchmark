@@ -406,19 +406,14 @@ def run_sla_economic_loss_analysis() -> Dict:
     ax.plot(lambdas, sla_data['Global_Conformal'], '--b', linewidth=2, label='Global Conformal (K=10)')
     ax.plot(lambdas, sla_data['Proposed_Missingness_Aware'], '-g', linewidth=2.5, label='Proposed Missingness-Aware (K=10)')
     
-    ax.set_title('Operational SLA Economic Cost vs Violation Penalty Weight ($\\lambda$)', fontweight='bold')
-    ax.set_xlabel('Violation Penalty Weight $\\lambda$ ($0 = $ Throughput Focused, $1 = $ Zero-Risk SLA Enforcement)')
+    ax.set_title('Offline loss vs violation penalty weight ($\\lambda$)', fontweight='bold')
+    ax.set_xlabel('Violation Penalty Weight $\\lambda$ ($0 = $ Throughput Focused, $1 = $ Violation Weight Only)')
     ax.set_ylabel('Normalized Operational Loss: $\\text{Cost}(\\lambda)$')
     ax.set_xlim(0.0, 1.0)
-    ax.set_ylim(0.0, 0.9)
+    ax.set_ylim(0.0, 1.0)
     ax.grid(True, linestyle='--', alpha=0.5)
     ax.legend(loc='lower left', frameon=True)
     
-    # Annotate the crossover point
-    ax.annotate('Conformal Dominance\n($\\lambda > 0.35$)', xy=(0.4, 0.58), xytext=(0.45, 0.70),
-                arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=6),
-                fontsize=9, fontweight='bold', bbox=dict(boxstyle='round,pad=0.3', facecolor='#e2e8f0', alpha=0.8))
-                
     plt.tight_layout()
     fig.savefig(FIGURES_DIR / 'fig5_sla_cost_curve.pdf', bbox_inches='tight')
     fig.savefig(FIGURES_DIR / 'fig5_sla_cost_curve.png', dpi=300, bbox_inches='tight')
@@ -428,4 +423,3 @@ def run_sla_economic_loss_analysis() -> Dict:
 
 if __name__ == '__main__':
     run_ablations()
-

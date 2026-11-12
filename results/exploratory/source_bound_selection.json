@@ -1,0 +1,67 @@
+{
+  "source": "Earlier Op1",
+  "train": 57,
+  "calibration": 10,
+  "scoring": 32,
+  "scoring_dates": [
+    "06.01.2021"
+  ],
+  "candidates": [
+    {
+      "weight": 0.0,
+      "scale": "additive",
+      "n": 32,
+      "violations": 1,
+      "V": 0.03125,
+      "U": 0.11181277885906643
+    },
+    {
+      "weight": 0.0,
+      "scale": "log1p",
+      "n": 32,
+      "violations": 0,
+      "V": 0.0,
+      "U": 0.005942619478805449
+    },
+    {
+      "weight": 0.5,
+      "scale": "additive",
+      "n": 32,
+      "violations": 4,
+      "V": 0.125,
+      "U": 0.5254703378892205
+    },
+    {
+      "weight": 0.5,
+      "scale": "log1p",
+      "n": 32,
+      "violations": 0,
+      "V": 0.0,
+      "U": 0.05450125686479334
+    },
+    {
+      "weight": 1.0,
+      "scale": "additive",
+      "n": 32,
+      "violations": 5,
+      "V": 0.15625,
+      "U": 0.5713191334278935
+    },
+    {
+      "weight": 1.0,
+      "scale": "log1p",
+      "n": 32,
+      "violations": 8,
+      "V": 0.25,
+      "U": 0.6404563884889704
+    }
+  ],
+  "selected": {
+    "weight": 0.0,
+    "scale": "additive",
+    "n": 32,
+    "violations": 1,
+    "V": 0.03125,
+    "U": 0.11181277885906643
+  }
+}

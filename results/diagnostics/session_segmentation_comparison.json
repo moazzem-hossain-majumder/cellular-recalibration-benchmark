@@ -1,19 +1,19 @@
 {
   "audit_metadata": {
-    "generated_at": "2026-11-11T16:47:49.563824Z",
+    "generated_at": "2026-11-11T18:04:08.084092+00:00",
     "dataset_id": "14073311",
     "dataset_title": "Chronicles 2023 Cellular Measurement Campaign",
     "total_files_audited": 43,
     "geographic_region": "Rome, Italy",
     "target_operators": [
-      "Op1 (Iliad)",
-      "Op2 (TIM/Vodafone)"
+      "Op1",
+      "Op2"
     ],
     "numeric_prevalidation": "clean_numeric applied; NaN and negative values strictly filtered prior to segmentation"
   },
   "strategy_definitions": {
     "threshold_reset": {
-      "description": "Speedtest boundary triggered by active download completion: throughput drop < -5.0 Mbps to below 5.0 Mbps ceiling.",
+      "description": "Heuristic boundary: throughput drop < -5.0 Mbps to below 5.0 Mbps ceiling.",
       "role": "Benchmark Baseline (Primary Protocol)"
     },
     "relative_drop": {
@@ -21,7 +21,7 @@
       "role": "Sensitivity Comparison Strategy"
     },
     "active_burst": {
-      "description": "Continuous active download activity > 1.0 Mbps delimited by idle periods exceeding 10.0 seconds.",
+      "description": "Start on each upward crossing of 1 Mbps or retained-row timestamp gap over 10 s. Retain trailing inactive rows.",
       "role": "Continuous Duty Cycle Alternative"
     }
   },

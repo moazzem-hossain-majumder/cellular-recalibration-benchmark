@@ -1,6 +1,8 @@
 {
   "reset": {
     "total_extracted_sessions": 584,
+    "internal_gaps_over_10s": 1,
+    "segments_with_multiple_rising_edges": 131,
     "duration_distribution": {
       "min_s": 0.0,
       "median_s": 75.9985,
@@ -27,6 +29,8 @@
     "downstream_evaluation": {
       "e1_campaign_transfer": {
         "instance_count": 284,
+        "positive_endpoint_count": 270,
+        "violation_rate_positive_endpoints": 0.13333333333333333,
         "mae_histgbm": 24.56,
         "mae_persistence": 25.07,
         "conformal_violation_rate_k0": 0.1479,
@@ -34,6 +38,8 @@
       },
       "e3_joint_shift": {
         "instance_count": 214,
+        "positive_endpoint_count": 205,
+        "violation_rate_positive_endpoints": 0.22926829268292684,
         "mae_histgbm": 27.41,
         "mae_persistence": 24.08,
         "conformal_violation_rate_k0": 0.2523,
@@ -43,6 +49,8 @@
   },
   "relative_drop": {
     "total_extracted_sessions": 712,
+    "internal_gaps_over_10s": 1,
+    "segments_with_multiple_rising_edges": 107,
     "duration_distribution": {
       "min_s": 0.0,
       "median_s": 72.0,
@@ -69,6 +77,8 @@
     "downstream_evaluation": {
       "e1_campaign_transfer": {
         "instance_count": 336,
+        "positive_endpoint_count": 322,
+        "violation_rate_positive_endpoints": 0.11801242236024845,
         "mae_histgbm": 21.62,
         "mae_persistence": 21.8,
         "conformal_violation_rate_k0": 0.1339,
@@ -76,6 +86,8 @@
       },
       "e3_joint_shift": {
         "instance_count": 290,
+        "positive_endpoint_count": 281,
+        "violation_rate_positive_endpoints": 0.199288256227758,
         "mae_histgbm": 22.67,
         "mae_persistence": 19.98,
         "conformal_violation_rate_k0": 0.2172,
@@ -85,6 +97,8 @@
   },
   "active_burst": {
     "total_extracted_sessions": 930,
+    "internal_gaps_over_10s": 0,
+    "segments_with_multiple_rising_edges": 0,
     "duration_distribution": {
       "min_s": 0.5,
       "median_s": 53.0005,
@@ -111,6 +125,8 @@
     "downstream_evaluation": {
       "e1_campaign_transfer": {
         "instance_count": 415,
+        "positive_endpoint_count": 318,
+        "violation_rate_positive_endpoints": 0.3742138364779874,
         "mae_histgbm": 13.33,
         "mae_persistence": 1.4,
         "conformal_violation_rate_k0": 0.4024,
@@ -118,6 +134,8 @@
       },
       "e3_joint_shift": {
         "instance_count": 429,
+        "positive_endpoint_count": 372,
+        "violation_rate_positive_endpoints": 0.4650537634408602,
         "mae_histgbm": 14.99,
         "mae_persistence": 1.56,
         "conformal_violation_rate_k0": 0.4918,

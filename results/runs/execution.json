@@ -1,0 +1,85 @@
+[
+  {
+    "command": [
+      "python",
+      "scripts/prepare_ookla_traces.py"
+    ],
+    "start_utc": "2026-11-11T17:56:56.925606+00:00",
+    "end_utc": "2026-11-11T17:56:58.299819+00:00",
+    "seconds": 1.38,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/reproduce_experiments.py"
+    ],
+    "start_utc": "2026-11-11T17:56:58.300821+00:00",
+    "end_utc": "2026-11-11T18:03:50.093889+00:00",
+    "seconds": 411.8,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/audit_session_segmentation.py"
+    ],
+    "start_utc": "2026-11-11T18:03:50.093889+00:00",
+    "end_utc": "2026-11-11T18:04:08.131654+00:00",
+    "seconds": 18.03,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/validate_session_boundaries.py"
+    ],
+    "start_utc": "2026-11-11T18:04:08.132656+00:00",
+    "end_utc": "2026-11-11T18:06:05.684751+00:00",
+    "seconds": 117.56,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/audit_cluster_inference.py"
+    ],
+    "start_utc": "2026-11-11T18:06:05.684751+00:00",
+    "end_utc": "2026-11-11T18:06:06.465828+00:00",
+    "seconds": 0.78,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/build_paper_html.py"
+    ],
+    "start_utc": "2026-11-11T18:06:06.466829+00:00",
+    "end_utc": "2026-11-11T18:06:10.567769+00:00",
+    "seconds": 4.09,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/validate_manuscript_consistency.py"
+    ],
+    "start_utc": "2026-11-11T18:06:10.568770+00:00",
+    "end_utc": "2026-11-11T18:06:13.123497+00:00",
+    "seconds": 2.56,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-ra",
+      "--junitxml=results/runs/final_tests.xml"
+    ],
+    "start_utc": "2026-11-11T18:06:13.123497+00:00",
+    "end_utc": "2026-11-11T18:07:43.350866+00:00",
+    "seconds": 90.22,
+    "exit_code": 0
+  }
+]

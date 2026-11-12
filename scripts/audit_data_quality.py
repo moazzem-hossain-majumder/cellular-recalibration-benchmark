@@ -1,4 +1,5 @@
 """Audit data quality, schemas, and missingness across both Zenodo datasets."""
+from datetime import datetime, timezone
 import json
 import sys
 from pathlib import Path
@@ -58,7 +59,7 @@ def run_audit():
     rep_140 = audit_df(fdf_140, 'Zenodo_14073311_2023')
 
     full_report = {
-        'audit_timestamp': '2026-11-11T22:00:00Z',
+        'audit_timestamp': datetime.now(timezone.utc).isoformat(),
         'total_causal_forecast_instances': len(fdf_822) + len(fdf_140),
         'datasets': {
             '8224890': rep_822,

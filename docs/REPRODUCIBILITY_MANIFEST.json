@@ -1,0 +1,358 @@
+{
+  "base_commit": "890fb28c69cbbf5e97626d366cbcea00b43c96cf",
+  "working_tree": "Local corrections identified by individual SHA-256 hashes",
+  "generated_utc": "2026-11-12T05:43:03.346823+00:00",
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "tectonic": "Tectonic 0.17.0",
+    "dependencies": {
+      "torch": "2.5.1+cu121",
+      "pandas": "3.0.3",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.9.0",
+      "matplotlib": "3.11.0",
+      "seaborn": "0.13.2",
+      "pypdf": "6.19.0",
+      "pymupdf": "1.28.2",
+      "pytest": "9.1.1",
+      "pypandoc_binary": "1.17",
+      "beautifulsoup4": "4.14.3"
+    },
+    "gpu": "NVIDIA GeForce RTX 4060",
+    "cuda": "12.1"
+  },
+  "datasets": [
+    {
+      "record": "8224890",
+      "file": "data/raw/8224890/Throughput Tests - Speedtest - Active Measurements.csv",
+      "source": "https://zenodo.org/api/records/8224890/files/Throughput%20Tests%20-%20Speedtest%20-%20Active%20Measurements.csv/content",
+      "doi": "10.5281/zenodo.8224890",
+      "license": "cc-by-4.0",
+      "bytes": 94963907,
+      "md5": "4c6d46d645df9fbd7b050e4464040b5f",
+      "sha256": "97de559315f6ec872ef87f4165587251f30e42bd5c7a3d67df1042919d6dbd3f",
+      "verified_utc": "2026-11-11T17:56:58.855579+00:00"
+    },
+    {
+      "record": "8224890",
+      "file": "data/raw/8224890/description.pdf",
+      "source": "https://zenodo.org/api/records/8224890/files/description.pdf/content",
+      "doi": "10.5281/zenodo.8224890",
+      "license": "cc-by-4.0",
+      "bytes": 82632,
+      "md5": "cb10809b854ecfd3f97a74d91c42e163",
+      "sha256": "8b298651cf9ebc78cee331367ac42bbb5ca439789f82d0465e39a46c3ce6d2d1",
+      "verified_utc": "2026-11-11T17:56:58.865009+00:00"
+    },
+    {
+      "record": "14073311",
+      "file": "data/raw/14073311/Active Performance Dataset - 1.zip",
+      "source": "https://zenodo.org/api/records/14073311/files/Active%20Performance%20Dataset%20-%201.zip/content",
+      "doi": "10.5281/zenodo.14073311",
+      "license": "cc-by-4.0",
+      "bytes": 82284534,
+      "md5": "59684dec4e26bd882cf6e6551cce50ad",
+      "sha256": "f8bc2a621268775d0cf983524f062d1ffbddd365af1166c6b93e76991c881155",
+      "verified_utc": "2026-11-11T17:56:59.059861+00:00"
+    }
+  ],
+  "settings": {
+    "primary_window_seconds": 60,
+    "alpha": 0.1,
+    "budgets": [
+      0,
+      1,
+      2,
+      5,
+      8,
+      9,
+      10,
+      15
+    ],
+    "bootstrap_draws": 2000,
+    "bootstrap_seed": 42,
+    "mask_seed": 42,
+    "neural_seed": 42
+  },
+  "execution": [
+    {
+      "command": [
+        "python",
+        "scripts/prepare_ookla_traces.py"
+      ],
+      "start_utc": "2026-11-11T17:56:56.925606+00:00",
+      "end_utc": "2026-11-11T17:56:58.299819+00:00",
+      "seconds": 1.38,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/reproduce_experiments.py"
+      ],
+      "start_utc": "2026-11-11T17:56:58.300821+00:00",
+      "end_utc": "2026-11-11T18:03:50.093889+00:00",
+      "seconds": 411.8,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/audit_session_segmentation.py"
+      ],
+      "start_utc": "2026-11-11T18:03:50.093889+00:00",
+      "end_utc": "2026-11-11T18:04:08.131654+00:00",
+      "seconds": 18.03,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_session_boundaries.py"
+      ],
+      "start_utc": "2026-11-11T18:04:08.132656+00:00",
+      "end_utc": "2026-11-11T18:06:05.684751+00:00",
+      "seconds": 117.56,
+      "exit_code": 0
+    },
+    {
+      "start_utc": "2026-11-11T18:05:48.7144701+00:00",
+      "command": [
+        "python",
+        "scripts/audit_data_quality.py"
+      ],
+      "seconds": 45.190215,
+      "end_utc": "2026-11-11T18:06:33.9046851+00:00",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/audit_cluster_inference.py"
+      ],
+      "start_utc": "2026-11-11T18:06:05.684751+00:00",
+      "end_utc": "2026-11-11T18:06:06.465828+00:00",
+      "seconds": 0.78,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/build_paper_html.py"
+      ],
+      "start_utc": "2026-11-11T18:06:06.466829+00:00",
+      "end_utc": "2026-11-11T18:06:10.567769+00:00",
+      "seconds": 4.09,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_manuscript_consistency.py"
+      ],
+      "start_utc": "2026-11-11T18:06:10.568770+00:00",
+      "end_utc": "2026-11-11T18:06:13.123497+00:00",
+      "seconds": 2.56,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-ra",
+        "--junitxml=results/runs/final_tests.xml"
+      ],
+      "start_utc": "2026-11-11T18:06:13.123497+00:00",
+      "end_utc": "2026-11-11T18:07:43.350866+00:00",
+      "seconds": 90.22,
+      "exit_code": 0
+    },
+    {
+      "start_utc": "2026-11-11T18:06:33.9177785+00:00",
+      "command": [
+        "python",
+        "scripts/audit_trace_filters.py"
+      ],
+      "seconds": 22.3616441,
+      "end_utc": "2026-11-11T18:06:56.2794226+00:00",
+      "exit_code": 0
+    }
+  ],
+  "tests": {
+    "integration": {
+      "passed": 4
+    },
+    "legacy": {
+      "passed": 13
+    },
+    "unit": {
+      "passed": 38
+    }
+  },
+  "ci": "Local corrections have no hosted run. Original commit passed run 43069521042.",
+  "sha256": {
+    ".github/workflows/tests.yml": "2866520b728b777b04e207960f3d871d11a5a3ab020b9983ce600fd2d3ac2b66",
+    "antigravity.md": "cc1179e9db5f0266c1e7819e5e4479618ca43aec301e747d7b029edfdc189d0b",
+    "app/demo.py": "8792b19f98b5be2bc5f6dc06b245c69b486ea85e60e7d590a9a62364d23621f0",
+    "app/web_demo.html": "8326db1fdfca4fbc15784f32dd3dd36a6cefe45b4ab0afcd6eaf59541491c97a",
+    "data/metadata/acquisition_manifest.json": "1c9351c8200ea39477875163c2408db876bb7b7ab9fb91154295a401b9f93b4e",
+    "data/metadata/archive_inventory_14073311.json": "d871940407935d50f2ff3634cd7128cb9efd8179297cfc7bcb28ed844e4201d1",
+    "data/metadata/zenodo_14073311.json": "cba976f2c6b22345058875f32c1f5fb7759ccbd8b3b4bf3b7287e6cd0acde02c",
+    "data/metadata/zenodo_8224890.json": "479627e156af97af37697753796e7b26d2aafbb89f309f4dd8bbcc495b81ddb6",
+    "docs/BASELINE_RESEARCH_AUDIT.md": "4e326567e13618950af5d3139a76091bc7ff41c5412a53390274db92151fff6b",
+    "docs/EXTERNAL_SIRHAN_COMPARISON.md": "2dbea8f34e83a1203639806f82e055d012a498e48dbf301664f9e708c878f54e",
+    "docs/FINAL_RESEARCH_AUDIT.md": "dc4104d334a95499072ea97cc68bcb8a5ab963d1f74120e8280d42a5fd8aef81",
+    "docs/FINAL_RESEARCH_READINESS_MATRIX.md": "0dcd0e87538f755fdc9341534306767ae5e6d0ba25fd4bbdea7437658745638a",
+    "docs/MANUSCRIPT_CONSISTENCY_VALIDATION.md": "58bb3f6b05cc075a8d290380947c15fb4bbabdd4e6a059a6062f1239d8c21ec3",
+    "docs/PHASE_0_AUDIT.md": "6445e5cfa60c57cc540dc0b4260f1d44404b76b31e91cac1d464c7cd1eb46cfa",
+    "docs/PHASE_8_BASELINE_AUDIT.md": "3c46704f3fd56762f12fdb757c4caef1f067070f3d9beefcc007873149da2ce4",
+    "docs/PHASE_8_DATA_LEAKAGE_AUDIT.md": "a48baa7a3d06eed0d89a8135943296f04127c2157c3f2b2ca4dc8c20ab6d7417",
+    "docs/PHASE_8_MANUSCRIPT_AUDIT.md": "d0cd7d00326ba841165e7e8d5000d5833865cc4a9efd72d773d82e022b94cb40",
+    "docs/PHASE_8_METHODS_AND_THEORY_AUDIT.md": "0964d04333146714eb5915003efdadfe1d208947549951535f7695d6a8463f48",
+    "docs/PHASE_8_REPRODUCIBILITY_AUDIT.md": "a211aa00724b42feb08f0ba270f39f785756dc297a09b355c8c5e27840d04cf5",
+    "docs/PHASE_8_SOFTWARE_QUALITY_AUDIT.md": "2a953010b986f6c1625bce91f11140ce26c2ec4b8b48b7300c706b62a525909e",
+    "docs/PHASE_8_STATISTICAL_VALIDITY_AUDIT.md": "c5675e251be622d8440f4998b0d9fafad1bc553ef26eb7a6880f1523ceaa7234",
+    "docs/SESSION_SEGMENTATION_AUDIT.md": "13ce8770cdc5074e987d4d5dc6a9a0bd3fb781dda673bb10cac8892dbfd061cf",
+    "docs/STATISTICAL_INFERENCE_AUDIT.md": "ac6171a0aeee0cbd7003ce8e6ffb84745b9454b0a371c0dcb2a788046d155510",
+    "paper/cover_letter.md": "8d5cb90383d23fd833202e038c7c35a367dede5087929e8a7ef833f92f27ddd6",
+    "paper/cover_letter.tex": "ae8fd85c262baaa51a8748f1c11d42674137ab32960e88329fcdc8aa4fa77790",
+    "paper/figures/fig1_budget_vs_usefulness.pdf": "0673b6dc0905c2e0d21096555c1fe82cd5a72a91f199dec0d07b5d3165036b68",
+    "paper/figures/fig1_budget_vs_usefulness.png": "089e7500299d3790551d6d5e854dee5418d409600a15e8c4faffae09e014fbd4",
+    "paper/figures/fig2_subgroup_and_tradeoff.pdf": "066f95870cbaaa161ea2d5aae59b4050ae529c939e566e6a6827afada421c602",
+    "paper/figures/fig2_subgroup_and_tradeoff.png": "35f63aba0a68ed5c7b2eb09ff2987d633862ca20697225d9262eee4208f1c6cd",
+    "paper/figures/fig3_aci_adaptation.pdf": "8690211b8c1773ac2fe80a534fb97e023fee164cba7e56f18054a81eaeafac34",
+    "paper/figures/fig3_aci_adaptation.png": "e17e179acb86238ebe4d1bb53bb5afd5e9a3550ab75026449f7738f563cc95b1",
+    "paper/figures/fig4_pareto_frontier.pdf": "59acca2b48fe0efe314f25d482afc45e46595433c91d8c9a960dbdbb03496812",
+    "paper/figures/fig4_pareto_frontier.png": "6e4b576a4ab4e53768d3861c965d34af77de1e45bf96bf00e35ac808d0e093c3",
+    "paper/figures/fig5_sla_cost_curve.pdf": "58f4aae816af6a9a68bba0cbbe11147d6fbd9036ebbfebd1e159b8cd4bd36132",
+    "paper/figures/fig5_sla_cost_curve.png": "fb31dd08240dced872f688faad2f1fa7bbdbe0d2a70102f64c552e353ef39b2b",
+    "paper/manuscript.html": "eac3386c7a32a08d262aed1c031cbeff7ab1076a710d32b55060982e463add03",
+    "paper/manuscript.md": "9b099700f30ff2af8f5d90c65a21fc98038e85c3b2140b9138a2fa2d90b98544",
+    "paper/manuscript.pdf": "59d048b1e0d2dd068892878cb0e9e583d66387a294c936b5486877859cc11489",
+    "paper/manuscript.tex": "343e56b7e4227f6034229c87efe5b9b78093e43ccc4ea4a1e45153ed7ce9a424",
+    "paper/references.bib": "e4904e76e8cbf9a153aaba130aead49e9284f27807c03e7c02af885ce8496ed8",
+    "paper/submission_package.pdf": "37826152bb7ab9e41fe767d6b1f783103e0e40068fd1e59eb932aefe9304e7a6",
+    "paper/submission_package.zip": "1232b2718b26b8481b9cf54cfad0ccd5ea5128e62896f0dbb82062a260eeba76",
+    "paper/tables/table1_point_predictors.tex": "f9fc04bb51709009bbb41aae05cbdc5e0bc42e06f444c07effefb0e8a8eca1b4",
+    "paper/tables/table2_main_benchmark.tex": "d11b33bc1b04d4c509d52e88f280242f51e0220b6c696150fba2ff9b97eab75a",
+    "paper/tables/table3_segmentation.tex": "26bc143138346f6b28a161699ea8703a7c629a0c4e5c8da6598cf404c1b6f8f1",
+    "paper/tables/table4_clusters.tex": "a0a74a5a2ea7965d0b505838b9dc700fa1b50ea4650bcc229bfc71daaa4211bb",
+    "paper/tables/table5_secondary.tex": "6ac6b10afb759cd9ff6724accbd667b6632d9eb6114fd9d29d242410ad299580",
+    "paper/tables/table6_irish_frontier.tex": "5db24304fa7f2ccfd478a9f0ebc9c62e06935cd5ab86dc06165fb35eb1be2f20",
+    "paper/tables/table7_irish_fixed.tex": "ca487db5e9e11ef5313b7ab60aef697f57d83481ac78be4bdcb34252651bb918",
+    "paper/tables/table8_influence.tex": "28ec02106fed4070590d67b1287230fbc56dc801a41cd056d15839dece946bf9",
+    "paper/tables/table9_lag.tex": "0bf9647ebb539abd72022f93877f77153d27cad3b46935210432d7afe1fbd264",
+    "pyproject.toml": "9f26f68d33ed23c27b6a2fc871e7982e6b1bb53abc004f667901255950d5417e",
+    "README.md": "2bf596f746240e175fecbd15ec7140af84c4719f47aaebce663ea2900420671f",
+    "requirements.txt": "758bd9673245c7e754fa58bc04940df8c1fc7f1fcb8337dd3b53a1b35458dc7f",
+    "results/diagnostics/calendar_day_influence.csv": "2fdb8ecf3de6bbfc517b9b9064775209f9829ed15d5c5dec16c816f11c99883b",
+    "results/diagnostics/data_quality_audit.json": "0ee5c495335b81b9e6a8ddb3e7819d538207d84f851c03732c649bc55d949f1f",
+    "results/diagnostics/segments_active_burst.csv": "7830f1a78880cef07359d4c1b4621f1161ea145965160c6f00a830e5ed98e8ff",
+    "results/diagnostics/segments_relative_drop.csv": "4122e6897d18f86defc87969d6b197b13cea483d11440f2152557e19b8bc8fb5",
+    "results/diagnostics/segments_reset.csv": "0a86c445fd2ddec970aea4e8606c96f5260137f1a406051574386e33f31ef17c",
+    "results/diagnostics/sensitivity_predictions_active_burst_Op1.csv": "200017243e9a75958c4f592933af5d7b8e41e8f52f0ddcd18c7990c54dc0b81f",
+    "results/diagnostics/sensitivity_predictions_active_burst_Op2.csv": "6452fae3bafca3c17b905eeeeb5eaae0b4e57294d360cab2c4b552112530722b",
+    "results/diagnostics/sensitivity_predictions_relative_drop_Op1.csv": "7611b4301fda45dc10427646bbec4e7d97f422385132d8dae2371fd00b041f99",
+    "results/diagnostics/sensitivity_predictions_relative_drop_Op2.csv": "56cb2d1cf97d0200c87aa57ebf4511833fd9eb72653af2f7241f436eca218012",
+    "results/diagnostics/sensitivity_predictions_reset_Op1.csv": "ade8d56058f3a475eb388f79734c221494aa35f9ea262c4c352dc04badbc10b7",
+    "results/diagnostics/sensitivity_predictions_reset_Op2.csv": "d99d781e18ace29d81d5c5a466cbcfd376d744e7502c8495b7ca65a89c0c238a",
+    "results/diagnostics/session_boundary_sensitivity.json": "ffeb9bb390440f234ef419da660f89f024890c9d141638dbd12c0d08a4707ec1",
+    "results/diagnostics/session_segmentation_comparison.json": "16ce750b728c8b751af932e271bb8bfbc7d4ef310799d59028c4e5e0d58dc435",
+    "results/diagnostics/split_summary.json": "43aaa0061d4e8f96799a3e740d49d82fbb4b3085ffec7d2d8560f25c98ee9c3e",
+    "results/diagnostics/test_forecasts.csv": "5eebfe2e3c6b1b4519064dd1fa454ca1f2078eaf4a4526b81f1d462700559a4e",
+    "results/diagnostics/trace_filters.csv": "5c55b171e9905586118e88bd68b62a26c14f111a539af142ecacc9a00ef05dee",
+    "results/exploratory/published_global_comparison.csv": "31b3c6b8c8be5a26b8b41b6eecad99280726440a3d6fca6563f0201959980c2a",
+    "results/exploratory/sirhan_external/archived_one_sided.csv": "c1334a932af5e54f9bbef4799dd29987e2a5583de4d9f7cba74b4a031042217f",
+    "results/exploratory/sirhan_external/archived_two_sided.csv": "2e093fce443d59d6282264971a739bd246c50534983ffa370fe80aa170d10bec",
+    "results/exploratory/sirhan_external/decision_curves.csv": "a83ebf23dc85d02f453d39dc5c541552505d77a190a5e0fb3af348604734528f",
+    "results/exploratory/sirhan_external/fixed_trace_totals.csv": "5421a5655a17c42261137cca380966815a2ebcb5aa466a7e395fb6531c635cb0",
+    "results/exploratory/sirhan_external/lag_transitions.csv": "348db74de6c7ce402af028a7af4f7a5da76673a8f12008da3ab77617715ba3ff",
+    "results/exploratory/sirhan_external/matched_frontier.csv": "a90b8fd4a25f279f8dea78540ae31ff26f3a6119847191da7d9a25fca6096ad4",
+    "results/exploratory/sirhan_external/run.json": "df0b4acc4db8923a38a68a3d901bdce4d7bf74d6094580d11c50db688932b673",
+    "results/exploratory/sirhan_external/trace_exclusions.csv": "e8bd2709770bec3b225448ca7834ddbc76a00686e688151acf9828f5909628c0",
+    "results/exploratory/sirhan_external/trace_influence.csv": "368111f3172806a4aff280671d515955516b08069326b1c36f4a4014d4216ec9",
+    "results/figures/fig1_budget_vs_usefulness.pdf": "0673b6dc0905c2e0d21096555c1fe82cd5a72a91f199dec0d07b5d3165036b68",
+    "results/figures/fig1_budget_vs_usefulness.png": "089e7500299d3790551d6d5e854dee5418d409600a15e8c4faffae09e014fbd4",
+    "results/figures/fig2_subgroup_and_tradeoff.pdf": "066f95870cbaaa161ea2d5aae59b4050ae529c939e566e6a6827afada421c602",
+    "results/figures/fig2_subgroup_and_tradeoff.png": "35f63aba0a68ed5c7b2eb09ff2987d633862ca20697225d9262eee4208f1c6cd",
+    "results/figures/fig3_aci_adaptation.pdf": "8690211b8c1773ac2fe80a534fb97e023fee164cba7e56f18054a81eaeafac34",
+    "results/figures/fig3_aci_adaptation.png": "e17e179acb86238ebe4d1bb53bb5afd5e9a3550ab75026449f7738f563cc95b1",
+    "results/figures/fig4_pareto_frontier.pdf": "59acca2b48fe0efe314f25d482afc45e46595433c91d8c9a960dbdbb03496812",
+    "results/figures/fig4_pareto_frontier.png": "6e4b576a4ab4e53768d3861c965d34af77de1e45bf96bf00e35ac808d0e093c3",
+    "results/figures/fig5_sla_cost_curve.pdf": "58f4aae816af6a9a68bba0cbbe11147d6fbd9036ebbfebd1e159b8cd4bd36132",
+    "results/figures/fig5_sla_cost_curve.png": "fb31dd08240dced872f688faad2f1fa7bbdbe0d2a70102f64c552e353ef39b2b",
+    "results/metrics/ablation_artificial_masking.json": "51d59430756054e1ac387ba04fa2b8f5b7957f62996e90c5a392071509bf541b",
+    "results/metrics/ablation_fallback_thresholds.json": "0f18a4c3798ed552eb5ceae4eb13348df792122cabbf2d4d4434b42cc8ca867f",
+    "results/metrics/bootstrap_significance_tests.json": "77de925314c3b66f7aede0be323c95b49e37cd9ed464cced21a1056f330793aa",
+    "results/metrics/calibration_budget_results.csv": "c49fc20a2ab5d3ac948005ddd8ce212b82e0e7af05b9b5670895cb2d2f620aa0",
+    "results/metrics/covariate_shift_conformal.json": "2bfb12029ea0e555c0736dbe752d83a373469935b9c9aa9ec29fcea5d25e9277",
+    "results/metrics/freshness_sensitivity.json": "42ca759e96b8893b4c4fcedb49577a8ac3d0f1e19f6999d6f8050bfeeecd092f",
+    "results/metrics/multi_alpha_frontier.json": "1a7c53e6f6d9096cd2ded10b23cd323dfcdab8e561a80ebda06709f8d5f2761b",
+    "results/metrics/online_aci_results.json": "449650576b34d0906131540fcf12d92ec70c43a29d89c9c124b2c9af5d1e3c0f",
+    "results/metrics/point_predictor_profiles.json": "90dec97e5ab3389e3d0ba7b7331a61b4a12b57121dd7668eca9aadbef04ba3a3",
+    "results/metrics/sla_cost_analysis.json": "8c06b901c9a005545b45210fd248d0eb524929bcaf0a4dab325e27f98a5fc9b1",
+    "results/runs/ancillary_execution.json": "2d5d54fee4f9685c9ca6b871429a8253a892bd063587d5089392183384dde0c3",
+    "results/runs/execution.json": "0dcd47c536602c5141306e5843b0aaa9c9c21035544d5fd5285d9394149adf1e",
+    "results/runs/external_validation.json": "7921ed7f7acbddb8a52d27a3b93920c9a46d6edf8e6e77d0ea90bfbbbeb57d9e",
+    "results/runs/final_tests.xml": "a1e503457a2a150e2da1da5e04b44c85b276273bd5171cc5e7761c5114797bbc",
+    "results/tables/table1_point_predictors.tex": "f9fc04bb51709009bbb41aae05cbdc5e0bc42e06f444c07effefb0e8a8eca1b4",
+    "results/tables/table2_main_benchmark.tex": "d11b33bc1b04d4c509d52e88f280242f51e0220b6c696150fba2ff9b97eab75a",
+    "results/tables/table3_segmentation.tex": "26bc143138346f6b28a161699ea8703a7c629a0c4e5c8da6598cf404c1b6f8f1",
+    "results/tables/table4_clusters.tex": "a0a74a5a2ea7965d0b505838b9dc700fa1b50ea4650bcc229bfc71daaa4211bb",
+    "results/tables/table5_secondary.tex": "6ac6b10afb759cd9ff6724accbd667b6632d9eb6114fd9d29d242410ad299580",
+    "results/tables/table6_irish_frontier.tex": "5db24304fa7f2ccfd478a9f0ebc9c62e06935cd5ab86dc06165fb35eb1be2f20",
+    "results/tables/table7_irish_fixed.tex": "ca487db5e9e11ef5313b7ab60aef697f57d83481ac78be4bdcb34252651bb918",
+    "results/tables/table8_influence.tex": "28ec02106fed4070590d67b1287230fbc56dc801a41cd056d15839dece946bf9",
+    "results/tables/table9_lag.tex": "0bf9647ebb539abd72022f93877f77153d27cad3b46935210432d7afe1fbd264",
+    "scripts/audit_cluster_inference.py": "781ed6311747f517960a5d1c1919ef77a2ac59988d56a2ef20656559ca3161d2",
+    "scripts/audit_data_quality.py": "f712724b6828b1e8eff7e5851f9a91a1b83085f8e582497ded1315cb38ab99d8",
+    "scripts/audit_external_traces.py": "8a8a9808e9c174c3e29a7ce539691eeb7c9ce117ce5268b535550ad9a055db3d",
+    "scripts/audit_session_segmentation.py": "c8398c41620ac7e8e021b44d769085a9efdb51ffa23ad20bd3ab14896a753c5f",
+    "scripts/audit_trace_filters.py": "451e264e6cce21e3aa01f89e4384f83c29c05b810e6f698a4e293afc48cac884",
+    "scripts/build_paper_html.py": "83aa3a4009e72948b8d00942ae20e5e1483b68d0128ce9534022433b019c834b",
+    "scripts/build_web_demo.py": "b9202bce02db128516201e664ec9896008f9753a789ed138e7b182090274c5bc",
+    "scripts/compare_persistence_prefixes.py": "f6856d8fbe857ad4d74f9c1c266ffe3eb8f5e4833bcc2d502e826f118eea4feb",
+    "scripts/compare_published_global_rule.py": "065e50ab06cbed9baa940f2371852dc4d52d935697cb205cc142c17fb07c5961",
+    "scripts/compare_sirhan_external.py": "c4b01aab49a1412e224709fc318b4628d3ffb6fcac59ab06b221ef02fe172c83",
+    "scripts/compare_source_selected_bounds.py": "367191df10cffdbd36adb430a7beae28d0fcda29d6d4089154573170235dba48",
+    "scripts/download_data.py": "be86ec0493977a5bf26a2ff11f57eb5cbbe44b10659de14b5795aa99fbda2d56",
+    "scripts/generate_data_quality_report.py": "bfece0089d1a33e392dc717725990d9a6cca2c1ba32734bfd96e4ea56a01b58a",
+    "scripts/generate_experiment_manifest.py": "b095ae3b725652205d77cbd188bfeba69a29366037214eb05fdd28abca1e33c7",
+    "scripts/prepare_ookla_traces.py": "f10519b0b9d4075349ff097184ac78e267632f54410764ac404dbd53d31a449a",
+    "scripts/publication_tables.py": "93b99813688b2b143da44608c35927f8b9cdcde9f987aa21317e398148a88bbb",
+    "scripts/report_sirhan_external.py": "4a63e829204b4656cf317a5e8c47c02ba8558960f223eef17f8f9d9683611709",
+    "scripts/reproduce_all.py": "7409e743aff733bee0b5bbe73f51396f13763f91ba04cc34c51e5b35622304fa",
+    "scripts/reproduce_experiments.py": "485af751ad69c8f2587cd7c6039ddade84871d40d8a7cbc06568b45b57ec43c7",
+    "scripts/validate_manuscript_consistency.py": "9b027ea80da47fa1977f5d8e7044842d83781ca48afaed87c6f6b9dd1e4f39eb",
+    "scripts/validate_session_boundaries.py": "bfc6825fc1183e1e8e5bd5fa34d51cf6390772780e0dd90ea941bc25a2d6fb7a",
+    "scripts/verify_datasets.py": "3f43b8d1e1920cfa15e3f12433af1ab84af4ee26466b2732edbb532df7db1204",
+    "src/data/loader.py": "874c9e6d0f854af3ac41c04cbff36531a6524261eb828c3a6bdcd0c52ddba781",
+    "src/data/splits.py": "0fbdf2deb2ffe4c29189c45e349d882a9ab4d19138fa4315e76931e63b428aa9",
+    "src/evaluation/conformal.py": "8a3336099251b9ef1d19bfde4a11acd9c2f723f2b8bf905ba7304b9d4622584c",
+    "src/evaluation/metrics.py": "8c8e0f4b554b858a3daaa3db6aec63a49bad24307a1428233ced12ab89b5029c",
+    "src/experiments/ablations.py": "8bba8dcfd9228a956e209ae5fde3d92b36d24a9dd65501e9a6d5b2917e978ec0",
+    "src/experiments/runner.py": "6bbf52a717ce111f5465731cbef227aa022a4358ec4a9681902a982bcaa27d9f",
+    "src/features/builder.py": "86c2a13ad6c6fff790ac4784738fe55136163588e8ca9dc8789e3165c1277eb0",
+    "src/models/bammo.py": "433a1863403d3176945cf004c06f5ebb5be3c1f8a159a2bd4c211a6d4e155ff9",
+    "src/models/baselines.py": "2f6a65c2181fb59ae28b2064899db291c122738c5c390b3ac91b1f882722a7b2",
+    "src/models/neural.py": "51e60410649bb2f780e137201c72b94545b08b9e0a06a8151dbddb052ec87833",
+    "tests/conftest.py": "1a19d3b8af20a2eae48abb34aabfd6cb5eb6327bfa54f780eaa4db64dd4bdc48",
+    "tests/integration/__init__.py": "7f5c96686a1e8d39dfade8c50fb343b67824e6146dd5003d7442be93b4968e03",
+    "tests/integration/test_real_causality.py": "241cf289ddb00577df8a7cbe57018027f377b7bdef4b61fba755f7a54a33ebd9",
+    "tests/integration/test_real_splits.py": "1c69c6d3e9d4be15c4496682f8c96516df84fa1ab2bd8a50a7d30cefec48716b",
+    "tests/test_causality.py": "69637b3cee1cd35b8b8100d748ed9ed4bbeaa1f4c3ec396282a3428c799e5227",
+    "tests/test_conformal.py": "eab7a1b21001b19484e52cd1f493dcf8f6b6dfffadfba35d77450ad212413489",
+    "tests/test_metrics.py": "56385210fc335ffb31c3a7ded831fd53b33116572c578070d48c0db671e732b6",
+    "tests/test_splits.py": "248e0ba35266e8a65ec8694e9847a28911b33a44da38b228dadd4eb3b48e42e7",
+    "tests/unit/__init__.py": "b89ef7758f8dec470b5a2e82397842f84c1f48880b71dfeb3bfa8d1349327383",
+    "tests/unit/test_calibration_activation.py": "63f3e6d62b6e5640436a2dca4cb4cd08ba3509a1a857b41ce64ad0f754672a93",
+    "tests/unit/test_publication_validator.py": "e78289c397da219634150400ca0af200c70cf9a070b623568b3bb8da9152ce82",
+    "tests/unit/test_synthetic_causality.py": "1139fa9ac3e9ed0f763462827766f72145d59cdb238449b5ef1f5c3cdb46a590",
+    "tests/unit/test_synthetic_conformal.py": "4f12b0c0cb588bb6e92f646d9dea4ecf04761d9b60508c5cdef36a03849b9dbe",
+    "tests/unit/test_synthetic_metrics.py": "687c496d2061f1831dbdc18d3083a3f3d522e9283bc865f46d166230d1bad69c",
+    "tests/unit/test_synthetic_splits.py": "db58145466df5cc499b5eba72d8a70bfee88d48ca143dc791c8a30b526d858cc"
+  }
+}

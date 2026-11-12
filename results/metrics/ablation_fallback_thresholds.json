@@ -1,13 +1,13 @@
 {
   "N_min_3": {
-    "violation_rate": 0.0859,
-    "supported_fraction": 0.1785,
-    "mean_lower_bound": 6.3616
+    "violation_rate": 0.0898,
+    "supported_fraction": 0.1959,
+    "mean_lower_bound": 7.0186
   },
   "N_min_5": {
-    "violation_rate": 0.0859,
-    "supported_fraction": 0.1785,
-    "mean_lower_bound": 6.3616
+    "violation_rate": 0.0898,
+    "supported_fraction": 0.1959,
+    "mean_lower_bound": 7.0186
   },
   "N_min_10": {
     "violation_rate": 0.0898,

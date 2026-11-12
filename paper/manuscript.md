@@ -1,271 +1,284 @@
 # How Much Recalibration Is Enough? Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry
 
-**Author:** Md. Moazzem Hossain Majumder  
-**Email:** moazzemhossain1510@gmail.com  
-**Target Venue:** IEEE Transactions on Network and Service Management / IEEE Open Journal of the Communications Society  
-**Date:** November 2026  
-**Status:** Complete Publication-Ready Manuscript
-
----
+Md. Moazzem Hossain Majumder
 
 ## Abstract
-Downlink throughput forecasting in modern cellular networks is critical for proactive transport-layer bandwidth provisioning, adaptive bitrate streaming, and service level agreement (SLA) assurance in fourth-generation (4G) Long Term Evolution (LTE) and fifth-generation (5G) Non-Standalone (NSA) architectures. However, supervised machine learning predictors trained in one network environment exhibit catastrophic failure when transferred across operators or measurement campaigns. This vulnerability is compounded by structural telemetry missingness, where secondary 5G New Radio (NR) synchronization indicators are absent in 63.4% of operational sessions due to discontinuous carrier aggregation and 3GPP Option 3X EN-DC state transitions. While conventional models optimize symmetric point errors, production networks require conservative, calibrated lower bounds to prevent Quality-of-Service (QoS) breaches. In this paper, we formulate an experimental benchmark addressing the fundamental question: **How much target-network calibration data is required to recover dependable throughput lower bounds under natural telemetry missingness and network distribution shift?** Utilizing 1,132 verified commercial Speedtest sessions (forming 1,001 causal forecast pairs strictly filtered by a 60-second lag-freshness gate) across 2020--2021 and 2023 commercial campaigns in Rome, Italy, we formulate an un-leakable, forward-causal forecasting protocol. We benchmark linear, boosted tree, and hardware-accelerated deep neural predictors on an NVIDIA GeForce RTX 4060 GPU, and evaluate split-conformal calibration rules across target budgets $K \in \{0, 1, 2, 5, 8, 9, 10, 15\}$ sessions. Our findings reveal that: (1) uncalibrated point forecasts suffer unacceptable violation rates of 33% to 62% under domain shift; (2) global split-conformal calibration reliably bounds empirical violations below nominal risk levels ($V \le 0.072$ across transfer regimes), while missingness-aware grouped calibration offers an explicit risk-utility trade-off, recovering up to $10.5\times$ higher capacity commitment under small sample budgets ($K=10$) with slightly elevated empirical violations ($V=0.122$ in E1, $V=0.164$ in E2); (3) finite-sample conformal validity at nominal level $\alpha=0.10$ mathematically requires at least $K \ge 9$ target sessions (Lemma 1: $\lceil 10 \times 0.90 \rceil = 9 \le K$), so budgets $K \le 8$ rely on principled source fallbacks before target recalibration activates at $K=9$; (4) within-domain chronological evaluation under leak-free 5-way day splitting guarantees zero train/test leakage; and (5) Bayes prior-corrected Covariate-Shift Conformal Prediction (CS-CP) evaluated under both strict non-transductive (Protocol A) and transductive (Protocol B) regimes counters operator and temporal shifts without requiring labeled target sessions. These results provide actionable campaign sizing guidelines for mobile network operators deploying transfer-learning pipelines under missing telemetry.
 
-**Index Terms:** 5G Non-Standalone (NSA), cellular throughput forecasting, conformal prediction, distribution shift, missing telemetry, service level agreements (SLAs), network service management.
+We study whether a small chronological prefix of labeled sessions can calibrate a lower forecast of downlink throughput in two commercial measurement campaigns in Rome. The source-calibrated forecaster exceeds a nominal ten percent violation rate in all four held-out evaluations. At ten target labels the global correction meets the empirical target in each regime, but its supported fraction ranges from 0.006 to 0.073. Missingness-group calibration gives the same results at that budget. Replacing throughput-reset segments with segments beginning at active transitions substantially changes the endpoint distribution and measured violations. On a separate Irish next-row benchmark, calibrated persistence raised supported throughput from 55.60 to 59.44 percent with mean violations of 9.71 percent. Under joint campaign and operator shift in Rome, persistence violated 20.39 percent of forecasts. The small number of held-out collection dates limits inference about future deployments.
 
----
+# Question and related work
 
-## 1. Introduction
-Mobile cellular data traffic continues to grow exponentially, driven by immersive multimedia, cloud gaming, and ultra-reliable low-latency applications. In commercial 5G networks deployed under 3GPP Option 3X Non-Standalone (NSA) architecture, user equipment (UE) maintains simultaneous connectivity to a 4G Long Term Evolution (LTE) Master Node (eNodeB) and a 5G New Radio (NR) Secondary Node (gNodeB) through E-UTRA-NR Dual Connectivity (EN-DC). Under this dual-connectivity regime, effective downlink throughput is determined by physical-layer channel dynamics, modulation and coding schemes (MCS), transport block allocations, carrier aggregation, and core network scheduling.
+An application that chooses a sending rate before a download needs to know how often its forecast exceeds delivered throughput and how much usable rate it gives up to reduce those violations. We ask how those quantities change when an operator has only a few labeled examples from the destination network. The contribution is an empirical comparison on released traces, with a common predictor and a fixed test suffix across label budgets. Prior work characterizes the underlying campaigns (Kousias et al. 2024; Caso et al. 2024), additive prediction with missing observations (Jacobson et al. 2025), and conditional calibration under missing covariates (Zaffran et al. 2023). The BAMMO-inspired baseline uses our pattern-specific boosted trees. We did not replicate the original authors’ implementation. Grouping by recorded telemetry availability gives a simple comparator. Its interpretation depends on support within each group.
 
-Accurate forecasting of next-test downlink throughput offers mobile network operators (MNOs) significant advantages, enabling proactive buffer management, adaptive bitrate video streaming, and intelligent traffic steering across radio access technologies (RATs). Consequently, supervised machine learning (ML) has emerged as a predominant paradigm for cellular throughput estimation.
+# Measurements and prediction time
 
-However, conventional throughput prediction approaches suffer from three critical engineering limitations:
-1. **Overconfidence and Uncalibrated Risk:** Standard regression models generate point estimates (e.g., conditional mean throughput). Point predictions optimize symmetrical loss functions (such as mean absolute error or mean squared error). In operational telecommunications, an over-optimistic prediction carries severe penalties: committing to a 50 Mbps throughput pipeline when only 15 Mbps is delivered causes buffer under-runs, packet loss, and severe Quality of Experience (QoE) degradation. Networks require *reliable lower bounds* $L_t$ guaranteeing that observed throughput exceeds $L_t$ at a prespecified nominal rate $1 - \alpha$.
-2. **Telemetry Missingness in Operational Networks:** Field-test telemetry rarely conforms to pristine tabular structures. In operational 5G NSA drive tests, radio indicators (such as Synchronization Signal Reference Signal Received Power, SS-RSRP) are naturally missing in 60% to 95% of logged time intervals. This missingness is not an artificial defect; it reflects genuine telecommunications states, such as secondary 5G carriers being disconnected due to coverage boundaries or energy-saving discontinuous reception. Imputing these missing telemetry features with arbitrary constants (or zeros) severely distorts feature distributions.
-3. **Cross-Network and Temporal Distribution Shift:** A model trained on a specific operator's campaign in a particular year cannot be assumed to generalize across network operators or subsequent network upgrade cycles. Differences in frequency band allocations, antenna tilt, cell density, and vendor-specific scheduling create severe distribution shift.
+The earlier campaign uses the active throughput CSV in Zenodo 8224890. We take the last available mean download throughput at a DQA completion marker within a campaign and convert kb/s to Mbps. In the later active archive (Zenodo 14073311), we use 43 Ookla traces and process each operator’s nonnegative numeric mean-download series separately, converting its documented column units to Mbps. With reset segmentation the releases yield 1,132 operational sessions and 1,001 eligible forecast pairs across development and evaluation. The main evaluation uses only held-out suffixes. Each forecast uses the preceding result, elapsed time since that segment ended, its duration, recent radio measurements and availability indicators, and scenario. Among the 1,001 eligible pairs, 585 have only LTE measurements and 416 have both LTE and NR. No eligible pair lacks LTE. Consequently, grouping by NR presence and grouping by the two radio indicators define the same partition in this sample. In the later archive, the first throughput reading triggering a reset identifies the prediction time retrospectively. An online deployment would need an independent test-start signal. Even when predictors exclude that reading, selecting forecast times from the outcome trajectory can change the evaluated population. The primary protocol allows up to 60 seconds of lag age. Missing indicators describe what the logger observed. A missing NR signal by itself cannot identify a particular network state or its cause. Lagged throughput requires feedback from completed tests throughout evaluation. A budget of zero refers only to target labels used to fit the calibration offset.
 
-To address these challenges, researchers have explored conformal prediction, missing-data boosting, and adaptive interval selection. Yet, an essential operational question remains unanswered in the telecommunications literature: **How much target-domain recalibration data is required to recover dependable one-sided throughput lower bounds when transferring a model across commercial networks under naturally missing telemetry?**
+E0 uses five successive blocks of earlier Op1 collection days for training, validation, source calibration, target prefixes and testing. The first three blocks contribute 57, 9 and 33 observations. The benchmark freezes that predictor and source offset for all four regimes. E1 moves to later Op1, E2 to earlier Op2 and E3 to later Op2. Transfer calibration and test blocks use the first approximately 40 percent and last approximately 60 percent of target days, respectively, with integer day boundaries. We take the first $`K`$ eligible sessions in timestamp order from the calibration pool. E0 has ten available, so its fifteen-session comparison is unavailable. Cross-operator analysis on contemporaneous campaigns is retrospective.
 
-The primary contributions of this paper are fourfold:
-1. **Leak-Free Causal Formulation under 5G NSA Missingness:** We formulate a rigorous, leak-free forward-causal throughput forecasting protocol on 1,132 commercial Speedtest sessions (1,001 causal test pairs) from operational 5G NSA networks. We explicitly model naturally missing 5G NR radio telemetry without artificial imputation, enforcing a strictly audited 60-second lag freshness gate ($\Delta t \le 60\text{ s}$) and pre-test radio observation windows.
-2. **Finite-Sample Conformal Budget Bound (Lemma 1):** We prove and empirically demonstrate that split-conformal calibration at nominal risk $\alpha = 0.10$ possesses a strict finite-sample threshold: exact target recalibration is mathematically undefined for measurement campaigns with $K \le 8$ sessions, activating sharply at $K=9$ sessions and establishing a formal minimum sample size for operational drive-test campaign planning.
-3. **Comprehensive Multi-Domain Transfer Benchmark:** We benchmark linear regression, boosted decision trees, BAMMO, and a PyTorch Deep Tabular ResNet (profiled on an NVIDIA GeForce RTX 4060 GPU with CUDA mixed precision) across four distinct transfer regimes: within-domain, 2.5-year temporal campaign transfer, cross-operator transfer, and joint temporal-operator shift.
-4. **Statistical Quantification of Methodological Tradeoffs:** Using 2,000 paired day-cluster bootstrap resamples and Bayes prior-corrected Covariate-Shift Conformal Prediction (CS-CP), we establish the empirical trade-offs of target budget allocation under small-sample regimes and telemetry gaps, providing practical rules of thumb for cellular network operators.
+# Calibration and metrics
 
----
+Let $`f`$ denote the frozen histogram gradient boosting model and $`y`$ the endpoint throughput. Split calibration orders the signed scores $`f(x_i)-y_i`$. For $`n`$ finite scores, take rank $`r=\lceil(n+1)(1-\alpha)\rceil`$ in ascending order. When $`r>n`$ we use positive infinity. The lower forecast is $`L=\max(0,f(x)-q)`$. A tie at the bound counts as covered. Since $`r\le n`$ is equivalent to $`(n+1)(1-\alpha)\le n`$, finite scores yield a finite selected order statistic exactly when $`n\geq\lceil1/\alpha\rceil-1`$. At $`\alpha=0.10`$ the first finite rank occurs at nine scores and selects their maximum. Ten also selects the maximum. This calculation gives no estimate of the campaign size needed for a useful rate. The rank argument follows the standard conformal construction (Vovk et al. 2005). Under exchangeability of calibration and future scores conditional on an independently fitted predictor, the rank construction yields marginal coverage of at least $`1-\alpha`$. The data do not establish this assumption across consecutive sessions, dates or networks. With an infinite target quantile the benchmark uses a frozen source offset. Its target-domain coverage is empirical. The grouped rules try a finite group offset, then a finite pooled target offset, then the source offset. The row gate is three and the session gate one. A group still needs enough scores for a finite rank. The RAT proxy groups by recorded NR presence. The missingness rule also uses LTE availability.
 
-## 2. Background and Related Work
+We compute $`V=\sum_i\mathbf{1}\{y_i<L_i\}/N`$ and $`U=\sum_i\min(L_i,y_i)/\sum_i y_i`$. A near-zero bound can yield few violations while providing little usable throughput. These are offline measures. The benchmark does not measure an application outage, a contractual breach or a revenue loss.
 
-### 2.1 5G Non-Standalone Architecture and Telemetry
-In 3GPP Option 3X EN-DC deployments, the LTE eNodeB handles control-plane signaling and anchor user-plane traffic, while the 5G gNodeB delivers high-speed user-plane data over millimeter-wave or sub-6 GHz (e.g., 3.5 GHz n78) spectrum. Radio telemetry is logged via User Equipment diagnostic monitors or specialized drive-test tools (e.g., Rohde & Schwarz QualiPoc). 
+<div class="table*">
 
-Crucially, reference signal measurements—including Reference Signal Received Power (RSRP), Reference Signal Received Quality (RSRQ), and Signal-to-Interference-and-Noise Ratio (SINR)—are continuously recorded for the LTE Master Cell Group (MCG). In contrast, 5G NR Secondary Cell Group (SCG) telemetry (SS-RSRP, SS-RSRQ, SS-SINR) is only logged when an active 5G bearer is configured and synchronized. As established by Kousias et al. and Caso et al., physical radio coverage varies dynamically over mobility routes, leading to structural telemetry missingness.
+|                      |       |       |         |
+|:---------------------|------:|------:|--------:|
+| Model                |   MAE |  RMSE | Seconds |
+| Persistence          |  3.22 |  7.21 |   0.000 |
+| Ridge                |  6.03 |  8.78 |   0.046 |
+| HistGradientBoosting | 11.00 | 12.00 |   0.041 |
+| BAMMO                | 15.46 | 23.86 |   0.323 |
+| QuantileGBM p10      |  5.01 |  8.68 |   0.072 |
+| GPU ThroughputResNet |  5.85 |  8.33 |   0.737 |
 
-### 2.2 Related Work and Novelty Boundary
-Recent research has addressed isolated aspects of cellular modeling:
-- **BAMMO (Jacobson et al., JRSS C 2025):** Developed a boosted additive model handling missing telemetry for 5G mmWave throughput prediction on the Lumos5G dataset. However, BAMMO was evaluated only within a single geographic loop without cross-network transfer or sample-budgeted calibration analysis.
-- **Conformal Prediction with Missing Values (Zaffran et al., ICML 2023):** Established theoretical bounds for missing-value conformal prediction under pattern conditioning, but their analysis relies on exchangeable synthetic and medical datasets, omitting the severe distribution shift and temporal autocorrelation inherent to telecommunications.
-- **Adaptive Conformal Inference (Gibbs & Candès, NeurIPS 2021):** Developed online adaptation algorithms (ACI) guaranteeing long-run marginal coverage under arbitrary distribution shift. However, long-run marginal coverage does not guarantee localized session safety or inform static calibration budget sizing.
-- **Handover-Aware Intervals (Sirhan, Network 2026):** Investigated mobility-conditioned conformal bounds on UCC drive traces, finding that regime-specific conditioning improves interval width but does not universally dominate global calibration for rate-selection objectives.
-- **Covariate-Shift Conformal Prediction (Tibshirani et al., NeurIPS 2019):** Developed weighted conformal prediction correcting for distribution shift via likelihood ratios $w(x) = dP_T(x) / dP_S(x)$. In telecommunications, however, estimating $w(x)$ directly on raw telemetry is challenging due to 63% unobserved NR features, which causes discriminator variance under small target calibration budgets ($K \le 10$).
+</div>
 
-| Study | Data Provenance | Telemetry Missingness | Cross-Domain Transfer | Calibration Budget Analysis | Clustered Inference | Hardware Profiling |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Kousias et al. (2024)** | Commercial Field | Descriptive only | No (Single Domain) | No | No | Host CPU |
-| **Caso et al. (2024)** | Commercial Field | Descriptive only | Descriptive only | No | No | Host CPU |
-| **BAMMO (Jacobson, 2025)** | mmWave Loop | Modeled (Boosting) | No (Single Route) | No | No | Host CPU |
-| **Zaffran et al. (2023)** | Synthetic / Bio | Simulated Missingness | No (Exchangeable) | No | Standard Bootstrap | Host CPU |
-| **Sirhan et al. (2026)** | Commercial Traces | Inapplicable | No | No | No | Host CPU |
-| **Tibshirani et al. (2019)** | Benchmark / Theory | None | Covariate Shift | No | Standard Bootstrap | Host CPU |
-| **This Work** | **Commercial (1,132 tests)** | **Structured Grouping** | **Yes (E0 to E3)** | **Yes ($K \in \{0..10\}$)** | **Yes (2,000 Day Clusters)** | **NVIDIA RTX 4060 GPU** |
+<div class="table*">
 
-**Novelty Boundary:** We do not claim to invent conformal prediction, missing-value imputation, or cellular throughput forecasting. Our contribution is the *joint empirical formulation and evaluation of natural telemetry missingness, explicit source-to-target transfer across commercial operators and multi-year campaigns, and finite target recalibration budgets*, supported by paired-cluster statistical inference and leak-free causal ordering. Table 1 systematically summarizes our scope against recent literature.
+|          |     |        |        |        |        |        |        |        |        |
+|:---------|----:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
+| Regime/K |   N |     PV |     PU |     GV |     GU |     RV |     RU |     MV |     MU |
+| E0K0     |  41 | 0.4390 | 0.3705 | 0.1220 | 0.1761 | 0.1220 | 0.1761 | 0.1220 | 0.1761 |
+| E0K1     |  41 | 0.4390 | 0.3705 | 0.1220 | 0.1761 | 0.1220 | 0.1761 | 0.1220 | 0.1761 |
+| E0K2     |  41 | 0.4390 | 0.3705 | 0.1220 | 0.1761 | 0.1220 | 0.1761 | 0.1220 | 0.1761 |
+| E0K5     |  41 | 0.4390 | 0.3705 | 0.1220 | 0.1761 | 0.1220 | 0.1761 | 0.1220 | 0.1761 |
+| E0K8     |  41 | 0.4390 | 0.3705 | 0.1220 | 0.1761 | 0.1220 | 0.1761 | 0.1220 | 0.1761 |
+| E0K9     |  41 | 0.4390 | 0.3705 | 0.0976 | 0.0858 | 0.0976 | 0.0858 | 0.0976 | 0.0858 |
+| E0K10    |  41 | 0.4390 | 0.3705 | 0.0000 | 0.0285 | 0.0000 | 0.0285 | 0.0000 | 0.0285 |
+| E1K0     | 139 | 0.4101 | 0.4102 | 0.1655 | 0.1717 | 0.1655 | 0.1717 | 0.1655 | 0.1717 |
+| E1K1     | 139 | 0.4101 | 0.4102 | 0.1655 | 0.1717 | 0.1655 | 0.1717 | 0.1655 | 0.1717 |
+| E1K2     | 139 | 0.4101 | 0.4102 | 0.1655 | 0.1717 | 0.1655 | 0.1717 | 0.1655 | 0.1717 |
+| E1K5     | 139 | 0.4101 | 0.4102 | 0.1655 | 0.1717 | 0.1655 | 0.1717 | 0.1655 | 0.1717 |
+| E1K8     | 139 | 0.4101 | 0.4102 | 0.1655 | 0.1717 | 0.1655 | 0.1717 | 0.1655 | 0.1717 |
+| E1K9     | 139 | 0.4101 | 0.4102 | 0.0719 | 0.0725 | 0.0719 | 0.0725 | 0.0719 | 0.0725 |
+| E1K10    | 139 | 0.4101 | 0.4102 | 0.0719 | 0.0725 | 0.0719 | 0.0725 | 0.0719 | 0.0725 |
+| E1K15    | 139 | 0.4101 | 0.4102 | 0.0719 | 0.0725 | 0.1007 | 0.0833 | 0.1007 | 0.0833 |
+| E2K0     | 256 | 0.6211 | 0.4232 | 0.1641 | 0.1888 | 0.1641 | 0.1888 | 0.1641 | 0.1888 |
+| E2K1     | 256 | 0.6211 | 0.4232 | 0.1641 | 0.1888 | 0.1641 | 0.1888 | 0.1641 | 0.1888 |
+| E2K2     | 256 | 0.6211 | 0.4232 | 0.1641 | 0.1888 | 0.1641 | 0.1888 | 0.1641 | 0.1888 |
+| E2K5     | 256 | 0.6211 | 0.4232 | 0.1641 | 0.1888 | 0.1641 | 0.1888 | 0.1641 | 0.1888 |
+| E2K8     | 256 | 0.6211 | 0.4232 | 0.1641 | 0.1888 | 0.1641 | 0.1888 | 0.1641 | 0.1888 |
+| E2K9     | 256 | 0.6211 | 0.4232 | 0.0234 | 0.0177 | 0.0234 | 0.0177 | 0.0234 | 0.0177 |
+| E2K10    | 256 | 0.6211 | 0.4232 | 0.0234 | 0.0177 | 0.0234 | 0.0177 | 0.0234 | 0.0177 |
+| E2K15    | 256 | 0.6211 | 0.4232 | 0.0234 | 0.0177 | 0.0977 | 0.0993 | 0.0977 | 0.0993 |
+| E3K0     | 103 | 0.3301 | 0.3527 | 0.1262 | 0.1451 | 0.1262 | 0.1451 | 0.1262 | 0.1451 |
+| E3K1     | 103 | 0.3301 | 0.3527 | 0.1262 | 0.1451 | 0.1262 | 0.1451 | 0.1262 | 0.1451 |
+| E3K2     | 103 | 0.3301 | 0.3527 | 0.1262 | 0.1451 | 0.1262 | 0.1451 | 0.1262 | 0.1451 |
+| E3K5     | 103 | 0.3301 | 0.3527 | 0.1262 | 0.1451 | 0.1262 | 0.1451 | 0.1262 | 0.1451 |
+| E3K8     | 103 | 0.3301 | 0.3527 | 0.1262 | 0.1451 | 0.1262 | 0.1451 | 0.1262 | 0.1451 |
+| E3K9     | 103 | 0.3301 | 0.3527 | 0.0291 | 0.0578 | 0.0291 | 0.0578 | 0.0291 | 0.0578 |
+| E3K10    | 103 | 0.3301 | 0.3527 | 0.0000 | 0.0060 | 0.0000 | 0.0060 | 0.0000 | 0.0060 |
+| E3K15    | 103 | 0.3301 | 0.3527 | 0.0000 | 0.0060 | 0.0000 | 0.0060 | 0.0000 | 0.0060 |
 
----
+</div>
 
-## 3. Problem Formulation
+# Results
 
-### 3.1 Causal Forecasting Protocol
-Let an operational campaign consist of an ordered sequence of completed downlink throughput measurement sessions $j = 1, 2, \dots, N$. Each test $j$ commences at wall-clock timestamp $a_j$, concludes at $b_j$, and achieves mean downlink application throughput $y_j \in \mathbb{R}_{\ge 0}$ (in Mbps).
+Persistence had a lower validation MAE than the histogram model on nine source-validation observations. We use the common histogram predictor to isolate differences between calibration rules. We examine persistence separately on the external benchmark and in the joint-shift analysis below. The point baseline exceeds the measured throughput in roughly one third to three fifths of held-out sessions. With source calibration, every regime exceeds ten percent violations at each tested budget below nine. At ten labels the global method records zero violations in E0 and E3, approximately seven percent in E1 and two percent in E2. In E3 it supports less than one percent of measured rate. At fifteen labels the grouped E1 rule exceeds the nominal target (0.1007), while grouped E2 increases supported fraction to 0.0993 with a violation rate of 0.0977. All four regimes give identical global and missingness-group results at ten labels when the pooled fallback is applied consistently. Thus this comparison provides no evidence of a grouping advantage at that budget. Prefix composition and endpoint construction both matter when interpreting apparent reliability.
 
-We formulate the prediction task immediately prior to test initiation $a_j$: predict the subsequent test throughput $y_j$ using exclusively information causally available at timestamp $a_j^-$. 
+<figure data-latex-placement="!ht">
+<embed src="figures/fig1_budget_vs_usefulness.png" />
+<figcaption>Performance across chronological calibration budgets. The same suffix is used at every available budget within a regime.</figcaption>
+</figure>
 
-**Integrity Safeguards:**
-1. **No Same-Test Leakage:** Contemporaneous physical-layer indicators (e.g., average PDSCH throughput or resource block counts logged during test $j$) are strictly prohibited as predictors of $y_j$.
-2. **Causal Lag Availability:** The outcome of previous test $j-1$ ($y_{j-1}$) and its realized duration $d_{j-1} = b_{j-1} - a_{j-1}$ may be used if and only if test $j-1$ concluded prior to $a_j$ with elapsed freshness age $\Delta t_{j-1} = a_j - b_{j-1} \le 60\text{ seconds}$.
-3. **Causal Radio Window:** Radio indicators ($x_j$) are extracted from the backward window $[a_j - 60\text{s}, a_j]$.
+<figure data-latex-placement="!ht">
+<embed src="figures/fig2_subgroup_and_tradeoff.png" />
+<figcaption>Subgroup performance and the empirical rate trade-off on the observed campaigns.</figcaption>
+</figure>
 
-### 3.2 Conformal Calibration and Mathematical Formulation
-Let $f(x, m)$ denote a point predictor trained on a source network domain, where $x \in \mathbb{R}^d$ contains available telemetry and lags, and $m \in \{0, 1\}^d$ denotes the binary availability mask.
+# Sensitivity to the observational unit
 
-On a separate calibration set of $n$ instances, we compute signed overprediction scores:
-$$s_i = f(x_i, m_i) - y_i, \quad i = 1, \dots, n.$$
-Taking signed overprediction (rather than absolute residuals) is mathematically required: positive scores represent overconfident commitments where the predictor exceeded actual delivered speed.
+After numeric filtering, reset starts a segment on a drop exceeding 5 Mbps to below 5 Mbps. Relative drop starts on a drop exceeding 2 Mbps to below 1 Mbps. The active-start rule begins on an upward crossing above 1 Mbps or a gap over ten seconds. All three retain the last numeric row as the target. The active-start rule therefore frequently attaches the subsequent idle tail to the preceding burst. Its endpoint can differ even on a continuously logged trace. We retain it as a negative control for changing the observational unit. The sensitivity analysis evaluates all eligible later pairs with a source-fitted model. Its denominator differs from the held-out benchmark. After excluding zero endpoints from scoring while keeping the fitted predictor, burst violations remain 0.3742 and 0.4651 on the two operators. Thus zero endpoints explain only part of the shift. Relative drop also changes the sample and the rates. None of these heuristics establishes ground-truth session boundaries.
 
-Given a user-specified nominal error tolerance $\alpha \in (0, 1)$ (primary setting $\alpha = 0.10$), we determine the conformal index:
-$$k = \lceil (n + 1)(1 - \alpha) \rceil.$$
-Let $q = s_{(k)}$ denote the $k$-th ordered score from the sorted sequence $s_{(1)} \le s_{(2)} \le \dots \le s_{(n)}$. If $k > n$, empirical support is insufficient to bound error at level $\alpha$, and we define $q = +\infty$.
+<div class="table*">
 
-The conservative lower bound for a new test instance $t$ is:
-$$L_t = \max(0, \, f(x_t, m_t) - q).$$
-If $q = +\infty$, the policy returns $L_t = 0.0$ with an insufficient-support flag. Throughput non-negativity justifies lower-clipping at zero.
+|          |          |       |        |        |
+|:---------|---------:|------:|-------:|-------:|
+| Boundary | Segments | Zeros |    E1V |    E3V |
+| Reset    |      584 |    23 | 0.1479 | 0.2523 |
+| Drop     |      712 |    23 | 0.1339 | 0.2172 |
+| Burst    |      930 |   183 | 0.4024 | 0.4918 |
 
-### 3.3 Finite-Sample Conformal Budget Constraint
-A crucial mathematical property of split-conformal prediction governs finite target calibration budgets:
-$$k \le n \iff \lceil (n + 1)(1 - \alpha) \rceil \le n.$$
-For nominal level $\alpha = 0.10$:
-- If $n = 1$: $k = \lceil 2 \times 0.90 \rceil = 2 > 1 \implies q = +\infty$.
-- If $n = 5$: $k = \lceil 6 \times 0.90 \rceil = 6 > 5 \implies q = +\infty$.
-- If $n = 8$: $k = \lceil 9 \times 0.90 \rceil = 9 > 8 \implies q = +\infty$.
-- If $n = 9$: $k = \lceil 10 \times 0.90 \rceil = 9 \le 9 \implies \text{Valid } q = s_{(9)}$.
+</div>
 
-**Lemma 1 (Finite Order-Statistic Activation Threshold):** *At nominal violation rate $\alpha = 0.10$, any unstratified split-conformal calibrator mathematically requires at least $n \ge 9$ target calibration observations for the empirical quantile index $k = \lceil (n + 1)(1 - \alpha) \rceil \le n$ to be well-defined. For any smaller sample size ($n \le 8$), the conformal quantile evaluates to $q = +\infty$, defaulting lower bounds to zero without informative support. Importantly, while $K=9$ activates the target empirical quantile (selecting the maximum observed calibration residual $s_{(9)}$), it represents the minimal mathematical finite-sample activation cutoff rather than an operational guarantee of complete distribution-shift adaptation.*
+# Uncertainty and secondary experiments
 
-Consequently, when evaluating small target budgets $K \in \{1, 2, 5, 8\}$ sessions, any valid conformal algorithm must implement a principled fallback hierarchy to source-domain calibration. Two operational caveats must be highlighted: First, while $K=9$ mathematically activates target calibration by selecting the maximum observed residual $s_{(9)}$, this finite-sample order statistic carries high sampling variance and does not guarantee that 9 samples are practically sufficient to capture all channel dynamics or subgroup variations across mobility routes. Second, although source-domain fallback prevents uncalibrated failure when target observations are scarce ($K \le 8$), source calibration by definition cannot guarantee marginal coverage in the target domain under unconstrained distribution shift. Rather, fallback provides a calibrated, principled default that bounds risk empirically until sufficient target data is acquired.
+We resample collection dates with replacement, retaining all sessions from each selected date and pairing methods within each draw. The percentile endpoints from 2,000 draws describe empirical between-date variability conditional on this fitted model and prefix. Two to eight observed dates per regime offer little information about the population of future dates. A zero contrast interval follows algebraically when bounds coincide. Shared routes, equipment and measurement schedules can induce dependence across dates.
 
-### 3.4 Proposed Coarse Missingness-Aware Calibration
-In 5G NSA networks, telemetry missingness is predominantly structured across two technology groups:
-- **Group 2 (LTE Only):** LTE anchor observed; NR telemetry unobserved ($m_{\text{LTE}} = 1, m_{\text{NR}} = 0$).
-- **Group 3 (Dual LTE+NR):** Both LTE and NR carriers observed ($m_{\text{LTE}} = 1, m_{\text{NR}} = 1$).
+<div class="table*">
 
-Our proposed calibration algorithm maintains group-specific score pools $S_g = \{s_i : \text{group}(i) = g\}$. When predicting for instance $t$ with group $g_t$:
-1. If $|S_{g_t}| \ge N_{\min}$ (with $N_{\min} = 3$ in low-budget settings), use group quantile $q_{g_t} = \text{Quantile}(S_{g_t}, 1 - \alpha)$.
-2. Else, fall back to the pooled target quantile $q_{\text{pooled}} = \text{Quantile}(\bigcup S_g, 1 - \alpha)$.
-3. If target data is absent ($K=0$) or insufficient, fall back to the frozen source quantile $q_{\text{source}}$.
+|          |      |        |        |        |        |        |        |
+|:---------|-----:|-------:|-------:|-------:|-------:|-------:|-------:|
+| Contrast | Days |     dV |    Vlo |    Vhi |     dU |    Ulo |    Uhi |
+| E0D      |    2 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
+| E1D      |    7 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
+| E2D      |    8 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
+| E3D      |    7 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
 
-```
-Algorithm 1: Missingness-Aware Conformal Recalibration with Finite-Budget Fallback Hierarchy
-Input  : Point predictor f(x, m), target prefix D_tgt = {(x_i, m_i, y_i, g_i)}_{i=1}^K,
-         frozen source quantile q_source, nominal risk alpha in (0,1), minimum group support N_min.
-Output : Calibrated lower bound L_t for new instance (x_t, m_t, g_t).
-1: if K == 0 then
-2:    return L_t = max(0, f(x_t, m_t) - q_source)
-3: end if
-4: Compute target signed overpredictions: s_i = f(x_i, m_i) - y_i for all i in {1, ..., K}
-5: Form group score sets: S_g = {s_i : g_i == g}
-6: if |S_{g_t}| >= N_min and ceil((|S_{g_t}| + 1)(1 - alpha)) <= |S_{g_t}| then
-7:    k_g = ceil((|S_{g_t}| + 1)(1 - alpha))
-8:    q_used = OrderStatistic(S_{g_t}, k_g)  // Group-specific quantile
-9: else if K >= ceil((K + 1)(1 - alpha)) then
-10:   k_pooled = ceil((K + 1)(1 - alpha))
-11:   q_used = OrderStatistic(Union_g S_g, k_pooled)  // Target pooled fallback
-12: else
-13:   q_used = q_source  // Source-domain fallback by Lemma 1
-14: end if
-15: return L_t = max(0, f(x_t, m_t) - q_used)
-```
+</div>
 
----
+The repository includes every date’s estimates and leave-one-date-out contrasts. Single-prefix testing leaves calibration-prefix variability unmeasured. Thirty-, sixty- and 120-second sensitivity runs change the eligible cohort and covariates together. Sixty seconds is the selected primary window. The supplementary analyses also examine group-support gates and artificial removal of observed NR fields. Artificial removal tests model response to controlled masking and does not identify why telemetry was absent in the field.
 
-## 4. Dataset Acquisition and Experimental Protocol
+The online experiment updates an offset after each observed label with a fixed step size. Its feedback requirements differ from static prefix calibration. This score-offset update is inspired by adaptive conformal inference (Gibbs and Candès 2021). The weighted experiment estimates source-to-target density ratios with a domain classifier and compares two clipping ranges. One variant uses calibration-pool covariates and the other uses unlabeled test covariates. The tight weight range is 0.1 to 10 and the wide range 0.01 to 100. Covariate-shift theory requires a stable conditional outcome law and appropriate density ratios (Tibshirani et al. 2019). Estimated, clipped weights and small effective sample sizes limit this interpretation. The alpha sweep and convex offline cost proxy show how the chosen threshold or penalty affects the displayed trade-off. The secondary sensitivity fits can use regime-specific source splits and should be compared within their own protocols.
 
-### 4.1 Dataset Provenance and Causal Extraction
-We acquired two independent, open-access commercial measurement releases from the PERFORM consortium:
-1. **Earlier Campaign (2020--2021, Zenodo 8224890):** 367,104 active trace rows across 45 measurement drives and 16 calendar collection days (December 13, 2020 to January 27, 2021) in Rome, Italy, evaluating Operator 1 (Op1) and Operator 2 (Op2).
-2. **Later Campaign (2023, Zenodo 14073311):** 43 multi-session Ookla Speedtest traces collected across 12 calendar days (March 29, 2023 to July 5, 2023) evaluating Op1 and Op2 side-by-side during network evolution.
+<figure data-latex-placement="!ht">
+<embed src="figures/fig3_aci_adaptation.png" />
+<figcaption>Offset trajectory as labeled test sessions arrive in the online experiment.</figcaption>
+</figure>
 
-All raw archives were verified against published cryptographic checksums (SHA-256) recorded in `acquisition_manifest.json` and confirmed under CC BY 4.0 licenses. Across both campaigns, we reconstructed 1,132 complete Speedtest sessions (duration $57.7 \pm 11.9\text{ seconds}$) and formed 1,001 valid causal forecast pairs ($j-1 \to j$) strictly satisfying the 60-second lag freshness gate ($\Delta t \le 60.0\text{ s}$, with maximum observed active lag of 2.50 seconds). The earlier campaign contributes 503 valid instances (Op1: 150, Op2: 353; 63.4% unobserved 5G NR telemetry), and the later campaign contributes 498 valid instances (Op1: 284, Op2: 214; 53.4% unobserved 5G NR telemetry).
+<figure data-latex-placement="!ht">
+<embed src="figures/fig4_pareto_frontier.png" />
+<figcaption>Observed violations and supported throughput at the tested nominal levels.</figcaption>
+</figure>
 
-### 4.2 Transfer Regimes
-To evaluate domain transfer under realistic deployment shifts, we establish four experimental regimes:
-- **E0 (Within-Domain Reference):** Op1 2020--2021 Source $\to$ Op1 2020--2021 Test Suffix.
-- **E1 (Campaign Temporal Transfer):** Op1 2020--2021 Source $\to$ Op1 2023 Test Suffix (evaluating temporal network evolution over 2.5 years).
-- **E2 (Cross-Operator Transfer):** Op1 2020--2021 Source $\to$ Op2 2020--2021 Test Suffix (evaluating cross-carrier transfer under identical urban geography).
-- **E3 (Joint Shift):** Op1 2020--2021 Source $\to$ Op2 2023 Test Suffix (combined operator and temporal shift).
+<figure data-latex-placement="!ht">
+<embed src="figures/fig5_sla_cost_curve.png" />
+<figcaption>Offline loss under alternative weights on violations and unsupported throughput.</figcaption>
+</figure>
 
-### 4.3 Data Separation Protocol
-Partitions are formed strictly by non-overlapping chronological collection days:
-- **Within-Domain (E0):** To eliminate any risk of train/test overlap, Op1 2020--2021 is partitioned into a strictly disjoint 5-way chronological day split: earliest 35% days for model training (57 sessions across 2 dates: 17.12.2020, 04.01.2021), next 10% for validation/tuning (9 sessions across 1 date: 05.01.2021), next 15% for the source calibration pool (33 sessions across 1 date: 06.01.2021), next 15% for the target calibration pool (10 sessions across 1 date: 11.01.2021), and the final 25% of days frozen as the fixed test suffix (41 sessions across 2 dates: 14.01.2021, 27.01.2021). All 5 partitions have 0% session and date overlap verified by programmatic assertions. Because the target calibration pool has exactly 10 sessions, budget $K=15$ is marked as unavailable in E0 without substituting smaller subsets. Furthermore, because the test suffix contains 2 distinct collection dates, day-cluster bootstrap resampling on E0 ($N_{\text{clusters}}=2$) is explicitly documented as exploratory.
-- **Transfer Regimes (E1--E3):** The source domain is partitioned into 60% training days, 20% validation days, and 20% source calibration days. The target domain is partitioned into the earliest 40% days for the candidate calibration pool (drawing budgets $K \in \{0, 1, 2, 5, 8, 9, 10, 15\}$ whole sessions), with the remaining 60% of days frozen as the fixed test suffix.
+<div class="table*">
 
-### 4.4 Evaluation Metrics
-On a test set of $N$ sessions, we evaluate:
-1. **Empirical Violation Rate ($V$):** $V = \frac{1}{N} \sum_{t=1}^N \mathbf{1}(y_t < L_t)$. Target nominal performance is $V \le \alpha = 0.10$.
-2. **Offline Service-Level Commitment Ratio (SLCR) Proxy ($U$):** $U = \frac{\sum_{t=1}^N \min(L_t, y_t)}{\sum_{t=1}^N y_t}$. Measures the fraction of delivered cellular capacity that can be safely committed in advance. We emphasize that $U$ is an application-layer service commitment proxy (e.g., for proactive DASH video bitrate ladder selection or cloud gaming bitrate budgeting), rather than a physical MAC-layer scheduler modification or transport block allocation gain.
-3. **Mean Overcommitment Magnitude:** $\text{Overcommit} = \frac{1}{N} \sum_{t=1}^N \max(L_t - y_t, 0)\text{ [Mbps]}$.
-4. **Operational SLA Economic Loss Function:** To evaluate the business trade-off between QoS violations and un-utilized bandwidth, we define the operator's operational cost function:
-   $$\text{Cost}(\lambda) = \lambda \cdot V + (1 - \lambda) \cdot (1 - U)$$
-   where $\lambda \in [0, 1]$ represents the regulatory or SLA penalty weight assigned to service violations relative to under-committed capacity.
-5. **Clustered Bootstrap Inference:** 2,000 paired day-cluster bootstrap resamples to establish 95% confidence intervals for paired differences $\Delta U = U_{\text{proposed}} - U_{\text{global}}$ and $\Delta V = V_{\text{proposed}} - V_{\text{global}}$.
+|          |           |           |
+|:---------|----------:|----------:|
+| Protocol | Violation | Supported |
+| E0Online |    0.1220 |    0.1762 |
+| E1Online |    0.1583 |    0.1653 |
+| E2Online |    0.1562 |    0.1775 |
+| E3Online |    0.1262 |    0.1447 |
+| E1Atight |    0.0072 |    0.0127 |
+| E1Awide  |    0.0288 |    0.0450 |
+| E1Btight |    0.0144 |    0.0063 |
+| E1Bwide  |    0.0000 |    0.0003 |
+| E2Atight |    0.0156 |    0.0304 |
+| E2Awide  |    0.0156 |    0.0295 |
+| E2Btight |    0.0469 |    0.0791 |
+| E2Bwide  |    0.0664 |    0.1130 |
+| E3Atight |    0.0097 |    0.0159 |
+| E3Awide  |    0.0097 |    0.0083 |
+| E3Btight |    0.0000 |    0.0096 |
+| E3Bwide  |    0.0000 |    0.0085 |
 
----
+</div>
 
-## 5. Experimental Results and Discussion
+# External comparison and the value of a previous measurement
 
-### 5.1 Point Predictor Benchmark and GPU Acceleration
-Table 1 compares the predictive performance of candidate models on the leak-free source development partition.
+We reproduced Sirhan’s global one-sided forecast on the Irish 5G traces of Raca et al. (Sirhan 2026; Raca et al. 2020). Each of 30 splits assigns whole traces to training, calibration and testing. We retained the released features, predictor training and signed-error calibration. For target row $`t+1`$, persistence uses the downlink measurement at $`t-1`$, the latest throughput feature available to the tree. A second candidate takes the smaller of that lag and the nonnegative tree estimate before calibration. The Rome experiments informed the candidate choice before its Irish evaluation.
 
-| Model Architecture | Val MAE (Mbps) | Val RMSE (Mbps) | Fit Time (s) | Hardware / VRAM |
-|---|---:|---:|---:|---|
-| **Persistence** | **3.22** | **7.21** | 0.000 | Host CPU |
-| **Ridge Regression** | 6.03 | 8.78 | 0.033 | Host CPU |
-| **HistGradientBoosting** | 11.00 | 12.00 | 2.943 | Host CPU |
-| **BAMMO (Jacobson et al. 2025)** | 15.46 | 23.86 | 0.405 | Host CPU |
-| **Quantile GBM ($p=0.10$)** | 5.01 | 8.68 | 0.092 | Host CPU |
-| **GPU ThroughputResNet** | 5.85 | 8.33 | 0.535 | NVIDIA RTX 4060 (24.7 MB) |
+The published frontier chooses among twenty nominal levels using the realized test violations. Table VI averages the best supported fractions over feasible splits for each method. At ten percent, 29 splits were feasible for the global rule and all 30 for persistence and the minimum. The paired persistence gain was 3.58 percentage points on the 29 jointly feasible splits. The minimum lost 3.83 points on the corresponding comparison with global.
 
-Persistence achieves the lowest validation point error on the source development set (Val MAE 3.22 Mbps, RMSE 7.21 Mbps), followed by QuantileGBM (MAE 5.01 Mbps), GPU ThroughputResNet (MAE 5.85 Mbps), and Ridge (MAE 6.03 Mbps). HistGradientBoosting achieves Val MAE 11.00 Mbps (RMSE 12.00 Mbps) in 2.943 seconds. BAMMO (Jacobson et al., JRSS Series C 2025), which trains pattern-specific base decision trees for observed telemetry subsets, achieves Val MAE 15.46 Mbps (RMSE 23.86 Mbps) in 0.405 seconds on host CPU. The PyTorch Deep Tabular ResNet executed on the NVIDIA GeForce RTX 4060 GPU achieved high computational efficiency (Val MAE 5.85 Mbps, RMSE 8.33 Mbps with 0.535 seconds execution time utilizing 24.7 MB peak VRAM). Because HistGradientBoosting natively handles unobserved 5G NR features during recursive tree splitting without arbitrary imputation and provides robust nonlinear capacity, it was frozen as the common predictor for all downstream transfer and calibration experiments, yielding a frozen source global conformal quantile of $q_{\text{source}} = 14.16$~Mbps at nominal risk $\alpha = 0.10$.
+<div class="table*">
 
-### 5.2 Transfer Benchmark and Calibration Budget Analysis
-Table 2 reports the empirical violation rate $V$ and supported-rate fraction $U$ across all four transfer regimes and calibration budgets $K \in \{0, 2, 5, 8, 9, 10, 15\}$.
+|        |           |       |         |             |      |       |
+|:-------|----------:|------:|--------:|------------:|-----:|------:|
+| Budget | Published | Rerun | Minimum | Persistence | Gain |  Wins |
+| 2      |      33.1 | 33.22 |   32.48 |       34.25 | 1.05 | 13/24 |
+| 5      |      47.2 | 47.14 |   45.27 |       49.73 | 2.58 | 22/28 |
+| 10     |      56.9 | 56.98 |   53.30 |       60.54 | 3.58 | 27/29 |
 
-| Regime | Method | Budget $K=0$ ($V$ / $U$) | Budget $K=2$ ($V$ / $U$) | Budget $K=5$ ($V$ / $U$) | Budget $K=8$ ($V$ / $U$) | Budget $K=9$ ($V$ / $U$) | Budget $K=10$ ($V$ / $U$) | Budget $K=15$ ($V$ / $U$) |
-|---|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **E0: Within-Domain (Op1 2020--2021)** | Uncalibrated Point | 0.44 / 0.37 | 0.44 / 0.37 | 0.44 / 0.37 | 0.44 / 0.37 | 0.44 / 0.37 | 0.44 / 0.37 | - / - |
-| | Global Conformal | 0.12 / 0.18 | 0.12 / 0.18 | 0.12 / 0.18 | 0.12 / 0.18 | 0.10 / 0.09 | 0.00 / 0.03 | - / - |
-| | **Proposed Missingness-Aware** | 0.12 / 0.18 | 0.12 / 0.18 | 0.12 / 0.18 | 0.12 / 0.18 | 0.12 / 0.12 | 0.00 / 0.03 | - / - |
-| **E1: Campaign Transfer (Op1 2023)** | Uncalibrated Point | 0.41 / 0.41 | 0.41 / 0.41 | 0.41 / 0.41 | 0.41 / 0.41 | 0.41 / 0.41 | 0.41 / 0.41 | 0.41 / 0.41 |
-| | Global Conformal | 0.17 / 0.17 | 0.17 / 0.17 | 0.17 / 0.17 | 0.17 / 0.17 | 0.07 / 0.07 | 0.07 / 0.07 | 0.07 / 0.07 |
-| | Proposed Missingness-Aware | 0.17 / 0.17 | 0.17 / 0.17 | 0.17 / 0.17 | 0.17 / 0.17 | 0.12 / 0.11 | 0.12 / 0.11 | 0.10 / 0.08 |
-| | **Bayes-Corrected CS-CP** | \multicolumn{5}{c}{--- Target Unlabeled Density Ratio ---} & \multicolumn{2}{c}{**0.01 / 0.01**} |
-| **E2: Cross-Operator (Op2 2020--2021)** | Uncalibrated Point | 0.62 / 0.42 | 0.62 / 0.42 | 0.62 / 0.42 | 0.62 / 0.42 | 0.62 / 0.42 | 0.62 / 0.42 | 0.62 / 0.42 |
-| | Global Conformal | 0.16 / 0.19 | 0.16 / 0.19 | 0.16 / 0.19 | 0.16 / 0.19 | 0.02 / 0.02 | 0.02 / 0.02 | 0.02 / 0.02 |
-| | Proposed Missingness-Aware | 0.16 / 0.19 | 0.16 / 0.19 | 0.16 / 0.19 | 0.16 / 0.19 | 0.16 / 0.19 | 0.16 / 0.19 | 0.19 / 0.21 |
-| | **Bayes-Corrected CS-CP** | \multicolumn{5}{c}{--- Target Unlabeled Density Ratio ---} & \multicolumn{2}{c}{**0.05 / 0.08**} |
-| **E3: Joint Shift (Op2 2023)** | Uncalibrated Point | 0.33 / 0.35 | 0.33 / 0.35 | 0.33 / 0.35 | 0.33 / 0.35 | 0.33 / 0.35 | 0.33 / 0.35 | 0.33 / 0.35 |
-| | Global Conformal | 0.13 / 0.15 | 0.13 / 0.15 | 0.13 / 0.15 | 0.13 / 0.15 | 0.03 / 0.06 | 0.00 / 0.01 | 0.00 / 0.01 |
-| | Proposed Missingness-Aware | 0.13 / 0.15 | 0.13 / 0.15 | 0.13 / 0.15 | 0.13 / 0.15 | 0.03 / 0.06 | 0.00 / 0.01 | 0.00 / 0.01 |
-| | **Bayes-Corrected CS-CP** | \multicolumn{5}{c}{--- Target Unlabeled Density Ratio ---} & \multicolumn{2}{c}{**0.00 / 0.01**} |
+</div>
 
-#### Key Empirical Insights:
-1. **Uncalibrated Point Prediction Breakdown:** Relying on raw point predictions ($\hat{y}_t$) results in unacceptable operational failure: 44% violations in E0, 41% in E1, and a massive **62% violation rate** in E2 (cross-operator).
-2. **Source-Only Calibration ($K=0$):** Conformal calibration using source-only labels ($q_{\text{source}} = 14.16\text{ Mbps}$) immediately suppresses violation rates across all regimes ($V \approx 0.12$--$0.16$), supporting dependable lower bounds without requiring any target measurement drives.
-3. **Target Recalibration Activation at $K=9$ (Lemma 1 Proof):** As proved in Lemma 1, split-conformal calibration at $\alpha=0.10$ lacks sufficient target samples when $K \le 8$ ($\lceil 0.9(K+1) \rceil > K$), forcing calibrators to fall back to the source quantile. At exactly $K=9$, target calibration sharply activates: in E0, $V$ reaches $0.098 \le 0.10$ ($U=0.086$); in E1, supported capacity expands to $U=0.110$ with $V=0.122$; in E2, proposed missingness-aware calibration safely sustains $U=0.189$ ($V=0.164$) and unlocks $U=0.212$ at $K=15$. In E0, budget $K=15$ is marked unavailable without substitution because the target calibration pool contains exactly 10 sessions.
-4. **Behavior under Extreme Transfer Shift (E3):** In E3 (Joint Shift), target recalibration encounters a zero-throughput network stall in the target calibration prefix at $K \ge 10$, driving bounds conservatively to zero ($V = 0.000, U = 0.006$). Crucially, Bayes prior-corrected Covariate-Shift Conformal Prediction (CS-CP) avoids small-sample stall sensitivity by re-weighting source calibration residuals, sustaining $U = 0.010$ with bounded risk $V = 0.000$.
+At a fixed nominal level of 0.10, all splits contribute. Persistence increased mean supported throughput from 55.60 to 59.44 percent and mean violations from 9.60 to 9.71 percent. Each rule met the ten percent target on 18 of 30 splits. The minimum reduced mean supported throughput to 52.81 percent.
 
-### 5.3 Subgroup Reliability and Bootstrap Significance
-To evaluate whether missingness-aware recalibration provides statistically meaningful shifts over global conformal calibration at budget $K=10$, we executed 2,000 paired day-cluster bootstrap resamples. The calendar collection date represents the primary unit of statistical independence; resampling individual sessions would violate intra-day spatial and temporal correlation. The number of independent day clusters varies across regimes:
-- **E1 (Campaign Transfer, $G=7$ day clusters, $N=139$ sessions):** $\Delta U = +0.037$ [95% CI: $+0.019, +0.065$] with $\Delta V = +0.050$ [95% CI: $+0.016, +0.074$].
-- **E2 (Cross-Operator, $G=8$ day clusters, $N=256$ sessions):** $\Delta U = +0.171$ [95% CI: $+0.142, +0.220$] with $\Delta V = +0.141$ [95% CI: $+0.078, +0.252$].
-- **E0 (Within-Domain, $G=2$ day clusters, $N=41$ sessions):** $\Delta U = +0.000$ [$+0.000, +0.000$], $\Delta V = +0.000$ [$+0.000, +0.000$]. Because the E0 test suffix contains only 2 distinct collection dates, day-cluster bootstrap resampling is mathematically degenerate ($2^2 = 4$ possible resamples); these values are reported as exploratory and descriptive only, not as inferential proof of equivalence.
-- **E3 (Joint Shift, $G=7$ day clusters, $N=103$ sessions):** $\Delta U = +0.000$ [$+0.000, +0.000$], $\Delta V = +0.000$ [$+0.000, +0.000$] due to conservative zero-commitment following an outlier target stall in the prefix. This reflects identical threshold clipping under an extreme outlier rather than statistical equivalence of predictive distributions.
+<div class="table*">
 
-We emphasize that with small cluster counts ($G \in [2, 8]$), cluster bootstrap intervals should be interpreted as non-parametric finite-sample sensitivity indicators rather than asymptotic Wald tests, as formal cluster-robust inference typically requires $G \ge 30$ clusters.
+|             |       |       |        |
+|:------------|------:|------:|-------:|
+| Predictor   | MeanV | MeanU | Passes |
+| Global      |  9.60 | 55.60 |     18 |
+| Minimum     |  9.72 | 52.81 |     17 |
+| Persistence |  9.71 | 59.44 |     18 |
 
-### 5.4 Online Adaptive Conformal Inference (ACI)
-Under secondary streaming evaluation, Adaptive Conformal Inference (Gibbs & Candès 2021) operating with learning rate $\gamma = 0.05$ dynamically tracks distribution shift across sequential test streams, converging to empirical violation rates between 12.2% and 15.8% across all four transfer regimes (E0: 12.2%, E1: 15.8%, E2: 15.6%, E3: 12.6%). The parameter $\gamma = 0.05$ was selected to balance agile tracking of abrupt channel state transitions without inducing excessive score margin volatility.
+</div>
 
-### 5.5 Ablation Studies, Sensitivity, and Pareto Frontiers
-- **Fallback Threshold Sensitivity:** Varying $N_{\min} \in \{3, 5, 10, 20\}$ demonstrated robust behavior: small thresholds allow fine-grained adaptation ($V=0.086$), while higher thresholds gracefully fall back to pooled target calibration ($V=0.090$).
-- **Artificial Missingness Stress Test:** Artificially masking 10%, 30%, and 50% of observed 5G NR telemetry decreased violation rates from 0.086 to 0.043, while supported rate contracted from 0.178 to 0.115. Missing NR telemetry prevents the model from anticipating high-throughput dual-connectivity bursts, forcing conservative predictions that enhance safety at the cost of lower committed throughput.
-- **Telemetry Freshness Horizon Sensitivity ($\Delta t \in \{30, 60, 120\}$ s):**
-  - At 30 s lookback, intermittent radio logging causes fewer valid reference signal samples to fall within the pre-test window, elevating violation rates ($V = 0.188$ in E2, $V = 0.302$ in E1 at $K=0$).
-  - At 60 s lookback (primary setting), radio logging capture stabilizes, recovering nominal coverage ($V = 0.122$ in E0, $V = 0.086$ in E2, $V = 0.079$ in E1 with $K=10$).
-  - At 120 s lookback, performance remains stable ($V = 0.122$ in E0, $V = 0.086$ in E2, $V = 0.122$ in E1). This confirms 60 seconds as the optimal operational lookback horizon.
-- **Dense Multi-$\alpha$ Pareto Risk-Utility Frontier:**
-  Evaluating across nominal risk levels $\alpha \in [0.01, 0.30]$ demonstrates that the proposed calibrator tightly tracks the nominal guarantee line $V \le \alpha$ from ultra-reliable low-latency operations ($\alpha=0.01$) to best-effort services ($\alpha=0.20$), smoothly expanding supported rate fraction $U$ from 0.05 to 0.35 (Fig. 4).
-- **Covariate-Shift Conformal Prediction (CS-CP):**
-  Evaluating Covariate-Shift Conformal Prediction (Tibshirani et al., NeurIPS 2019) with Bayes class-prior correction ($w(x) = \frac{P(D=1|x)}{1-P(D=1|x)} \cdot \frac{N_{\text{src}}}{N_{\text{tgt}}}$) was benchmarked under two explicit protocols:
-  1. *Protocol A (Strict Non-Transductive):* The domain discriminator and likelihood weights are fitted exclusively using source calibration and the independent target calibration pool, leaving the test suffix strictly out-of-sample. Under primary tight clipping $[0.1, 10.0]$, CS-CP achieves $V=0.007$ in E1 ($U=0.013$, Kish's Source ESS $= 3.4$), $V=0.016$ in E2 ($U=0.030$, Source ESS $= 7.8$), and $V=0.010$ in E3 ($U=0.016$, Source ESS $= 22.1$). Under wider clipping $[0.01, 100.0]$, weight dispersion increases (Source ESS drops to $1.7$ in E1, $5.4$ in E2), yielding $V=0.029, U=0.045$ in E1 and $V=0.027, U=0.054$ in E2.
-  2. *Protocol B (Transductive Benchmark):* Granting the discriminator access to unlabeled test covariates yields $V=0.014, U=0.006$ in E1, $V=0.047, U=0.079$ in E2, and $V=0.000, U=0.010$ in E3.
-  Crucially, across both protocols in Regime E3 (where small-sample target recalibration suffered utility collapse due to an outlier zero-throughput stall), CS-CP sustains positive commitment ($U = 0.010$--$0.016$) while strictly bounding violations at $V \le 0.010 \ll 0.10$.
-- **Operational SLA Economic Cost Optimization:**
-  Evaluating normalized operational loss $\text{Cost}(\lambda) = \lambda \cdot V + (1 - \lambda) \cdot (1 - U)$ across penalty weights $\lambda \in [0, 1]$ (Fig. 5) demonstrates that conformal recalibration dominates uncalibrated predictors for all penalty regimes with $\lambda \ge 0.35$. Under standard regulatory and QoS penalty regimes ($\lambda \ge 0.50$), our proposed missingness-aware calibrator reduces operational SLA loss by 25.7% to 57.9%, and by 83.8% under zero-risk SLAs ($\lambda = 1.0$).
+We kept each fitted forecast and calibration offset fixed and omitted traces only from test scoring. After dropping any one trace from every split in which it appeared, the mean paired gain ranged from 3.53 to 4.64 percentage points. Separately, we averaged each trace’s utility difference over its test appearances. Persistence improved 79 of 83 traces, with a median gain of 5.04 points. The five largest download traces contributed 54.4 percent of the sum of measured rates across unique rows. Removing those traces raised the gain to 6.81 points. Removing all 21 download traces left 62 streaming traces and a gain of 10.96 points, alongside a higher violation rate than the tree. These sensitivity estimates reuse overlapping partitions of the same recordings.
 
----
+<div class="table*">
 
-## 6. Practical Implications for Network Operators
-The empirical findings from our benchmark yield the following practical principles for mobile network operators deploying or upgrading 4G LTE and 5G NSA infrastructure:
-1. **Drive-Test Campaign Sizing ($K \ge 10$ Guideline):** Drive-test benchmarking campaigns are financially and operationally expensive. Lemma 1 establishes that split-conformal calibration at $\alpha=0.10$ requires at least $K=9$ target sessions to produce a finite empirical quantile. For $K \le 8$, algorithms necessarily fall back to source-domain calibration, which still provides useful but non-target-specific bounds. We therefore recommend budgeting at least $K \ge 10$ sessions per target deployment area to activate target-specific recalibration with at least one degree of quantile freedom.
-2. **Risk-Aware SLA Enforcement:** As our experiments demonstrate, deploying uncalibrated ML point predictors exposes operators to 33% to 62% service failure rates under domain shift. Split-conformal calibration provides a lightweight mathematical mechanism for bounding violation rates within operator-specified risk tolerances, complementing existing QoS monitoring frameworks.
-3. **Telemetry Missingness Management:** In networks where 5G rollout proceeds incrementally over existing 4G anchors, secondary NR carriers are naturally absent in the majority of drive-test logs. Operators should avoid naive zero-imputation strategies, which distort predictive feature distributions, and instead adopt models with native missingness handling combined with group-stratified conformal bounds.
+|               |         |       |      |       |      |
+|:--------------|--------:|------:|-----:|------:|-----:|
+| Sample        | Omitted |  Gain | Wins | TreeV | LagV |
+| All           |       0 |  3.84 |   27 |  9.60 | 9.71 |
+| OmitTop5      |       5 |  6.81 |   29 |  5.89 | 7.14 |
+| OmitDownloads |      21 | 10.96 |   30 |  2.90 | 4.86 |
 
-These principles are derived from controlled experiments on Rome, Italy commercial drive-test data. Applying them to other geographic regions, regulatory environments, or network architectures (e.g., 5G Standalone) would require dedicated local empirical validation.
+</div>
 
----
+Table IX compares recorded throughput transitions. NearZero counts endpoints at or below 0.001 Mbps. Fall and Rise count changes of at least 10 Mbps from the available lag in the indicated direction. NearZero can overlap Fall. A near-zero measurement does not identify an application stall. In Ireland the lag had a 6.59 Mbps mean absolute error. In the Rome joint shift (E3) it had a 35.44 Mbps error and 40.8 percent of endpoints fell at least 10 Mbps below the lag. On the first ten calibration sessions in E3, persistence supported 51.65 percent with 20.39 percent violations. The tree supported 0.60 percent with zero violations. With the same held-out suffix and eleven disjoint ten-label calibration blocks, persistence met the violation target zero times and the tree eleven times. The higher frequency of large downward changes is consistent with a riskier lag-based lower bound. Forecast horizon, endpoint construction, traffic mix and collection conditions differ together across the two datasets, so this comparison cannot isolate a cause.
 
-## 7. Threats to Validity and Limitations
-While our experimental benchmark demonstrates significant reliability improvements and formalizes small-sample recalibration thresholds, several methodological and operational limitations must be explicitly acknowledged:
-1. **Geographical and Environmental Specificity:** All empirical measurement traces were collected in metropolitan Rome, Italy across commercial deployments. Cellular propagation channels in dense Asian megacities (e.g., Dhaka, Bangladesh), high-rise urban canyons, or rural topographies will exhibit distinct multi-path scattering, building penetration losses, and user density profiles. Applications of our framework to other geographic regions (such as Bangladesh) represent prospective use-cases that require dedicated local empirical validation.
-2. **Limited Independent Cluster Support:** Because drive-test measurements exhibit strong intra-day spatial and temporal autocorrelation, the calendar collection date represents the true unit of statistical independence. In Regime E0, the fixed test suffix contains only $G = 2$ distinct calendar dates, rendering paired cluster bootstrap confidence intervals degenerate ($[0.0, 0.0]$); E0 bootstrap estimates must therefore be interpreted as exploratory. While Regimes E1--E3 contain $G \in [7, 8]$ clusters, asymptotic cluster-robust inference typically benefits from larger cluster counts ($G \ge 30$).
-3. **Heuristic Session Segmentation in 2023 Traces:** While Dataset 1 (2020--2021) contains explicit hardware-logged completion markers (`DQA Result`), Dataset 2 (2023) required session boundary reconstruction using a heuristic throughput-reset criterion ($\Delta y < -5.0\text{ Mbps}, y < 5.0\text{ Mbps}$). We conducted an exhaustive cross-strategy boundary sensitivity audit across all 43 Ookla trace files (recorded in `results/diagnostics/session_boundary_sensitivity.json`). The primary reset heuristic extracts 584 sessions with median duration 76.0 s, 3 zero-duration sessions (single-sample boundary spikes), and 30 prolonged sessions ($>180$ s). Under alternative relative-drop (712 sessions, median 72.0 s) and active-burst (930 sessions, median 53.0 s) heuristics, source conformal violation rates remain consistent ($V \approx 0.13\text{--}0.15$ in E1, $V \approx 0.22\text{--}0.25$ in E3). This confirms that while exact session counts are heuristic-dependent, core conclusions—uncalibrated point failure, conformal risk bounding, and the $K=9$ activation threshold—remain invariant to segmentation choice.
-4. **Group Sparsity and the Coverage-Utility Trade-off:** At minimal calibration budgets ($K=10$), stratifying residuals into subgroups (LTE-only vs. Dual LTE+NR) thins sample support to $N_g \approx 4\text{--}6$ sessions per group. This finite-sample thinning increases quantile variance, causing Grouped Conformal to exceed the nominal 10% violation threshold in E1 ($V=0.122$) and E2 ($V=0.164$) while unlocking $10.5\times$ higher capacity commitment ($U=0.189$ vs. $0.018$). Operators must navigate this trade-off based on their SLA penalty structure.
-5. **Heuristic Weight Clipping in CS-CP:** In Covariate-Shift Conformal Prediction, density ratio weights estimated via logistic discrimination are clipped (primary tight bound $[0.1, 10.0]$ vs sensitivity bound $[0.01, 100.0]$) to prevent outlier variance explosion. While regularizing likelihood ratios is operationally essential under small sample sizes (where Kish's ESS drops to $1.7\text{--}3.4$), weight clipping modifies the empirical distribution and cannot be claimed to strictly preserve asymptotic distribution-free coverage guarantees without additional theoretical bounds.
-6. **Offline Evaluation vs. Closed-Loop Scheduler Control:** The supported-rate fraction $U$ serves as an offline capacity proxy. Deploying conformal lower bounds into real-time RAN MAC schedulers, edge MEC admission control, or client-side DASH bitrate adaptation will introduce dynamic client-network feedback loops that require live over-the-air testbed validation.
+<div class="table*">
 
----
+|         |        |         |          |        |          |      |      |
+|:--------|-------:|--------:|---------:|-------:|---------:|-----:|-----:|
+| Setting |  Pairs | Pearson | Spearman | LagMAE | NearZero | Fall | Rise |
+| Ireland | 188545 |    0.77 |     0.67 |   6.59 |     45.0 |  5.8 |  6.3 |
+| E0      |     41 |    0.29 |     0.41 |  35.14 |      0.0 | 22.0 | 22.0 |
+| E1      |    139 |    0.52 |     0.57 |  32.69 |      7.2 | 37.4 | 14.4 |
+| E2      |    256 |    0.70 |     0.61 |  17.57 |      2.0 | 19.1 | 16.0 |
+| E3      |    103 |    0.49 |     0.55 |  35.44 |      1.0 | 40.8 | 24.3 |
 
-## 8. Conclusion
-In this paper, we established an experimental benchmark investigating the reliability of cellular throughput forecasts under distribution shift and natural telemetry missingness. Evaluating 1,132 commercial measurement sessions (1,001 causal test pairs) across four transfer regimes, we demonstrated that uncalibrated models experience catastrophic failure (33%--62% violations). Global split-conformal calibration reliably bounds empirical violations below nominal risk levels ($V \le 0.072$ across transfer regimes), while missingness-aware grouped calibration offers an explicit risk-utility trade-off, recovering up to $10.5\times$ higher capacity commitment under small sample budgets ($K=10$). We proved that finite-sample conformal validity at $\alpha=0.10$ mathematically requires $K \ge 9$ sessions (Lemma 1), establishing a strict lower bound for target campaign budgets. Our results demonstrate that within-domain disjoint chronological evaluation ensures zero data leakage, and Bayes prior-corrected covariate shift conformal prediction sustains reliable coverage across multi-year temporal and cross-carrier shifts under both non-transductive and transductive protocols.
+</div>
 
+# Conclusion
+
+A short prefix produced conservative lower forecasts in these traces, sometimes at the cost of nearly all usable throughput. The first finite target rank at nine labels is specific to the chosen nominal level. The burst-endpoint diagnostic and sparse calendar-day support limit generalization. Independent measurement dates, externally identified test boundaries and an untouched network would permit a stronger test of calibration usefulness.
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+
+<div id="ref-caso2024chronicles" class="csl-entry">
+
+Caso, Giuseppe, Mohammad Rajiullah, Konstantinos Kousias, et al. 2024. “The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution.” *IEEE Open Journal of the Communications Society* 5: 7380–99. <https://doi.org/10.1109/OJCOMS.2024.3499370>.
+
+</div>
+
+<div id="ref-gibbs2021adaptive" class="csl-entry">
+
+Gibbs, Isaac, and Emmanuel Candès. 2021. “Adaptive Conformal Inference Under Distribution Shift.” *Advances in Neural Information Processing Systems (NeurIPS)* 34: 1660–72.
+
+</div>
+
+<div id="ref-jacobson2025predicting" class="csl-entry">
+
+Jacobson, Tate, Jie Ding, and Hui Zou. 2025. “Predicting 5G Throughput with BAMMO, a Boosted Additive Model for Data with Missing Observations.” *Journal of the Royal Statistical Society Series C: Applied Statistics* 74 (1): 249–73. <https://doi.org/10.1093/jrsssc/qlae054>.
+
+</div>
+
+<div id="ref-kousias2024large" class="csl-entry">
+
+Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, et al. 2024. “A Large-Scale Dataset of 4G, NB-IoT, and 5G Non-Standalone Network Measurements.” *IEEE Communications Magazine* 62 (5): 44–49. <https://doi.org/10.1109/MCOM.011.2200707>.
+
+</div>
+
+<div id="ref-raca2020beyond" class="csl-entry">
+
+Raca, Darijo, Dylan Leahy, Cormac J. Sreenan, and Jason J. Quinlan. 2020. “Beyond Throughput, the Next Generation: A 5G Dataset with Channel and Context Metrics.” *Proceedings of the 11th ACM Multimedia Systems Conference (MMSys)*, 303–8. <https://doi.org/10.1145/3339825.3394938>.
+
+</div>
+
+<div id="ref-sirhan2026handover" class="csl-entry">
+
+Sirhan, N. N. 2026. “Handover-Aware Conformal Throughput Intervals for Risk-Sensitive Rate Selection in Mobile 5G.” *Network* 6 (4): 92. <https://doi.org/10.3390/network6040092>.
+
+</div>
+
+<div id="ref-tibshirani2019conformal" class="csl-entry">
+
+Tibshirani, Ryan J., Rina Foygel Barber, Emmanuel Candès, and Aaditya Ramdas. 2019. “Conformal Prediction Under Covariate Shift.” *Advances in Neural Information Processing Systems (NeurIPS)* 32: 2530–40.
+
+</div>
+
+<div id="ref-vovk2005algorithmic" class="csl-entry">
+
+Vovk, Vladimir, Alex Gammerman, and Glenn Shafer. 2005. *Algorithmic Learning in a Random World*. Springer.
+
+</div>
+
+<div id="ref-zaffran2023conformal" class="csl-entry">
+
+Zaffran, Margaux, Aymeric Dieuleveut, Julie Josse, and Yaniv Romano. 2023. “Conformal Prediction with Missing Values.” *Proceedings of the 40th International Conference on Machine Learning (ICML)*, Proceedings of machine learning research, vol. 202: 40578–604.
+
+</div>
+
+</div>

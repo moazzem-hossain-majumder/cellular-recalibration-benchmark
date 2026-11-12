@@ -145,6 +145,7 @@ def run_all_experiments() -> Dict:
     # 4. Multi-Domain Transfer & Calibration Budget Experiments
     print('\n[3/6] Running Transfer Regimes across Budgets K in {0, 1, 2, 5, 8, 9, 10, 15}...')
     calibration_records = []
+    forecast_blocks = []
     
     for regime_name, (src_d, tgt_d) in regimes.items():
         print(f'\n  --- Evaluating Regime: {regime_name} ---')
@@ -152,6 +153,7 @@ def run_all_experiments() -> Dict:
             src_d, tgt_d, budgets=budgets, regime=regime_name,
             experiment_type='within_domain' if regime_name.startswith('E0') else 'transfer'
         )
+        splits.train, splits.val, splits.source_calib = e0_splits.train, e0_splits.val, e0_splits.source_calib
         generate_split_summary(splits, regime_name, "8224890_to_14073311", output_path=DIAGNOSTICS_DIR / 'split_summary.json')
         df_test = splits.target_test
         y_test = df_test['target_y'].to_numpy(dtype=float)
@@ -211,6 +213,13 @@ def run_all_experiments() -> Dict:
                 bounds_rat, _ = calib_rat.predict_lower_bound(y_test_pred, test_rat)
             m_rat = compute_reliability_metrics(y_test, y_test_pred, bounds_rat)
 
+            forecast_blocks.append(pd.DataFrame({
+                'regime': regime_name, 'budget_K': k, 'session_id': df_test['session_id'],
+                'date': df_test['date'], 'group_id': test_groups, 'target': y_test,
+                'Uncalibrated': bounds_uncal, 'Global_Conformal': bounds_global,
+                'RAT_Grouped': bounds_rat, 'Proposed_Missingness_Aware': bounds_missing
+            }))
+
             # Subgroup metrics for proposed missingness method
             sub_missing = compute_subgroup_metrics(y_test, y_test_pred, bounds_missing, test_groups)
 
@@ -238,6 +247,7 @@ def run_all_experiments() -> Dict:
             print(f'    K={k:2d} | Global: V={m_global.violation_rate:.3f}, U={m_global.supported_rate_fraction:.3f} | '
                   f'Proposed: V={m_missing.violation_rate:.3f}, U={m_missing.supported_rate_fraction:.3f}')
 
+    pd.concat(forecast_blocks).to_csv(DIAGNOSTICS_DIR / 'test_forecasts.csv', index=False)
     calib_df = pd.DataFrame(calibration_records)
     calib_df.to_csv(METRICS_DIR / 'calibration_budget_results.csv', index=False)
     
@@ -324,7 +334,7 @@ def run_all_experiments() -> Dict:
     # 7. Generate Publication Figures and Tables
     print('\n[6/6] Generating Publication-Quality Figures & LaTeX Tables...')
     generate_publication_figures(calib_df, aci_sims, model_profiles)
-    generate_latex_tables(calib_df, bootstrap_results, model_profiles)
+    # The publication builder renders all tables after sensitivity diagnostics.
     
     print('\n' + '='*70)
     print('ALL EXPERIMENTS SUCCESSFULLY EXECUTED AND ARTIFACTS GENERATED')
@@ -388,9 +398,6 @@ def generate_publication_figures(calib_df: pd.DataFrame, aci_sims: Dict, model_p
     for reg, col, marker in zip(regimes, ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728'], ['o', 's', '^', 'D']):
         sub = calib_df[(calib_df['regime'] == reg) & (calib_df['method'] == 'Proposed_Missingness_Aware')]
         axes[1].plot(sub['mean_overcommitment'], sub['supported_fraction'], marker=marker, color=col, label=reg.split('_')[0])
-        for _, row in sub.iterrows():
-            axes[1].annotate(f'K={int(row["budget_K"])}', (row['mean_overcommitment'], row['supported_fraction']),
-                             fontsize=7, xytext=(3, 3), textcoords='offset points')
     axes[1].set_title('(b) Risk-Utility Frontier: Overcommitment vs Supported Rate')
     axes[1].set_xlabel('Mean Overcommitment Magnitude (Mbps)')
     axes[1].set_ylabel('Supported-Rate Fraction ($U$)')
@@ -409,7 +416,7 @@ def generate_publication_figures(calib_df: pd.DataFrame, aci_sims: Dict, model_p
         traj = aci_sims[reg]['q_trajectory']
         x = np.linspace(0, 100, len(traj))
         ax.plot(x, traj, label=reg.split('_')[0], color=col, linewidth=1.5)
-    ax.set_title('Adaptive Conformal Inference (ACI) Quantile Tracking Trajectory')
+    ax.set_title('Online score-offset tracking')
     ax.set_xlabel('Test Stream Progression (%)')
     ax.set_ylabel('Adaptive Score Offset $q_t$ (Mbps)')
     ax.legend(loc='upper right', frameon=True)
@@ -419,66 +426,6 @@ def generate_publication_figures(calib_df: pd.DataFrame, aci_sims: Dict, model_p
     fig.savefig(FIGURES_DIR / 'fig3_aci_adaptation.png', dpi=300, bbox_inches='tight')
     plt.close(fig)
     print(f'  Saved: {FIGURES_DIR / "fig3_aci_adaptation.pdf"}')
-
-def generate_latex_tables(calib_df: pd.DataFrame, boot_results: Dict, model_profiles: Dict):
-    """Generate publication-ready LaTeX tables for insertion into the research paper."""
-    
-    # TABLE I: Benchmark Point Predictor Comparison
-    lines_tab1 = [
-        r'\begin{table}[t]',
-        r'\centering',
-        r'\caption{Predictive Performance and Hardware Profiling on NVIDIA GeForce RTX 4060}',
-        r'\label{tab:point_predictors}',
-        r'\begin{tabular}{lcccc}',
-        r'\hline',
-        r'\textbf{Model Architecture} & \textbf{Val MAE (Mbps)} & \textbf{Val RMSE (Mbps)} & \textbf{Fit Time (s)} & \textbf{Hardware / VRAM} \\',
-        r'\hline'
-    ]
-    for mname, prof in model_profiles.items():
-        hw = f"{prof.get('gpu_name', 'CPU')} ({prof.get('peak_vram_mb', 0.0):.1f} MB)" if 'peak_vram_mb' in prof else 'Host CPU'
-        lines_tab1.append(f"{mname.replace('_', ' ')} & {prof['val_mae']:.2f} & {prof['val_rmse']:.2f} & {prof['fit_time_seconds']:.3f} & {hw} \\\\")
-    lines_tab1.extend([
-        r'\hline',
-        r'\end{tabular}',
-        r'\end{table}'
-    ])
-    (TABLES_DIR / 'table1_point_predictors.tex').write_text('\n'.join(lines_tab1), encoding='utf-8')
-
-    # TABLE II: Main Transfer Benchmark & Recalibration Budget Results
-    lines_tab2 = [
-        r'\begin{table*}[t]',
-        r'\centering',
-        r'\caption{Reliability and Supported-Rate Fraction across Transfer Regimes and Calibration Budgets ($K$ Sessions)}',
-        r'\label{tab:main_benchmark}',
-        r'\begin{tabular}{llcccccccccccccc}',
-        r'\hline',
-        r'\textbf{Regime} & \textbf{Method} & \multicolumn{2}{c}{\textbf{Budget $K=0$}} & \multicolumn{2}{c}{\textbf{Budget $K=2$}} & \multicolumn{2}{c}{\textbf{Budget $K=5$}} & \multicolumn{2}{c}{\textbf{Budget $K=8$}} & \multicolumn{2}{c}{\textbf{Budget $K=9$}} & \multicolumn{2}{c}{\textbf{Budget $K=10$}} & \multicolumn{2}{c}{\textbf{Budget $K=15$}} \\',
-        r' & & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ & $V$ & $U$ \\',
-        r'\hline'
-    ]
-    for reg in ['E0_WithinDomain_Op1_2021', 'E1_CampaignTransfer_Op1_2023', 'E2_CrossOperator_Op2_2021', 'E3_JointShift_Op2_2023']:
-        r_short = reg.split('_')[0]
-        sub = calib_df[calib_df['regime'] == reg]
-        for meth in ['Uncalibrated', 'Global_Conformal', 'Proposed_Missingness_Aware']:
-            m_sub = sub[sub['method'] == meth]
-            def get_vu(k_val):
-                row = m_sub[m_sub['budget_K'] == k_val]
-                if len(row) > 0:
-                    return f"{row['violation_rate'].iloc[0]:.2f}", f"{row['supported_fraction'].iloc[0]:.2f}"
-                return '-', '-'
-            vals = []
-            for k_tgt in [0, 2, 5, 8, 9, 10, 15]:
-                v_k, u_k = get_vu(k_tgt)
-                vals.extend([v_k, u_k])
-            v_str = ' & '.join(vals)
-            lines_tab2.append(f"{r_short} & {meth.replace('_', ' ')} & {v_str} \\\\")
-        lines_tab2.append(r'\hline')
-    lines_tab2.extend([
-        r'\end{tabular}',
-        r'\end{table*}'
-    ])
-    (TABLES_DIR / 'table2_main_benchmark.tex').write_text('\n'.join(lines_tab2), encoding='utf-8')
-    print('  LaTeX tables generated successfully.')
 
 if __name__ == '__main__':
     run_all_experiments()

@@ -1,3 +1,5 @@
+> Historical project record from before the pooled-calibration correction. For current estimates, validation status and publication assessment see [the final research audit](FINAL_RESEARCH_AUDIT.md). Interpret numerical claims below as superseded.
+
 # Operational Reliability, Finite-Budget Recalibration, and QoS Economic Modeling for 4G/5G Deployments in Bangladesh
 
 **Author:** Mithil Rahman  

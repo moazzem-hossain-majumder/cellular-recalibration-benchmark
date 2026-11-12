@@ -1,443 +1,174 @@
-"""
-Automated manuscript-to-experiment consistency validation.
-
-This script verifies that all numerical claims in the manuscript, LaTeX tables,
-README, and abstract are traceable to the authoritative experiment output files.
-It fails with specific error messages if any discrepancy is found.
-
-Usage:
-    python scripts/validate_manuscript_consistency.py
-"""
-import json
-import csv
+"""Validate publication tables by ordered cells and independently aggregate saved forecasts."""
+import hashlib
 import re
 import sys
 from pathlib import Path
-
-ROOT = Path(__file__).resolve().parents[1]
-METRICS_DIR = ROOT / 'results' / 'metrics'
-TABLES_DIR = ROOT / 'results' / 'tables'
-PAPER_TABLES_DIR = ROOT / 'paper' / 'tables'
-
-errors = []
-warnings = []
-
-
-def check(condition, msg):
-    """Record a validation error if condition is False."""
-    if not condition:
-        errors.append(f"FAIL: {msg}")
-        return False
-    return True
-
-
-def warn(msg):
-    """Record a non-fatal warning."""
-    warnings.append(f"WARN: {msg}")
-
-
-def load_json(path):
-    with open(path, 'r') as f:
-        return json.load(f)
-
-
-def load_csv_records(path):
-    with open(path, 'r') as f:
-        return list(csv.DictReader(f))
-
-
-# ============================================================
-# 1. Validate Table 1 (Point Predictors) matches JSON source
-# ============================================================
-def validate_table1():
-    print("\n--- Validating Table 1: Point Predictor Profiles ---")
-    profiles = load_json(METRICS_DIR / 'point_predictor_profiles.json')
-    tex_path = TABLES_DIR / 'table1_point_predictors.tex'
-    tex_content = tex_path.read_text(encoding='utf-8')
-
-    for model_name, prof in profiles.items():
-        display_name = model_name.replace('_', ' ')
-        mae_str = f"{prof['val_mae']:.2f}"
-        rmse_str = f"{prof['val_rmse']:.2f}"
-        fit_str = f"{prof['fit_time_seconds']:.3f}"
-
-        check(mae_str in tex_content,
-              f"Table 1: {display_name} MAE {mae_str} not found in LaTeX table")
-        check(rmse_str in tex_content,
-              f"Table 1: {display_name} RMSE {rmse_str} not found in LaTeX table")
-        check(fit_str in tex_content,
-              f"Table 1: {display_name} Fit Time {fit_str} not found in LaTeX table")
-
-    # Verify paper/tables/ copy matches results/tables/
-    paper_tex = (PAPER_TABLES_DIR / 'table1_point_predictors.tex').read_text(encoding='utf-8')
-    check(tex_content == paper_tex,
-          "Table 1: paper/tables/ copy differs from results/tables/ source")
-
-    print(f"  Table 1 validation: {len(profiles)} models checked")
-
-
-# ============================================================
-# 2. Validate Table 2 (Main Benchmark) matches CSV source
-# ============================================================
-def validate_table2():
-    print("\n--- Validating Table 2: Main Benchmark Results ---")
-    records = load_csv_records(METRICS_DIR / 'calibration_budget_results.csv')
-    tex_path = TABLES_DIR / 'table2_main_benchmark.tex'
-    tex_content = tex_path.read_text(encoding='utf-8')
-
-    # Build lookup: (regime, budget_K, method) -> (V, U)
-    lookup = {}
-    for r in records:
-        key = (r['regime'], int(r['budget_K']), r['method'])
-        lookup[key] = (float(r['violation_rate']), float(r['supported_fraction']))
-
-    # Check specific K=10 values that appear prominently
-    regimes_check = [
-        'E0_WithinDomain_Op1_2021',
-        'E1_CampaignTransfer_Op1_2023',
-        'E2_CrossOperator_Op2_2021',
-        'E3_JointShift_Op2_2023'
-    ]
-    methods_check = ['Uncalibrated', 'Global_Conformal', 'Proposed_Missingness_Aware']
-    budgets_check = [0, 2, 5, 8, 9, 10]
-
-    checked = 0
-    for regime in regimes_check:
-        for method in methods_check:
-            for k in budgets_check:
-                key = (regime, k, method)
-                if key in lookup:
-                    v, u = lookup[key]
-                    v_str = f"{v:.2f}"
-                    u_str = f"{u:.2f}"
-                    # These formatted values should appear in the tex table
-                    if v_str not in tex_content:
-                        # Only flag if it's not a rounding artifact
-                        v_alt = f"{v:.2f}"
-                        if v_alt not in tex_content:
-                            errors.append(
-                                f"Table 2: {regime} {method} K={k} V={v_str} not found in LaTeX")
-                    checked += 1
-
-    # Verify paper/tables/ copy matches results/tables/
-    paper_tex = (PAPER_TABLES_DIR / 'table2_main_benchmark.tex').read_text(encoding='utf-8')
-    check(tex_content == paper_tex,
-          "Table 2: paper/tables/ copy differs from results/tables/ source")
-
-    print(f"  Table 2 validation: {checked} cells checked")
-
-
-# ============================================================
-# 3. Validate bootstrap results match manuscript claims
-# ============================================================
-def validate_bootstrap():
-    print("\n--- Validating Bootstrap Significance Claims ---")
-    boot = load_json(METRICS_DIR / 'bootstrap_significance_tests.json')
-
-    # E1 bootstrap
-    e1 = boot.get('E1_CampaignTransfer_Op1_2023', {})
-    if 'delta_U' in e1:
-        check(abs(e1['delta_U']['point'] - 0.0372) < 0.001,
-              f"Bootstrap E1 delta_U point should be ~0.037, got {e1['delta_U']['point']}")
-        check(abs(e1['delta_U']['ci_95'][0] - 0.0188) < 0.002,
-              f"Bootstrap E1 delta_U CI lower should be ~0.019, got {e1['delta_U']['ci_95'][0]}")
-
-    # E2 bootstrap
-    e2 = boot.get('E2_CrossOperator_Op2_2021', {})
-    if 'delta_U' in e2:
-        check(abs(e2['delta_U']['point'] - 0.171) < 0.002,
-              f"Bootstrap E2 delta_U point should be ~0.171, got {e2['delta_U']['point']}")
-
-    # E0 should be zero (degenerate)
-    e0 = boot.get('E0_WithinDomain_Op1_2021', {})
-    if 'delta_U' in e0:
-        check(e0['delta_U']['point'] == 0.0,
-              f"Bootstrap E0 delta_U should be 0.0, got {e0['delta_U']['point']}")
-
-    print("  Bootstrap validation complete")
-
-
-# ============================================================
-# 4. Validate no unsupported Bangladesh operational claims
-# ============================================================
-def validate_no_unsupported_bangladesh():
-    print("\n--- Validating No Unsupported Bangladesh Operational Claims ---")
-    tex_path = ROOT / 'paper' / 'manuscript.tex'
-    md_path = ROOT / 'paper' / 'manuscript.md'
-
-    # Patterns that should NOT appear as operational claims
-    # (prospective framing is acceptable)
-    forbidden_patterns = [
-        r'BDT\s+\d',                     # BDT cost figures
-        r'1,20,000',                       # Specific BDT amounts
-        r'2,50,000',                       # Specific BDT amounts
-        r'BTRC\s+directives?\s+requiring', # BTRC as if binding on this research
-    ]
-
-    for path in [tex_path, md_path]:
-        content = path.read_text(encoding='utf-8')
-        for pattern in forbidden_patterns:
-            matches = re.findall(pattern, content, re.IGNORECASE)
-            if matches:
-                errors.append(
-                    f"Bangladesh: Found unsupported claim pattern '{pattern}' in {path.name}: {matches}")
-
-    print("  Bangladesh claims validation complete")
-
-
-# ============================================================
-# 5. Validate abstract numerical claims
-# ============================================================
-def validate_abstract_claims():
-    print("\n--- Validating Abstract Numerical Claims ---")
-    tex_path = ROOT / 'paper' / 'manuscript.tex'
-    content = tex_path.read_text(encoding='utf-8')
-
-    # Extract abstract
-    abstract_match = re.search(r'\\begin\{abstract\}(.*?)\\end\{abstract\}', content, re.DOTALL)
-    if not abstract_match:
-        errors.append("Cannot find abstract in manuscript.tex")
-        return
-    abstract = abstract_match.group(1)
-
-    # Check: "1,132 verified commercial Speedtest sessions"
-    check('1,132' in abstract or '1{,}132' in abstract,
-          "Abstract should mention 1,132 sessions")
-
-    # Check: "1,001 causal forecast pairs"
-    check('1,001' in abstract or '1{,}001' in abstract,
-          "Abstract should mention 1,001 causal pairs")
-
-    # Check: "33% to 62%" violation rates
-    check('33' in abstract and '62' in abstract,
-          "Abstract should mention 33% to 62% violation rates")
-
-    # Check: Lemma 1 K>=9
-    check('K \\ge 9' in abstract or 'K=9' in abstract or 'K \\geq 9' in abstract or '$K \\ge 9$' in abstract,
-          "Abstract should mention K>=9 threshold")
-
-    print("  Abstract claims validation complete")
-
-
-# ============================================================
-# 6. Validate README numerical claims
-# ============================================================
-def validate_readme():
-    print("\n--- Validating README Numerical Claims ---")
-    readme = (ROOT / 'README.md').read_text(encoding='utf-8')
-
-    # Session counts
-    check('1,132' in readme or '1132' in readme,
-          "README should mention 1,132 sessions")
-    check('1,001' in readme or '1001' in readme,
-          "README should mention 1,001 causal pairs")
-
-    # Violation rate range
-    check('62' in readme,
-          "README should mention 62% max violation rate")
-
-    # Bootstrap values should match JSON
-    boot = load_json(METRICS_DIR / 'bootstrap_significance_tests.json')
-    e1_du = boot['E1_CampaignTransfer_Op1_2023']['delta_U']['point']
-    check(f"{e1_du:+.3f}" in readme or f"+{e1_du:.3f}" in readme,
-          f"README E1 delta_U should match {e1_du:+.3f}")
-
-    print("  README validation complete")
-
-
-# ============================================================
-# 7. Validate dataset instance counts
-# ============================================================
-def validate_dataset_counts():
-    print("\n--- Validating Dataset Instance Counts ---")
-    records = load_csv_records(METRICS_DIR / 'calibration_budget_results.csv')
-
-    # E0 test samples at K=0
-    e0_uncal = [r for r in records
-                if r['regime'] == 'E0_WithinDomain_Op1_2021'
-                and r['method'] == 'Uncalibrated'
-                and int(r['budget_K']) == 0]
-    if e0_uncal:
-        n_e0 = int(e0_uncal[0]['test_samples'])
-        check(n_e0 == 41,
-              f"E0 test samples should be 41, got {n_e0}")
-
-    # E1 test samples
-    e1_uncal = [r for r in records
-                if r['regime'] == 'E1_CampaignTransfer_Op1_2023'
-                and r['method'] == 'Uncalibrated'
-                and int(r['budget_K']) == 0]
-    if e1_uncal:
-        n_e1 = int(e1_uncal[0]['test_samples'])
-        check(n_e1 == 139,
-              f"E1 test samples should be 139, got {n_e1}")
-
-    # E2 test samples
-    e2_uncal = [r for r in records
-                if r['regime'] == 'E2_CrossOperator_Op2_2021'
-                and r['method'] == 'Uncalibrated'
-                and int(r['budget_K']) == 0]
-    if e2_uncal:
-        n_e2 = int(e2_uncal[0]['test_samples'])
-        check(n_e2 == 256,
-              f"E2 test samples should be 256, got {n_e2}")
-
-    # E3 test samples
-    e3_uncal = [r for r in records
-                if r['regime'] == 'E3_JointShift_Op2_2023'
-                and r['method'] == 'Uncalibrated'
-                and int(r['budget_K']) == 0]
-    if e3_uncal:
-        n_e3 = int(e3_uncal[0]['test_samples'])
-        check(n_e3 == 103,
-              f"E3 test samples should be 103, got {n_e3}")
-
-    print("  Dataset count validation complete")
-
-
-# ============================================================
-# 8. Validate Lemma 1 correctness
-# ============================================================
-def validate_lemma1():
-    print("\n--- Validating Lemma 1 Formulation ---")
-    tex_path = ROOT / 'paper' / 'manuscript.tex'
-    content = tex_path.read_text(encoding='utf-8')
-
-    # Lemma 1 should NOT claim "zero statistical benefit" for K<9
-    check('zero statistical benefit' not in content,
-          "Lemma 1 should not claim 'zero statistical benefit' for K<9 "
-          "(source fallback still provides useful calibration)")
-
-    # Should mention that K=9 is an activation threshold, not a guarantee
-    check('activation' in content.lower() or 'cutoff' in content.lower(),
-          "Lemma 1 should describe K=9 as an activation threshold/cutoff")
-
-    print("  Lemma 1 validation complete")
-
-
-# ============================================================
-# 9. Validate test count claims
-# ============================================================
-def validate_test_count():
-    print("\n--- Validating Test Suite Claims ---")
-    readme = (ROOT / 'README.md').read_text(encoding='utf-8')
-
-    # Count actual test files
-    test_dir = ROOT / 'tests'
-    test_files = list(test_dir.rglob('test_*.py'))
-    n_test_files = len(test_files)
-
-    # README claims specific test count - verify it's reasonable
-    # (we don't run pytest here, just check that test files exist)
-    check(n_test_files >= 5,
-          f"Expected at least 5 test files, found {n_test_files}")
-
-    print(f"  Found {n_test_files} test files")
-
-
-# ============================================================
-# 10. Validate PDF tables match authoritative source
-# ============================================================
-def validate_pdf_tables():
-    print("\n--- Validating Generated PDF Tables & Text ---")
-    pdf_path = ROOT / 'paper' / 'manuscript.pdf'
-    check(pdf_path.exists(), f"PDF does not exist: {pdf_path}")
-    if not pdf_path.exists():
-        return
-
-    import pymupdf
-    doc = pymupdf.open(str(pdf_path))
-    pdf_text = ''.join(page.get_text() for page in doc)
-
-    # Check that authoritative Table II (point predictors) numbers are present
-    profiles = load_json(METRICS_DIR / 'point_predictor_profiles.json')
-    for mname, prof in profiles.items():
-        mae_str = f"{prof['val_mae']:.2f}"
-        check(mae_str in pdf_text,
-              f"PDF: {mname} MAE {mae_str} missing from generated PDF")
-
-    # Check that obsolete numbers are strictly ABSENT
-    obsolete_numbers = ["55.96", "46.96"]
-    for obs in obsolete_numbers:
-        check(obs not in pdf_text,
-              f"PDF: Obsolete number '{obs}' found in generated PDF")
-
-    # Check key Table III benchmark numbers in PDF
-    key_benchmark_values = ["0.44", "0.37", "0.41", "0.62", "0.33"]
-    for val in key_benchmark_values:
-        check(val in pdf_text,
-              f"PDF: Key benchmark value '{val}' missing from generated PDF")
-
-    # Check that submission_package.pdf exists and is non-empty
-    sub_pdf = ROOT / 'paper' / 'submission_package.pdf'
-    check(sub_pdf.exists() and sub_pdf.stat().st_size > 100000,
-          "paper/submission_package.pdf is missing or corrupted")
-
-    print(f"  PDF validation complete ({len(doc)} pages, {len(profiles)} models checked)")
-
-
-# ============================================================
-# 11. Validate session segmentation sensitivity audit artifact
-# ============================================================
-def validate_segmentation_sensitivity():
-    print("\n--- Validating Session Boundary Sensitivity Artifact ---")
-    diag_path = ROOT / 'results' / 'diagnostics' / 'session_boundary_sensitivity.json'
-    check(diag_path.exists(), f"Diagnostic file missing: {diag_path}")
-    if not diag_path.exists():
-        return
-
-    diag = load_json(diag_path)
-    required_methods = ['reset', 'relative_drop', 'active_burst']
-    for m in required_methods:
-        check(m in diag, f"Segmentation method '{m}' missing from sensitivity diagnostic")
-        if m in diag:
-            check(diag[m]['total_extracted_sessions'] > 0,
-                  f"Method '{m}' has 0 extracted sessions")
-            check('duration_distribution' in diag[m],
-                  f"Method '{m}' missing duration distribution")
-            check('throughput_distribution' in diag[m],
-                  f"Method '{m}' missing throughput distribution")
-
-    print(f"  Segmentation sensitivity validation complete ({len(required_methods)} strategies checked)")
-
-
-# ============================================================
-# MAIN
-# ============================================================
-def main():
-    print("=" * 70)
-    print("MANUSCRIPT CONSISTENCY VALIDATION")
-    print("=" * 70)
-
-    validate_table1()
-    validate_table2()
-    validate_bootstrap()
-    validate_no_unsupported_bangladesh()
-    validate_abstract_claims()
-    validate_readme()
-    validate_dataset_counts()
-    validate_lemma1()
-    validate_test_count()
-    validate_pdf_tables()
-    validate_segmentation_sensitivity()
-
-    print("\n" + "=" * 70)
-    if errors:
-        print(f"VALIDATION FAILED: {len(errors)} error(s) detected")
-        for e in errors:
-            print(f"  ❌ {e}")
-    else:
-        print("ALL VALIDATION CHECKS PASSED")
-
-    if warnings:
-        print(f"\n{len(warnings)} warning(s):")
-        for w in warnings:
-            print(f"  ⚠️  {w}")
-
-    print("=" * 70)
-    return 1 if errors else 0
-
+import numpy as np
+import pandas as pd
+import pymupdf
+from pypdf import PdfReader
+from bs4 import BeautifulSoup
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from scripts.publication_tables import ROOT, METHODS, tables, read_json
+
+def source_digest(root):
+    h = hashlib.sha256()
+    for path in sorted([root/'paper/manuscript.tex',root/'paper/references.bib',root/'paper/cover_letter.tex',*list((root/'paper/tables').glob('*.tex')),*list((root/'paper/figures').glob('*.pdf'))]):
+        payload = path.read_bytes()
+        if path.suffix in {'.tex','.bib'}:
+            payload = payload.replace(b'\r\n',b'\n')
+        h.update(path.relative_to(root).as_posix().encode()+b'\0'+payload)
+    return h.hexdigest()
+
+def check_rows(actual,expected,where):
+    if actual != expected:
+        for i,(a,b) in enumerate(zip(actual,expected)):
+            if a != b:
+                raise ValueError(f'{where}: row {i} {a} != {b}')
+        raise ValueError(f'{where}: expected {len(expected)} rows, found {len(actual)}')
+
+def tex_rows(text):
+    return [[x.strip() for x in line[:-2].split('&')] for line in text.splitlines() if line.rstrip().endswith(r'\\')]
+
+def pdf_tables(path,specs,digest):
+    if PdfReader(path).metadata.get('/SourceDigest') != digest:
+        raise ValueError(f'Stale PDF: {path}')
+    with pymupdf.open(path) as doc:
+        pages = [page.get_text(sort=True) for page in doc]
+    for title,(_,header,rows) in specs.items():
+        expected = [header,*rows]
+        # A single published table occupies one page. Matching entire lines binds
+        # values to named columns and detects inserted, missing and swapped rows.
+        found = []
+        for page in pages:
+            lines = [' '.join(line.split()) for line in page.splitlines() if line.strip()]
+            for i,line in enumerate(lines):
+                if line == ' '.join(header):
+                    found.append(lines[i:i+len(expected)])
+        check_rows(found,[[' '.join(row) for row in expected]],f'{path.name}/{title}')
+    return pages
+
+def verify_metrics(root):
+    frame = pd.read_csv(root/'results/diagnostics/test_forecasts.csv',float_precision='round_trip')
+    metrics = pd.read_csv(root/'results/metrics/calibration_budget_results.csv',float_precision='round_trip').set_index(['regime','budget_K','method'])
+    if not metrics.index.is_unique:
+        raise ValueError('Duplicate metrics key')
+    observed = set()
+    for (reg,k),block in frame.groupby(['regime','budget_K']):
+        if block.session_id.duplicated().any():
+            raise ValueError('Duplicate test session')
+        y = block.target
+        for method in METHODS:
+            key = (reg,k,method)
+            observed.add(key)
+            lower = block[method]
+            row = metrics.loc[key]
+            values = [len(y),(lower>y).mean(),np.minimum(lower,y).sum()/y.sum(),lower.mean(),(lower<=1e-6).mean(),np.maximum(0,lower-y).mean()]
+            cols = ['test_samples','violation_rate','supported_fraction','mean_lower_bound','zero_bound_fraction','mean_overcommitment']
+            np.testing.assert_allclose(row[cols].astype(float),values,rtol=1e-11,atol=1e-12)
+            if method == 'Proposed_Missingness_Aware':
+                for group,label in [(2,'LTE_only'),(3,'Dual_NR')]:
+                    mask = block.group_id==group
+                    sub_y,sub_b = y[mask],lower[mask]
+                    if mask.any():
+                        np.testing.assert_allclose([row['subgroup_V_'+label],row['subgroup_U_'+label]],[(sub_b>sub_y).mean(),np.minimum(sub_b,sub_y).sum()/sub_y.sum()],atol=1e-12)
+    if observed != set(metrics.index):
+        raise ValueError('Forecast keys differ from metric keys')
+
+def validate(root=ROOT):
+    specs = tables(root)
+    verify_metrics(root)
+    external = root/'results/exploratory/sirhan_external'
+    totals = pd.read_csv(external/'fixed_trace_totals.csv')
+    if totals.duplicated(['seed','trace_id','method']).any():
+        raise ValueError('Duplicate trace contribution')
+    counts = totals.groupby(['seed','method'])[['n','violations','delivered','observed']].sum()
+    curve = pd.read_csv(external/'decision_curves.csv')
+    fixed = curve.loc[np.isclose(curve.beta,.1)].set_index(['seed','method']).sort_index()
+    pd.testing.assert_index_equal(counts.index,fixed.index)
+    np.testing.assert_array_equal(counts.n,fixed.n)
+    np.testing.assert_allclose(counts.violations/counts.n,fixed.V,atol=1e-12)
+    np.testing.assert_allclose(counts.delivered/counts.observed,fixed.U,atol=1e-12)
+    frontier = pd.read_csv(external/'matched_frontier.csv')
+    for budget, block in frontier.groupby('budget'):
+        ref = curve[curve.V<=budget].groupby(['seed','method']).U.max()
+        published = block.set_index(['seed','method']).U
+        np.testing.assert_allclose(ref.reindex(published.index),published,equal_nan=True)
+    influence = pd.read_csv(external/'trace_influence.csv').set_index('trace_id')
+    if set(influence.index)!=set(totals.trace_id) or len(influence)!=83:
+        raise ValueError('Incomplete trace inventory')
+    for trace_id, group in totals.groupby('trace_id'):
+        reduced = counts.subtract(group.set_index(['seed','method'])[counts.columns], fill_value=0)
+        rate = (reduced.delivered/reduced.observed).unstack()
+        np.testing.assert_allclose(100*(rate.persistence-rate['global']).mean(),influence.loc[trace_id,'omit_gain_pp'])
+    downloads = influence.loc[influence.app=='Download']
+    exclusions = pd.read_csv(external/'trace_exclusions.csv').set_index('sample')
+    for label,ids in [('All',[]),('OmitTop5',downloads.observed.nlargest(5).index),('OmitDownloads',downloads.index)]:
+        scored = totals[~totals.trace_id.isin(ids)].groupby(['seed','method']).sum(numeric_only=True)
+        util = (scored.delivered/scored.observed).unstack()
+        risk = (scored.violations/scored.n).unstack()
+        delta = util.persistence-util['global']
+        np.testing.assert_allclose(exclusions.loc[label,['excluded','mean_gain_pp','positive_splits','tree_v','persistence_v']],
+                                   [len(ids),100*delta.mean(),(delta>0).sum(),risk['global'].mean(),risk.persistence.mean()])
+    manuscript = (root/'paper/manuscript.tex').read_text(encoding='utf8')
+    html = BeautifulSoup((root/'paper/manuscript.html').read_text(encoding='utf8'),'html.parser')
+    html_tables = [[[c.get_text(strip=True) for c in tr.find_all(['td','th'])] for tr in tab.find_all('tr')] for tab in html.find_all('table')]
+    md = (root/'paper/manuscript.md').read_text(encoding='utf8')
+    md_tables = []
+    for block in re.findall(r'(?:^\|[^\n]*\n)+',md,re.M):
+        md_tables.append([[c.strip() for c in line.strip('|').split('|')] for line in block.splitlines() if not re.fullmatch(r'[|: \-]+',line)])
+    expected = [[head,*data] for _,head,data in specs.values()]
+    check_rows(html_tables,expected,'HTML')
+    check_rows(md_tables,expected,'Markdown')
+    for name,(_,header,rows) in specs.items():
+        if manuscript.count(r'\input{tables/'+name+'}') != 1:
+            raise ValueError(f'Missing or duplicated table {name}')
+        for folder in ['results/tables','paper/tables']:
+            check_rows(tex_rows((root/folder/(name+'.tex')).read_text(encoding='utf8')),[header,*rows],name)
+    for fig in (root/'results/figures').glob('*'):
+        if (root/'paper/figures'/fig.name).read_bytes() != fig.read_bytes():
+            raise ValueError(f'Stale paper figure: {fig.name}')
+    diagnostics = root/'results/diagnostics'
+    seg = read_json(diagnostics/'session_boundary_sensitivity.json')
+    for method,summary in seg.items():
+        units = pd.read_csv(diagnostics/f'segments_{method}.csv')
+        if len(units)!=summary['total_extracted_sessions'] or int((units.target_y==0).sum())!=summary['throughput_distribution']['zero_throughput_sessions']:
+            raise ValueError(f'Segment inventory differs: {method}')
+        for op,domain in [('Op1','e1_campaign_transfer'),('Op2','e3_joint_shift')]:
+            pairs = pd.read_csv(diagnostics/f'sensitivity_predictions_{method}_{op}.csv',float_precision='round_trip')
+            values = summary['downstream_evaluation'][domain]
+            if len(pairs)!=values['instance_count'] or round(float((pairs.lower_bound>pairs.target_y).mean()),4)!=values['conformal_violation_rate_k0']:
+                raise ValueError(f'Sensitivity mismatch: {method} {op}')
+    from src.evaluation.metrics import paired_day_cluster_bootstrap
+    forecasts = pd.read_csv(diagnostics/'test_forecasts.csv',float_precision='round_trip')
+    ci = read_json(root/'results/metrics/bootstrap_significance_tests.json')
+    for regime,b in forecasts[forecasts.budget_K==10].groupby('regime'):
+        b=b.reset_index(drop=True)
+        estimates = paired_day_cluster_bootstrap(b,b.target.to_numpy(),b.Global_Conformal.to_numpy(),b.Proposed_Missingness_Aware.to_numpy())
+        for metric,field in [('delta_violation_rate','delta_V'),('delta_supported_fraction','delta_U')]:
+            actual = ci[regime][field]
+            check_rows([actual['point'],*actual['ci_95']],[round(float(x),4) for x in estimates[metric]],regime)
+    summary_lines = (root/'README.md').read_text(encoding='utf8').splitlines()
+    summary = [[c.strip() for c in line.strip('|').split('|')] for line in summary_lines if re.match(r'^\| E[0-3],',line)]
+    expected_summary = []
+    by_regime = read_json(diagnostics/'split_summary.json')
+    for reg,label in zip(sorted(by_regime),['E0, within earlier Op1','E1, later Op1','E2, earlier Op2','E3, later Op2']):
+        part = by_regime[reg]['partitions']['target_test']
+        rows = specs['table2_main_benchmark'][2]
+        source, = [row for row in rows if row[0]==reg[:2]+'K0']
+        ten, = [row for row in rows if row[0]==reg[:2]+'K10']
+        expected_summary.append([label,f"{part['n_samples']} / {part['n_days']}",source[2],source[4],ten[4],ten[5]])
+    check_rows(summary,expected_summary,'README')
+    digest = source_digest(root)
+    pages = pdf_tables(root/'paper/manuscript.pdf',specs,digest)
+    package = pdf_tables(root/'paper/submission_package.pdf',specs,digest)
+    if package[1:] != pages or 'Dear Editor' not in package[0]:
+        raise ValueError('Package must contain cover and exact manuscript pages')
+    with pymupdf.open(root/'paper/manuscript.pdf') as manuscript_pdf, pymupdf.open(root/'paper/submission_package.pdf') as package_pdf:
+        for i,page in enumerate(manuscript_pdf):
+            if page.get_pixmap().digest != package_pdf[i+1].get_pixmap().digest:
+                raise ValueError(f'Package rendering mismatch on manuscript page {i+1}')
+    print(f'Validated {len(specs)} tables, forecast-level aggregates, manuscript and package.')
 
 if __name__ == '__main__':
-    sys.exit(main())
-
+    validate()

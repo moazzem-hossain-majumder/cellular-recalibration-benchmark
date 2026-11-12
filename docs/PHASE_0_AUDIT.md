@@ -1,3 +1,5 @@
+> Historical project record from before the pooled-calibration correction. For current estimates, validation status and publication assessment see [the final research audit](FINAL_RESEARCH_AUDIT.md). Interpret numerical claims below as superseded.
+
 # Phase 0: Repository and Research Integrity Audit Report
 
 **Project:** Cellular Recalibration Benchmark  

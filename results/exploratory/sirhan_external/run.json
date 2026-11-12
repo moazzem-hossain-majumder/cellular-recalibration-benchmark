@@ -1,0 +1,13 @@
+{
+  "raw_sha256": "abc729d696b5e0ba34a9c6ed35a851f2868d2b5071be5efb8a49691c23bb1a9b",
+  "source_sha256": {
+    "load_data.py": "4ee4726b3bcd3b269b91347a1a401411766189e5783023106ce0a856557729a4",
+    "features.py": "43a685f2a525961d9410307bf06b8268cc9364325bc0569a7112da0f333ba71c",
+    "run_multiseed_fast_30.py": "ac29e84566ecb63d4fe55399b6af5a25dfca00643b791d504aaacc6948f52746"
+  },
+  "python": "3.11.9",
+  "sklearn": "1.9.0",
+  "numpy": "2.4.6",
+  "pandas": "3.0.3",
+  "threads": "3"
+}

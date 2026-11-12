@@ -119,6 +119,11 @@ def extract_ookla_with_method(method: str, window_seconds: float = 60.0) -> Tupl
                 
                 all_sessions.append({
                     'file': fname,
+                    'rows': len(test_rows),
+                    'max_gap_s': test_rows['datetime'].diff().dt.total_seconds().max(),
+                    'first_mbps': test_rows['val_mbps'].iloc[0],
+                    'peak_mbps': test_rows['val_mbps'].max(),
+                    'internal_burst_starts': int(((test_rows['val_mbps'] > 1) & (test_rows['val_mbps'].shift() <= 1)).sum()),
                     'campaign': '2023_Chronicles',
                     'test_id_in_file': tid,
                     'operator': op_label,
@@ -196,6 +201,8 @@ def analyze_session_boundaries():
         print(f"\nProcessing segmentation method: {m}...")
         sess_df, fdf = extract_ookla_with_method(m)
         
+        sess_df[['file','operator','test_id_in_file','t_start','t_end','duration_s','rows','max_gap_s','first_mbps','peak_mbps','target_y','internal_burst_starts']].to_csv(DIAGNOSTICS_DIR / f'segments_{m}.csv', index=False)
+
         # Duration distribution analysis
         durations = sess_df['duration_s'].dropna().to_numpy()
         zero_dur_count = int((durations == 0.0).sum())
@@ -225,10 +232,15 @@ def analyze_session_boundaries():
             
             # Global source conformal bounds
             lb_src = np.maximum(0.0, y_pred - q_src)
+            diagnostic = sub_df[['file','operator','test_id_in_file','target_y']].copy()
+            diagnostic['lower_bound'] = lb_src
+            diagnostic.to_csv(DIAGNOSTICS_DIR / f'sensitivity_predictions_{m}_{sub_df.operator.iloc[0]}.csv', index=False)
             m_src = compute_reliability_metrics(y_true, y_pred, lb_src)
             
             return {
                 'instance_count': len(sub_df),
+                'positive_endpoint_count': int((y_true > 0).sum()),
+                'violation_rate_positive_endpoints': float(np.mean((lb_src > y_true)[y_true > 0])),
                 'mae_histgbm': round(mae_gbm, 2),
                 'mae_persistence': round(mae_pers, 2),
                 'conformal_violation_rate_k0': round(m_src.violation_rate, 4),
@@ -240,6 +252,8 @@ def analyze_session_boundaries():
         
         results[m] = {
             'total_extracted_sessions': len(sess_df),
+            'internal_gaps_over_10s': int((sess_df.max_gap_s > 10).sum()),
+            'segments_with_multiple_rising_edges': int((sess_df.internal_burst_starts > 1).sum()),
             'duration_distribution': {
                 'min_s': float(np.min(durations)) if len(durations) else 0.0,
                 'median_s': float(np.median(durations)) if len(durations) else 0.0,
@@ -286,12 +300,12 @@ def analyze_session_boundaries():
     # Cross-method stability summary
     print("\n--- Cross-Strategy Conclusions ---")
     print(f"1. Zero-duration sessions represent single-measurement telemetry samples at file boundaries or resets.")
-    print(f"2. Conformal source calibration violation rate is stable across segmentations:")
+    print(f"2. Conformal source calibration violation rate varies by observational unit:")
     for m in methods:
         v_e1 = results[m]['downstream_evaluation']['e1_campaign_transfer'].get('conformal_violation_rate_k0')
         v_e3 = results[m]['downstream_evaluation']['e3_joint_shift'].get('conformal_violation_rate_k0')
         print(f"   - {m:15s} | E1 V = {v_e1:.4f} | E3 V = {v_e3:.4f}")
-    print("3. Core conclusions (uncalibrated failure, conformal risk bounding, source fallback) are invariant to segmentation strategy.")
+    print("3. Active-start segments retain the trailing idle rows. Their endpoint differs from the reset endpoint.")
 
 
 if __name__ == '__main__':

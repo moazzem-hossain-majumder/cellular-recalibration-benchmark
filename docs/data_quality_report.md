@@ -1,3 +1,5 @@
+> Historical project record from before the pooled-calibration correction. For current estimates, validation status and publication assessment see [the final research audit](FINAL_RESEARCH_AUDIT.md). Interpret numerical claims below as superseded.
+
 # Data Quality and Experimental Integrity Audit Report
 
 **Benchmark:** Cellular Throughput Recalibration Under Incomplete Telemetry

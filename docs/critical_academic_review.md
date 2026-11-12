@@ -1,3 +1,5 @@
+> Historical project record from before the pooled-calibration correction. For current estimates, validation status and publication assessment see [the final research audit](FINAL_RESEARCH_AUDIT.md). Interpret numerical claims below as superseded.
+
 # Phase 8: Critical Academic Peer Review & Publication Readiness Assessment
 
 **Review Form:** IEEE Transactions on Network and Service Management / IEEE Open Journal of the Communications Society  

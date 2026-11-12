@@ -1,192 +1,43 @@
-# Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry
+# Cellular throughput recalibration benchmark
 
-[![Research Status](https://img.shields.io/badge/Research%20Integrity-Verified%20%26%20Reproduced-brightgreen.svg)](paper/manuscript.tex)
-[![Test Suite](https://img.shields.io/badge/Tests-37%2F37%20Passing-brightgreen.svg)](tests/)
-[![CI Status](https://img.shields.io/badge/CI-GitHub%20Actions%20Passing-brightgreen.svg)](.github/workflows/tests.yml)
-[![Reproducibility](https://img.shields.io/badge/Reproducibility-Automated%20Pipeline-blue.svg)](scripts/reproduce_experiments.py)
-[![License: CC BY 4.0](https://img.shields.io/badge/Data%20License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Hardware: NVIDIA RTX 4060](https://img.shields.io/badge/GPU%20Accelerated-NVIDIA%20RTX%204060-76B900.svg)](src/models/neural.py)
+How much can a short chronological prefix of labeled target sessions improve a lower forecast of downlink throughput when radio telemetry is incomplete? This benchmark measures the frequency with which a bound exceeds measured throughput (V) alongside the fraction of measured throughput it supports (U). The contribution is the empirical comparison across operators, campaigns and definitions of a session.
 
-Official repository for the telecommunications research study:  
-**"How Much Recalibration Is Enough? Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry"**
+Two public Rome measurement releases supply the data. The earlier active throughput CSV is [Zenodo 8224890](https://zenodo.org/records/8224890). The later archive contains the 43 Ookla traces used here [Zenodo 14073311](https://zenodo.org/records/14073311). Both releases identify CC BY 4.0. The acquisition manifest pins the raw bytes. The primary regime uses a common source-trained histogram gradient boosting predictor, chronological calibration prefixes and fixed held-out target dates. Labels used as lagged inputs are distinct from labels counted in the target recalibration budget.
 
-**Author:** Md. Moazzem Hossain Majumder (`moazzemhossain1510@gmail.com`)  
-**Target IEEE Venue:** *IEEE Transactions on Network and Service Management* / *IEEE Open Journal of the Communications Society*
+| Regime | Held-out sessions / days | Point V | Source-only global V | Ten-label global V | Ten-label global U |
+|---|---:|---:|---:|---:|---:|
+| E0, within earlier Op1 | 41 / 2 | 0.4390 | 0.1220 | 0.0000 | 0.0285 |
+| E1, later Op1 | 139 / 7 | 0.4101 | 0.1655 | 0.0719 | 0.0725 |
+| E2, earlier Op2 | 256 / 8 | 0.6211 | 0.1641 | 0.0234 | 0.0177 |
+| E3, later Op2 | 103 / 7 | 0.3301 | 0.1262 | 0.0000 | 0.0060 |
 
----
+These proportions use four decimal places. At K=0,1,2,5,8 the global rule uses a source offset and exceeds 10% in every regime. At K=9 the maximum target score first yields a finite offset at alpha=0.10. Grouped and global bounds coincide at K=10. At K=15 grouped E1 narrowly exceeds the target. Use the [full benchmark CSV](results/metrics/calibration_budget_results.csv) for all 124 available regime/budget/method combinations and the [manuscript](paper/manuscript.pdf) for the rendered tables. There is no established universal measurement budget.
 
-> **Research-Integrity Verified:** Following a rigorous research-integrity audit, all experimental data splits, causality rules, model baselines, conformal calibration algorithms, bootstrap significance tests, and publication artifacts have been fully corrected and reproduced end-to-end. Historical unverified artifacts are safely preserved in `results/historical_unverified/`.
+The later sessions are heuristic. Changing their endpoints substantially changes violations. Two to eight test dates per regime, a single chronological prefix and two campaigns in the same city limit inference. The test-day bootstrap conditions on the fitted model and prefix. See the [segmentation audit](docs/SESSION_SEGMENTATION_AUDIT.md), [statistical audit](docs/STATISTICAL_INFERENCE_AUDIT.md), [final audit](docs/FINAL_RESEARCH_AUDIT.md) and [readiness assessment](docs/FINAL_RESEARCH_READINESS_MATRIX.md).
 
-## 1. Research Overview
+## Reproduction
 
-In modern fourth-generation (4G) Long Term Evolution (LTE) and fifth-generation (5G) Non-Standalone (NSA) cellular networks, user equipment (UE) downlink throughput prediction is critical for radio resource allocation, adaptive bitrate video streaming, and service level agreements (SLAs). However, machine learning throughput predictors trained on one operator or campaign suffer severe performance degradation when transferred to unseen networks.
+Use Python 3.11, a matching PyTorch build and the dependencies in requirements.txt. Install the Tectonic LaTeX compiler on PATH or set TECTONIC to its executable. Its first run may download TeX resources. The local run used an RTX 4060 for the neural comparator. The primary histogram model runs on CPU. From the repository root run:
 
-This degradation is compounded by **natural telemetry missingness**: in operational 5G NSA networks, secondary New Radio (NR) synchronization telemetry (e.g., SS-RSRP, SS-RSRQ, SS-SINR) is unobserved in over 60% of logged time intervals due to coverage boundaries or dynamic dual connectivity. Conventional regression models optimize symmetric point errors (e.g., MAE/MSE), creating overconfident predictions that result in severe service violations (33% to 62% failure rates).
-
-### Core Research Questions
-1. **RQ1 (Transfer Failure):** How severely do uncalibrated throughput models and source-only calibration degrade when transferred across commercial operators and temporal campaigns?
-2. **RQ2 (Native Missingness):** Does aggregate network performance conceal localized reliability failures in native missing telemetry groups?
-3. **RQ3 (Measurement Budget Sizing):** How many labeled target-domain measurement sessions ($K \in \{0, 1, 2, 5, 8, 9, 10, 15\}$) are mathematically and empirically required to restore reliable lower bounds?
-4. **RQ4 (Methodological Tradeoffs):** Does coarse missingness-aware calibration provide superior reliability and supported capacity compared to simpler global recalibration at the same information budget?
-
----
-
-## 2. Key Verified Findings & Empirical Results
-
-The full benchmark pipeline (`scripts/reproduce_experiments.py`) was executed cleanly across all 1,001 causal test pairs (1,132 total sessions) using an NVIDIA GeForce RTX 4060 GPU and Host CPU:
-
-- **Uncalibrated Point Prediction Breakdown:** Relying on uncalibrated point estimates results in catastrophic operational failures: a **62.0% service violation rate** under cross-operator transfer (Op1 $\to$ Op2), 44.0% within-domain, 41.0% under temporal shift, and 33.0% under joint shift.
-- **Conformal Reliability Restoration:** Split-conformal calibration immediately recovers conservative nominal reliability ($V \le 10\%$) across within-domain and transfer regimes.
-- **Finite-Sample Conformal Budget Bound (Lemma 1):** We prove mathematically and verify empirically that for nominal violation level $\alpha = 0.10$, exact split-conformal calibration requires at least $n \ge 9$ target samples ($k = \lceil (n+1)(1-\alpha) \rceil \le n$). For budgets $K \le 8$ sessions, algorithms fall back to source calibration, activating sharply at $K=9$.
-- **Strict Disjoint 5-Way Chronological Splitting (E0):** Op1 2020--2021 within-domain evaluation is partitioned into 5 non-overlapping calendar day splits: 57 training sessions (2 dates), 9 validation sessions (1 date), 33 source calibration sessions (1 date), 10 target calibration pool sessions (1 date), and 41 test suffix sessions (2 dates), verifying 0% session and date overlap.
-- **Explicit Calibration Budget Unavailability:** In E0, because the target calibration pool contains exactly 10 sessions, budget $K=15$ is legitimately unavailable and reported as `-` without substituting smaller subsets.
-- **Paired Day-Cluster Bootstrap Significance (2,000 Replicates):**
-  - **E1 (Campaign Transfer):** $\Delta U = +0.037$ [95% CI: $+0.019, +0.065$] with $\Delta V = +0.050$ [95% CI: $+0.016, +0.074$].
-  - **E2 (Cross-Operator):** $\Delta U = +0.171$ [95% CI: $+0.142, +0.220$] with $\Delta V = +0.141$ [95% CI: $+0.078, +0.252$].
-  - **E0 (Within-Domain):** $\Delta U = +0.000$ [$+0.000, +0.000$] ($N_{\text{clusters}}=2$, exploratory).
-  - **E3 (Joint Shift):** $\Delta U = +0.000$ [$+0.000, +0.000$] due to conservative zero-commitment from the target stall.
-- **Dual-Protocol Covariate-Shift Conformal Prediction (CS-CP):** Incorporating domain-discriminator importance weighting with Bayes class-prior correction ($w(x) = \text{odds} \times \frac{N_{\text{src}}}{N_{\text{tgt}}}$) was benchmarked under two explicit protocols with Kish's Effective Sample Size (ESS) tracking:
-  - *Protocol A (Strict Non-Transductive):* Target reference features drawn exclusively from the independent target calibration pool: E1 ($V=0.007, U=0.013$, Source ESS $=3.4$), E2 ($V=0.016, U=0.030$, Source ESS $=7.8$), and E3 ($V=0.010, U=0.016$, Source ESS $=22.1$).
-  - *Protocol B (Transductive Benchmark):* Target reference features drawn from unlabeled test covariates: E1 ($V=0.014, U=0.006$), E2 ($V=0.047, U=0.079$), and E3 ($V=0.000, U=0.010$).
-  - Across both protocols, CS-CP prevents the small-sample outlier stall collapse in E3 that forced static target calibration down to $U = 0.006$.
-- **Empirical 2023 Session Segmentation Audit (43 Files):** Cross-strategy diagnostic evaluation across all 43 Ookla trace files (`scripts/audit_session_segmentation.py`) verified clean non-negative throughput (`non_negative_verified: true` across 100% of rows), realistic session durations (median 76.0 s), and high correlation ($r = 0.8365$ with relative-drop and $r = 0.6603$ with active-burst) recorded in `results/diagnostics/session_segmentation_comparison.json`.
-- **Online Adaptive Conformal Inference (ACI):** Online streaming quantile adaptation ($\gamma = 0.05$) tracks shifting channels dynamically, converging to long-run violation rates of 12.2% (E0), 15.8% (E1), 15.6% (E2), and 12.6% (E3).
-- **Operational SLA Economic Loss Optimization:** End-to-end operational loss analysis under $\text{Cost}(\lambda) = \lambda \cdot V + (1 - \lambda) \cdot (1 - U)$ proves that conformal calibration establishes definitive dominance over uncalibrated predictors for all penalty regimes with $\lambda \ge 0.35$, reducing operational penalty costs by up to **83.8%** under strict risk-bounded SLAs.
-- **Hardware Profiling on NVIDIA GeForce RTX 4060:** Deep Tabular ResNet executed 60 epochs in 0.535 seconds with CUDA mixed precision, utilizing 24.7 MB peak VRAM.
-
----
-
-## 3. Dataset Provenance and Integrity
-
-This benchmark is built upon 1,132 verified commercial Speedtest sessions from open-access releases hosted on Zenodo under CC BY 4.0:
-1. **Earlier Campaign (2020–2021) — [Zenodo 8224890](https://doi.org/10.5281/zenodo.8224890):**
-   - Reference: K. Kousias et al., *IEEE Communications Magazine*, 2024.
-   - SHA-256: `97de559315f6ec872ef87f4165587251f30e42bd5c7a3d67df1042919d6dbd3f`
-2. **Later Campaign (2023) — [Zenodo 14073311](https://doi.org/10.5281/zenodo.14073311):**
-   - Reference: G. Caso et al., *IEEE Open Journal of the Communications Society*, 2024.
-   - SHA-256: `f8bc2a621268775d0cf983524f062d1ffbddd365af1166c6b93e76991c881155`
-
-All raw files are cryptographically pinned and verified in `data/metadata/acquisition_manifest.json`.
-
----
-
-## 4. Repository Structure
-
-```
-cellular-recalibration-benchmark/
-├── data/
-│   ├── metadata/            # Pinned Zenodo metadata, acquisition manifests, archive inventories
-│   ├── raw/                 # Immutable raw CSV/ZIP archives (git-excluded)
-│   └── extracted/           # Verified extracted member traces (git-excluded)
-├── docs/
-│   ├── RESEARCH_INTEGRITY_REMEDIATION_REPORT.md # Comprehensive remediation of all P0/P1 defects
-│   ├── FINAL_RESEARCH_READINESS_MATRIX.md       # Evidence-grounded 100-point rubric assessment (91.5/100)
-│   ├── INTERNAL_RESEARCH_READINESS_ASSESSMENT.md # Pre-submission author readiness audit
-│   ├── dataset_documentation.md   # Detailed data dictionary, units, sentinels, timing
-│   ├── data_exploration_report.md # Comprehensive EDA, session distributions, statistics
-│   ├── data_quality_report.md     # Pass/fail data quality audit
-│   ├── research_proposal.md       # Approved scientific methodology and formulation
-│   ├── telecom_industry_relevance.md # Practical relevance to mobile operators
-│   └── bangladesh_telecom_case_study.md # Prospective emerging market operational analysis
-├── paper/
-│   ├── manuscript.tex       # Master IEEE Transactions two-column LaTeX manuscript
-│   ├── manuscript.md        # Formatted Markdown version of the paper
-│   ├── manuscript.html      # Self-contained IEEE-formatted interactive HTML preview
-│   ├── references.bib       # Verified academic references and DOIs
-│   ├── cover_letter.tex     # IEEE Editor-in-Chief Cover Letter (LaTeX)
-│   ├── cover_letter.md      # IEEE Editor-in-Chief Cover Letter (Markdown)
-│   ├── tables/              # LaTeX benchmark tables (Table 1, Table 2)
-│   ├── figures/             # Vector PDF & PNG figures (Fig 1 through Fig 5)
-│   └── submission_package.zip # Turnkey Overleaf submission bundle
-├── results/
-│   ├── historical_unverified/ # Preserved unverified prior runs with explanatory README
-│   ├── figures/             # Regenerated publication figures (PDF and PNG)
-│   ├── tables/              # Regenerated LaTeX tables
-│   └── metrics/             # JSON and CSV experimental logs, CS-CP, SLA loss, bootstrap records
-├── src/
-│   ├── data/                # Data loader, 60s lag gate, 5-way disjoint chronological splits
-│   ├── features/            # Causal lag extraction, telemetry masks, preprocessors
-│   ├── models/              # Baselines (Persistence, Ridge, HistGBM, BAMMO, GPU ResNet)
-│   └── evaluation/          # Conformal calibration (Global, Grouped, Bayes CS-CP, ACI)
-├── tests/                   # 13 automated unit tests (causality, conformal, metrics, splits)
-├── app/
-│   ├── demo.py              # Interactive demonstration CLI
-│   └── web_demo.html        # Interactive browser dashboard (CS-CP, Pareto, SLA analysis)
-├── scripts/
-│   ├── download_data.py     # Reproducible acquisition and checksum verifier
-│   ├── reproduce_experiments.py # End-to-end master automated reproduction pipeline (5 steps)
-│   ├── build_paper_html.py  # Standalone IEEE HTML paper compiler
-│   ├── build_web_demo.py    # Automated compiler for interactive web dashboard
-│   └── verify_datasets.py   # Dataset verification script
-├── requirements.txt         # Pinned Python package dependencies
-├── pyproject.toml           # Project metadata and packaging spec
-└── README.md                # Project documentation
-```
-
----
-
-## 5. Quick Start and Reproduction
-
-### Prerequisites
-- Python 3.11+
-- NVIDIA GPU with CUDA support (tested on NVIDIA GeForce RTX 4060, Driver 610.88, CUDA 12.1/13.3)
-
-### Installation
-```bash
-git clone https://github.com/moazzem-hossain-majumder/cellular-recalibration-benchmark.git
-cd cellular-recalibration-benchmark
-pip install -r requirements.txt
-```
-
-### Reproduce All Results in One Command
-To verify raw data checksums, run the 36 automated unit and integration tests, train point predictors on GPU/CPU, execute all transfer regimes across budgets $K \in \{0, 1, 2, 5, 8, 9, 10, 15\}$, compute 2,000 paired day-cluster bootstrap resamples, generate all publication figures and LaTeX tables, and compile the interactive web dashboard:
-```bash
+```sh
+python -m pip install -r requirements.txt
+python scripts/download_data.py
 python scripts/reproduce_all.py
 ```
 
-### Run Tests
-```bash
-# Fast deterministic synthetic unit tests (CI suite, ~1.5s runtime, no raw data required)
-pytest -m unit -v
+The entry point checks the archive, materializes matching individual traces, verifies downloads, exercises the test suite, fits the models, runs the ablations, rebuilds diagnostics, generates and checks manuscript artifacts and runs the tests again. The [manifest](docs/REPRODUCIBILITY_MANIFEST.json) records the commands, environment, counts and SHA-256 evidence for the working tree. The [consistency procedure](docs/MANUSCRIPT_CONSISTENCY_VALIDATION.md) identifies the source for each table. The [submission package](paper/submission_package.pdf) contains the cover letter and manuscript. [HTML](paper/manuscript.html) and [Markdown](paper/manuscript.md) are generated from the same LaTeX.
 
-# Full test suite including real-data Zenodo integration tests (~75s runtime)
-pytest tests/
-```
+Both local test runs, before and after the publication build, executed 55 tests each with no failures, skips or deselections. Of these, 38 are unit-directory tests (30 synthetic or mathematical and 8 publication checks), 4 are real-data integration tests and 13 are legacy tests. Three legacy tests also read real data. The local real-data pipeline and both PDF checks passed. The post-build results are recorded in results/runs/final_tests.xml. The original commit 890fb28 passed its unit-selected [GitHub workflow run](https://github.com/moazzem-hossain-majumder/cellular-recalibration-benchmark/actions/runs/43069521042). The corrected workflow runs artifact validation and the complete test suite with downloaded data. Local execution evidence is recorded separately from remote CI. Historical reviews and old outputs describe earlier implementations.
 
-### Recompile IEEE HTML Paper Preview
-```bash
+## Reproducing the external comparison
+
+The Irish comparison uses the Raca 5G production archive at `data/raw/ucc-external/5G-production-dataset.zip` and Sirhan's [version 1 replication archive](https://data.mendeley.com/datasets/ncbdm2c36d/1). With the Rome input files in place, run the following from the repository root. The ordinary manuscript build reads the saved external results.
+
+```text
+python scripts/compare_sirhan_external.py PATH_TO_MENDELEY_V1_ZIP
+python scripts/compare_published_global_rule.py
+python scripts/audit_external_traces.py
+python scripts/report_sirhan_external.py
 python scripts/build_paper_html.py
+python scripts/validate_manuscript_consistency.py
 ```
-
----
-
-## 6. Practical Implications for Network Operators
-
-The empirical findings from our benchmark yield practical principles for mobile network operators deploying or upgrading 4G LTE and 5G NSA infrastructure:
-
-- **Drive-Test Campaign Sizing ($K \ge 10$ Guideline):** Drive-test benchmarking campaigns are financially and operationally intensive. Lemma 1 establishes that split-conformal calibration at $\alpha=0.10$ requires at least $K=9$ target sessions to produce a finite empirical quantile. For $K \le 8$, algorithms necessarily fall back to source-domain calibration, which provides useful but non-target-specific bounds. We recommend budgeting at least $K \ge 10$ sessions per target deployment area to activate target-specific recalibration with at least one degree of quantile freedom.
-- **Risk-Aware SLA Enforcement:** Deploying uncalibrated ML predictors exposes operators to a 33% to 62% service failure probability under domain shift. Split-conformal calibration provides a lightweight mathematical safeguard guaranteeing user-defined SLA violation tolerances.
-- **Telemetry Missingness Management:** In networks where 5G rollout occurs incrementally over existing 4G anchors, secondary 5G NR carriers are naturally absent in >60% of drive logs. Operators should avoid naive zero-imputation and adopt models with native missingness branching combined with group-stratified conformal bounds.
-
-*Note on Data Provenance:* The empirical data originates exclusively from commercial campaigns in Rome, Italy. Any application of these findings to other geographical markets or regulatory jurisdictions represents prospective external validation requiring dedicated local empirical data.
-
----
-
-## 7. Citation
-
-If you use this benchmark, code, or experimental methodology in your research, please cite:
-
-```bibtex
-@article{majumder2026recalibration,
-  author={Majumder, Md. Moazzem Hossain},
-  title={How Much Recalibration Is Enough? Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry},
-  journal={IEEE Transactions on Network and Service Management},
-  year={2026},
-  note={Under review}
-}
-```
-
----
-
-## 8. License
-The code in this repository is licensed under the Apache License 2.0. The underlying measurement datasets are licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).

@@ -1,17 +1,15 @@
-\begin{table}[t]
-\centering
-\caption{Predictive Performance and Hardware Profiling on NVIDIA GeForce RTX 4060}
-\label{tab:point_predictors}
-\begin{tabular}{lcccc}
+\begin{table*}[!ht]
+\centering\small
+\caption{Source validation errors in Mbps and measured fit time in seconds.}
+\begin{tabular}{lrrr}
 \hline
-\textbf{Model Architecture} & \textbf{Val MAE (Mbps)} & \textbf{Val RMSE (Mbps)} & \textbf{Fit Time (s)} & \textbf{Hardware / VRAM} \\
-\hline
-Persistence & 3.22 & 7.21 & 0.000 & Host CPU \\
-Ridge & 6.03 & 8.78 & 0.033 & Host CPU \\
-HistGradientBoosting & 11.00 & 12.00 & 2.221 & Host CPU \\
-BAMMO & 15.46 & 23.86 & 0.311 & Host CPU \\
-QuantileGBM p10 & 5.01 & 8.68 & 0.067 & Host CPU \\
-GPU ThroughputResNet & 5.85 & 8.33 & 0.692 & NVIDIA GeForce RTX 4060 (24.7 MB) \\
+Model & MAE & RMSE & Seconds \\
+Persistence & 3.22 & 7.21 & 0.000 \\
+Ridge & 6.03 & 8.78 & 0.046 \\
+HistGradientBoosting & 11.00 & 12.00 & 0.041 \\
+BAMMO & 15.46 & 23.86 & 0.323 \\
+QuantileGBM p10 & 5.01 & 8.68 & 0.072 \\
+GPU ThroughputResNet & 5.85 & 8.33 & 0.737 \\
 \hline
 \end{tabular}
-\end{table}
+\end{table*}
