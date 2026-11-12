@@ -1,5 +1,6 @@
 """Conformal prediction and calibration rules for one-sided cellular throughput lower bounds."""
 from typing import Any, Dict, List, Optional, Tuple
+from decimal import Decimal, ROUND_CEILING
 import numpy as np
 import pandas as pd
 
@@ -21,7 +22,10 @@ def compute_conformal_quantile(scores: np.ndarray, alpha: float = 0.10) -> float
     n = len(scores)
     if n == 0:
         return float('inf')
-    k = int(np.ceil((n + 1) * (1.0 - alpha)))
+    if not np.isfinite(scores).all():
+        raise ValueError('calibration scores must be finite')
+    rank = (n+1)*(1-Decimal(str(alpha)))
+    k = int(rank.to_integral_value(rounding=ROUND_CEILING))
     if k > n:
         return float('inf')
     sorted_scores = np.sort(scores)

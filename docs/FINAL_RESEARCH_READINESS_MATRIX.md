@@ -1,3 +1,5 @@
+> Historical assessment before the clock-triggered replay and Norwegian evaluation. See the [current reviewer assessment](FINAL_REVIEW.md).
+
 # Research readiness assessment
 
 **Author-side technical assessment: 6/10. Major revisions required.** The earlier 91.5/100 rubric did not constitute external review.

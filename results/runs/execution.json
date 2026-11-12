@@ -4,9 +4,9 @@
       "python",
       "scripts/prepare_ookla_traces.py"
     ],
-    "start_utc": "2026-11-11T17:56:56.925606+00:00",
-    "end_utc": "2026-11-11T17:56:58.299819+00:00",
-    "seconds": 1.38,
+    "start_utc": "2026-11-12T06:47:37.978495+00:00",
+    "end_utc": "2026-11-12T06:47:39.131815+00:00",
+    "seconds": 1.16,
     "exit_code": 0
   },
   {
@@ -14,9 +14,29 @@
       "python",
       "scripts/reproduce_experiments.py"
     ],
-    "start_utc": "2026-11-11T17:56:58.300821+00:00",
-    "end_utc": "2026-11-11T18:03:50.093889+00:00",
-    "seconds": 411.8,
+    "start_utc": "2026-11-12T06:47:39.131815+00:00",
+    "end_utc": "2026-11-12T06:53:59.219496+00:00",
+    "seconds": 380.11,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/audit_data_quality.py"
+    ],
+    "start_utc": "2026-11-12T06:53:59.219496+00:00",
+    "end_utc": "2026-11-12T06:54:40.214789+00:00",
+    "seconds": 40.99,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/audit_trace_filters.py"
+    ],
+    "start_utc": "2026-11-12T06:54:40.215794+00:00",
+    "end_utc": "2026-11-12T06:55:01.262331+00:00",
+    "seconds": 21.05,
     "exit_code": 0
   },
   {
@@ -24,9 +44,9 @@
       "python",
       "scripts/audit_session_segmentation.py"
     ],
-    "start_utc": "2026-11-11T18:03:50.093889+00:00",
-    "end_utc": "2026-11-11T18:04:08.131654+00:00",
-    "seconds": 18.03,
+    "start_utc": "2026-11-12T06:55:01.263332+00:00",
+    "end_utc": "2026-11-12T06:55:20.650837+00:00",
+    "seconds": 19.39,
     "exit_code": 0
   },
   {
@@ -34,9 +54,9 @@
       "python",
       "scripts/validate_session_boundaries.py"
     ],
-    "start_utc": "2026-11-11T18:04:08.132656+00:00",
-    "end_utc": "2026-11-11T18:06:05.684751+00:00",
-    "seconds": 117.56,
+    "start_utc": "2026-11-12T06:55:20.650837+00:00",
+    "end_utc": "2026-11-12T06:57:24.643196+00:00",
+    "seconds": 123.98,
     "exit_code": 0
   },
   {
@@ -44,9 +64,29 @@
       "python",
       "scripts/audit_cluster_inference.py"
     ],
-    "start_utc": "2026-11-11T18:06:05.684751+00:00",
-    "end_utc": "2026-11-11T18:06:06.465828+00:00",
-    "seconds": 0.78,
+    "start_utc": "2026-11-12T06:57:24.644196+00:00",
+    "end_utc": "2026-11-12T06:57:25.458653+00:00",
+    "seconds": 0.83,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/audit_group_support.py"
+    ],
+    "start_utc": "2026-11-12T06:57:25.459656+00:00",
+    "end_utc": "2026-11-12T06:58:09.051544+00:00",
+    "seconds": 43.59,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/validate_clock_and_network.py"
+    ],
+    "start_utc": "2026-11-12T06:58:09.052544+00:00",
+    "end_utc": "2026-11-12T06:58:31.319298+00:00",
+    "seconds": 22.27,
     "exit_code": 0
   },
   {
@@ -54,9 +94,9 @@
       "python",
       "scripts/build_paper_html.py"
     ],
-    "start_utc": "2026-11-11T18:06:06.466829+00:00",
-    "end_utc": "2026-11-11T18:06:10.567769+00:00",
-    "seconds": 4.09,
+    "start_utc": "2026-11-12T06:58:31.319298+00:00",
+    "end_utc": "2026-11-12T06:58:37.126868+00:00",
+    "seconds": 5.81,
     "exit_code": 0
   },
   {
@@ -64,9 +104,9 @@
       "python",
       "scripts/validate_manuscript_consistency.py"
     ],
-    "start_utc": "2026-11-11T18:06:10.568770+00:00",
-    "end_utc": "2026-11-11T18:06:13.123497+00:00",
-    "seconds": 2.56,
+    "start_utc": "2026-11-12T06:58:37.127870+00:00",
+    "end_utc": "2026-11-12T06:58:42.946873+00:00",
+    "seconds": 5.81,
     "exit_code": 0
   },
   {
@@ -77,9 +117,9 @@
       "-ra",
       "--junitxml=results/runs/final_tests.xml"
     ],
-    "start_utc": "2026-11-11T18:06:13.123497+00:00",
-    "end_utc": "2026-11-11T18:07:43.350866+00:00",
-    "seconds": 90.22,
+    "start_utc": "2026-11-12T06:58:42.946873+00:00",
+    "end_utc": "2026-11-12T07:00:16.125183+00:00",
+    "seconds": 93.19,
     "exit_code": 0
   }
 ]

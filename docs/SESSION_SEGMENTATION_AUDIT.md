@@ -1,5 +1,9 @@
 # What the 2023 throughput endpoints measure
 
+The active-start analysis is an alternative-endpoint stress test. Its construction changes both lagged inputs and future outcomes. There is no established null response under that change, so interpreting it as a formal negative control would be unjustified. Reset retains the original reinitialization interpretation and the benchmark's frozen comparison. Its status as the primary definition does not establish physical validity.
+
+For reset, relative drop and active start, the Op1 tree MAEs were 24.56, 21.62 and 13.33 Mbps, with supported fractions of 0.1655, 0.1591 and 0.1060. Op2 MAEs were 27.41, 22.67 and 14.99 Mbps and supported fractions were 0.2559, 0.2360 and 0.1490. The corresponding zero counts over both operators were 23, 23 and 183. The smaller error of the burst endpoint coexists with higher violations and lower usable rate.
+
 The retained method is **Option B**. Active-start segmentation defines a different observational unit. We retain its adverse results in the paper and diagnostics. The Rome archive supplies no independent truth label for these boundaries.
 
 Each file and operator is processed separately in recorded order. Parse Day and fractional time with the explicit day.month.year format. Convert the Mean Netw. DL column to Mbps according to its unit, coerce nonnumeric values (including ?) to missing, and drop missing and negative throughput before differencing. Zero is retained. Reset begins on a change below −5 Mbps to a value below 5. Relative drop begins below −2 Mbps to a value below 1. Despite the name, the latter threshold uses an absolute change. Burst begins on every crossing from at most 1 to above 1 Mbps or any consecutive retained-row gap over 10 seconds. It keeps inactive rows and can retain an initial inactive segment. The final retained value, including zero, is the target. Elapsed duration is last minus first timestamp.

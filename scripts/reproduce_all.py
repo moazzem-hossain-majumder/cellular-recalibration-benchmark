@@ -13,7 +13,8 @@ def main():
         ['scripts/prepare_ookla_traces.py'], ['scripts/reproduce_experiments.py'],
         ['scripts/audit_data_quality.py'], ['scripts/audit_trace_filters.py'],
         ['scripts/audit_session_segmentation.py'], ['scripts/validate_session_boundaries.py'],
-        ['scripts/audit_cluster_inference.py'], ['scripts/build_paper_html.py'],
+        ['scripts/audit_cluster_inference.py'], ['scripts/audit_group_support.py'],
+        ['scripts/validate_clock_and_network.py'], ['scripts/build_paper_html.py'],
         ['scripts/validate_manuscript_consistency.py'], ['-m','pytest','-ra','--junitxml=results/runs/final_tests.xml'],
 
     ]:

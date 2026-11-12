@@ -33,6 +33,9 @@ def main():
             return f'{s.min():.4f} to {s.max():.4f}'
         lines.append(f'| {reg} | {len(day)} | {limits(day.global_V)} | {limits(omit.global_V)} | {limits(omit.global_U)} |')
     lines += ['', 'The pointwise grouped and global bounds coincide at ten labels on these suffixes. Their paired differences and all percentile endpoints are zero. This arithmetic identity cannot establish population equivalence. E0 has only two dates, giving just three distinct date-count combinations in the bootstrap. All four regimes fall below the proposal’s ten-date threshold for confirmatory inference. The ranges above describe sensitivity without estimating uncertainty in future campaigns. No absolute performance confidence interval is claimed. Inspect calendar_day_influence.csv for each date, denominator and omission.']
+    lines.extend(['','## External and clock-based designs','',
+        'The Rome minute replay reuses the same seven suffix dates per later operator. Intervals can share a prior measurement or endpoint. The Norwegian test has two collection dates on one bus route. Ireland has 83 traces repartitioned thirty times; seed averages and wins are descriptive. Trace removal measures leverage conditional on the fitted forecasts. Repeated traces, shared routes and a single operator preclude inference across operators or campaigns. None of these comparisons is a confirmatory population test.'])
+    lines.extend(['','In the separate chronological Irish extension, deleting any one of sixteen held-out dates gave ten-label V between 34.03% and 36.68%. Every such omission exceeded the nominal target. The saved date aggregates also give full-pool sensitivities. These are deletion ranges conditional on the fixed calibration and forecast.'])
     (ROOT/'docs/STATISTICAL_INFERENCE_AUDIT.md').write_text('\n'.join(lines)+'\n',encoding='utf8')
 if __name__=='__main__':
     main()

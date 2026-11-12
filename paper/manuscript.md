@@ -4,11 +4,19 @@ Md. Moazzem Hossain Majumder
 
 ## Abstract
 
-We study whether a small chronological prefix of labeled sessions can calibrate a lower forecast of downlink throughput in two commercial measurement campaigns in Rome. The source-calibrated forecaster exceeds a nominal ten percent violation rate in all four held-out evaluations. At ten target labels the global correction meets the empirical target in each regime, but its supported fraction ranges from 0.006 to 0.073. Missingness-group calibration gives the same results at that budget. Replacing throughput-reset segments with segments beginning at active transitions substantially changes the endpoint distribution and measured violations. On a separate Irish next-row benchmark, calibrated persistence raised supported throughput from 55.60 to 59.44 percent with mean violations of 9.71 percent. Under joint campaign and operator shift in Rome, persistence violated 20.39 percent of forecasts. The small number of held-out collection dates limits inference about future deployments.
+We study whether a small chronological prefix of labeled sessions can calibrate a lower forecast of downlink throughput in two commercial measurement campaigns in Rome. The source-calibrated forecaster exceeds a nominal ten percent violation rate in all four held-out evaluations. At ten target labels the global correction meets the empirical target in each regime, but its supported fraction ranges from 0.006 to 0.073. Missingness-group calibration gives the same results at that budget. Replacing throughput-reset segments with segments beginning at active transitions substantially changes the endpoint distribution and measured violations. On a separate Irish next-row benchmark, calibrated persistence raised supported throughput from 55.60 to 59.44 percent with mean violations of 9.71 percent. Under joint campaign and operator shift in Rome, persistence violated 20.39 percent of forecasts. A clock-triggered replay on that operator supported 16.00 percent with 13.82 percent violations. On two held-out Norwegian bus-route dates a locally fitted tree supported 30.60 percent with 1.02 percent violations. On chronologically held-out Irish dates, ten-label persistence had 34.81 percent violations. The differing endpoints and sparse collection dates limit deployment inference.
+
+<div class="IEEEkeywords">
+
+Cellular throughput, conformal prediction, measurement methodology, missing radio telemetry.
+
+</div>
 
 # Question and related work
 
-An application that chooses a sending rate before a download needs to know how often its forecast exceeds delivered throughput and how much usable rate it gives up to reduce those violations. We ask how those quantities change when an operator has only a few labeled examples from the destination network. The contribution is an empirical comparison on released traces, with a common predictor and a fixed test suffix across label budgets. Prior work characterizes the underlying campaigns (Kousias et al. 2024; Caso et al. 2024), additive prediction with missing observations (Jacobson et al. 2025), and conditional calibration under missing covariates (Zaffran et al. 2023). The BAMMO-inspired baseline uses our pattern-specific boosted trees. We did not replicate the original authors’ implementation. Grouping by recorded telemetry availability gives a simple comparator. Its interpretation depends on support within each group.
+An application that chooses a sending rate before a download needs to know how often its forecast exceeds delivered throughput and how much usable rate it gives up to reduce those violations. We ask how those quantities change when an operator has only a few labeled examples from the destination network. The contribution is an empirical comparison on released traces, with a common predictor and a fixed test suffix across label budgets. Prior work characterizes the underlying campaigns (Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024), additive prediction with missing observations (Jacobson et al. 2025), and conditional calibration under missing covariates (Zaffran et al. 2023). The BAMMO-inspired baseline uses our pattern-specific boosted trees. We did not replicate the original authors’ implementation. Grouping by recorded telemetry availability gives a simple comparator. Its interpretation depends on support within each group.
+
+Our contributions are (i) a chronological label-budget benchmark reporting both violations and supported rate, (ii) a controlled comparison of session endpoints with a clock-triggered replay, and (iii) a published Irish benchmark reproduction and a separate evaluation of the ten-label rule on Norwegian measurements. The empirical question is how these choices affect the rate an application could commit under the stated offline decision rule. Narayanan et al. mapped and predicted commercial millimeter-wave throughput (Narayanan et al. 2020), while Kousias et al. modeled performance in non-standalone networks (Kousias, Rajiullah, Caso, Alay, et al. 2024). Our benchmark evaluates how much measured rate remains supportable when an existing point forecast receives only a short destination calibration prefix.
 
 # Measurements and prediction time
 
@@ -28,11 +36,11 @@ We compute $`V=\sum_i\mathbf{1}\{y_i<L_i\}/N`$ and $`U=\sum_i\min(L_i,y_i)/\sum_
 |:---------------------|------:|------:|--------:|
 | Model                |   MAE |  RMSE | Seconds |
 | Persistence          |  3.22 |  7.21 |   0.000 |
-| Ridge                |  6.03 |  8.78 |   0.046 |
-| HistGradientBoosting | 11.00 | 12.00 |   0.041 |
-| BAMMO                | 15.46 | 23.86 |   0.323 |
-| QuantileGBM p10      |  5.01 |  8.68 |   0.072 |
-| GPU ThroughputResNet |  5.85 |  8.33 |   0.737 |
+| Ridge                |  6.03 |  8.78 |   0.030 |
+| HistGradientBoosting | 11.00 | 12.00 |   0.033 |
+| BAMMO                | 15.46 | 23.86 |   0.297 |
+| QuantileGBM p10      |  5.01 |  8.68 |   0.070 |
+| GPU ThroughputResNet |  5.85 |  8.33 |   0.721 |
 
 </div>
 
@@ -77,7 +85,7 @@ We compute $`V=\sum_i\mathbf{1}\{y_i<L_i\}/N`$ and $`U=\sum_i\min(L_i,y_i)/\sum_
 
 # Results
 
-Persistence had a lower validation MAE than the histogram model on nine source-validation observations. We use the common histogram predictor to isolate differences between calibration rules. We examine persistence separately on the external benchmark and in the joint-shift analysis below. The point baseline exceeds the measured throughput in roughly one third to three fifths of held-out sessions. With source calibration, every regime exceeds ten percent violations at each tested budget below nine. At ten labels the global method records zero violations in E0 and E3, approximately seven percent in E1 and two percent in E2. In E3 it supports less than one percent of measured rate. At fifteen labels the grouped E1 rule exceeds the nominal target (0.1007), while grouped E2 increases supported fraction to 0.0993 with a violation rate of 0.0977. All four regimes give identical global and missingness-group results at ten labels when the pooled fallback is applied consistently. Thus this comparison provides no evidence of a grouping advantage at that budget. Prefix composition and endpoint construction both matter when interpreting apparent reliability.
+Table I reports source model selection. Table II and Fig. 1 show the full budget curve. Fig. 2 compares observed subgroups. Persistence had a lower validation MAE than the histogram model on nine source-validation observations. We use the common histogram predictor to isolate differences between calibration rules. We examine persistence separately on the external benchmark and in the joint-shift analysis below. The point baseline exceeds the measured throughput in roughly one third to three fifths of held-out sessions. With source calibration, every regime exceeds ten percent violations at each tested budget below nine. At ten labels the global method records zero violations in E0 and E3, approximately seven percent in E1 and two percent in E2. In E3 it supports less than one percent of measured rate. At fifteen labels the grouped E1 rule exceeds the nominal target (0.1007), while grouped E2 increases supported fraction to 0.0993 with a violation rate of 0.0977. All four regimes give identical global and missingness-group results at ten labels when the pooled fallback is applied consistently. Thus this comparison provides no evidence of a grouping advantage at that budget. At ten labels the tree offsets were 27.81, 22.79, 28.70 and 30.29 Mbps, respectively. Clipping then produced zero rates on 65.85, 59.71, 75.00 and 93.20 percent of the suffixes. Group-level support existed for 54 of 539 forecasts; the remaining 485 used the pooled target. The identical bounds therefore reflect both fallback and coincident offsets.
 
 <figure data-latex-placement="!ht">
 <embed src="figures/fig1_budget_vs_usefulness.png" />
@@ -91,7 +99,7 @@ Persistence had a lower validation MAE than the histogram model on nine source-v
 
 # Sensitivity to the observational unit
 
-After numeric filtering, reset starts a segment on a drop exceeding 5 Mbps to below 5 Mbps. Relative drop starts on a drop exceeding 2 Mbps to below 1 Mbps. The active-start rule begins on an upward crossing above 1 Mbps or a gap over ten seconds. All three retain the last numeric row as the target. The active-start rule therefore frequently attaches the subsequent idle tail to the preceding burst. Its endpoint can differ even on a continuously logged trace. We retain it as a negative control for changing the observational unit. The sensitivity analysis evaluates all eligible later pairs with a source-fitted model. Its denominator differs from the held-out benchmark. After excluding zero endpoints from scoring while keeping the fitted predictor, burst violations remain 0.3742 and 0.4651 on the two operators. Thus zero endpoints explain only part of the shift. Relative drop also changes the sample and the rates. None of these heuristics establishes ground-truth session boundaries.
+Table III compares the operational units. After numeric filtering, reset starts a segment on a drop exceeding 5 Mbps to below 5 Mbps. Relative drop starts on a drop exceeding 2 Mbps to below 1 Mbps. The active-start rule begins on an upward crossing above 1 Mbps or a gap over ten seconds. All three retain the last numeric row as the target. The active-start rule therefore frequently attaches the subsequent idle tail to the preceding burst. Its endpoint can differ even on a continuously logged trace. We use it as an alternative-endpoint stress test. There is no independent truth label for a physical download boundary. The reset rule aligns with a reinitializing mean-rate series and preserves the original benchmark definition. Its agreement with actual test starts remains unknown. The sensitivity analysis evaluates all eligible later pairs with a source-fitted model. Its denominator differs from the held-out benchmark. After excluding zero endpoints from scoring while keeping the fitted predictor, burst violations remain 0.3742 and 0.4651 on the two operators. Thus zero endpoints explain only part of the shift. Relative drop also changes the sample and the rates. None of these heuristics establishes ground-truth session boundaries.
 
 <div class="table*">
 
@@ -104,9 +112,11 @@ After numeric filtering, reset starts a segment on a drop exceeding 5 Mbps to be
 
 </div>
 
+Median durations were 76, 72 and 53 seconds for reset, relative drop and active start. On later Op2 the corresponding tree errors were 27.41, 22.67 and 14.99 Mbps, while supported fractions were 0.2559, 0.2360 and 0.1490. A smaller absolute error coexisted with more violations as the endpoint population moved towards small values.
+
 # Uncertainty and secondary experiments
 
-We resample collection dates with replacement, retaining all sessions from each selected date and pairing methods within each draw. The percentile endpoints from 2,000 draws describe empirical between-date variability conditional on this fitted model and prefix. Two to eight observed dates per regime offer little information about the population of future dates. A zero contrast interval follows algebraically when bounds coincide. Shared routes, equipment and measurement schedules can induce dependence across dates.
+Table IV reports the paired contrasts. We resample collection dates with replacement, retaining all sessions from each selected date and pairing methods within each draw. The percentile endpoints from 2,000 draws describe empirical between-date variability conditional on this fitted model and prefix. Two to eight observed dates per regime offer little information about the population of future dates. A zero contrast interval follows algebraically when bounds coincide. Shared routes, equipment and measurement schedules can induce dependence across dates.
 
 <div class="table*">
 
@@ -122,7 +132,7 @@ We resample collection dates with replacement, retaining all sessions from each 
 
 The repository includes every date’s estimates and leave-one-date-out contrasts. Single-prefix testing leaves calibration-prefix variability unmeasured. Thirty-, sixty- and 120-second sensitivity runs change the eligible cohort and covariates together. Sixty seconds is the selected primary window. The supplementary analyses also examine group-support gates and artificial removal of observed NR fields. Artificial removal tests model response to controlled masking and does not identify why telemetry was absent in the field.
 
-The online experiment updates an offset after each observed label with a fixed step size. Its feedback requirements differ from static prefix calibration. This score-offset update is inspired by adaptive conformal inference (Gibbs and Candès 2021). The weighted experiment estimates source-to-target density ratios with a domain classifier and compares two clipping ranges. One variant uses calibration-pool covariates and the other uses unlabeled test covariates. The tight weight range is 0.1 to 10 and the wide range 0.01 to 100. Covariate-shift theory requires a stable conditional outcome law and appropriate density ratios (Tibshirani et al. 2019). Estimated, clipped weights and small effective sample sizes limit this interpretation. The alpha sweep and convex offline cost proxy show how the chosen threshold or penalty affects the displayed trade-off. The secondary sensitivity fits can use regime-specific source splits and should be compared within their own protocols.
+Table V and Figs. 3–5 report the feedback, weighting and decision analyses. The online experiment updates an offset after each observed label with a fixed step size. Its feedback requirements differ from static prefix calibration. This score-offset update is inspired by adaptive conformal inference (Gibbs and Candès 2021). The weighted experiment estimates source-to-target density ratios with a domain classifier and compares two clipping ranges. One variant uses calibration-pool covariates and the other uses unlabeled test covariates. The tight weight range is 0.1 to 10 and the wide range 0.01 to 100. Covariate-shift theory requires a stable conditional outcome law and appropriate density ratios (Tibshirani et al. 2019). Estimated, clipped weights and small effective sample sizes limit this interpretation. The alpha sweep and convex offline cost proxy show how the chosen threshold or penalty affects the displayed trade-off. The secondary sensitivity fits can use regime-specific source splits and should be compared within their own protocols.
 
 <figure data-latex-placement="!ht">
 <embed src="figures/fig3_aci_adaptation.png" />
@@ -221,9 +231,52 @@ Table IX compares recorded throughput transitions. NearZero counts endpoints at 
 
 </div>
 
+# Outcome-independent scheduling and external evaluation
+
+In the later Rome release, a drop in measured throughput identifies both the start of a segment and the close of its predecessor. An observer who has yet to see that reading cannot identify the same candidate starts. To evaluate a trigger available at forecast time, we used each whole minute of logger operation and required a numeric rate in the preceding minute. Persistence predicts the last available reading in the next minute. We retained the original calendar partitions and calibrated on the first ten labeled opportunities. This changes the endpoint as well as the sample. Of 238 and 171 issued forecasts in E1 and E3, respectively, 211 and 152 had a target in a fully observed window. Missing labels could be informative.
+
+Table X compares the two clock-triggered suffixes with an independent ten-label evaluation on Telenor HSDPA bus measurements released by Riiser et al. (Riiser et al. 2013). We selected all logs on the first route listed by the publisher before measuring forecast performance. At each completed interval we predict the next interval’s received bytes per elapsed second, converted to Mbps. Seven chronological dates supply three training dates, two calibration-pool dates and two test dates. The tree uses the last two rates; persistence uses the last rate. Both use the same ten target calibration labels. This evaluates the calibration procedure with a locally fitted predictor. The Irish results in Tables VI–VIII instead reproduce and extend an existing trace-level protocol. The Norwegian logs lack radio measurements needed to validate the grouped rule.
+
+<div class="table*">
+
+|        |             |        |       |       |        |       |       |
+|:-------|------------:|-------:|------:|------:|-------:|------:|------:|
+| Cohort |       Model | Scored | Dates |   MAE | Offset |  Viol |  Util |
+| E1     | Persistence |    211 |     7 | 44.35 | 114.00 |  8.06 |  8.29 |
+| E3     | Persistence |    152 |     7 | 50.72 |  53.90 | 13.82 | 16.00 |
+| Norway | Persistence |   1278 |     2 |  0.38 |   1.49 |  0.78 | 26.78 |
+| Norway |     HistGBM |   1278 |     2 |  0.37 |   1.38 |  1.02 | 30.60 |
+
+</div>
+
+Figure 6 shows how often recalibration clips the commitment to zero at every available prefix length in the primary benchmark. This is the fraction of opportunities on which a lower forecast makes no positive rate commitment.
+
+<figure data-latex-placement="!ht">
+<embed src="figures/fig6_zero_bounds.png" />
+<figcaption>Fraction of zero global lower bounds by target calibration budget and Rome regime.</figcaption>
+</figure>
+
+For reset-based persistence in Rome E3, violations and supported throughput were 20.39 and 51.65 percent. With the clock they were 13.82 and 16.00 percent. On the Norwegian route both methods met the empirical violation target on the pooled suffix. Their two test dates provide little information about other days or routes. Neither experiment measures prospective application outcomes. Finally we applied the missingness rule to the Irish measurements in a separate chronological analysis (Table XI). We used the current availability of numeric primary and NR signal-power fields before any forward filling, the preceding downlink as the point forecast, and the following row as the endpoint. We required strictly ordered lag, issue and target timestamps. The first eleven of 27 collection dates supplied the calibration pool. On the remaining sixteen dates, point MAE was 9.05 Mbps. All first ten calibration rows lacked an NR reading, so both rules gave the same bound on all 108,519 test rows. Violations reached 34.81 percent. Deleting one test date at a time gave 34.03 to 36.68 percent. Even with all 64,265 calibration rows, grouped violations remained 29.86 percent. This failure on a chronological split limits the interpretation of the favorable random-trace results. Split, calibration size and timestamp eligibility differ together.
+
+<div class="table*">
+
+|        |         |        |          |           |           |
+|:-------|--------:|-------:|---------:|----------:|----------:|
+| Labels |    Rule |  Local | Coverage | Violation | Supported |
+| 10     |  Global |      0 |    65.19 |     34.81 |     71.62 |
+| 10     | Grouped |  21372 |    65.19 |     34.81 |     71.62 |
+| 64265  |  Global |      0 |    69.50 |     30.50 |     71.31 |
+| 64265  | Grouped | 108519 |    70.14 |     29.86 |     71.36 |
+
+</div>
+
 # Conclusion
 
-A short prefix produced conservative lower forecasts in these traces, sometimes at the cost of nearly all usable throughput. The first finite target rank at nine labels is specific to the chosen nominal level. The burst-endpoint diagnostic and sparse calendar-day support limit generalization. Independent measurement dates, externally identified test boundaries and an untouched network would permit a stronger test of calibration usefulness.
+A short prefix produced conservative lower forecasts in these traces, sometimes at the cost of nearly all usable throughput. The first finite target rank at nine labels is specific to the chosen nominal level. The burst-endpoint diagnostic and sparse calendar-day support limit generalization. More independent measurement dates and a logger that records physical test starts before throughput is observed would allow the session forecast to be evaluated prospectively.
+
+# Acknowledgment
+
+OpenAI Codex assisted with code development, experimental checks and drafting and revising the manuscript.
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
@@ -247,13 +300,31 @@ Jacobson, Tate, Jie Ding, and Hui Zou. 2025. “Predicting 5G Throughput with BA
 
 <div id="ref-kousias2024large" class="csl-entry">
 
-Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, et al. 2024. “A Large-Scale Dataset of 4G, NB-IoT, and 5G Non-Standalone Network Measurements.” *IEEE Communications Magazine* 62 (5): 44–49. <https://doi.org/10.1109/MCOM.011.2200707>.
+Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Usman Ali, et al. 2024. “A Large-Scale Dataset of 4G, NB-IoT, and 5G Non-Standalone Network Measurements.” *IEEE Communications Magazine* 62 (5): 44–49. <https://doi.org/10.1109/MCOM.011.2200707>.
+
+</div>
+
+<div id="ref-kousias2024empirical" class="csl-entry">
+
+Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Ozgu Alay, et al. 2024. “Empirical Performance Analysis and ML-Based Modeling of 5G Non-Standalone Networks.” *Computer Networks* 241: 110207. <https://doi.org/10.1016/j.comnet.2024.110207>.
+
+</div>
+
+<div id="ref-narayanan2020lumos5g" class="csl-entry">
+
+Narayanan, Arvind, Eman Ramadan, Rishabh Mehta, et al. 2020. “Lumos5G: Mapping and Predicting Commercial mmWave 5G Throughput.” *Proceedings of the ACM Internet Measurement Conference (IMC)*, 176–93. <https://doi.org/10.1145/3419394.3423629>.
 
 </div>
 
 <div id="ref-raca2020beyond" class="csl-entry">
 
 Raca, Darijo, Dylan Leahy, Cormac J. Sreenan, and Jason J. Quinlan. 2020. “Beyond Throughput, the Next Generation: A 5G Dataset with Channel and Context Metrics.” *Proceedings of the 11th ACM Multimedia Systems Conference (MMSys)*, 303–8. <https://doi.org/10.1145/3339825.3394938>.
+
+</div>
+
+<div id="ref-riiser2013commute" class="csl-entry">
+
+Riiser, Haakon, Paul Vigmostad, Carsten Griwodz, and Pål Halvorsen. 2013. “Commute Path Bandwidth Traces from 3G Networks: Analysis and Applications.” *Proceedings of the ACM Multimedia Systems Conference*, 114–18.
 
 </div>
 

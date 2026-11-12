@@ -22,4 +22,10 @@ jobs:
       - run: python scripts/prepare_ookla_traces.py
       - run: python -m pytest tests -ra --junitxml=tests.xml
       - run: python -c "import xml.etree.ElementTree as E; s=E.parse('tests.xml').find('.//testsuite'); assert int(s.get('tests'))>0 and int(s.get('skipped'))==0"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-test-report
+          path: tests.xml
+          if-no-files-found: error
 

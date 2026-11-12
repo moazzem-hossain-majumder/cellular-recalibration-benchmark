@@ -1,0 +1,7 @@
+# Pattern support and fallback
+
+All 1,001 eligible Rome rows have observed LTE RSRP. Of those, 416 also have NR RSRP. The radio and missingness partitions coincide. These are logger-availability indicators. The cause of a missing value and performance on unseen patterns remain unidentified.
+
+Rebuild results/diagnostics/group_support.csv with `python scripts/audit_group_support.py`. The CSV gives each tested budget, each supported test group, its prefix count, suffix count and offset source. At ten labels the LTE-only/dual calibration counts were 1/9, 8/2, 5/5 and 0/10 in E0 through E3. Group-specific offsets were available to 16, 0, 0 and 38 test rows. The other 485 of 539 rows used the pooled target. All 539 produced the same lower bound as the global rule, including those with group-specific support. Fallback alone therefore does not explain equality. Below nine labels every row uses source calibration. Grouping remains an exploratory extension.
+
+In the chronological Irish extension, group support at ten labels existed for the 21,372 test rows sharing the calibration pattern. The other 87,147 took the pooled offset. With the entire pool, each pattern had over ten thousand calibration rows, yet violations remained 29.86% for the grouped method. See Table XI and results/external_validation/irish_group_validation.json for all group counts. The primary Irish power field need not have the same physical interpretation as the documented LTE field in Rome.

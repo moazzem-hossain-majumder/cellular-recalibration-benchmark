@@ -5,7 +5,11 @@
 **Selected research:** Topic A only  
 **Current stage:** Manuscript and submission package rebuilt after the external benchmark and trace-influence audit. The results support a scoped empirical comparison. Independent confirmation on a fresh campaign remains open.
 
-## Latest verified analysis, 12 November 2026
+## Current scientific revision
+
+Read docs/FINAL_REVIEW.md, docs/PREDICTION_TIME_VALIDITY_AUDIT.md, docs/EXTERNAL_VALIDATION_PROTOCOL.md and Table X first. The work now includes the fixed-clock Rome replay and an independent Norwegian ten-label evaluation. The older Irish comparison below remains part of this revision.
+
+## Irish analysis, 12 November 2026
 
 Read `paper/manuscript.pdf` (Tables VI–IX), `docs/EXTERNAL_SIRHAN_COMPARISON.md`, and the external reproduction instructions at the end of `README.md`. Start with `results/exploratory/sirhan_external/trace_exclusions.csv`, `trace_influence.csv` and `lag_transitions.csv` for the inputs to the interpretation. At fixed nominal 10%, persistence gained 3.84 percentage points of supported throughput on Irish traces and raised mean violations by 0.11 points. In Rome E3, persistence violated 21 of 103 forecasts. Preserve both results and the adverse minimum hybrid. Freeze the forecast, endpoint and calibration protocol before testing a new collection with independent test-start markers and more dates. The archived Irish predictor uses CPU histogram boosting. Preserve the released implementation for matched comparisons.
 

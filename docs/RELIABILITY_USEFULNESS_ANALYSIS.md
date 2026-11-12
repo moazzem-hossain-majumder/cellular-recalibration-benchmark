@@ -1,0 +1,7 @@
+# What conservative lower bounds buy
+
+The primary benchmark compares each prefix on a fixed chronological suffix. Table II lists the entire available grid and both measures for every method. V weights forecast rows equally. U divides the sum of min(bound, observed rate) by the sum of observed rates. A higher-throughput session has more influence on U. This is a rate-weighted offline decision proxy; durations, bytes transmitted, stalls and application responses are unmeasured.
+
+At ten labels the maximum calibration overprediction sets the global offset. In E0/E1/E2/E3 respectively the offsets were 27.81/22.79/28.70/30.29 Mbps. Subtraction and clipping produced zero bounds on 65.85/59.71/75.00/93.20 percent of the suffix. This directly accounts for much of the low supported fraction. V was 0/7.19/2.34/0 percent, with U of 2.85/7.25/1.77/0.60 percent. The recorded zero bounds make low V operationally ambiguous.
+
+K below nine uses the source offset. K of nine or ten uses a maximum; additional labels can increase or decrease the selected order statistic. The disjoint prefix-block comparisons, date deletion ranges and clock replay quantify sensitivity to different elements of the design. These observations do not identify how much of the effect was caused by shift, endpoint selection or the few dates. The grouped rules match global at ten. All budgets, including the adverse grouped E1 result at fifteen labels, remain in the paper.

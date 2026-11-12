@@ -1,0 +1,7 @@
+# One-sided calibration audit
+
+For n finite signed scores f−y and an exchangeable future score, its rank among n+1 scores yields the ceiling rank of (n+1)(1−alpha). Ascending array index is rank minus one. An unachievable rank returns infinity. Ties are covered; clipping a lower bound at zero preserves the comparison for nonnegative targets. Source-offset substitution changes the calibration population, so arbitrary target shift invalidates transfer of the source coverage claim.
+
+At nominal 0.10 the first finite rank occurs at n=9. At n=9 and n=10 the maximum is selected. For n=0 the standalone rule is infinite and the primary experiment uses its frozen source fallback. At a group level the row/session gates apply before testing rank feasibility. Unseen groups take the target pooled offset when finite. See tests/unit/test_calibration_activation.py and results/diagnostics/group_support.csv.
+
+The audit found that binary floating-point multiplication can push an exact integer rank upward at some nominal levels (e.g. n=9 and alpha=0.7). Decimal arithmetic on the supplied nominal level now implements the written rank; nonfinite input scores raise an error. A regression test covers both. Chronological target pools precede the suffix; same-campaign operator transfers may share source and target collection dates. Calendar separation for those source and target populations is not claimed. The primary feature-selection issue concerns inferred event time, documented in PREDICTION_TIME_VALIDITY_AUDIT.md.

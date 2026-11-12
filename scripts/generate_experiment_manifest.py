@@ -11,10 +11,11 @@ import sys
 import xml.etree.ElementTree as ET
 
 import torch
+from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGES = ['torch','pandas','numpy','scipy','scikit-learn','matplotlib','seaborn',
-            'pypdf','pymupdf','pytest','pypandoc_binary','beautifulsoup4']
+            'pypdf','pymupdf','pytest','pypandoc_binary','beautifulsoup4','pyarrow']
 PATTERNS = [
     'src/**/*.py','scripts/*.py','tests/**/*.py','results/diagnostics/*',
     'results/metrics/*','results/tables/*','results/figures/*','paper/**/*','app/*',
@@ -23,7 +24,8 @@ PATTERNS = [
     '.github/workflows/*','results/runs/final_tests.xml','results/runs/execution.json',
     'results/runs/ancillary_execution.json','results/exploratory/sirhan_external/*',
     'results/exploratory/published_global_comparison.csv','docs/EXTERNAL_SIRHAN_COMPARISON.md',
-    'results/runs/external_validation.json','antigravity.md'
+    'results/runs/external_validation.json','antigravity.md','results/external_validation/*',
+    'docs/EXTERNAL*md','docs/RELIABILITY_USEFULNESS_ANALYSIS.md','docs/FINAL_REVIEW.md'
 ]
 
 def digest(path):
@@ -44,6 +46,14 @@ def test_counts(report):
 
 def main():
     runs = ROOT/'results/runs'
+    receipt = read_json(runs/'external_validation.json')
+    counts = test_counts(runs/'final_tests.xml')
+    receipt.update(scope='Rome reset and clock protocols, Irish published and chronological evaluations, Norwegian external evaluation',
+                   validated_manuscript_tables=len(list((ROOT/'paper/tables').glob('*.tex'))),
+                   manuscript_pages=len(PdfReader(ROOT/'paper/manuscript.pdf').pages),
+                   package_pages=len(PdfReader(ROOT/'paper/submission_package.pdf').pages),
+                   tests={'outcomes_by_suite':counts,'report':'results/runs/final_tests.xml'})
+    (runs/'external_validation.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf8')
     paths = {p for pattern in PATTERNS for p in ROOT.glob(pattern)
              if p.is_file() and '__pycache__' not in p.parts}
     execution = read_json(runs/'execution.json')
@@ -67,7 +77,7 @@ def main():
                      'bootstrap_draws':2000,'bootstrap_seed':42,'mask_seed':42,'neural_seed':42},
         'execution':sorted(execution,key=lambda stage:stage['start_utc']),
         'tests':test_counts(runs/'final_tests.xml'),
-        'ci':'Local corrections have no hosted run. Original commit passed run 43069521042.',
+        'ci':'Local working tree validated separately from hosted CI; no hosted result for these edits.',
         'sha256':{p.relative_to(ROOT).as_posix():digest(p) for p in sorted(paths)}
     }
     out = ROOT/'docs/REPRODUCIBILITY_MANIFEST.json'

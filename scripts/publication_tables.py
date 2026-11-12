@@ -79,6 +79,13 @@ def tables(root=ROOT):
                        f'{100*r.tree_v:.2f}',f'{100*r.persistence_v:.2f}'] for r in exclusions.itertuples()]
     transition_rows = [[r.setting,str(r.n),f'{r.pearson:.2f}',f'{r.spearman:.2f}',f'{r.mae:.2f}',
                         *[f'{100*x:.1f}' for x in [r.near_zero,r.fall,r.rise]]] for r in transitions.itertuples()]
+    clock = read_json(diagnostics/'prediction_time_validity.json')
+    norway = pd.read_csv(root/'results/external_validation/norway_metrics.csv').to_dict('records')
+    replay = [[r['setting'],r['method'],str(r['n']),str(r['days']),f"{r['mae']:.2f}",
+               f"{r['q']:.2f}",f"{100*r['violation']:.2f}",f"{100*r['supported']:.2f}"] for r in clock+norway]
+    groups = read_json(root/'results/external_validation/irish_group_validation.json')
+    group_rows = [[str(r['k']),r['method'],str(r['group_rows']),f"{100*r['coverage']:.2f}",
+                   f"{100*r['violation']:.2f}",f"{100*r['supported']:.2f}"] for r in groups]
     return {
         'table1_point_predictors': ('Source validation errors in Mbps and measured fit time in seconds.', ['Model','MAE','RMSE','Seconds'],profiles),
         'table2_main_benchmark': ('Test sessions and lower-bound performance by regime and target prefix. P denotes point, G global, R radio access and M missingness groups. V denotes violations and U supported fraction.', ['Regime/K','N','PV','PU','GV','GU','RV','RU','MV','MU'],rows),
@@ -88,7 +95,9 @@ def tables(root=ROOT):
         'table6_irish_frontier': ('Irish retrospective frontier. Budget and supported throughput are percentages. Gain is persistence minus rerun global in percentage points on jointly feasible splits. Wins counts positive paired gains.', ['Budget','Published','Rerun','Minimum','Persistence','Gain','Wins'],frontier_rows),
         'table7_irish_fixed': ('Irish fixed nominal ten percent. Mean violation and supported throughput are percentages. Passes counts splits meeting the target out of thirty.', ['Predictor','MeanV','MeanU','Passes'],fixed_rows),
         'table8_influence': ('Irish fixed-setting exclusions from test scoring. Gain is the paired change in supported throughput in percentage points. Wins counts positive splits. Violation rates are percentages.', ['Sample','Omitted','Gain','Wins','TreeV','LagV'],exclusion_rows),
-        'table9_lag': ('Lag versus endpoint on unique Irish rows and held-out Rome sessions. MAE is in Mbps. NearZero, Fall and Rise are percentages.', ['Setting','Pairs','Pearson','Spearman','LagMAE','NearZero','Fall','Rise'],transition_rows)}
+        'table9_lag': ('Lag versus endpoint on unique Irish rows and held-out Rome sessions. MAE is in Mbps. NearZero, Fall and Rise are percentages.', ['Setting','Pairs','Pearson','Spearman','LagMAE','NearZero','Fall','Rise'],transition_rows),
+        'table10_protocols': ('Ten-label calibration for clock-triggered Rome forecasts and Norwegian interval forecasts. Error and offset are in Mbps. Violation and supported fractions are percentages.', ['Cohort','Model','Scored','Dates','MAE','Offset','Viol','Util'],replay),
+        'table11_irish_groups': ('Chronological Irish persistence forecasts on 108519 rows from sixteen suffix dates. Local counts forecasts using a group-specific offset. Performance measures are percentages.', ['Labels','Rule','Local','Coverage','Violation','Supported'],group_rows)}
 
 def latex(spec):
     caption, header, rows = spec

@@ -1,0 +1,34 @@
+[
+  {
+    "setting": "E1",
+    "method": "Persistence",
+    "n": 211,
+    "days": 7,
+    "prefix_n": 10,
+    "q": 114.0,
+    "violation": 0.08056872037914692,
+    "coverage": 0.919431279620853,
+    "point_violation": 0.44075829383886256,
+    "point_supported": 0.3028932658987026,
+    "supported": 0.08286514718266465,
+    "mae": 44.34633080568721,
+    "issued": 238,
+    "unscored": 27
+  },
+  {
+    "setting": "E3",
+    "method": "Persistence",
+    "n": 152,
+    "days": 7,
+    "prefix_n": 10,
+    "q": 53.9,
+    "violation": 0.13815789473684212,
+    "coverage": 0.8618421052631579,
+    "point_violation": 0.4473684210526316,
+    "point_supported": 0.34658082793146067,
+    "supported": 0.1600449289213944,
+    "mae": 50.71529144736842,
+    "issued": 171,
+    "unscored": 19
+  }
+]

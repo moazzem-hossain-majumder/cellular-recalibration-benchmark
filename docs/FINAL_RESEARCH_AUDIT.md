@@ -1,3 +1,5 @@
+> Historical assessment before the clock-triggered replay and Norwegian evaluation. See the [current reviewer assessment](FINAL_REVIEW.md).
+
 # Final research audit
 
 **Reviewer-style verdict: Major revisions required, 6/10.** The corrected study provides a retrospective benchmark of rate commitments on two Rome measurement campaigns. Its scientific contribution is the observed dependence on calibration prefix and endpoint choice. The standard conformal rank formula contributes no new theorem.

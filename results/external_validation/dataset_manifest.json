@@ -1,0 +1,44 @@
+{
+  "access_date": "2026-11-12",
+  "norway_base_url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/bus.ljansbakken-oslo/",
+  "norway_files": {
+    "report.2010-09-28_1407CEST.log": "d547ff31b7cfaf2686445d1266da41f4c9ea554b8a0b587b31d2925d3518fdea",
+    "report.2010-09-29_0852CEST.log": "743ac0da2107e7f030ada73b137f2226c9a6772ea1e6cf83fc5c8b4160c3dcf3",
+    "report.2010-09-29_1622CEST.log": "94aa4dd1befb9bda3d9064cfefd8109c875ca4437ca9fd34dc9af1b8e59d3907",
+    "report.2010-09-29_1628CEST.log": "f205c829c3fc1975aa48644470b0edc196e10a2f534552990d3043157ef8f83f",
+    "report.2010-09-29_1823CEST.log": "081f6737d8e1a580113997b476f57b324fb881c13dee745a6cf810eea24612e4",
+    "report.2010-09-29_1827CEST.log": "ea3b949e53353ceda2b01511d808fbaa64c06f637e8726b24d113925a4466255",
+    "report.2010-09-30_1058CEST.log": "a723c9561404e870beb5daf17ee2204e790fe8064457f08c40714e7b77eb854e",
+    "report.2010-09-30_1113CEST.log": "210ae7771030c6da57ba805cc6d396b9f8f7a48fb63b6ab20a6bc5c25777e9a3",
+    "report.2010-09-30_1114CEST.log": "3f581758a73cc3131d61d9534e663ae44b5910d3a3fb9b4425829bcf58e81e79",
+    "report.2010-09-30_1133CEST.log": "da4c35260fc78d4e8f445a8c57ce5c34fa1d7d58361fa65c7c5efee2c3e9d396",
+    "report.2010-11-10_1424CET.log": "b6fbaeed7981e6169244130bdd6bbdb40f8cd772ebd9bdf45f70a6c6115aacbe",
+    "report.2010-11-10_1726CET.log": "73e6fe52bfa6f4a5a296882132c83e7918705665bc41f7bb71dd5cdb093482f5",
+    "report.2011-01-29_1125CET.log": "caadf6f9a2625827d5764b273778a450dd138258c5db42ac3197a6da9d5253d6",
+    "report.2011-01-29_1423CET.log": "d18d95d66010b26eb0b543c0c19b399d0874db9fd7c19237012890f81c28e44e",
+    "report.2011-01-29_1827CET.log": "aa03c226b32d964d3da919f72815f2d218db597fa47038eca029cd6c301c9ec4",
+    "report.2011-01-30_1323CET.log": "b0fd60fd1f8cbda14236ec2a7b3749d26535980d156948fb49952b843433cd9d",
+    "report.2011-01-31_1025CET.log": "294144722f3204ef9715b231560f09cfa5c51b93b27ca5653edafbed02bccbfc"
+  },
+  "ireland": {
+    "raw_sha256": "abc729d696b5e0ba34a9c6ed35a851f2868d2b5071be5efb8a49691c23bb1a9b",
+    "source_sha256": {
+      "load_data.py": "4ee4726b3bcd3b269b91347a1a401411766189e5783023106ce0a856557729a4",
+      "features.py": "43a685f2a525961d9410307bf06b8268cc9364325bc0569a7112da0f333ba71c",
+      "run_multiseed_fast_30.py": "ac29e84566ecb63d4fe55399b6af5a25dfca00643b791d504aaacc6948f52746"
+    },
+    "python": "3.11.9",
+    "sklearn": "1.9.0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "threads": "3"
+  },
+  "irish_archive_sha256": "f0ca9183c28a55df9e655521eb31d4754d5b88d5b523c6c93e673ea5f8c06f37",
+  "norway_publisher": "Simula Research Laboratory",
+  "norway_license": "Publisher requests citation; raw-log license unspecified on dataset page",
+  "ireland_raw_url": "https://github.com/uccmisl/5Gdataset",
+  "ireland_commit": "306d92eba81cb4f1195d8b8eba625666a02a10ec",
+  "ireland_repository_license": "GPL-3.0; no separate raw ZIP license stated in README",
+  "irish_analysis_url": "https://data.mendeley.com/datasets/ncbdm2c36d/1",
+  "irish_analysis_license": "CC BY 4.0"
+}

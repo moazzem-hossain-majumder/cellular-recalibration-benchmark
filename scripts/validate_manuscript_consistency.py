@@ -1,4 +1,5 @@
 """Validate publication tables by ordered cells and independently aggregate saved forecasts."""
+from zipfile import ZipFile
 import hashlib
 import re
 import sys
@@ -78,6 +79,29 @@ def verify_metrics(root):
 def validate(root=ROOT):
     specs = tables(root)
     verify_metrics(root)
+    diag = root/'results/diagnostics'
+    ext = root/'results/external_validation'
+    issued = pd.read_csv(diag/'clock_issued.csv')
+    irish = pd.read_csv(ext/'irish_group_forecasts.csv.gz',float_precision='round_trip')
+    for record in read_json(ext/'irish_group_validation.json'):
+        b = irish[(irish.k==record['k']) & (irish.method==record['method'])]
+        assert len(b)==record['n'] and not b.duplicated(['trace_id','row_in_trace']).any()
+        v = (b.lower>b.y).mean()
+        np.testing.assert_allclose([record[k] for k in ['coverage','violation','supported','mae']],
+                                   [1-v,v,np.minimum(b.lower,b.y).sum()/b.y.sum(),(b.point-b.y).abs().mean()])
+    for record in read_json(diag/'prediction_time_validity.json'):
+        b = issued[issued.setting==record['setting']]
+        assert (len(b),b.y.isna().sum(),b.y.count())==(record['issued'],record['unscored'],record['n'])
+    for rows,stats in [(diag/'clock_forecasts.csv', read_json(diag/'prediction_time_validity.json')),
+                       (ext/'norway_forecasts.csv', pd.read_csv(ext/'norway_metrics.csv').to_dict('records'))]:
+        data = pd.read_csv(rows,float_precision='round_trip')
+        for record in stats:
+            b = data[(data.setting==record['setting']) & (data.method==record['method'])]
+            assert len(b)==record['n']
+            v = (b.lower>b.y).mean()
+            np.testing.assert_allclose(b.lower,np.maximum(0,b.point-record['q']),atol=1e-12)
+            np.testing.assert_allclose([record[k] for k in ['violation','coverage','mae','supported']],
+                                       [v,1-v,(b.point-b.y).abs().mean(),np.minimum(b.lower,b.y).sum()/b.y.sum()])
     external = root/'results/exploratory/sirhan_external'
     totals = pd.read_csv(external/'fixed_trace_totals.csv')
     if totals.duplicated(['seed','trace_id','method']).any():
@@ -111,6 +135,14 @@ def validate(root=ROOT):
         np.testing.assert_allclose(exclusions.loc[label,['excluded','mean_gain_pp','positive_splits','tree_v','persistence_v']],
                                    [len(ids),100*delta.mean(),(delta>0).sum(),risk['global'].mean(),risk.persistence.mean()])
     manuscript = (root/'paper/manuscript.tex').read_text(encoding='utf8')
+    referenced = re.findall(r'\\includegraphics(?:\[[^\]]+\])?\{(figures/[^}]+\.pdf)\}',manuscript)
+    if len(set(referenced))!=6:
+        raise ValueError('Incomplete manuscript figure set')
+    for fig in referenced:
+        for suffix in ['.pdf','.png']:
+            name = Path(fig).with_suffix(suffix)
+            if (root/'paper'/name).read_bytes()!=(root/'results'/name).read_bytes():
+                raise ValueError(f'Figure mismatch: {name}')
     html = BeautifulSoup((root/'paper/manuscript.html').read_text(encoding='utf8'),'html.parser')
     html_tables = [[[c.get_text(strip=True) for c in tr.find_all(['td','th'])] for tr in tab.find_all('tr')] for tab in html.find_all('table')]
     md = (root/'paper/manuscript.md').read_text(encoding='utf8')
@@ -168,6 +200,22 @@ def validate(root=ROOT):
         for i,page in enumerate(manuscript_pdf):
             if page.get_pixmap().digest != package_pdf[i+1].get_pixmap().digest:
                 raise ValueError(f'Package rendering mismatch on manuscript page {i+1}')
+    with ZipFile(root/'paper/submission_package.zip') as archive:
+        required = {'manuscript.pdf','submission_package.pdf','cover_letter.tex','manuscript.tex','references.bib','supplement/REPRODUCE.md'}
+        required.update('tables/'+name+'.tex' for name in specs)
+        required.update(referenced)
+        if required.difference(archive.namelist()):
+            raise ValueError('Incomplete submission ZIP')
+        for name in archive.namelist():
+            target = root/'paper'/name
+            if name.startswith('supplement/'):
+                file = Path(name).name
+                target = root/'README.md' if file=='REPRODUCE.md' else root/'docs'/file
+            stored, current = archive.read(name),target.read_bytes()
+            if target.suffix in {'.md','.tex','.bib'}:
+                stored,current = [x.replace(b'\r\n',b'\n') for x in [stored,current]]
+            if stored!=current:
+                raise ValueError(f'Stale submission ZIP entry: {name}')
     print(f'Validated {len(specs)} tables, forecast-level aggregates, manuscript and package.')
 
 if __name__ == '__main__':

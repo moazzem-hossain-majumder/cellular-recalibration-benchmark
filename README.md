@@ -2,7 +2,7 @@
 
 How much can a short chronological prefix of labeled target sessions improve a lower forecast of downlink throughput when radio telemetry is incomplete? This benchmark measures the frequency with which a bound exceeds measured throughput (V) alongside the fraction of measured throughput it supports (U). The contribution is the empirical comparison across operators, campaigns and definitions of a session.
 
-Two public Rome measurement releases supply the data. The earlier active throughput CSV is [Zenodo 8224890](https://zenodo.org/records/8224890). The later archive contains the 43 Ookla traces used here [Zenodo 14073311](https://zenodo.org/records/14073311). Both releases identify CC BY 4.0. The acquisition manifest pins the raw bytes. The primary regime uses a common source-trained histogram gradient boosting predictor, chronological calibration prefixes and fixed held-out target dates. Labels used as lagged inputs are distinct from labels counted in the target recalibration budget.
+Two public Rome releases supply the primary benchmark data. The earlier active throughput CSV is [Zenodo 8224890](https://zenodo.org/records/8224890). The later archive contains the 43 Ookla traces used here [Zenodo 14073311](https://zenodo.org/records/14073311). Both releases identify CC BY 4.0. The acquisition manifest pins the raw bytes. The primary regime uses a common source-trained histogram gradient boosting predictor, chronological calibration prefixes and fixed held-out target dates. Labels used as lagged inputs are distinct from labels counted in the target recalibration budget.
 
 | Regime | Held-out sessions / days | Point V | Source-only global V | Ten-label global V | Ten-label global U |
 |---|---:|---:|---:|---:|---:|
@@ -27,7 +27,11 @@ python scripts/reproduce_all.py
 
 The entry point checks the archive, materializes matching individual traces, verifies downloads, exercises the test suite, fits the models, runs the ablations, rebuilds diagnostics, generates and checks manuscript artifacts and runs the tests again. The [manifest](docs/REPRODUCIBILITY_MANIFEST.json) records the commands, environment, counts and SHA-256 evidence for the working tree. The [consistency procedure](docs/MANUSCRIPT_CONSISTENCY_VALIDATION.md) identifies the source for each table. The [submission package](paper/submission_package.pdf) contains the cover letter and manuscript. [HTML](paper/manuscript.html) and [Markdown](paper/manuscript.md) are generated from the same LaTeX.
 
-Both local test runs, before and after the publication build, executed 55 tests each with no failures, skips or deselections. Of these, 38 are unit-directory tests (30 synthetic or mathematical and 8 publication checks), 4 are real-data integration tests and 13 are legacy tests. Three legacy tests also read real data. The local real-data pipeline and both PDF checks passed. The post-build results are recorded in results/runs/final_tests.xml. The original commit 890fb28 passed its unit-selected [GitHub workflow run](https://github.com/moazzem-hossain-majumder/cellular-recalibration-benchmark/actions/runs/43069521042). The corrected workflow runs artifact validation and the complete test suite with downloaded data. Local execution evidence is recorded separately from remote CI. Historical reviews and old outputs describe earlier implementations.
+The scope and outcomes of the latest local run are recorded in [execution.json](results/runs/execution.json) and the [post-build JUnit report](results/runs/final_tests.xml). The current working tree has no hosted CI result. The workflow checks the published artifacts, fetches the Rome data, runs the full test suite, rejects skipped tests and uploads the report.
+
+## Prediction-time and independent validation
+
+A clock-triggered replay preserves the Rome target dates and records all issued forecasts, including those without a measurable future label. The independent Norwegian bus-route evaluation uses seven chronological dates, 17 logs, two lag-based predictors and ten calibration labels. See the [prediction-time audit](docs/PREDICTION_TIME_VALIDITY_AUDIT.md), [external protocol](docs/EXTERNAL_VALIDATION_PROTOCOL.md), [data provenance](docs/EXTERNAL_DATA_PROVENANCE.md), and [current reviewer assessment](docs/FINAL_REVIEW.md). The aggregate evidence supports an empirical measurement paper. The full pipeline downloads the pinned Norwegian logs and reads the saved Irish reproduction; the following commands regenerate the Irish results from raw inputs.
 
 ## Reproducing the external comparison
 
@@ -38,6 +42,7 @@ python scripts/compare_sirhan_external.py PATH_TO_MENDELEY_V1_ZIP
 python scripts/compare_published_global_rule.py
 python scripts/audit_external_traces.py
 python scripts/report_sirhan_external.py
+python scripts/validate_irish_groups.py
 python scripts/build_paper_html.py
 python scripts/validate_manuscript_consistency.py
 ```

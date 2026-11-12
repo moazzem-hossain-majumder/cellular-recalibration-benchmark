@@ -12,3 +12,4 @@ requests>=2.32.0
 pymupdf>=1.25
 pypandoc_binary>=1.15
 beautifulsoup4>=4.12
+pyarrow>=15

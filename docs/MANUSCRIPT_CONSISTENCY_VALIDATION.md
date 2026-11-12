@@ -1,5 +1,7 @@
 # Source to publication checks
 
+The revised validator also checks Table X against every saved Norwegian and Rome clock forecast, including the offset-to-bound calculation, MAE, coverage, violations and supported throughput. Six distinct referenced figure PDFs and corresponding PNGs must exist in both artifact trees. The PDF package adds one cover page and must reproduce every manuscript page pixel for pixel. The local run timestamps and exit codes appear in results/runs/execution.json. The post-build test report is results/runs/final_tests.xml.
+
 The experiment runner saves test_forecasts.csv keyed by regime, chronological budget and session. Each record has a date, target and the four method bounds. The validator re-aggregates these into the calibration_budget_results.csv keys and checks the row count, violation rate, supported fraction, mean bound, zero fraction and mean excess. Full-precision aggregate comparisons tolerate only numerical summation differences. The split JSON independently supplies the available budgets and suffix denominator. Missing or duplicated cells are errors.
 
 | Published table | Authoritative input | Display precision |
@@ -18,3 +20,5 @@ scripts/publication_tables.py enumerates the named columns and budgets. The buil
 scripts/validate_manuscript_consistency.py parses every data row and the headers in both TeX directories, Markdown and HTML. It extracts complete normalized table lines from both PDFs with PyMuPDF, in page and row order, and compares their cells with the named table specifications. Each table has a unique header and fits on one page in this layout. A layout that wraps cells needs an explicit parser update. Checks use the exact displayed rounding string. The validator also checks the README summary by regime and compares manuscript and packaged page renderings. Page content comparison and a source fingerprint check complement the cell comparison. Negative tests cover a swapped row, swapped cells, incorrect value, removed method, omitted regime, one last-place rounding error and stale PDF.
 
 These checks validate reported numeric tables. They do not prove scientific assumptions such as exchangeability or the accuracy of inferred physical session boundaries.
+
+Table XI additionally reaggregates the ordered Irish held-out forecasts for both calibration sizes and methods from irish_group_forecasts.csv.gz.
