@@ -15,13 +15,18 @@ These proportions use four decimal places. At K=0,1,2,5,8 the global rule uses a
 
 The later sessions are heuristic. Changing their endpoints substantially changes violations. Two to eight test dates per regime, a single chronological prefix and two campaigns in the same city limit inference. The test-day bootstrap conditions on the fitted model and prefix. See the [segmentation audit](docs/SESSION_SEGMENTATION_AUDIT.md), [statistical audit](docs/STATISTICAL_INFERENCE_AUDIT.md), [final audit](docs/FINAL_RESEARCH_AUDIT.md) and [readiness assessment](docs/FINAL_RESEARCH_READINESS_MATRIX.md).
 
+## Reliability across issued forecasts
+
+At ten target labels the frozen tree violated at least 67 of 238 E1 clock forecasts, even if every unmeasured throughput covered its commitment. On E3 it made only three positive commitments across 171 issued forecasts. The finite-record risk interval accounts for the fact that a zero commitment cannot violate a nonnegative target. It does not estimate future deployment risk.
+
+Run `python scripts/clock_frontier.py` for the matched Rome experiment, every feasible target prefix and the frontier plot. The [clock audit](docs/CLOCK_TRIGGERED_PRIMARY_MODEL_AUDIT.md), [statistical design](docs/STATISTICAL_DESIGN_IMPROVEMENT.md), [transfer protocol](docs/CROSS_NETWORK_GENERALIZATION.md) and [stress analysis](docs/ADVERSARIAL_ROBUSTNESS_AUDIT.md) document the denominators, feedback and limits. The [reviewer assessment](docs/FINAL_REVIEW.md) separates scientific contribution from manuscript preparation.
+
 ## Reproduction
 
 Use Python 3.11, a matching PyTorch build and the dependencies in requirements.txt. Install the Tectonic LaTeX compiler on PATH or set TECTONIC to its executable. Its first run may download TeX resources. The local run used an RTX 4060 for the neural comparator. The primary histogram model runs on CPU. From the repository root run:
 
 ```sh
 python -m pip install -r requirements.txt
-python scripts/download_data.py
 python scripts/reproduce_all.py
 ```
 
@@ -31,7 +36,7 @@ The scope and outcomes of the latest local run are recorded in [execution.json](
 
 ## Prediction-time and independent validation
 
-A clock-triggered replay preserves the Rome target dates and records all issued forecasts, including those without a measurable future label. The independent Norwegian bus-route evaluation uses seven chronological dates, 17 logs, two lag-based predictors and ten calibration labels. See the [prediction-time audit](docs/PREDICTION_TIME_VALIDITY_AUDIT.md), [external protocol](docs/EXTERNAL_VALIDATION_PROTOCOL.md), [data provenance](docs/EXTERNAL_DATA_PROVENANCE.md), and [current reviewer assessment](docs/FINAL_REVIEW.md). The aggregate evidence supports an empirical measurement paper. The full pipeline downloads the pinned Norwegian logs and reads the saved Irish reproduction; the following commands regenerate the Irish results from raw inputs.
+A clock-triggered replay preserves the Rome target dates and records all issued forecasts, including those without a measurable future label. The independent Norwegian bus-route evaluation uses seven chronological dates, 17 logs, two lag-based predictors and ten calibration labels. See the [prediction-time audit](docs/PREDICTION_TIME_VALIDITY_AUDIT.md), [external protocol](docs/EXTERNAL_VALIDATION_PROTOCOL.md), [data provenance](docs/EXTERNAL_DATA_PROVENANCE.md), and [current reviewer assessment](docs/FINAL_REVIEW.md). The aggregate evidence supports an empirical measurement paper. The full pipeline obtains the pinned raw inputs, rebuilds the Irish reproduction and replays both Norwegian routes. The following commands also run the Irish analyses separately.
 
 ## Reproducing the external comparison
 

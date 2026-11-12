@@ -77,6 +77,7 @@ def verify_metrics(root):
         raise ValueError('Forecast keys differ from metric keys')
 
 def validate(root=ROOT):
+    verify_clock_frontier(root)
     specs = tables(root)
     verify_metrics(root)
     diag = root/'results/diagnostics'
@@ -136,7 +137,7 @@ def validate(root=ROOT):
                                    [len(ids),100*delta.mean(),(delta>0).sum(),risk['global'].mean(),risk.persistence.mean()])
     manuscript = (root/'paper/manuscript.tex').read_text(encoding='utf8')
     referenced = re.findall(r'\\includegraphics(?:\[[^\]]+\])?\{(figures/[^}]+\.pdf)\}',manuscript)
-    if len(set(referenced))!=6:
+    if len(set(referenced))!=7:
         raise ValueError('Incomplete manuscript figure set')
     for fig in referenced:
         for suffix in ['.pdf','.png']:
@@ -217,6 +218,44 @@ def validate(root=ROOT):
             if stored!=current:
                 raise ValueError(f'Stale submission ZIP entry: {name}')
     print(f'Validated {len(specs)} tables, forecast-level aggregates, manuscript and package.')
+
+def verify_clock_frontier(root):
+    folder = root/'results/clock_histgbm'
+    ticks = pd.read_csv(folder/'ticks.csv',float_precision='round_trip')
+    curve = pd.read_csv(folder/'frontier.csv',float_precision='round_trip')
+    ledger = pd.read_csv(folder/'issued_k10.csv',float_precision='round_trip')
+    previous = pd.read_csv(root/'results/diagnostics/clock_issued.csv',float_precision='round_trip')
+    for (reg,model,policy),rows in curve.groupby(['regime','model','policy']):
+        b = ticks[ticks.regime==reg].sort_values(['time','trace'])
+        cal = b[b.partition.eq('calibration') & b.y.notna()]
+        test = b[b.partition.eq('test')]
+        ref = previous[previous.setting==reg].sort_values(['time','trace'])
+        assert list(test[['time','trace']].itertuples(index=False,name=None))==list(ref[['time','trace']].itertuples(index=False,name=None))
+        np.testing.assert_allclose(test.y,ref.y,equal_nan=True)
+        assert cal.end.max()<=test.time.min()
+        np.testing.assert_array_equal(rows.k,range(len(cal)+1))
+        scores = (cal[model]-cal.y).to_numpy()
+        def offset(s):
+            rank = ((len(s)+1)*9+9)//10
+            return np.sort(s)[rank-1]
+        for r in rows.itertuples():
+            s = scores[:r.k]
+            q = np.full(len(test),offset(s) if len(s)>=9 else r.source_q)
+            if policy=='Grouped':
+                for group in test.group_id.unique():
+                    sub = s[cal.group_id.to_numpy()[:r.k]==group]
+                    if len(sub)>=9:
+                        q[test.group_id==group] = offset(sub)
+            lower = np.maximum(0,test[model].to_numpy()-q)
+            errors = int((lower>test.y).sum())
+            missing = int(((lower>0)&test.y.isna()).sum())
+            assert (len(test),int(test.y.count()),errors,missing)==(r.issued,r.scored,r.violations,r.unresolved)
+            np.testing.assert_allclose([r.lo,r.hi,r.v,r.u],[errors/len(test),(errors+missing)/len(test),
+                errors/test.y.count(),np.nansum(np.minimum(lower,test.y))/test.y.sum()],atol=1e-12)
+            if r.k==10:
+                actual = ledger[(ledger.regime==reg)&(ledger.model==model)&(ledger.policy==policy)].sort_values(['time','trace'])
+                np.testing.assert_allclose(actual.lower,lower,atol=1e-12)
+
 
 if __name__ == '__main__':
     validate()

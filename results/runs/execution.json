@@ -4,9 +4,9 @@
       "python",
       "scripts/prepare_ookla_traces.py"
     ],
-    "start_utc": "2026-11-12T06:47:37.978495+00:00",
-    "end_utc": "2026-11-12T06:47:39.131815+00:00",
-    "seconds": 1.16,
+    "start_utc": "2026-11-12T07:23:13.166001+00:00",
+    "end_utc": "2026-11-12T07:23:14.303054+00:00",
+    "seconds": 1.14,
     "exit_code": 0
   },
   {
@@ -14,9 +14,9 @@
       "python",
       "scripts/reproduce_experiments.py"
     ],
-    "start_utc": "2026-11-12T06:47:39.131815+00:00",
-    "end_utc": "2026-11-12T06:53:59.219496+00:00",
-    "seconds": 380.11,
+    "start_utc": "2026-11-12T07:23:14.303054+00:00",
+    "end_utc": "2026-11-12T07:30:12.320628+00:00",
+    "seconds": 418.01,
     "exit_code": 0
   },
   {
@@ -24,9 +24,9 @@
       "python",
       "scripts/audit_data_quality.py"
     ],
-    "start_utc": "2026-11-12T06:53:59.219496+00:00",
-    "end_utc": "2026-11-12T06:54:40.214789+00:00",
-    "seconds": 40.99,
+    "start_utc": "2026-11-12T07:30:12.322132+00:00",
+    "end_utc": "2026-11-12T07:30:54.055279+00:00",
+    "seconds": 41.74,
     "exit_code": 0
   },
   {
@@ -34,9 +34,9 @@
       "python",
       "scripts/audit_trace_filters.py"
     ],
-    "start_utc": "2026-11-12T06:54:40.215794+00:00",
-    "end_utc": "2026-11-12T06:55:01.262331+00:00",
-    "seconds": 21.05,
+    "start_utc": "2026-11-12T07:30:54.055279+00:00",
+    "end_utc": "2026-11-12T07:31:16.248452+00:00",
+    "seconds": 22.2,
     "exit_code": 0
   },
   {
@@ -44,9 +44,9 @@
       "python",
       "scripts/audit_session_segmentation.py"
     ],
-    "start_utc": "2026-11-12T06:55:01.263332+00:00",
-    "end_utc": "2026-11-12T06:55:20.650837+00:00",
-    "seconds": 19.39,
+    "start_utc": "2026-11-12T07:31:16.249451+00:00",
+    "end_utc": "2026-11-12T07:31:36.644395+00:00",
+    "seconds": 20.39,
     "exit_code": 0
   },
   {
@@ -54,9 +54,9 @@
       "python",
       "scripts/validate_session_boundaries.py"
     ],
-    "start_utc": "2026-11-12T06:55:20.650837+00:00",
-    "end_utc": "2026-11-12T06:57:24.643196+00:00",
-    "seconds": 123.98,
+    "start_utc": "2026-11-12T07:31:36.644395+00:00",
+    "end_utc": "2026-11-12T07:33:48.684608+00:00",
+    "seconds": 132.05,
     "exit_code": 0
   },
   {
@@ -64,9 +64,9 @@
       "python",
       "scripts/audit_cluster_inference.py"
     ],
-    "start_utc": "2026-11-12T06:57:24.644196+00:00",
-    "end_utc": "2026-11-12T06:57:25.458653+00:00",
-    "seconds": 0.83,
+    "start_utc": "2026-11-12T07:33:48.685613+00:00",
+    "end_utc": "2026-11-12T07:33:49.558721+00:00",
+    "seconds": 0.88,
     "exit_code": 0
   },
   {
@@ -74,9 +74,9 @@
       "python",
       "scripts/audit_group_support.py"
     ],
-    "start_utc": "2026-11-12T06:57:25.459656+00:00",
-    "end_utc": "2026-11-12T06:58:09.051544+00:00",
-    "seconds": 43.59,
+    "start_utc": "2026-11-12T07:33:49.559721+00:00",
+    "end_utc": "2026-11-12T07:34:34.799895+00:00",
+    "seconds": 45.24,
     "exit_code": 0
   },
   {
@@ -84,9 +84,70 @@
       "python",
       "scripts/validate_clock_and_network.py"
     ],
-    "start_utc": "2026-11-12T06:58:09.052544+00:00",
-    "end_utc": "2026-11-12T06:58:31.319298+00:00",
-    "seconds": 22.27,
+    "start_utc": "2026-11-12T07:34:34.800896+00:00",
+    "end_utc": "2026-11-12T07:34:56.830060+00:00",
+    "seconds": 22.03,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/clock_frontier.py"
+    ],
+    "start_utc": "2026-11-12T07:34:56.831060+00:00",
+    "end_utc": "2026-11-12T07:35:32.911481+00:00",
+    "seconds": 36.09,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/metro_transfer.py"
+    ],
+    "start_utc": "2026-11-12T07:35:32.912482+00:00",
+    "end_utc": "2026-11-12T07:35:36.106868+00:00",
+    "seconds": 3.19,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/compare_sirhan_external.py",
+      "data/raw/sirhan-v1.zip"
+    ],
+    "start_utc": "2026-11-12T07:35:36.106868+00:00",
+    "end_utc": "2026-11-12T07:39:03.719638+00:00",
+    "seconds": 207.62,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/audit_external_traces.py"
+    ],
+    "start_utc": "2026-11-12T07:39:03.719638+00:00",
+    "end_utc": "2026-11-12T07:39:46.918028+00:00",
+    "seconds": 43.19,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/report_sirhan_external.py"
+    ],
+    "start_utc": "2026-11-12T07:39:46.919028+00:00",
+    "end_utc": "2026-11-12T07:39:47.671599+00:00",
+    "seconds": 0.75,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/validate_irish_groups.py"
+    ],
+    "start_utc": "2026-11-12T07:39:47.671599+00:00",
+    "end_utc": "2026-11-12T07:39:53.015752+00:00",
+    "seconds": 5.34,
     "exit_code": 0
   },
   {
@@ -94,9 +155,9 @@
       "python",
       "scripts/build_paper_html.py"
     ],
-    "start_utc": "2026-11-12T06:58:31.319298+00:00",
-    "end_utc": "2026-11-12T06:58:37.126868+00:00",
-    "seconds": 5.81,
+    "start_utc": "2026-11-12T07:39:53.015752+00:00",
+    "end_utc": "2026-11-12T07:39:58.200366+00:00",
+    "seconds": 5.19,
     "exit_code": 0
   },
   {
@@ -104,9 +165,9 @@
       "python",
       "scripts/validate_manuscript_consistency.py"
     ],
-    "start_utc": "2026-11-12T06:58:37.127870+00:00",
-    "end_utc": "2026-11-12T06:58:42.946873+00:00",
-    "seconds": 5.81,
+    "start_utc": "2026-11-12T07:39:58.201366+00:00",
+    "end_utc": "2026-11-12T07:40:01.878980+00:00",
+    "seconds": 3.67,
     "exit_code": 0
   },
   {
@@ -117,9 +178,9 @@
       "-ra",
       "--junitxml=results/runs/final_tests.xml"
     ],
-    "start_utc": "2026-11-12T06:58:42.946873+00:00",
-    "end_utc": "2026-11-12T07:00:16.125183+00:00",
-    "seconds": 93.19,
+    "start_utc": "2026-11-12T07:40:01.879981+00:00",
+    "end_utc": "2026-11-12T07:41:18.590266+00:00",
+    "seconds": 76.72,
     "exit_code": 0
   }
 ]

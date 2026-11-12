@@ -1,0 +1,19 @@
+# Literature and scope of the gap
+
+Targeted primary-source review, November 2026. The open question here is whether a lower-rate commitment that appears reliable on measurable outcomes remains defensible on all scheduled opportunities. No priority claim follows from this search.
+
+| Study | Problem and measurements | Method and evaluation | Limit and relation |
+|---|---|---|---|
+| [Narayanan et al., IMC 2020](https://doi.org/10.1145/3419394.3423629) | Commercial US mmWave throughput | Lumos5G measurement and prediction on mobile traces | Point accuracy and spatial prediction do not quantify unobserved future commitments. |
+| [Jacobson et al., JRSS C](https://doi.org/10.1093/jrsssc/qlae054) | Incomplete radio predictors on Lumos traces | Boosted additive models evaluated on throughput | Missing inputs and unavailable forecast outcomes have different consequences. |
+| [Sirhan, Network 2026](https://doi.org/10.3390/network6040092) | Risk-sensitive rates on Irish 5G traces | Group and global conformal intervals, trace splits and test-feasible utility frontier | Closest comparison; rerun preserved here. A clock can issue a rate even when there is no next numeric target. |
+| [Zaffran et al., ICML 2023](https://proceedings.mlr.press/v202/zaffran23a.html) | Prediction conditional on missing covariates | Mask-aware conformal methods on synthetic and health data | Conditioning input masks cannot establish coverage on missing outcomes. |
+| [Gibbs and Candès, NeurIPS 2021](https://proceedings.neurips.cc/paper_files/paper/2021/hash/0d441de75945e5acbc865406fc9a2559-Abstract.html) | Nonstationarity in real-world sequential data | Miscoverage-level feedback and empirical time series evaluation | Long-run coverage needs feedback. Sparse measured targets constrain interpretation here. |
+| [Geifman and El-Yaniv, NeurIPS 2017](https://papers.neurips.cc/paper/2017/file/4a8423d5e91fda00bb7e46540e2b0cf1-Paper.pdf) | Selective prediction on CIFAR and ImageNet | Compare error on accepted classifications with selection coverage | A zero-rate commitment is observable and has zero violation even if its eventual throughput is missing. |
+| [Angelopoulos et al., ICLR 2024](https://proceedings.iclr.cc/paper_files/paper/2024/hash/f3549ef9b5ff520a7e41ff3cc306ab2b-Abstract-Conference.html) | Controlling expected monotone loss | Conformal risk control, experiments including image and language tasks | Optimizing utility under a risk constraint is established; no exchangeable-risk certification for these shifted ticks. |
+| [Saha et al., SIGMETRICS 2026](https://rboutaba.cs.uwaterloo.ca/Papers/2026/saha-sigmetrics26.pdf) | Telemetry budget and slice SLA monitoring | Dynamic measurement allocation evaluated on Tofino switches with emulated 5G traffic | Monitoring a slice differs from issuing an individual throughput lower bound. No SLA loss measured here. |
+| [Self-adaptive network digital twin, Computer Networks](https://doi.org/10.1016/j.comnet.2025.111967) | Stale transport-network twins | Drift-guided retraining evaluated for SLA prediction with and without synchronization | The Rome replay has no twin or verified intervention; its question concerns what recorded outcomes identify. |
+
+The scope is empirical. A ledger of decisions, observed outcomes and positive commitments can separate an identified failure, an identified pass and an unresolved target. The identification interval is a counting argument. It is distinct from sampling uncertainty, abstention guarantees or a new calibration algorithm.
+
+Manski described the general selection and identification problem well before this application. Here the target is a realized finite-record violation indicator; a zero lower bound removes some missing observations from the unresolved count. [Manski, Journal of Human Resources 24 (1989), 343–360](https://doi.org/10.2307/145818)

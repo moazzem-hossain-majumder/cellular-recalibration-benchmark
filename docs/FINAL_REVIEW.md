@@ -1,33 +1,37 @@
-# Reviewer-style assessment of the revised benchmark
+# Reviewer-style assessment after the matched clock replay
 
-**Overall submission readiness: 7/10 for an empirical cellular-measurement paper.** This is an author-side assessment of the current working tree. The best contribution is the observed difference between an apparently reliable rate, the amount of rate it supports, and the effect of changing when a forecast can be issued.
+These are author-side judgments, not external peer review. Weighted scores are the sum of weight × rating divided by 100. The evidence supports submission as a measurement and reproducibility study after venue preparation. A new general-purpose calibration algorithm and broad operational reliability are unsubstantiated.
 
-| Category | Score / 10 | Evidence and limit |
-|---|---:|---|
-| Research novelty | 6 | Tables II, III and X combine chronological budget curves, endpoint sensitivity and a clock-triggered replay. Existing work supplies the predictors and calibration mathematics. |
-| Scientific significance | 7 | Figure 6 exposes zero commitments on more than nine tenths of Rome E3 sessions at ten labels. No application received or acted on the forecasts. |
-| Dataset quality | 6 | Two pinned Rome releases, 83 Irish traces and 17 Norwegian route logs. Later Rome session boundaries are inferred. |
-| Experimental design | 7 | The budget grid shares fixed suffixes. Norway uses separate date blocks. Endpoint differences prevent a common cross-country test of exactly the Rome forecast. |
-| Prediction-time validity | 7 | The Rome clock issues forecasts using strictly prior information and counts unscorable opportunities. The original next-test evaluation remains retrospective. |
-| Statistical rigor | 6 | Paired date deletion, date resampling and Irish trace influence preserve clustering. Two to eight held-out dates per Rome regime and two in Norway limit inference. |
-| Methodological correctness | 8 | Finite-rank edge cases, chronological target separation and group fallback are explicit and tested. Unverified exchangeability limits coverage claims. |
-| External validation | 6 | Table X evaluates two local lag models on Norwegian traffic. Table XI exposes 34.81% violations for both ten-label rules on a chronological Irish suffix. The Irish next-row task and Norwegian interval task differ from the Rome inferred-session endpoint. |
-| Reproducibility | 8 | Per-file pins, per-forecast records, executable rebuild, machine-checked publication tables and local JUnit evidence. The latest local edits have no hosted CI result or independent reproduction. |
-| Manuscript quality | 7 | The paper reports adverse operating points, denominator changes and endpoint assumptions alongside the favorable Irish result. Target-specific typesetting and author metadata require the venue decision. |
-| Overall submission readiness | 7 | Defensible for measurement or reproducibility review with the scope stated above. |
+## Scientific contribution
 
-## Editorial decision and remaining work
+| Category | Weight | Rating / 10 | Evidence and reason |
+|---|---:|---:|---|
+| Originality | 20% | 6.5 | RESEARCH_GAP_AND_NOVELTY_REVIEW.md and Table XII. Auditing all issued rates with nonnegative outcomes is informative; the bounds and calibrators are established ideas. |
+| Significance | 10% | 7.5 | results/clock_histgbm/issued_k10.csv. An observed violation on at least 67/238 ticks and only three positive commitments on the other operator materially change the interpretation of a nominal target. |
+| Methodological correctness | 15% | 8.5 | scripts/clock_frontier.py and tests/unit/test_issued_risk.py. Outcome-independent ticks, attainable bounds and delayed feedback; duration is a proxy and physical service may cease before the horizon. |
+| Experimental design | 15% | 8.0 | results/clock_histgbm/ticks.csv, frontier.csv and rolling.csv. Matched opportunities, full prefixes and disjoint daily test periods; common earlier source fit is small. |
+| Statistical rigor | 10% | 6.5 | results/clock_histgbm/per_date.csv and STATISTICAL_DESIGN_IMPROVEMENT.md. Conditional paired deletion and distinct denominators are sound. Seven dates per operator give little independent evidence about new campaigns. |
+| External validity | 10% | 6.0 | results/external_validation/metro_transfer.csv and irish_group_validation.json. Route transfer aligns the interval endpoint; the historical single-operator HSDPA data and Irish next-row task cannot externally validate Rome's minute target. |
+| Reproducibility | 10% | 8.5 | results/runs/execution.json, final_tests.xml and scripts/validate_manuscript_consistency.py. Raw replay and numeric checks ran locally. No independent clean-machine or final-commit hosted verification. |
+| Evidence and interpretation | 10% | 8.5 | Table XII and ADVERSARIAL_ROBUSTNESS_AUDIT.md. Negative and unresolved results persist; utility still conditions on future measurement availability. |
 
-**Critical for submission to a specific venue.** Choose the venue and supply its required corresponding-author details, affiliation if applicable, and disclosures. The current source is a single-column IEEEtran review copy. For example, IEEE Access requires its double-column template, author biographies, an ORCID for the submitter and AI-use disclosure. It recommends fewer than 20 pages. No venue or factual affiliation was assumed. [Official submission instructions](https://ieeeaccess.ieee.org/authors/submission-guidelines/)
+**Weighted science score: 7.475/10 (7.48 rounded).**
 
-**Major scientific limit.** The clock schedules can be implemented while logging, but scoring still conditions on the availability of future labels. Independent test-start markers are absent from the later Rome stream. For a prospective next-test or cross-operator deployment claim, log test-start events before measurement, archive every issued prediction, record completions and failures, and freeze the split and calibration rule before new dates arrive. None of the available scripts can reconstruct missing physical markers.
+## Manuscript and submission
 
-**Claims to qualify.** Ten labels achieved the observed Rome tree violation target with very low supported rates. Missingness grouping gave identical bounds at that budget. The Irish persistence gain describes overlapping test partitions. A third-country evaluation on one historical Norwegian bus route cannot establish contemporary 5G deployment reliability. Preserve the minimum hybrid's adverse results.
+| Category | Weight | Rating / 10 | Evidence and reason |
+|---|---:|---:|---|
+| Abstract and introduction | 10% | 8.0 | paper/manuscript.tex, abstract and research questions. States adverse primary results and defines the deployment question. |
+| Related work | 10% | 7.5 | paper/references.bib and RESEARCH_GAP_AND_NOVELTY_REVIEW.md. Covers nearest cellular comparison, selection and conformal risk; review is targeted. |
+| Methodology clarity | 15% | 8.0 | CLOCK_TRIGGERED_PRIMARY_MODEL_AUDIT.md and the all-issued section. Feature mapping and estimand are explicit; several endpoint definitions require careful reading. |
+| Results and figures | 15% | 8.0 | Tables II, XI, XII and Fig. 7. Complete prefixes and shared denominators; individual overlapping budget points are easier to explore in the CSV. |
+| Discussion and limitations | 15% | 8.0 | Paper conclusion and CROSS_NETWORK_GENERALIZATION.md. Sparse dates, physical endpoint and measurement-availability assumptions are explicit. |
+| References | 10% | 8.0 | paper/references.bib. Includes primary empirical and methodological sources and attribution for the identification argument. |
+| IEEE formatting | 10% | 6.5 | paper/manuscript.pdf and paper/cover_letter.tex. A single-column IEEEtran review draft still needs the chosen venue template and corresponding-author details. |
+| Reproducibility documentation | 15% | 8.5 | README.md, docs/REPRODUCIBILITY_MANIFEST.json and the submission ZIP supplement. Local evidence is available; third-party availability remains a dependency. |
 
-**Minor and procedural items.** Confirm author name and preferred contact, apply the chosen venue's supplementary-file rules and check the final typeset page count there. Hosted validation requires publishing the reviewed working tree and observing a workflow run for that exact commit. The local test evidence is recorded separately.
+**Weighted manuscript score: 7.875/10 (7.88 rounded).**
 
-**Venue fit.** A telecommunications measurement, networking systems evaluation or reproducibility track that accepts careful empirical comparisons is a closer match than a methods venue requiring a new algorithm or theorem.
+## Submission decision
 
-## Execution evidence
-
-The full local Rome rebuild, clock and Norway replay, source compilation and post-build checks completed successfully. The post-build JUnit report recorded 57 passes, zero skips and zero failures. The validator checked eleven tables across LaTeX, Markdown, HTML and the two PDFs, six referenced figures, all packaged manuscript page renderings and the submission ZIP contents. The review manuscript is nine pages and the cover-plus-manuscript PDF is ten. The separate chronological Irish analysis was regenerated from the pre-imputation measurement file; the prior 30-split Irish reproduction was reused and its paired aggregate consistency rechecked. See results/runs/execution.json, results/runs/final_tests.xml and docs/REPRODUCIBILITY_MANIFEST.json.
+A skeptical reviewer can reproduce the counterexample and see the limits of each claim. The paper does not establish that ten labels suffice, that grouping is generally better, or that a conservative bound is useful. Stronger claims would require a modern independent network using the same clock, more independent collection dates and a definition of service performance when measurement ends. Unannotated change points preclude statements about recovery latency. The author must choose the venue and confirm author metadata and disclosures before submitting. The package has not been submitted and no hosted CI result is claimed for these local changes.

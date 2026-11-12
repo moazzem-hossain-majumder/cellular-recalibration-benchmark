@@ -5,6 +5,10 @@
 **Selected research:** Topic A only  
 **Current stage:** Manuscript and submission package rebuilt after the external benchmark and trace-influence audit. The results support a scoped empirical comparison. Independent confirmation on a fresh campaign remains open.
 
+## Matched frozen-model replay and current assessment
+
+Use docs/FINAL_REVIEW.md for the two current weighted scores. Start with docs/CLOCK_TRIGGERED_PRIMARY_MODEL_AUDIT.md and the issued decision ledger in results/clock_histgbm. The full integer budget curve, seven daily origins, adversarial checks and matched Norwegian bus-to-metro transfer are included in the latest manuscript. Independent same-clock LTE/5G confirmation remains open.
+
 ## Current scientific revision
 
 Read docs/FINAL_REVIEW.md, docs/PREDICTION_TIME_VALIDITY_AUDIT.md, docs/EXTERNAL_VALIDATION_PROTOCOL.md and Table X first. The work now includes the fixed-clock Rome replay and an independent Norwegian ten-label evaluation. The older Irish comparison below remains part of this revision.

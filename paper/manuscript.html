@@ -207,7 +207,7 @@
 <p class="author">Md. Moazzem Hossain Majumder</p>
 <div class="abstract">
 <div class="abstract-title">Abstract</div>
-<p>We study whether a small chronological prefix of labeled sessions can calibrate a lower forecast of downlink throughput in two commercial measurement campaigns in Rome. The source-calibrated forecaster exceeds a nominal ten percent violation rate in all four held-out evaluations. At ten target labels the global correction meets the empirical target in each regime, but its supported fraction ranges from 0.006 to 0.073. Missingness-group calibration gives the same results at that budget. Replacing throughput-reset segments with segments beginning at active transitions substantially changes the endpoint distribution and measured violations. On a separate Irish next-row benchmark, calibrated persistence raised supported throughput from 55.60 to 59.44 percent with mean violations of 9.71 percent. Under joint campaign and operator shift in Rome, persistence violated 20.39 percent of forecasts. A clock-triggered replay on that operator supported 16.00 percent with 13.82 percent violations. On two held-out Norwegian bus-route dates a locally fitted tree supported 30.60 percent with 1.02 percent violations. On chronologically held-out Irish dates, ten-label persistence had 34.81 percent violations. The differing endpoints and sparse collection dates limit deployment inference.</p>
+<p>A cellular forecaster can issue a rate even when the logger never records the corresponding outcome. We evaluate whether a ten-percent violation target can be assessed over every issued forecast and how much throughput the commitments support. On two Rome campaigns, ten target labels made a session-trained tree conservative on reset-defined endpoints. On a clock fixed before observing throughput, that same tree made 67 observed violations across 238 issued forecasts on the later source operator. Even the best-case all-issued violation rate was 28.15 percent. On the other operator it issued only three positive commitments across 171 opportunities and supported 0.065 percent of measured throughput. At some larger budgets the measured violation rate was below ten percent while missing positive commitments left all-issued risk unresolved. A chronological Irish comparison and a Norwegian route transfer also showed sensitivity to the calibration population. These finite-record results distinguish measured reliability, unresolved outcomes and negligible commitments; sparse dates limit inference about future campaigns.</p>
 </div>
 </header>
 <div class="IEEEkeywords">
@@ -215,7 +215,7 @@
 </div>
 <h1 id="question-and-related-work">Question and related work</h1>
 <p>An application that chooses a sending rate before a download needs to know how often its forecast exceeds delivered throughput and how much usable rate it gives up to reduce those violations. We ask how those quantities change when an operator has only a few labeled examples from the destination network. The contribution is an empirical comparison on released traces, with a common predictor and a fixed test suffix across label budgets. Prior work characterizes the underlying campaigns <span class="citation" data-cites="kousias2024large caso2024chronicles">(Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024)</span>, additive prediction with missing observations <span class="citation" data-cites="jacobson2025predicting">(Jacobson et al. 2025)</span>, and conditional calibration under missing covariates <span class="citation" data-cites="zaffran2023conformal">(Zaffran et al. 2023)</span>. The BAMMO-inspired baseline uses our pattern-specific boosted trees. We did not replicate the original authors’ implementation. Grouping by recorded telemetry availability gives a simple comparator. Its interpretation depends on support within each group.</p>
-<p>Our contributions are (i) a chronological label-budget benchmark reporting both violations and supported rate, (ii) a controlled comparison of session endpoints with a clock-triggered replay, and (iii) a published Irish benchmark reproduction and a separate evaluation of the ten-label rule on Norwegian measurements. The empirical question is how these choices affect the rate an application could commit under the stated offline decision rule. Narayanan et al. mapped and predicted commercial millimeter-wave throughput <span class="citation" data-cites="narayanan2020lumos5g">(Narayanan et al. 2020)</span>, while Kousias et al. modeled performance in non-standalone networks <span class="citation" data-cites="kousias2024empirical">(Kousias, Rajiullah, Caso, Alay, et al. 2024)</span>. Our benchmark evaluates how much measured rate remains supportable when an existing point forecast receives only a short destination calibration prefix.</p>
+<p>We ask three questions. Does measured risk resolve the target across all issued commitments? Does the session-trained tree retain its operating point on a fixed clock? Do more recent or telemetry-specific calibration labels improve the risk and supported-rate tradeoff on the same forecast opportunities? We answer these questions with a decision ledger, matched predictors and chronological prefix comparisons. The external analyses distinguish transfer of a fitted predictor from transfer of its calibration offset. Narayanan et al. mapped and predicted commercial millimeter-wave throughput <span class="citation" data-cites="narayanan2020lumos5g">(Narayanan et al. 2020)</span>, while Kousias et al. modeled performance in non-standalone networks <span class="citation" data-cites="kousias2024empirical">(Kousias, Rajiullah, Caso, Alay, et al. 2024)</span>. Our benchmark evaluates how much measured rate remains supportable when an existing point forecast receives only a short destination calibration prefix.</p>
 <h1 id="measurements-and-prediction-time">Measurements and prediction time</h1>
 <p>The earlier campaign uses the active throughput CSV in Zenodo 8224890. We take the last available mean download throughput at a DQA completion marker within a campaign and convert kb/s to Mbps. In the later active archive (Zenodo 14073311), we use 43 Ookla traces and process each operator’s nonnegative numeric mean-download series separately, converting its documented column units to Mbps. With reset segmentation the releases yield 1,132 operational sessions and 1,001 eligible forecast pairs across development and evaluation. The main evaluation uses only held-out suffixes. Each forecast uses the preceding result, elapsed time since that segment ended, its duration, recent radio measurements and availability indicators, and scenario. Among the 1,001 eligible pairs, 585 have only LTE measurements and 416 have both LTE and NR. No eligible pair lacks LTE. Consequently, grouping by NR presence and grouping by the two radio indicators define the same partition in this sample. In the later archive, the first throughput reading triggering a reset identifies the prediction time retrospectively. An online deployment would need an independent test-start signal. Even when predictors exclude that reading, selecting forecast times from the outcome trajectory can change the evaluated population. The primary protocol allows up to 60 seconds of lag age. Missing indicators describe what the logger observed. A missing NR signal by itself cannot identify a particular network state or its cause. Lagged throughput requires feedback from completed tests throughout evaluation. A budget of zero refers only to target labels used to fit the calibration offset.</p>
 <p>E0 uses five successive blocks of earlier Op1 collection days for training, validation, source calibration, target prefixes and testing. The first three blocks contribute 57, 9 and 33 observations. The benchmark freezes that predictor and source offset for all four regimes. E1 moves to later Op1, E2 to earlier Op2 and E3 to later Op2. Transfer calibration and test blocks use the first approximately 40 percent and last approximately 60 percent of target days, respectively, with integer day boundaries. We take the first <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> eligible sessions in timestamp order from the calibration pool. E0 has ten available, so its fifteen-session comparison is unavailable. Cross-operator analysis on contemporaneous campaigns is retrospective.</p>
@@ -241,31 +241,31 @@
 <td style="text-align: left;">Ridge</td>
 <td style="text-align: right;">6.03</td>
 <td style="text-align: right;">8.78</td>
-<td style="text-align: right;">0.030</td>
+<td style="text-align: right;">0.041</td>
 </tr>
 <tr>
 <td style="text-align: left;">HistGradientBoosting</td>
 <td style="text-align: right;">11.00</td>
 <td style="text-align: right;">12.00</td>
-<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">0.040</td>
 </tr>
 <tr>
 <td style="text-align: left;">BAMMO</td>
 <td style="text-align: right;">15.46</td>
 <td style="text-align: right;">23.86</td>
-<td style="text-align: right;">0.297</td>
+<td style="text-align: right;">0.372</td>
 </tr>
 <tr>
 <td style="text-align: left;">QuantileGBM p10</td>
 <td style="text-align: right;">5.01</td>
 <td style="text-align: right;">8.68</td>
-<td style="text-align: right;">0.070</td>
+<td style="text-align: right;">0.100</td>
 </tr>
 <tr>
 <td style="text-align: left;">GPU ThroughputResNet</td>
 <td style="text-align: right;">5.85</td>
 <td style="text-align: right;">8.33</td>
-<td style="text-align: right;">0.721</td>
+<td style="text-align: right;">0.632</td>
 </tr>
 </tbody>
 </table>
@@ -1163,11 +1163,84 @@
 </tbody>
 </table>
 </div>
+<h1 id="reliability-over-all-issued-commitments">Reliability over all issued commitments</h1>
+<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> be the number of issued forecasts, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math> the observed violations and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mo>+</mo></msub><annotation encoding="application/x-tex">m_+</annotation></semantics></math> the positive commitments with unavailable outcomes. Assuming a nonnegative rate exists for each opportunity, the realized violation fraction lies in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>N</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><msub><mi>m</mi><mo>+</mo></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[e/N,(e+m_+)/N]</annotation></semantics></math>. On missing rows, assigning throughput equal to the commitment attains the lower endpoint; assigning zero attains the upper endpoint. Zero commitments cannot violate. This elementary partial-identification argument follows the logic of worst-case selection bounds <span class="citation" data-cites="manski1989selection">(Manski 1989)</span>. It describes a finite ledger. If a forecasted service ceased to exist at trace end, a service-level violation would need its own definition. Sampling uncertainty and conformal expected-risk control <span class="citation" data-cites="angelopoulos2024crc">(Angelopoulos et al. 2024)</span> answer different questions.</p>
+<p>We froze the original tree fitted on 57 earlier Op1 sessions and replayed it alongside persistence. Session features require an explicit clock analogue: lag is the last valid rate in the preceding minute, age is time since that reading, and prior duration is the span between the first and last valid rates in that minute. The six radio fields take their most recent available values strictly before the tick within the same minute. Leaving duration missing gave the same aggregate ten-label tree results. Each policy uses identical ticks, dates, labels and endpoints.</p>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">Regime</td>
+<td style="text-align: right;">Predictor</td>
+<td style="text-align: right;">Issued</td>
+<td style="text-align: right;">Scored</td>
+<td style="text-align: right;">Errors</td>
+<td style="text-align: right;">Unknown</td>
+<td style="text-align: right;">Low</td>
+<td style="text-align: right;">High</td>
+<td style="text-align: right;">U</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">Persistence</td>
+<td style="text-align: right;">238</td>
+<td style="text-align: right;">211</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.14</td>
+<td style="text-align: right;">7.56</td>
+<td style="text-align: right;">8.29</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">HistGBM</td>
+<td style="text-align: right;">238</td>
+<td style="text-align: right;">211</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">28.15</td>
+<td style="text-align: right;">31.51</td>
+<td style="text-align: right;">7.15</td>
+</tr>
+<tr>
+<td style="text-align: left;">E3</td>
+<td style="text-align: right;">Persistence</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">152</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.28</td>
+<td style="text-align: right;">12.87</td>
+<td style="text-align: right;">16.00</td>
+</tr>
+<tr>
+<td style="text-align: left;">E3</td>
+<td style="text-align: right;">HistGBM</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">152</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.17</td>
+<td style="text-align: right;">1.17</td>
+<td style="text-align: right;">0.06</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Table XII shows that the ten-label tree exceeded the target on E1 even if every unmeasured outcome covered its commitment. On E3 its three positive commitments across 171 opportunities supported just 0.065 percent of measured throughput. Group offsets gave the same bounds at ten labels. Figure 7 reports every feasible chronological prefix. For example, at 95 labels the E1 grouped tree violated 21 of 211 measured forecasts (9.95 percent). Six positive commitments lacked outcomes, leaving the all-issued risk between 8.82 and 11.34 percent. This is a retrospective illustration of an unresolved decision.</p>
+<figure data-latex-placement="!ht">
+<embed src="figures/fig7_clock_frontier.png" />
+<figcaption>Rome clock replay at every available prefix size. Each point shows supported throughput and violations on measured outcomes. Lines connect nondominated measured operating points within each policy. The dashed horizontal line is the nominal risk ceiling. Both axes use the same scored opportunities within each panel.</figcaption>
+</figure>
+<p>Replacing the first ten tree calibration labels with the latest ten available before each test day reduced E1 measured violations from 31.75 to 4.74 percent and supported throughput from 7.15 to 1.08 percent. On E3, violations increased from 1.32 to 13.16 percent. In a separate same-endpoint Norwegian transfer, the bus-trained tree on three metro test dates supported 5.30 percent with 0.24 percent violations using bus calibration. Ten earlier metro labels changed these to 28.13 and 11.99 percent. A local metro refit and local calibration gave 29.20 and 0.80 percent. Route, dates and predictor must accompany any reported operating point.</p>
 <h1 id="conclusion">Conclusion</h1>
-<p>A short prefix produced conservative lower forecasts in these traces, sometimes at the cost of nearly all usable throughput. The first finite target rank at nine labels is specific to the chosen nominal level. The burst-endpoint diagnostic and sparse calendar-day support limit generalization. More independent measurement dates and a logger that records physical test starts before throughput is observed would allow the session forecast to be evaluated prospectively.</p>
+<p>The same frozen tree failed the ten-percent target on one clock-triggered suffix and supported almost no throughput on the other. Missing labels can change whether the target is decidable; their impact depends on how often the forecaster actually commits a positive rate. Moving the calibration window or conditioning on radio availability did not produce a consistent improvement. More independent dates and logged test-start events are needed to assess future deployments.</p>
 <h1 class="unnumbered" id="acknowledgment">Acknowledgment</h1>
 <p>OpenAI Codex assisted with code development, experimental checks and drafting and revising the manuscript.</p>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-angelopoulos2024crc" class="csl-entry" role="listitem">
+Angelopoulos, Anastasios N., Stephen Bates, Adam Fisch, Lihua Lei, and Tal Schuster. 2024. <span>“Conformal Risk Control.”</span> <em>International Conference on Learning Representations</em>.
+</div>
 <div id="ref-caso2024chronicles" class="csl-entry" role="listitem">
 Caso, Giuseppe, Mohammad Rajiullah, Konstantinos Kousias, et al. 2024. <span>“The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution.”</span> <em>IEEE Open Journal of the Communications Society</em> 5: 7380–99. <a href="https://doi.org/10.1109/OJCOMS.2024.3499370">https://doi.org/10.1109/OJCOMS.2024.3499370</a>.
 </div>
@@ -1182,6 +1255,9 @@ Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Usman Ali, et al. 2024
 </div>
 <div id="ref-kousias2024empirical" class="csl-entry" role="listitem">
 Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Ozgu Alay, et al. 2024. <span>“Empirical Performance Analysis and ML-Based Modeling of 5G Non-Standalone Networks.”</span> <em>Computer Networks</em> 241: 110207. <a href="https://doi.org/10.1016/j.comnet.2024.110207">https://doi.org/10.1016/j.comnet.2024.110207</a>.
+</div>
+<div id="ref-manski1989selection" class="csl-entry" role="listitem">
+Manski, Charles F. 1989. <span>“Anatomy of the Selection Problem.”</span> <em>Journal of Human Resources</em> 24 (3): 343–60. <a href="https://doi.org/10.2307/145818">https://doi.org/10.2307/145818</a>.
 </div>
 <div id="ref-narayanan2020lumos5g" class="csl-entry" role="listitem">
 Narayanan, Arvind, Eman Ramadan, Rishabh Mehta, et al. 2020. <span>“Lumos5G: Mapping and Predicting Commercial mmWave 5G Throughput.”</span> <em>Proceedings of the ACM Internet Measurement Conference (IMC)</em>, 176–93. <a href="https://doi.org/10.1145/3419394.3423629">https://doi.org/10.1145/3419394.3423629</a>.

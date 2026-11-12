@@ -4,9 +4,9 @@
   "analysis_archive_sha256": "f0ca9183c28a55df9e655521eb31d4754d5b88d5b523c6c93e673ea5f8c06f37",
   "completed_irish_splits": 30,
   "unique_test_traces": 83,
-  "validated_manuscript_tables": 11,
-  "manuscript_pages": 9,
-  "package_pages": 10,
+  "validated_manuscript_tables": 12,
+  "manuscript_pages": 10,
+  "package_pages": 11,
   "tests": {
     "outcomes_by_suite": {
       "integration": {
@@ -16,7 +16,7 @@
         "passed": 13
       },
       "unit": {
-        "passed": 40
+        "passed": 42
       }
     },
     "report": "results/runs/final_tests.xml"

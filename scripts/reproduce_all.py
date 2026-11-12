@@ -10,11 +10,14 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     stages = []
     for args in [
+        ['scripts/download_data.py'], ['scripts/prepare_external_inputs.py'],
         ['scripts/prepare_ookla_traces.py'], ['scripts/reproduce_experiments.py'],
         ['scripts/audit_data_quality.py'], ['scripts/audit_trace_filters.py'],
         ['scripts/audit_session_segmentation.py'], ['scripts/validate_session_boundaries.py'],
         ['scripts/audit_cluster_inference.py'], ['scripts/audit_group_support.py'],
-        ['scripts/validate_clock_and_network.py'], ['scripts/build_paper_html.py'],
+        ['scripts/validate_clock_and_network.py'], ['scripts/clock_frontier.py'], ['scripts/metro_transfer.py'],
+        ['scripts/compare_sirhan_external.py', 'data/raw/sirhan-v1.zip'], ['scripts/audit_external_traces.py'],
+        ['scripts/report_sirhan_external.py'], ['scripts/validate_irish_groups.py'], ['scripts/build_paper_html.py'],
         ['scripts/validate_manuscript_consistency.py'], ['-m','pytest','-ra','--junitxml=results/runs/final_tests.xml'],
 
     ]:

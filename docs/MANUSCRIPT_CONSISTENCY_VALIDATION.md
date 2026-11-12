@@ -1,6 +1,6 @@
 # Source to publication checks
 
-The revised validator also checks Table X against every saved Norwegian and Rome clock forecast, including the offset-to-bound calculation, MAE, coverage, violations and supported throughput. Six distinct referenced figure PDFs and corresponding PNGs must exist in both artifact trees. The PDF package adds one cover page and must reproduce every manuscript page pixel for pixel. The local run timestamps and exit codes appear in results/runs/execution.json. The post-build test report is results/runs/final_tests.xml.
+The revised validator also checks Table X against every saved Norwegian and Rome clock forecast, including the offset-to-bound calculation, MAE, coverage, violations and supported throughput. Seven distinct referenced figure PDFs and corresponding PNGs must exist in both artifact trees. The PDF package adds one cover page and must reproduce every manuscript page pixel for pixel. The local run timestamps and exit codes appear in results/runs/execution.json. The post-build test report is results/runs/final_tests.xml.
 
 The experiment runner saves test_forecasts.csv keyed by regime, chronological budget and session. Each record has a date, target and the four method bounds. The validator re-aggregates these into the calibration_budget_results.csv keys and checks the row count, violation rate, supported fraction, mean bound, zero fraction and mean excess. Full-precision aggregate comparisons tolerate only numerical summation differences. The split JSON independently supplies the available budgets and suffix denominator. Missing or duplicated cells are errors.
 
@@ -22,3 +22,5 @@ scripts/validate_manuscript_consistency.py parses every data row and the headers
 These checks validate reported numeric tables. They do not prove scientific assumptions such as exchangeability or the accuracy of inferred physical session boundaries.
 
 Table XI additionally reaggregates the ordered Irish held-out forecasts for both calibration sizes and methods from irish_group_forecasts.csv.gz.
+
+Table XII is calculated from the complete clock prefix curve. The validator independently reconstructs each offset, commitment and finite-ledger risk interval from the frozen point forecasts, checks every available integer prefix, and compares the K=10 ledger on the original matched clock keys. The figure set now includes the scored risk–utility frontier.

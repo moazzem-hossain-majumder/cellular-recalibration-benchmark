@@ -25,7 +25,9 @@ PATTERNS = [
     'results/runs/ancillary_execution.json','results/exploratory/sirhan_external/*',
     'results/exploratory/published_global_comparison.csv','docs/EXTERNAL_SIRHAN_COMPARISON.md',
     'results/runs/external_validation.json','antigravity.md','results/external_validation/*',
-    'docs/EXTERNAL*md','docs/RELIABILITY_USEFULNESS_ANALYSIS.md','docs/FINAL_REVIEW.md'
+    'docs/EXTERNAL*md','docs/RELIABILITY_USEFULNESS_ANALYSIS.md','docs/FINAL_REVIEW.md',
+    'results/clock_histgbm/*','docs/RESEARCH_GAP_AND_NOVELTY_REVIEW.md','docs/PRIMARY_CONTRIBUTION_DECISION.md',
+    'docs/STATISTICAL_DESIGN_IMPROVEMENT.md','docs/CROSS_NETWORK_GENERALIZATION.md'
 ]
 
 def digest(path):

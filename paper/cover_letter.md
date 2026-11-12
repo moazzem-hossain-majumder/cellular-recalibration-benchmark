@@ -8,10 +8,12 @@ with Missing Radio Telemetry. It compares lower throughput forecasts
 across two public measurement campaigns in Rome. An external
 reproduction on Irish traces quantifies when persistence improves
 supported throughput and how the gain changes with traffic mix. A
-fixed-clock replay examines forecast-time selection, and a chronological
-test on Norwegian HSDPA measurements evaluates the ten-label calibration
-rule. The paper reports adverse outcomes and limits its claims to the
-observed endpoints and dates.
+matched replay of the frozen forecaster bounds the violation rate across
+every issued commitment, including those without measured outcomes. A
+separate bus-to-metro route transfer isolates the consequences of
+changing the predictor and its calibration population. The paper reports
+adverse outcomes and limits its claims to the observed endpoints and
+dates.
 
 Sincerely,\
 Md. Moazzem Hossain Majumder

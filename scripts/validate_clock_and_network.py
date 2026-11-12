@@ -84,14 +84,13 @@ def rome():
     (DIAG/'prediction_time_validity.json').write_text(json.dumps(summary,indent=2))
 
 
-def norway():
-    manifest = json.loads((OUT/'dataset_manifest.json').read_text())
-    BUS.mkdir(parents=True,exist_ok=True)
+def route_pairs(directory,base_url,pins):
+    directory.mkdir(parents=True,exist_ok=True)
     rows = []
-    for name,digest in manifest['norway_files'].items():
-        path = BUS/name
+    for name,digest in pins.items():
+        path = directory/name
         if not path.exists():
-            subprocess.run(['curl','-fsSL','--retry','2',URL+name,'-o',str(path)],check=True)
+            subprocess.run(['curl','-fsSL','--retry','2',base_url+name,'-o',str(path)],check=True)
         if hashlib.sha256(path.read_bytes()).hexdigest()!=digest:
             raise ValueError(name)
         frame = pd.read_csv(path,sep=r'\s+',header=None,names=['unix','ms','lat','lon','bytes','elapsed'])
@@ -103,7 +102,12 @@ def norway():
         rows.append(pd.DataFrame(dict(trace=name,time=time,end=time.shift(-1),lag=rate,
                                       lag2=rate.shift(),y=rate.shift(-1))).where(
                                           contiguous & contiguous.shift(-1,fill_value=False)).dropna())
-    data = pd.concat(rows,ignore_index=True).sort_values(['time','trace'])
+    return pd.concat(rows,ignore_index=True).sort_values(['time','trace'])
+
+
+def norway():
+    manifest = json.loads((OUT/'dataset_manifest.json').read_text())
+    data = route_pairs(BUS,URL,manifest['norway_files'])
     dates = sorted(data.time.dt.date.unique())
     a,b = len(dates)//2,3*len(dates)//4
     train,cal,test = [data[data.time.dt.date.isin(ds)] for ds in [dates[:a],dates[a:b],dates[b:]]]
