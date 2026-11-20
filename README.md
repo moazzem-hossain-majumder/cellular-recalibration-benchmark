@@ -1,8 +1,18 @@
 # Cellular throughput recalibration benchmark
 
+The [November 20 revision](docs/REJECTION_RISK_REVISIONS.md) adds finite-record decision criteria, collection-date sensitivity and nine playback settings.
+
+The [positive-offer feasibility analysis and submission decision](docs/POSITIVE_OFFER_SELECTION.md) reports the outcome of imposing joint risk, frequency and throughput requirements.
+
+The [Irish drive and Norwegian playback experiments](docs/TRIP_AND_APPLICATION_RESULTS.md) extend the comparison to separate trips and measure simulated client stalls, startup and bitrate.
+
+The [US Drive 3 replication](docs/DRIVE3_REPLICATION.md) evaluates the frozen Rome tree and persistence on matched opportunities for AT&T, T-Mobile and Verizon. Run `python scripts/replicate_nuwins_drive3.py` to reproduce the release-file checks, forecasts and carrier/date summaries.
+
+**Primary analysis.** The clock-triggered Rome comparison measures all issued opportunities. At ten labels the frozen tree violated 67 of 122 measurable positive commitments on E1 and two of three on E3. Of 46 missing outcomes, 45 forecast horizons extended past the recording. The session-triggered results below provide the endpoint comparison.
+
 How much can a short chronological prefix of labeled target sessions improve a lower forecast of downlink throughput when radio telemetry is incomplete? This benchmark measures the frequency with which a bound exceeds measured throughput (V) alongside the fraction of measured throughput it supports (U). The contribution is the empirical comparison across operators, campaigns and definitions of a session.
 
-Two public Rome releases supply the primary benchmark data. The earlier active throughput CSV is [Zenodo 8224890](https://zenodo.org/records/8224890). The later archive contains the 43 Ookla traces used here [Zenodo 14073311](https://zenodo.org/records/14073311). Both releases identify CC BY 4.0. The acquisition manifest pins the raw bytes. The primary regime uses a common source-trained histogram gradient boosting predictor, chronological calibration prefixes and fixed held-out target dates. Labels used as lagged inputs are distinct from labels counted in the target recalibration budget.
+Two public Rome releases supply the primary benchmark data. The earlier active throughput CSV is [Zenodo 8224890](https://zenodo.org/records/8224890). The later archive contains the 43 Ookla traces used here [Zenodo 14073311](https://zenodo.org/records/14073311). Both releases identify CC BY 4.0. The acquisition manifest pins the raw bytes. The session analysis uses a common source-trained histogram gradient boosting predictor, chronological calibration prefixes and fixed held-out target dates. Labels used as lagged inputs are distinct from labels counted in the target recalibration budget.
 
 | Regime | Held-out sessions / days | Point V | Source-only global V | Ten-label global V | Ten-label global U |
 |---|---:|---:|---:|---:|---:|
@@ -26,13 +36,15 @@ Run `python scripts/clock_frontier.py` for the matched Rome experiment, every fe
 Use Python 3.11, a matching PyTorch build and the dependencies in requirements.txt. Install the Tectonic LaTeX compiler on PATH or set TECTONIC to its executable. Its first run may download TeX resources. The local run used an RTX 4060 for the neural comparator. The primary histogram model runs on CPU. From the repository root run:
 
 ```sh
-python -m pip install -r requirements.txt
+python -m pip install -r requirements.txt -c constraints-research.txt
 python scripts/reproduce_all.py
 ```
 
 The entry point checks the archive, materializes matching individual traces, verifies downloads, exercises the test suite, fits the models, runs the ablations, rebuilds diagnostics, generates and checks manuscript artifacts and runs the tests again. The [manifest](docs/REPRODUCIBILITY_MANIFEST.json) records the commands, environment, counts and SHA-256 evidence for the working tree. The [consistency procedure](docs/MANUSCRIPT_CONSISTENCY_VALIDATION.md) identifies the source for each table. The [submission package](paper/submission_package.pdf) contains the cover letter and manuscript. [HTML](paper/manuscript.html) and [Markdown](paper/manuscript.md) are generated from the same LaTeX.
 
-The scope and outcomes of the latest local run are recorded in [execution.json](results/runs/execution.json) and the [post-build JUnit report](results/runs/final_tests.xml). The current working tree has no hosted CI result. The workflow checks the published artifacts, fetches the Rome data, runs the full test suite, rejects skipped tests and uploads the report.
+The original full-run record and its associated stages are recorded in [execution.json](results/runs/execution.json) and the updated [JUnit report](results/runs/final_tests.xml). The current working tree has no hosted CI result. The workflow checks the published artifacts, fetches the Rome data, runs the full test suite, rejects skipped tests and uploads the report.
+
+The [revision execution report](docs/FINAL_EXECUTION_REPORT.md) lists commands for the revised experiments, [methodological review](docs/INDEPENDENT_RESEARCH_AUDIT.md), and [submission assessment](docs/FINAL_SCORECARD.md). Run `python scripts/generate_experiment_manifest.py --verify` for a read-only integrity check.
 
 ## Prediction-time and independent validation
 

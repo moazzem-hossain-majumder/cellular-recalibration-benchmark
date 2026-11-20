@@ -1,0 +1,94 @@
+[
+  {
+    "path": "datasets/processed_files/extracted_tput_data/atnt/DL/atnt_day_1_d3_dl.csv",
+    "sha": "895b775ee38c2b214623b0f5eb2a42c55e739db8"
+  },
+  {
+    "path": "datasets/processed_files/extracted_tput_data/atnt/DL/atnt_day_2_d3_dl.csv",
+    "sha": "925ea40c6f20cca47503e007937d863aadba57bc"
+  },
+  {
+    "path": "datasets/processed_files/extracted_tput_data/atnt/DL/atnt_day_3_d3_dl.csv",
+    "sha": "517cf304a07e4a6ced222427ea206ae2dff2e220"
+  },
+  {
+    "path": "datasets/processed_files/extracted_tput_data/atnt/DL/atnt_day_4_d3_dl.csv",
+    "sha": "7344aaa1b4b4636dca28248db751f8670c7f5eab"
+  },
+  {
+    "path": "datasets/processed_files/extracted_tput_data/tmobile/DL/tmobile_day_1_d3_dl.csv",
+    "sha": "d4e0c35a7c5140f45a9438dcc3a03205d3967a46"
+  },
+  {
+    "path": "datasets/processed_files/extracted_tput_data/tmobile/DL/tmobile_day_2_d3_dl.csv",
+    "sha": "2cdd1c4572b6c06b45e9fb369bcb3026158cec62"
+  },
+  {
+    "path": "datasets/processed_files/extracted_tput_data/tmobile/DL/tmobile_day_3_d3_dl.csv",
+    "sha": "39839958bf25c4c1501672d912575f8df6d907e7"
+  },
+  {
+    "path": "datasets/processed_files/extracted_tput_data/tmobile/DL/tmobile_day_4_d3_dl.csv",
+    "sha": "deac62388a5f825613860e817e3bf55a3e79f073"
+  },
+  {
+    "path": "datasets/processed_files/extracted_tput_data/verizon/DL/verizon_day_1_d3_dl.csv",
+    "sha": "7f4dddf8ae9bc80f5916415e06d8597d30613fdd"
+  },
+  {
+    "path": "datasets/processed_files/extracted_tput_data/verizon/DL/verizon_day_2_d3_dl.csv",
+    "sha": "41859c6a3268eab77a7e7bfccb719e5313f36084"
+  },
+  {
+    "path": "datasets/processed_files/extracted_tput_data/verizon/DL/verizon_day_3_d3_dl.csv",
+    "sha": "4bd502995a9fc52a9a3f975469aa8f02fff8b080"
+  },
+  {
+    "path": "datasets/processed_files/extracted_tput_data/verizon/DL/verizon_day_4_d3_dl.csv",
+    "sha": "fbbdd224db591b0156a7937e4e79e4809214e9e2"
+  },
+  {
+    "path": "datasets/raw_files/xcal_raw/drive_trip_3/atnt_day_1.csv",
+    "sha": "6f06e45027c226951c6fcde3d89d5a9cc5e29e5f"
+  },
+  {
+    "path": "datasets/raw_files/xcal_raw/drive_trip_3/atnt_day_2.csv",
+    "sha": "d803ba763ac2b67bc8a160811f327a8b8dad5566"
+  },
+  {
+    "path": "datasets/raw_files/xcal_raw/drive_trip_3/atnt_day_3.csv",
+    "sha": "1db9b3809ba41e7eaaef4d2bdf670961f4f3d81b"
+  },
+  {
+    "path": "datasets/raw_files/xcal_raw/drive_trip_3/atnt_day_4.csv",
+    "sha": "75d17dba9852df89c022abb4e10e832024a6664c"
+  },
+  {
+    "path": "datasets/raw_files/xcal_raw/drive_trip_3/tmobile_day_1.csv",
+    "sha": "f6f84e65532d7599a82f42dde3c41be9f82cac19"
+  },
+  {
+    "path": "datasets/raw_files/xcal_raw/drive_trip_3/tmobile_day_2.csv",
+    "sha": "9c292e9299582ebfe118406e77e43c233a16bdfb"
+  },
+  {
+    "path": "datasets/raw_files/xcal_raw/drive_trip_3/tmobile_day_3.csv",
+    "sha": "4a613144e817f9e5fa199d653d60628942ab9c75"
+  },
+  {
+    "path": "datasets/raw_files/xcal_raw/drive_trip_3/tmobile_day_4.csv",
+    "sha": "f608e5cc795236b7734e0776155833a85c140ead"
+  },
+  {
+    "path": "datasets/raw_files/xcal_raw/drive_trip_3/verizon_day_1.csv",
+    "sha": "ad9e5832bd5c3951584045ca34bbd8d18baf44ae"
+  },
+  {
+    "path": "datasets/raw_files/xcal_raw/drive_trip_3/verizon_day_2.csv",
+    "sha": "98394984bafbfb50e03fb6233fa106be21cf3d7d"
+  },
+  {
+    "path": "datasets/raw_files/xcal_raw/drive_trip_3/verizon_day_3.csv",
+    "sha": "dd5edb7377348ae5e98f3ae6b245f58197d050e4"
+  }
+]

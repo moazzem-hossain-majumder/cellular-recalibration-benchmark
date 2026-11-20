@@ -24,3 +24,4 @@ These checks validate reported numeric tables. They do not prove scientific assu
 Table XI additionally reaggregates the ordered Irish held-out forecasts for both calibration sizes and methods from irish_group_forecasts.csv.gz.
 
 Table XII is calculated from the complete clock prefix curve. The validator independently reconstructs each offset, commitment and finite-ledger risk interval from the frozen point forecasts, checks every available integer prefix, and compares the K=10 ledger on the original matched clock keys. The figure set now includes the scored risk–utility frontier.
+The revision additionally checks positive-offer counts on every clock curve, reaggregates all 52 simulated NR summaries from forecast rows, and verifies the independent US persistence offset, counts and supported-throughput fraction against the US ledger. The manifest verifier checks LF-normalized text and exact binary bytes without rewriting artifacts.

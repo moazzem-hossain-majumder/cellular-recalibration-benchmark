@@ -87,9 +87,15 @@ def tables(root=ROOT):
     group_rows = [[str(r['k']),r['method'],str(r['group_rows']),f"{100*r['coverage']:.2f}",
                    f"{100*r['violation']:.2f}",f"{100*r['supported']:.2f}"] for r in groups]
     curve = pd.read_csv(root/'results/clock_histgbm/frontier.csv')
-    issued_rows = [[r.regime,r.model,str(r.issued),str(r.scored),str(r.violations),str(r.unresolved),
+    issued_rows = [[r.regime,r.model,str(r.issued),str(r.scored),f'{r.positive_scored}/{r.positive}',str(r.violations),
                     f'{100*r.lo:.2f}',f'{100*r.hi:.2f}',f'{100*r.u:.2f}']
                    for r in curve[(curve.k==10)&(curve.policy=='Global')].itertuples()]
+    drive = pd.read_csv(root/'results/external_validation/drive3_results.csv')
+    drive_rows = []
+    for r in drive[(drive.date=='all') & (drive.model!='Tree_noNR')].itertuples():
+        carrier = 'ATT' if r.carrier=='AT&T' else r.carrier
+        drive_rows.append([carrier,r.model,str(int(r.issued)),str(int(r.scored)),str(int(r.positive)),
+                           str(int(r.violations)),f'{100*r.lo:.2f}',f'{100*r.hi:.2f}',f'{100*r.u:.4f}'])
     return {
         'table1_point_predictors': ('Source validation errors in Mbps and measured fit time in seconds.', ['Model','MAE','RMSE','Seconds'],profiles),
         'table2_main_benchmark': ('Test sessions and lower-bound performance by regime and target prefix. P denotes point, G global, R radio access and M missingness groups. V denotes violations and U supported fraction.', ['Regime/K','N','PV','PU','GV','GU','RV','RU','MV','MU'],rows),
@@ -102,7 +108,8 @@ def tables(root=ROOT):
         'table9_lag': ('Lag versus endpoint on unique Irish rows and held-out Rome sessions. MAE is in Mbps. NearZero, Fall and Rise are percentages.', ['Setting','Pairs','Pearson','Spearman','LagMAE','NearZero','Fall','Rise'],transition_rows),
         'table10_protocols': ('Ten-label calibration for clock-triggered Rome forecasts and Norwegian interval forecasts. Error and offset are in Mbps. Violation and supported fractions are percentages.', ['Cohort','Model','Scored','Dates','MAE','Offset','Viol','Util'],replay),
         'table11_irish_groups': ('Chronological Irish persistence forecasts on 108519 rows from sixteen suffix dates. Local counts forecasts using a group-specific offset. Performance measures are percentages.', ['Labels','Rule','Local','Coverage','Violation','Supported'],group_rows),
-        'table12_issued': ('Ten-label Rome clock forecasts. Errors counts measured violations. Unknown counts positive commitments without a measured outcome. Low and High bound the all-issued violation percentage. U is supported throughput on measured outcomes in percent.', ['Regime','Predictor','Issued','Scored','Errors','Unknown','Low','High','U'],issued_rows)}
+        'table12_issued': ('Ten-label Rome clock forecasts. Positive gives measured positive commitments divided by issued positive commitments as counts. Errors counts measured violations. Low and High bound the all-issued violation percentage. U is supported throughput on measured outcomes in percent.', ['Regime','Predictor','Issued','Scored','Positive','Errors','Low','High','U'],issued_rows),
+        'table13_drive3': ('US Drive 3 with ten earlier labels per carrier. Pos counts issued positive commitments. Fail counts observed violations. Risk bounds and supported throughput are percentages.', ['Carrier','Model','Issued','Scored','Pos','Fail','Low','High','U'],drive_rows)}
 
 def latex(spec):
     caption, header, rows = spec

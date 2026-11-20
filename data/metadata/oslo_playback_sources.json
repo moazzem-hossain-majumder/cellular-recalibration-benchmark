@@ -1,0 +1,314 @@
+[
+  {
+    "route": "car.aarnes-elverum",
+    "name": "report.2011-02-10_1611CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/car.aarnes-elverum/report.2011-02-10_1611CET.log",
+    "sha256": "992ffa118f78639168771c7f14ab8d842220bb0ed54adfc1319d7e4132de5daa"
+  },
+  {
+    "route": "car.oslo-grimstad",
+    "name": "report.2011-04-21_1135CEST.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/car.oslo-grimstad/report.2011-04-21_1135CEST.log",
+    "sha256": "a3bc60973274f5086ee3f7c31952198fc26eebe1e96ecab37e65ed30d6d9e475"
+  },
+  {
+    "route": "car.snaroya-smestad",
+    "name": "report.2011-02-14_2032CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/car.snaroya-smestad/report.2011-02-14_2032CET.log",
+    "sha256": "9c147ecada110046d565058e6ae0248b08dd1cb74145b0dc9bdf368137add569"
+  },
+  {
+    "route": "car.snaroya-smestad",
+    "name": "report.2011-02-14_2051CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/car.snaroya-smestad/report.2011-02-14_2051CET.log",
+    "sha256": "83e2cc5cec70c1c90334ce6d3ce3bd331741efa761d3bec058eea2ec5d447646"
+  },
+  {
+    "route": "car.snaroya-smestad",
+    "name": "report.2011-02-14_2108CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/car.snaroya-smestad/report.2011-02-14_2108CET.log",
+    "sha256": "faafbec0331b4d0f07fb76f068e1b8c09fca03643aa462e1bafd799c1774b759"
+  },
+  {
+    "route": "car.snaroya-smestad",
+    "name": "report.2011-02-14_2124CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/car.snaroya-smestad/report.2011-02-14_2124CET.log",
+    "sha256": "9e790e0cbeb6f122f1ee5837245dd2d607844762345a45990a66a91ac1af15d3"
+  },
+  {
+    "route": "car.snaroya-smestad",
+    "name": "report.2011-02-14_2139CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/car.snaroya-smestad/report.2011-02-14_2139CET.log",
+    "sha256": "ca615a932e38702369b4c534fb0c0de58676aaa3162c7b71981de429fbd9cdf8"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2010-09-20_1542CEST.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2010-09-20_1542CEST.log",
+    "sha256": "3eec386d142b9927c009fd0042e599c351f467b476e157e9a889060811233610"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2010-09-21_1001CEST.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2010-09-21_1001CEST.log",
+    "sha256": "a37fbb3b86e250778a1556ffba21e4b2134b3e3d0f3682d8a297498555564215"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2010-09-21_1622CEST.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2010-09-21_1622CEST.log",
+    "sha256": "bb82dfbcb7b898ab1add09f5723d8d438e7c3a4fbbd8d8708d10904b8db78457"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2010-09-21_1735CEST.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2010-09-21_1735CEST.log",
+    "sha256": "12d111ec593a1b1227baac858ac114dc9cd22c0146adaeb49bb1ebff8f72e82c"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2010-09-22_0702CEST.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2010-09-22_0702CEST.log",
+    "sha256": "e21f3114261a18e75c5e8d01c475f0080f00da453c88e6a3b871b11ba85472c9"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2010-09-23_1001CEST.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2010-09-23_1001CEST.log",
+    "sha256": "08350bddbfc32f9125777b1bcab687313201a214a6bbf885ea5ae28c9febf6b7"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2010-09-28_1003CEST.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2010-09-28_1003CEST.log",
+    "sha256": "36bf74ae6498c428d270bde119d9becc59f23f6f328b0ec92d545fab6d736065"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2010-09-29_0702CEST.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2010-09-29_0702CEST.log",
+    "sha256": "f8717ba4646f5f2a2f2a4e20dc09ff71cd45ddd2fecc913d3e82cfc16281c1bd"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2011-01-29_1800CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2011-01-29_1800CET.log",
+    "sha256": "f4d1e309f8354ddc0d6a072f606b9453d4632b3da9a55a4a442f2554d9a60899"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2011-01-31_1830CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2011-01-31_1830CET.log",
+    "sha256": "4f3226c3ebd8eb300c75dc12c26ff42dc892eebf16394f134ca75a9494639fff"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2011-02-01_0629CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2011-02-01_0629CET.log",
+    "sha256": "839b1c771a008261e9ff49276e3e859aa9265e8eb02cb63a77ee5c6487648c0c"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2011-02-01_0740CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2011-02-01_0740CET.log",
+    "sha256": "487f3dff4c9a3798f37c320b217fb27fa5a27472714eb308702bc020e299d5ac"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2011-02-01_0840CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2011-02-01_0840CET.log",
+    "sha256": "e37e4610c959cbcdd98555d62c0738c52a9dad21d13ca38e0952712f907a5b2e"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2011-02-01_1000CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2011-02-01_1000CET.log",
+    "sha256": "dd3751bb552fa74139798d9e83bddb55bc8d6ec1aa6e3d12f4e2ac82aed4242d"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2011-02-01_1539CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2011-02-01_1539CET.log",
+    "sha256": "c5798f6cbe2f35acdc4a15990dad92ead66961c48cbc4e4c6fee5e257132cf72"
+  },
+  {
+    "route": "ferry.nesoddtangen-oslo",
+    "name": "report.2011-02-01_1639CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/ferry.nesoddtangen-oslo/report.2011-02-01_1639CET.log",
+    "sha256": "ceafb4f20b623098b05ecb2bda32d933a16cba27b1cdfd942738f02e45841f36"
+  },
+  {
+    "route": "train.oslo-vestby",
+    "name": "report.2011-02-11_1618CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/train.oslo-vestby/report.2011-02-11_1618CET.log",
+    "sha256": "4381001419c36183ab00d9b9434cadad2f6b0f44eca87e5bddc851ce0756444c"
+  },
+  {
+    "route": "train.oslo-vestby",
+    "name": "report.2011-02-14_0644CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/train.oslo-vestby/report.2011-02-14_0644CET.log",
+    "sha256": "14419d653f57085a7990a490df4c1ee621c0267e4fc8c68ddb23ab3073a687e7"
+  },
+  {
+    "route": "train.vestby-oslo",
+    "name": "report.2011-02-11_1530CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/train.vestby-oslo/report.2011-02-11_1530CET.log",
+    "sha256": "b44f78387962466946138a4ef798c876032423963647bbbda627d314c48bce24"
+  },
+  {
+    "route": "train.vestby-oslo",
+    "name": "report.2011-02-11_1729CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/train.vestby-oslo/report.2011-02-11_1729CET.log",
+    "sha256": "7f6b18c332b0c498c62f578a37c4f32e2e2ce32aa12dff58b0f005dc11942655"
+  },
+  {
+    "route": "train.vestby-oslo",
+    "name": "report.2011-02-14_1728CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/train.vestby-oslo/report.2011-02-14_1728CET.log",
+    "sha256": "d1e4c25b16f8d66d21d61de0776735600be9c7c82225595ff7d4560aa57d23f1"
+  },
+  {
+    "route": "tram.jernbanetorget-ljabru",
+    "name": "report.2010-11-23_1515CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.jernbanetorget-ljabru/report.2010-11-23_1515CET.log",
+    "sha256": "17b701906c40ca7f07df69a8364da10e5ee596e6211e9c471d2be37ab50beeec"
+  },
+  {
+    "route": "tram.jernbanetorget-ljabru",
+    "name": "report.2010-12-09_1222CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.jernbanetorget-ljabru/report.2010-12-09_1222CET.log",
+    "sha256": "d64fdf16fc80ae72323803dced82c8844932da29c679a4e20548747202039e90"
+  },
+  {
+    "route": "tram.jernbanetorget-ljabru",
+    "name": "report.2010-12-09_1310CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.jernbanetorget-ljabru/report.2010-12-09_1310CET.log",
+    "sha256": "79a41f316f84e76eb3e4263a04f1f2425f6162d63d64f4301dab8b0c8ca39de6"
+  },
+  {
+    "route": "tram.jernbanetorget-ljabru",
+    "name": "report.2010-12-16_1100CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.jernbanetorget-ljabru/report.2010-12-16_1100CET.log",
+    "sha256": "d1dc6b0a1c298d22d47bf0ec495c61dcde076dcd2d9a73e56b4a26df3bfcef4f"
+  },
+  {
+    "route": "tram.jernbanetorget-ljabru",
+    "name": "report.2010-12-16_1149CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.jernbanetorget-ljabru/report.2010-12-16_1149CET.log",
+    "sha256": "b4d57aff0deeef5670619654fd45a65c99ff1a0935699e5ed1a871d61d80bfee"
+  },
+  {
+    "route": "tram.jernbanetorget-ljabru",
+    "name": "report.2010-12-21_1200CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.jernbanetorget-ljabru/report.2010-12-21_1200CET.log",
+    "sha256": "528e3f1cf45572d312955e30b3eff7e36833f9109ebb10ac053a574fa3e4508d"
+  },
+  {
+    "route": "tram.jernbanetorget-ljabru",
+    "name": "report.2010-12-22_0826CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.jernbanetorget-ljabru/report.2010-12-22_0826CET.log",
+    "sha256": "a760c5b93588fc040be223cd44363e3243a4602c3b93be8478272f45c7906e63"
+  },
+  {
+    "route": "tram.jernbanetorget-ljabru",
+    "name": "report.2011-01-06_0749CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.jernbanetorget-ljabru/report.2011-01-06_0749CET.log",
+    "sha256": "c4d1c8126f77d5aed5b3a4d65be7de795e63890e570be084145fa2b939eb5431"
+  },
+  {
+    "route": "tram.jernbanetorget-universitetssykehuset",
+    "name": "report.2010-11-23_1606CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.jernbanetorget-universitetssykehuset/report.2010-11-23_1606CET.log",
+    "sha256": "5fd41a151fdcf967964824c9d2b00517dd81542d292130e9c3903c3a70523bd1"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2010-11-23_1541CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2010-11-23_1541CET.log",
+    "sha256": "65e339a90c4663c306378b7d3a0ec06d9a0c7be69a619bffa0ecd98b4613cbb6"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2010-12-09_1244CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2010-12-09_1244CET.log",
+    "sha256": "bd5d8db084a08b118dd9280ce8395cd15a2b446566a9da086f85b8373430e377"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2010-12-09_1334CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2010-12-09_1334CET.log",
+    "sha256": "665ca0b8b70a15d6a8739e03336dd2951cb1547c34572c3222a8dfd37aa74af5"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2010-12-16_1125CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2010-12-16_1125CET.log",
+    "sha256": "91f21aa718ab7bd2cfece82a69e5362e41076c5b34f858f7610447114b2dfe4f"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2010-12-16_1215CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2010-12-16_1215CET.log",
+    "sha256": "88058a9e03bb64d597b4befcc7592355c6da1f38413e2f8ba249a1dd49878a32"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2010-12-21_1134CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2010-12-21_1134CET.log",
+    "sha256": "2855a624e07265e4fd8ef2950bb60e174aa74d2f70a4a651b5ea4f2ad082b2a6"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2010-12-21_1225CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2010-12-21_1225CET.log",
+    "sha256": "a442b631a8f4962664c25909d99738cedb0dc6f7d5a520796ddad73e5729b73f"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2010-12-22_0800CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2010-12-22_0800CET.log",
+    "sha256": "a7319592a3e6b892331e0f2713e47d61bccd0bcffb4d27146ec1cbd8519032ce"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2010-12-22_0849CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2010-12-22_0849CET.log",
+    "sha256": "2eda01cb4da62b80bc5b81d2deb03fcc8e028eb343180961166609f43bec4d31"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2011-01-04_0820CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2011-01-04_0820CET.log",
+    "sha256": "80d9e48432adb54b997b14fbb5487f5b45f0e2a2cd08bcac5062cd22f382a669"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2011-01-05_0819CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2011-01-05_0819CET.log",
+    "sha256": "c2e8e940b330985f0b324793a502ada017e004c80ba25f664d58e11815c2c47a"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2011-01-06_0814CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2011-01-06_0814CET.log",
+    "sha256": "3f662583f65fa640af441e92108e3deddbae0358093cafc5bbdbb890940844c2"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2011-01-31_1045CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2011-01-31_1045CET.log",
+    "sha256": "5810cf57359c60e929cc383a728133073d45cbcf41cb59b6e422df5d96970d3a"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2011-01-31_2032CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2011-01-31_2032CET.log",
+    "sha256": "cdbcf7b8e9a178f696db1bd85fe0161f28f22a06735b818da9a2e6a16a87b18f"
+  },
+  {
+    "route": "tram.ljabru-jernbanetorget",
+    "name": "report.2011-02-02_1345CET.log",
+    "url": "https://datasets.simula.no/downloads/hsdpa-tcp-logs/tram.ljabru-jernbanetorget/report.2011-02-02_1345CET.log",
+    "sha256": "7f5a09ba332ee12713fd3dff7d9faf54c22625a31eb53d616576dc6acd19e7d5"
+  }
+]

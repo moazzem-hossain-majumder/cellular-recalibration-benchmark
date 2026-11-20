@@ -10,6 +10,7 @@ jobs:
           python-version: "3.11"
       - run: pip install pandas numpy pypdf pymupdf beautifulsoup4
       - run: python scripts/validate_manuscript_consistency.py
+      - run: python scripts/generate_experiment_manifest.py --verify
   full-tests-with-real-data:
     runs-on: ubuntu-latest
     steps:

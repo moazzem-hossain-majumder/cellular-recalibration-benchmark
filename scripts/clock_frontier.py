@@ -34,6 +34,9 @@ def load_ticks():
             rate,col = field('Mean Netw. DL')
             rate = rate.where(rate>=0)*(1 if '[MBit/s]' in col else .001)
             pairs = clock_pairs(rate,frame.index.min(),frame.index.max()).set_index('time')
+            pairs['outcome_status'] = np.select(
+                [pairs.end>frame.index.max(),pairs.y.isna()],
+                ['trace_ended','no_valid_rate'],default='measured')
             prev = pairs.index-pd.Timedelta(minutes=1)
             times = rate.dropna().index.to_series().resample('min')
             tlast = times.last().reindex(prev)
@@ -56,11 +59,19 @@ def load_ticks():
 def metrics(y,point,lower):
     y,point,lower = map(np.asarray,(y,point,lower))
     valid = np.isfinite(y)
-    v = int((lower>y).sum())
+    if not np.isfinite(lower).all() or (lower<0).any() or (y[valid]<0).any() or np.isinf(y).any():
+        raise ValueError('Expected finite nonnegative commitments and nonnegative or missing outcomes')
+    v = int((lower[valid]>y[valid]).sum())
+    positive = int((lower>0).sum())
     unknown = int(((~valid)&(lower>0)).sum())
+    measured_positive = positive-unknown
     total = np.nansum(y)
     return dict(issued=len(y),scored=int(valid.sum()),unavailable=int((~valid).sum()),violations=v,
-                unresolved=unknown,positive=int((lower>0).sum()),observed_sum=total,
+                unresolved=unknown,positive=positive,positive_rate=positive/len(y),
+                positive_scored=measured_positive,positive_covered=measured_positive-v,
+                v_given_positive=v/measured_positive if measured_positive else np.nan,
+                positive_low=v/positive if positive else np.nan,
+                positive_high=(v+unknown)/positive if positive else np.nan,observed_sum=total,
                 delivered_sum=np.nansum(np.minimum(lower,y)),v=v/valid.sum() if valid.any() else np.nan,
                 coverage=1-v/valid.sum() if valid.any() else np.nan,
                 lo=v/len(y),hi=(v+unknown)/len(y),u=np.nansum(np.minimum(lower,y))/total if total else np.nan,
@@ -178,22 +189,28 @@ def run():
 
 
 def plot_frontier(curves):
-    fig,axes = plt.subplots(1,2,figsize=(8,3.3),sharey=True,layout='constrained')
+    fig,axes = plt.subplots(2,2,figsize=(8,5.4),sharey='row',layout='constrained')
     envelopes = []
-    for (reg,b),ax in zip(curves.groupby('regime'),axes):
+    for column,(reg,b) in enumerate(curves.groupby('regime')):
+        ax = axes[0,column]
+        frequency = axes[1,column]
         for (model,policy),d in b.groupby(['model','policy']):
             ordered = d.sort_values(['v','u','k'],ascending=[True,False,True]).drop_duplicates('v')
             efficient = ordered[ordered.u>ordered.u.cummax().shift(fill_value=-1)]
             envelopes.append(efficient)
             color = 'steelblue' if model=='HistGBM' else 'darkorange'
+            frequency.plot(d.k,100*d.positive_rate,color=color,
+                           ls='-' if policy=='Global' else ':',lw=1.2)
             ax.plot(100*efficient.u,100*efficient.v,color=color,alpha=.65,lw=.8,
                     ls='-' if policy=='Global' else ':')
             ax.scatter(100*d.u,100*d.v,s=10,alpha=.65,marker='o' if policy=='Global' else 'x',
                        color='steelblue' if model=='HistGBM' else 'darkorange',label=model+' '+policy)
         ax.axhline(10,color='grey',ls='--',lw=1)
         ax.set(title=reg,xlabel='Supported throughput on scored ticks (%)')
-    axes[0].set_ylabel('Violations on scored ticks (%)')
-    axes[1].legend(fontsize=7)
+        frequency.set(xlabel='Available target labels in prefix',ylim=(-3,103))
+    axes[0,0].set_ylabel('Violations on scored ticks (%)')
+    axes[1,0].set_ylabel('Positive commitments / issued (%)')
+    axes[0,1].legend(fontsize=7)
     for ext in ['png','pdf']:
         fig.savefig(ROOT/f'results/figures/fig7_clock_frontier.{ext}',dpi=300)
     plt.close(fig)

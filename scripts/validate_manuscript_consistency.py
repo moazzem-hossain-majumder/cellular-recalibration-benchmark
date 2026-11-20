@@ -78,6 +78,10 @@ def verify_metrics(root):
 
 def validate(root=ROOT):
     verify_clock_frontier(root)
+    verify_revision_ledgers(root)
+    verify_drive3(root)
+    verify_playback_and_irish(root)
+    verify_campaign_sensitivity(root)
     specs = tables(root)
     verify_metrics(root)
     diag = root/'results/diagnostics'
@@ -219,6 +223,133 @@ def validate(root=ROOT):
                 raise ValueError(f'Stale submission ZIP entry: {name}')
     print(f'Validated {len(specs)} tables, forecast-level aggregates, manuscript and package.')
 
+def verify_campaign_sensitivity(root):
+    folder=root/'results/external_validation'
+    blocks=pd.read_csv(folder/'playback_sensitivity.csv.gz')
+    dates=pd.read_csv(folder/'playback_sensitivity_dates.csv')
+    keys=['segment_s','request_delay_s','date','policy']
+    totals=blocks.groupby(keys)[['stall_s','post_start_s','segments','media_mbit']].sum().sort_index()
+    actual=dates.set_index(keys).sort_index()
+    assert totals.index.equals(actual.index)
+    np.testing.assert_allclose(actual.risk,totals.stall_s/totals.post_start_s,equal_nan=True)
+    duration=totals.index.get_level_values('segment_s')
+    np.testing.assert_allclose(actual.bitrate,totals.media_mbit/(duration*totals.segments),equal_nan=True)
+    summary=pd.read_csv(folder/'playback_sensitivity_summary.csv')
+    assert len(summary)==9
+    for r in summary.itertuples():
+        d=dates[(dates.segment_s==r.segment_s)&(dates.request_delay_s==r.request_delay_s)]
+        pairs=d.pivot(index='date',columns='policy',values=['risk','bitrate'])
+        assert r.dates==len(pairs)
+        assert r.lower_stall_dates==(pairs.risk.TreeLower<pairs.risk.Tree).sum()
+        assert r.lower_bitrate_dates==(pairs.bitrate.TreeLower<pairs.bitrate.Tree).sum()
+        np.testing.assert_allclose([r.median_stall_delta,r.median_bitrate_delta],
+            [(pairs.risk.TreeLower-pairs.risk.Tree).median(),(pairs.bitrate.TreeLower-pairs.bitrate.Tree).median()])
+    dates=pd.read_csv(folder/'cross_campaign_dates.csv')
+    sensitivity=pd.read_csv(folder/'cross_campaign_date_sensitivity.csv')
+    for r in sensitivity.itertuples():
+        d=dates[(dates.cohort==r.cohort)&(dates.model==r.model)]
+        if r.omit_date!='none':
+            d=d[d.date!=r.omit_date]
+        assert r.dates==len(d) and r.positive_dates==(d.positive>0).sum()
+        np.testing.assert_allclose([r.equal_date_low,r.equal_date_high,r.equal_date_utility,r.pooled_low],
+            [(d.errors/d.issued).mean(),((d.errors+d.unresolved)/d.issued).mean(),
+             (d.support/d.observed).mean(),d.errors.sum()/d.issued.sum()])
+
+
+def verify_playback_and_irish(root):
+    folder = root/'results/external_validation'
+    blocks = pd.read_csv(folder/'playback_runs.csv')
+    dates = pd.read_csv(folder/'playback_dates.csv')
+    keys=['route','date','policy']
+    totals=blocks.groupby(keys)[['segments','media_mbit','stall_s','post_start_s']].sum()
+    reported=dates.set_index(keys).sort_index()
+    assert totals.index.equals(reported.index)
+    np.testing.assert_allclose(reported.stall_fraction,totals.stall_s/totals.post_start_s)
+    np.testing.assert_allclose(reported.mean_bitrate,totals.media_mbit/(2*totals.segments))
+    ticks=pd.read_csv(folder/'ireland_drive_ticks.csv',float_precision='round_trip')
+    stats=pd.read_csv(folder/'ireland_drive_summary.csv')
+    cal=ticks[ticks.partition=='cal']
+    test=ticks[ticks.partition=='test']
+    assert len(cal)==10 and cal.end.max()<test.issue.min()
+    for r in stats.itertuples():
+        group=test if r.date=='all' else test[test.date==r.date]
+        part=group.dropna(subset=['y_lag1'])
+        offset=(cal[r.model]-cal.y).max()
+        lower=(part[r.model]-offset).clip(lower=0)
+        assert (len(part),part.y.count(),(lower>part.y).sum(),((lower>0)&part.y.isna()).sum())==(
+            r.issued,r.scored,r.violations,r.unresolved)
+        np.testing.assert_allclose(part[r.model+'_lower'],lower)
+        np.testing.assert_allclose(r.u,np.minimum(lower,part.y).sum()/part.y.sum())
+
+
+def verify_drive3(root):
+    folder = root/'results/external_validation'
+    ledger = pd.read_csv(folder/'drive3_forecasts.csv',float_precision='round_trip')
+    stats = pd.read_csv(folder/'drive3_results.csv')
+    assert len(stats)==len(stats.drop_duplicates(['carrier','date','model']))
+    expected={(name,day,model) for name, cohort in ledger.groupby('carrier')
+              for day in ['all',*cohort.loc[cohort.partition=='test','date'].unique()]
+              for model in ['Persistence','Tree','Tree_noNR']}
+    assert set(stats[['carrier','date','model']].itertuples(index=False,name=None))==expected
+    for r in stats.itertuples():
+        cohort = ledger[ledger.carrier==r.carrier]
+        cal = cohort[cohort.partition=='cal']
+        test = cohort[cohort.partition=='test']
+        assert len(cal)==10 and cal.target_time.max()<test.issue.min()
+        if r.date!='all':
+            test=test[test.date==r.date]
+        issued=test.dropna(subset=['y_lag1'])
+        observed=issued.dropna(subset=['y'])
+        assert len(test)==r.ticks and len(issued)==r.issued
+        if issued.empty:
+            continue
+        assert (issued.lag_time<issued.issue).all() and (observed.target_time>=observed.issue).all()
+        model=r.model
+        ref='Tree' if model=='Tree_noNR' else model
+        q=(cal[ref]-cal.y).max()
+        lower=issued[model+'_lower']
+        np.testing.assert_allclose([r.offset],[q])
+        np.testing.assert_allclose(lower,np.maximum(0,issued[model]-q))
+        pos=lower>0
+        failures=(lower>issued.y).sum()
+        missing=(pos & issued.y.isna()).sum()
+        assert (pos.sum(),failures,missing,observed.shape[0])==(r.positive,r.violations,r.unresolved,r.scored)
+        if len(observed):
+            np.testing.assert_allclose(r.u,np.minimum(lower,issued.y).sum()/observed.y.sum())
+
+
+def verify_revision_ledgers(root):
+    folder = root/'results/clock_histgbm'
+    ledger = pd.read_csv(folder/'simulated_nr_forecasts.csv.gz', float_precision='round_trip')
+    summaries = pd.read_csv(folder/'simulated_nr_metrics.csv').set_index(['regime','scenario','seed'])
+    grouped = ledger.groupby(['regime','scenario','seed'])
+    assert set(grouped.groups) == set(summaries.index)
+    for key, rows in grouped:
+        summary = summaries.loc[key]
+        positive = rows.lower > 0
+        failed = rows.lower > rows.y
+        missing = positive & rows.y.isna()
+        assert (len(rows),rows.y.count(),positive.sum(),failed.sum(),missing.sum()) == (
+            summary.issued,summary.scored,summary.positive,summary.violations,summary.unresolved)
+        np.testing.assert_allclose(summary.u,np.minimum(rows.lower,rows.y).sum()/rows.y.sum())
+    external = root/'results/external_validation'
+    records = pd.read_csv(external/'nuwins_drive2_forecasts.csv',float_precision='round_trip')
+    result = read_json(external/'nuwins_drive2_summary.json')
+    cal = records[records.partition=='cal_used']
+    test = records[records.partition=='test']
+    issued = test.dropna(subset=['point'])
+    observed = issued.dropna(subset=['y'])
+    assert len(cal)==10 and cal.target_time.max()<test.issue.min()
+    assert (issued.lag_time<issued.issue).all() and (observed.target_time>=observed.issue).all()
+    offset = (cal.point-cal.y).max()
+    np.testing.assert_allclose(result['offset_mbps'],offset)
+    np.testing.assert_allclose(issued.lower,np.maximum(0,issued.point-offset))
+    stats = result['test']
+    assert (len(test),len(issued),len(observed),sum(issued.lower>0),sum(observed.lower>observed.y)) == (
+        stats['ticks'],stats['issued'],stats['scored'],stats['positive'],stats['violations'])
+    np.testing.assert_allclose(stats['supported'],np.minimum(observed.lower,observed.y).sum()/observed.y.sum())
+
+
 def verify_clock_frontier(root):
     folder = root/'results/clock_histgbm'
     ticks = pd.read_csv(folder/'ticks.csv',float_precision='round_trip')
@@ -249,6 +380,13 @@ def verify_clock_frontier(root):
             lower = np.maximum(0,test[model].to_numpy()-q)
             errors = int((lower>test.y).sum())
             missing = int(((lower>0)&test.y.isna()).sum())
+            positive = int((lower>0).sum())
+            measured = positive-missing
+            assert (positive,measured,measured-errors)==(r.positive,r.positive_scored,r.positive_covered)
+            np.testing.assert_allclose([r.positive_rate,r.v_given_positive,r.positive_low,r.positive_high],
+                [positive/len(test),errors/measured if measured else np.nan,
+                 errors/positive if positive else np.nan,(errors+missing)/positive if positive else np.nan],
+                equal_nan=True)
             assert (len(test),int(test.y.count()),errors,missing)==(r.issued,r.scored,r.violations,r.unresolved)
             np.testing.assert_allclose([r.lo,r.hi,r.v,r.u],[errors/len(test),(errors+missing)/len(test),
                 errors/test.y.count(),np.nansum(np.minimum(lower,test.y))/test.y.sum()],atol=1e-12)

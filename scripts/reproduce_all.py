@@ -15,9 +15,13 @@ def main():
         ['scripts/audit_data_quality.py'], ['scripts/audit_trace_filters.py'],
         ['scripts/audit_session_segmentation.py'], ['scripts/validate_session_boundaries.py'],
         ['scripts/audit_cluster_inference.py'], ['scripts/audit_group_support.py'],
-        ['scripts/validate_clock_and_network.py'], ['scripts/clock_frontier.py'], ['scripts/metro_transfer.py'],
+        ['scripts/validate_clock_and_network.py'], ['scripts/clock_frontier.py'],
+        ['scripts/select_clock_policy.py'], ['scripts/select_positive_offers.py'], ['scripts/stress_clock_radio.py'],
+        ['scripts/validate_nuwins_drive2.py'], ['scripts/replicate_nuwins_drive3.py'], ['scripts/metro_transfer.py'],
         ['scripts/compare_sirhan_external.py', 'data/raw/sirhan-v1.zip'], ['scripts/audit_external_traces.py'],
-        ['scripts/report_sirhan_external.py'], ['scripts/validate_irish_groups.py'], ['scripts/build_paper_html.py'],
+        ['scripts/report_sirhan_external.py'], ['scripts/validate_irish_groups.py'], ['scripts/ireland_drive_transfer.py'], ['scripts/replay_oslo_playback.py'], ['scripts/replay_oslo_playback.py','--sensitivity'],
+        ['scripts/check_campaign_robustness.py'],
+        ['scripts/build_paper_html.py'],
         ['scripts/validate_manuscript_consistency.py'], ['-m','pytest','-ra','--junitxml=results/runs/final_tests.xml'],
 
     ]:

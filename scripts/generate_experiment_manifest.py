@@ -10,8 +10,6 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
-import torch
-from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGES = ['torch','pandas','numpy','scipy','scikit-learn','matplotlib','seaborn',
@@ -27,11 +25,28 @@ PATTERNS = [
     'results/runs/external_validation.json','antigravity.md','results/external_validation/*',
     'docs/EXTERNAL*md','docs/RELIABILITY_USEFULNESS_ANALYSIS.md','docs/FINAL_REVIEW.md',
     'results/clock_histgbm/*','docs/RESEARCH_GAP_AND_NOVELTY_REVIEW.md','docs/PRIMARY_CONTRIBUTION_DECISION.md',
-    'docs/STATISTICAL_DESIGN_IMPROVEMENT.md','docs/CROSS_NETWORK_GENERALIZATION.md'
+    'docs/STATISTICAL_DESIGN_IMPROVEMENT.md','docs/CROSS_NETWORK_GENERALIZATION.md',
+    'docs/UPDATED_LITERATURE_AND_NOVELTY_REVIEW.md','docs/FINAL_ADVERSARIAL_PEER_REVIEW.md',
+    'docs/REJECTION_RISK_REVISIONS.md','docs/POSITIVE_OFFER_SELECTION.md','docs/PLAYBACK_REPLAY_PROTOCOL.md','docs/TRIP_AND_APPLICATION_RESULTS.md','docs/DRIVE3_PROTOCOL.md','docs/DRIVE3_REPLICATION.md','docs/FINAL_SCORECARD.md','docs/FINAL_EXECUTION_REPORT.md','constraints-research.txt'
 ]
+TEXT_FORMATS = {'.py','.md','.json','.csv','.tex','.bib','.yaml','.yml','.toml','.txt','.html','.xml'}
 
 def digest(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    payload = path.read_bytes()
+    if path.suffix.lower() in TEXT_FORMATS:
+        payload = payload.replace(b'\r\n',b'\n')
+    return hashlib.sha256(payload).hexdigest()
+
+def verify(root=ROOT):
+    pointer = read_json(root/'results/runs/experiment_manifest.json')
+    manifest = root/pointer['manifest']
+    if digest(manifest)!=pointer['sha256']:
+        raise ValueError('Manifest pointer digest mismatch')
+    hashes = read_json(manifest)['sha256']
+    for name,expected in hashes.items():
+        if digest(root/name)!=expected:
+            raise ValueError(f'File digest mismatch: {name}')
+    print(f'Verified {len(hashes)} manifest entries.')
 
 def read_json(path):
     return json.loads(path.read_text(encoding='utf8'))
@@ -47,6 +62,8 @@ def test_counts(report):
     return counts
 
 def main():
+    import torch
+    from pypdf import PdfReader
     runs = ROOT/'results/runs'
     receipt = read_json(runs/'external_validation.json')
     counts = test_counts(runs/'final_tests.xml')
@@ -66,6 +83,8 @@ def main():
     meta = {
         'base_commit': subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         'working_tree': 'Local corrections identified by individual SHA-256 hashes',
+        'digest_scheme': {'algorithm':'SHA-256','normalize_crlf_to_lf':sorted(TEXT_FORMATS),
+                          'other_files':'exact bytes; raw dataset pins in acquisition manifests use exact bytes'},
         'generated_utc': datetime.now(timezone.utc).isoformat(),
         'environment': {
             'platform': platform.platform(), 'python':sys.version,
@@ -75,7 +94,7 @@ def main():
             'cuda': torch.version.cuda
         },
         'datasets':read_json(ROOT/'data/metadata/acquisition_manifest.json'),
-        'settings': {'primary_window_seconds':60,'alpha':0.1,'budgets':[0,1,2,5,8,9,10,15],
+        'settings': {'clock_prefix_max':{'E1':178,'E3':254},'primary_window_seconds':60,'alpha':0.1,'budgets':[0,1,2,5,8,9,10,15],
                      'bootstrap_draws':2000,'bootstrap_seed':42,'mask_seed':42,'neural_seed':42},
         'execution':sorted(execution,key=lambda stage:stage['start_utc']),
         'tests':test_counts(runs/'final_tests.xml'),
@@ -90,5 +109,11 @@ def main():
         raise ValueError('File changed during provenance verification')
 
 if __name__=='__main__':
-    main()
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--verify',action='store_true',help='Verify the existing manifest without updating any files')
+    if parser.parse_args().verify:
+        verify()
+    else:
+        main()
 

@@ -11,9 +11,10 @@ supported throughput and how the gain changes with traffic mix. A
 matched replay of the frozen forecaster bounds the violation rate across
 every issued commitment, including those without measured outcomes. A
 separate bus-to-metro route transfer isolates the consequences of
-changing the predictor and its calibration population. The paper reports
-adverse outcomes and limits its claims to the observed endpoints and
-dates.
+changing the predictor and its calibration population. A separate US
+drive with publisher-supplied transfer intervals provides an additional
+check of the persistence baseline. The paper reports adverse outcomes
+and limits its claims to the observed endpoints and dates.
 
 Sincerely,\
 Md. Moazzem Hossain Majumder

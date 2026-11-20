@@ -1,0 +1,101 @@
+{
+  "commit": "782b712599f3710f7d3acff57097af6ca14660ae",
+  "cohort": "AT&T Drive 2",
+  "files": {
+    "atnt_day_1_d2_dl.csv": {
+      "url": "https://media.githubusercontent.com/media/NUWiNS/pam2025-multi-carrier-dataset/782b712599f3710f7d3acff57097af6ca14660ae/datasets/processed_files/extracted_tput_data/atnt/DL/atnt_day_1_d2_dl.csv",
+      "bytes": 4910642,
+      "sha256": "ef53a5d555bed97339bc8f3fc2764a30b20858ededab9e0c2044a008cb9b9de7",
+      "git_blob": "74d89268f157d5bf0bab6d86fea580559f47e897"
+    },
+    "atnt_day_2_d2_dl.csv": {
+      "url": "https://media.githubusercontent.com/media/NUWiNS/pam2025-multi-carrier-dataset/782b712599f3710f7d3acff57097af6ca14660ae/datasets/processed_files/extracted_tput_data/atnt/DL/atnt_day_2_d2_dl.csv",
+      "bytes": 4254130,
+      "sha256": "f926ed7216b114376935c424167747de6f1bf6e1dac66e173a325230079c6e47",
+      "git_blob": "6d28798d567d91924db534ba8c9f8e3bacd5e241"
+    },
+    "atnt_day_3_d2_dl.csv": {
+      "url": "https://media.githubusercontent.com/media/NUWiNS/pam2025-multi-carrier-dataset/782b712599f3710f7d3acff57097af6ca14660ae/datasets/processed_files/extracted_tput_data/atnt/DL/atnt_day_3_d2_dl.csv",
+      "bytes": 3140663,
+      "sha256": "aae2ebbdce20bd451c8d0f46a33e8e8fa70d9e611cf36ebd3f164148ad7ab3e7",
+      "git_blob": "30ca787c4da9a9c89d0e36fd7018c3eafe3d610e"
+    },
+    "atnt_day_4_cst_d2_dl.csv": {
+      "url": "https://media.githubusercontent.com/media/NUWiNS/pam2025-multi-carrier-dataset/782b712599f3710f7d3acff57097af6ca14660ae/datasets/processed_files/extracted_tput_data/atnt/DL/atnt_day_4_cst_d2_dl.csv",
+      "bytes": 1282243,
+      "sha256": "92e45cc29e3a59fb360fc6baab5d499efd58e9c5d3ed6cbfcd708620a3419f73",
+      "git_blob": "46bf08c4b66dac00cdc2de8ecfb286d395d604eb"
+    },
+    "atnt_day_4_d2_dl.csv": {
+      "url": "https://media.githubusercontent.com/media/NUWiNS/pam2025-multi-carrier-dataset/782b712599f3710f7d3acff57097af6ca14660ae/datasets/processed_files/extracted_tput_data/atnt/DL/atnt_day_4_d2_dl.csv",
+      "bytes": 392786,
+      "sha256": "fcaf15ed4e854856c9878bde85de6a335315067c2406f799ff1e27297fc09898",
+      "git_blob": "b9f84fe62ae2977d5edfa8a751c7635cbcd42c86"
+    },
+    "downlink_start_end_times.pkl": {
+      "url": "https://raw.githubusercontent.com/NUWiNS/pam2025-multi-carrier-dataset/782b712599f3710f7d3acff57097af6ca14660ae/datasets/raw_files/xcal_raw/start_end_times/downlink_start_end_times.pkl",
+      "bytes": 23536,
+      "sha256": "048fcd95a0e539c6a803564eb9e98cd507de706ccbc2dce25860194ea6c5b3c8",
+      "git_blob": "a219d8f44ba173745913bc83b13b61c9f8c3d2a4"
+    }
+  },
+  "source_windows": 380,
+  "windows": 120,
+  "dates": [
+    "2023-05-13",
+    "2023-05-14",
+    "2023-05-15",
+    "2023-05-16"
+  ],
+  "calibration_dates": [
+    "2023-05-13",
+    "2023-05-14"
+  ],
+  "test_dates": [
+    "2023-05-15",
+    "2023-05-16"
+  ],
+  "test_tick_counts": {
+    "2023-05-15": 0,
+    "2023-05-16": 36
+  },
+  "calibration_pool": 203,
+  "calibration_used": 10,
+  "offset_mbps": 138.418,
+  "test": {
+    "ticks": 36,
+    "issued": 33,
+    "abstained": 3,
+    "scored": 33,
+    "missing_issued": 0,
+    "positive": 8,
+    "violations": 6,
+    "observed_coverage": 0.8181818181818181,
+    "observed_violation": 0.18181818181818182,
+    "mae_mbps": 100.08727272727273,
+    "supported": 0.4946373575014164,
+    "all_issued_violation_bounds": [
+      0.18181818181818182,
+      0.18181818181818182
+    ]
+  },
+  "by_test_date": {
+    "2023-05-16": {
+      "ticks": 36,
+      "issued": 33,
+      "abstained": 3,
+      "scored": 33,
+      "missing_issued": 0,
+      "positive": 8,
+      "violations": 6,
+      "observed_coverage": 0.8181818181818181,
+      "observed_violation": 0.18181818181818182,
+      "mae_mbps": 100.08727272727273,
+      "supported": 0.4946373575014164,
+      "all_issued_violation_bounds": [
+        0.18181818181818182,
+        0.18181818181818182
+      ]
+    }
+  }
+}

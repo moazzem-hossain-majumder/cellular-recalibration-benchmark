@@ -1,0 +1,13 @@
+carrier,shard,raw_present,rows,matched
+AT&T,atnt_day_1_d3_dl.csv,True,68235,67005
+AT&T,atnt_day_2_d3_dl.csv,True,81703,80681
+AT&T,atnt_day_3_d3_dl.csv,True,84936,84495
+AT&T,atnt_day_4_d3_dl.csv,True,109581,108675
+T-Mobile,tmobile_day_1_d3_dl.csv,True,76377,59861
+T-Mobile,tmobile_day_2_d3_dl.csv,True,80378,52502
+T-Mobile,tmobile_day_3_d3_dl.csv,True,88890,60956
+T-Mobile,tmobile_day_4_d3_dl.csv,True,105238,99697
+Verizon,verizon_day_1_d3_dl.csv,True,70201,69087
+Verizon,verizon_day_2_d3_dl.csv,True,77897,76284
+Verizon,verizon_day_3_d3_dl.csv,True,82066,80770
+Verizon,verizon_day_4_d3_dl.csv,False,104447,0

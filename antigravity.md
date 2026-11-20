@@ -1,3 +1,10 @@
+# Revision handoff
+
+The November 20 [reviewer-risk revision](docs/REJECTION_RISK_REVISIONS.md) strengthens the claim formulation, collection-date analysis and playback sensitivity. Venue-specific assessment remains pending. Earlier general readiness judgments below are provisional.
+
+
+Topic A remains the sole research topic. The [Drive 3 replication](docs/DRIVE3_REPLICATION.md) is complete. The remaining priority is prospectively scheduled field collection across independent trips using the [collection protocol](docs/DRIVE3_PROTOCOL.md). Start with [the revision execution report](docs/FINAL_EXECUTION_REPORT.md), [the scorecard](docs/FINAL_SCORECARD.md) and [the manuscript](paper/manuscript.tex). Use the RTX 4060 for supported GPU experiments and record batch size, memory and any tuning on development data. The primary frozen HistGBM and persistence analyses run on CPU. Preserve their evaluation dates and all adverse results. Further scientific improvement requires independent dates and compatible event logging. The original project handoff follows.
+
 # Antigravity handoff: telecommunications research
 
 **Workspace:** `D:\Telecom`  
@@ -315,3 +322,4 @@ Maintain this handoff or a linked progress log as the work advances: what change
   - Added Algorithm 1 (pseudocode) and Table 1 (Literature Comparison Matrix) into both `paper/manuscript.tex` and `paper/manuscript.md`.
   - Added unit tests for Covariate-Shift Conformal Calibrator in `tests/test_conformal.py` (all tests passing).
   - Integrated dashboard build into Step 5 of `scripts/reproduce_experiments.py`.
+

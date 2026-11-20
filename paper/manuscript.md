@@ -4,7 +4,7 @@ Md. Moazzem Hossain Majumder
 
 ## Abstract
 
-A cellular forecaster can issue a rate even when the logger never records the corresponding outcome. We evaluate whether a ten-percent violation target can be assessed over every issued forecast and how much throughput the commitments support. On two Rome campaigns, ten target labels made a session-trained tree conservative on reset-defined endpoints. On a clock fixed before observing throughput, that same tree made 67 observed violations across 238 issued forecasts on the later source operator. Even the best-case all-issued violation rate was 28.15 percent. On the other operator it issued only three positive commitments across 171 opportunities and supported 0.065 percent of measured throughput. At some larger budgets the measured violation rate was below ten percent while missing positive commitments left all-issued risk unresolved. A chronological Irish comparison and a Norwegian route transfer also showed sensitivity to the calibration population. These finite-record results distinguish measured reliability, unresolved outcomes and negligible commitments; sparse dates limit inference about future campaigns.
+A cellular throughput forecaster can appear reliable by promising a positive rate rarely, or by evaluating only forecasts whose outcomes are recorded. We study how these choices change the interpretation of a calibrated minimum-rate promise. A common decision ledger relates failure across all issued forecasts to failure among positive promises, bounds the effect of missing outcomes, and records useful rate. We replay frozen predictors on chronological Rome, US and Irish measurements. On Irish driving traces, persistence violated 31 of 334 issued commitments, satisfying a nominal ten-percent ceiling, while violating 31 of its 41 positive promises. The same comparison favored persistence over the Rome-trained tree in supported throughput. In Rome, none of six tested policies simultaneously met the chosen positive-promise risk, offer-frequency and throughput requirements on earlier validation dates. Across 22 Norwegian recordings, a separate frozen lag model reduced simulated video stalls through calibration while lowering delivered bitrate. This direction persisted across seven calendar dates under nine segment-length and request-delay settings. These results support an empirical evaluation procedure that reports observable reliability and service together. Sparse campaigns, retrospective design and dependence between measurements limit inference about future deployments.
 
 <div class="IEEEkeywords">
 
@@ -16,7 +16,22 @@ Cellular throughput, conformal prediction, measurement methodology, missing radi
 
 An application that chooses a sending rate before a download needs to know how often its forecast exceeds delivered throughput and how much usable rate it gives up to reduce those violations. We ask how those quantities change when an operator has only a few labeled examples from the destination network. The contribution is an empirical comparison on released traces, with a common predictor and a fixed test suffix across label budgets. Prior work characterizes the underlying campaigns (Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024), additive prediction with missing observations (Jacobson et al. 2025), and conditional calibration under missing covariates (Zaffran et al. 2023). The BAMMO-inspired baseline uses our pattern-specific boosted trees. We did not replicate the original authors’ implementation. Grouping by recorded telemetry availability gives a simple comparator. Its interpretation depends on support within each group.
 
-We ask three questions. Does measured risk resolve the target across all issued commitments? Does the session-trained tree retain its operating point on a fixed clock? Do more recent or telemetry-specific calibration labels improve the risk and supported-rate tradeoff on the same forecast opportunities? We answer these questions with a decision ledger, matched predictors and chronological prefix comparisons. The external analyses distinguish transfer of a fitted predictor from transfer of its calibration offset. Narayanan et al. mapped and predicted commercial millimeter-wave throughput (Narayanan et al. 2020), while Kousias et al. modeled performance in non-standalone networks (Kousias, Rajiullah, Caso, Alay, et al. 2024). Our benchmark evaluates how much measured rate remains supportable when an existing point forecast receives only a short destination calibration prefix.
+Our central question is how the calibration budget affects the reliability and usefulness of cellular throughput commitments under incomplete radio telemetry and chronological distribution changes. The clock replay supplies the primary evidence. On the later source operator the ten-label tree violated 67 of its 122 measurable positive commitments. On the destination operator it violated two of only three. The following questions guide the analysis. Does measured risk resolve the target across all issued commitments? Does the session-trained tree retain its operating point on a fixed clock? Do more recent or telemetry-specific calibration labels improve the risk and supported-rate tradeoff on the same forecast opportunities? We answer these questions with a decision ledger, matched predictors and chronological prefix comparisons. The external analyses distinguish transfer of a fitted predictor from transfer of its calibration offset. Narayanan et al. mapped and predicted commercial millimeter-wave throughput (Narayanan et al. 2020), while Kousias et al. modeled performance in non-standalone networks (Kousias, Rajiullah, Caso, Alay, et al. 2024). Our benchmark evaluates how much measured rate remains supportable when an existing point forecast receives only a short destination calibration prefix.
+
+# Decision criteria and contribution
+
+The primary contribution is a reproducible empirical test of whether a reliability conclusion survives explicit accounting for positive offers, unobserved outcomes and independent collection units. The algebra below makes the decision rule auditable. Selective prediction already relates conditional risk to acceptance frequency; our study applies that relationship to minimum-rate promises with incomplete outcomes and measured service.
+
+Let $`N`$ denote all issued promises, $`M`$ the positive promises, $`e`$ observed violations, and $`m`$ positive promises without an outcome. For a completed ledger let $`R`$ be failure across all issued promises, $`R_+`$ failure conditional on a positive promise, and $`A=M/N`$. Since a zero promise cannot violate a nonnegative rate, $`R=A R_+`$. Thus a ceiling $`R\leq\alpha`$ permits conditional failure as high as $`\min(1,\alpha/A)`$. The earlier selection experiment illustrates why an overall risk ceiling can coexist with poor positive-promise reliability.
+
+When outcomes are unavailable, the sharp bounds are
+``` math
+R\in[e/N,(e+m)/N],\qquad
+ R_+\in[e/M,(e+m)/M]\quad(M>0).
+```
+Each endpoint is attained by assigning every unobserved positive promise an outcome equal to its promise or zero, respectively. These bounds require a well-defined nonnegative latent rate at each opportunity. They do not identify service after logging ends. For a chosen positive-promise tolerance $`\alpha`$, the recorded ledger meets the tolerance under every completion exactly when $`e+m\leq\alpha M`$; it fails under every completion when $`e>\alpha M`$. Otherwise the missing outcomes leave the decision unresolved. A policy with $`M=0`$ has undefined conditional risk and no positive service. Report $`A`$ and measured supported throughput alongside this decision. The latter conditions on observed outcomes and cannot identify throughput on unrecorded service attempts.
+
+This finite-record test does not constitute a new distribution-free population guarantee. It connects the issued ledger to an operationally interpretable criterion and supplies a falsifiable test for the empirical claims. The main evidence is the clock replay and independent archives. Session-defined endpoints, alternative models and budget frontiers provide sensitivity analyses.
 
 # Measurements and prediction time
 
@@ -83,7 +98,7 @@ We compute $`V=\sum_i\mathbf{1}\{y_i<L_i\}/N`$ and $`U=\sum_i\min(L_i,y_i)/\sum_
 
 </div>
 
-# Results
+# Session-endpoint comparison
 
 Table I reports source model selection. Table II and Fig. 1 show the full budget curve. Fig. 2 compares observed subgroups. Persistence had a lower validation MAE than the histogram model on nine source-validation observations. We use the common histogram predictor to isolate differences between calibration rules. We examine persistence separately on the external benchmark and in the joint-shift analysis below. The point baseline exceeds the measured throughput in roughly one third to three fifths of held-out sessions. With source calibration, every regime exceeds ten percent violations at each tested budget below nine. At ten labels the global method records zero violations in E0 and E3, approximately seven percent in E1 and two percent in E2. In E3 it supports less than one percent of measured rate. At fifteen labels the grouped E1 rule exceeds the nominal target (0.1007), while grouped E2 increases supported fraction to 0.0993 with a violation rate of 0.0977. All four regimes give identical global and missingness-group results at ten labels when the pooled fallback is applied consistently. Thus this comparison provides no evidence of a grouping advantage at that budget. At ten labels the tree offsets were 27.81, 22.79, 28.70 and 30.29 Mbps, respectively. Clipping then produced zero rates on 65.85, 59.71, 75.00 and 93.20 percent of the suffixes. Group-level support existed for 54 of 539 forecasts; the remaining 485 used the pooled target. The identical bounds therefore reflect both fallback and coincident offsets.
 
@@ -173,7 +188,7 @@ Table V and Figs. 3–5 report the feedback, weighting and decision analyses. Th
 
 </div>
 
-# External comparison and the value of a previous measurement
+# Published-baseline and endpoint comparisons
 
 We reproduced Sirhan’s global one-sided forecast on the Irish 5G traces of Raca et al. (Sirhan 2026; Raca et al. 2020). Each of 30 splits assigns whole traces to training, calibration and testing. We retained the released features, predictor training and signed-error calibration. For target row $`t+1`$, persistence uses the downlink measurement at $`t-1`$, the latest throughput feature available to the tree. A second candidate takes the smaller of that lag and the nonnegative tree estimate before calibration. The Rome experiments informed the candidate choice before its Irish evaluation.
 
@@ -278,13 +293,13 @@ We froze the original tree fitted on 57 earlier Op1 sessions and replayed it alo
 
 <div class="table*">
 
-|        |             |        |        |        |         |       |       |       |
-|:-------|------------:|-------:|-------:|-------:|--------:|------:|------:|------:|
-| Regime |   Predictor | Issued | Scored | Errors | Unknown |   Low |  High |     U |
-| E1     | Persistence |    238 |    211 |     17 |       1 |  7.14 |  7.56 |  8.29 |
-| E1     |     HistGBM |    238 |    211 |     67 |       8 | 28.15 | 31.51 |  7.15 |
-| E3     | Persistence |    171 |    152 |     21 |       1 | 12.28 | 12.87 | 16.00 |
-| E3     |     HistGBM |    171 |    152 |      2 |       0 |  1.17 |  1.17 |  0.06 |
+|        |             |        |        |          |        |       |       |       |
+|:-------|------------:|-------:|-------:|---------:|-------:|------:|------:|------:|
+| Regime |   Predictor | Issued | Scored | Positive | Errors |   Low |  High |     U |
+| E1     | Persistence |    238 |    211 |    22/23 |     17 |  7.14 |  7.56 |  8.29 |
+| E1     |     HistGBM |    238 |    211 |  122/130 |     67 | 28.15 | 31.51 |  7.15 |
+| E3     | Persistence |    171 |    152 |    36/37 |     21 | 12.28 | 12.87 | 16.00 |
+| E3     |     HistGBM |    171 |    152 |      3/3 |      2 |  1.17 |  1.17 |  0.06 |
 
 </div>
 
@@ -292,10 +307,48 @@ Table XII shows that the ten-label tree exceeded the target on E1 even if every 
 
 <figure data-latex-placement="!ht">
 <embed src="figures/fig7_clock_frontier.png" />
-<figcaption>Rome clock replay at every available prefix size. Each point shows supported throughput and violations on measured outcomes. Lines connect nondominated measured operating points within each policy. The dashed horizontal line is the nominal risk ceiling. Both axes use the same scored opportunities within each panel.</figcaption>
+<figcaption>Rome clock replay at every available prefix size. Each point shows supported throughput and violations on measured outcomes. Lines connect nondominated measured operating points within each policy. The dashed horizontal line is the nominal risk ceiling. The lower panels show the percentage of all issued ticks with a strictly positive commitment at each budget. Solid lines denote global offsets and dotted lines denote grouped offsets.</figcaption>
 </figure>
 
-Replacing the first ten tree calibration labels with the latest ten available before each test day reduced E1 measured violations from 31.75 to 4.74 percent and supported throughput from 7.15 to 1.08 percent. On E3, violations increased from 1.32 to 13.16 percent. In a separate same-endpoint Norwegian transfer, the bus-trained tree on three metro test dates supported 5.30 percent with 0.24 percent violations using bus calibration. Ten earlier metro labels changed these to 28.13 and 11.99 percent. A local metro refit and local calibration gave 29.20 and 0.80 percent. Route, dates and predictor must accompany any reported operating point.
+At ten labels the E1 tree issued 130 positive commitments. Of the 122 with outcomes, 55 were honored. All three positive E3 commitments occurred on one date and only one was honored. Persistence issued 23 and 37 positive commitments, respectively, of which 22 and 36 were measurable and five and fifteen were honored. For 26 of 27 missing E1 outcomes and all 19 missing E3 outcomes, the recording ended before the forecast horizon. This identifies a limit of observation. The logs cannot establish whether service continued after recording stopped.
+
+We simulated loss of otherwise recorded NR inputs at deployment while holding tick times, measured rates and the ten-label tree offset fixed. On E1, periodic, burst and weak-signal masking reduced supported throughput from 7.15 percent to 5.93, 5.78 and 4.76 percent. Each reduced measured violations as well. Choosing the smaller of each tick’s recorded-input and masked-input commitments reduced support to 1.49 percent on E1 and zero on E3. This prediction-based sensitivity envelope describes the implemented tree. It cannot establish the effect of a physical radio outage.
+
+Replacing the first ten tree calibration labels with the latest ten available before each test day reduced E1 measured violations from 31.75 to 4.74 percent and supported throughput from 7.15 to 1.08 percent. On E3, violations increased from 1.32 to 13.16 percent. In a separate same-endpoint Norwegian transfer, the bus-trained tree on three metro test dates supported 5.30 percent with 0.24 percent violations using bus calibration. Ten earlier metro labels changed these to 28.13 and 11.99 percent. A local metro refit and local calibration gave 29.20 and 0.80 percent. Route, dates and predictor must accompany any reported operating point. An exploratory selection rule maximized validation supported throughput subject to $`(e+m_+)/N\leq0.10`$. Candidates were zero commitment and both clock predictors with global or grouped offsets at 9, 10, 15 or 20 labels from the first target date. Ties favored smaller budgets, then fixed candidate order. Validation used the remaining pre-test dates (155 measured labels across three dates for E1, 231 across four dates for E3). No offset was refitted. E1 selected nine-label persistence and reproduced the ten-label persistence operating point. E3 selected twenty-label persistence, supporting 19.52 percent of measured throughput with an all-issued violation fraction between 15.20 and 15.79 percent. The fixed ten-label persistence baseline supported 16.00 percent with risk between 12.28 and 12.87 percent. Even with extra validation labels the empirical constraint failed to transfer. The historical test suffix was already known when we designed this analysis.
+
+In an independently collected US drive, we applied ten-label persistence within the publisher’s logged AT&T downlink transfer intervals (NUWiNS 2025). May 13–14, 2023 supplied the calibration pool. Of the two reserved dates, only May 16 contained eligible intervals. Of 36 scheduled ticks, 33 had a preceding rate and all 33 issued forecasts had outcomes. Eight commitments were positive and six violated, giving 18.18 percent all-issued violations and 49.46 percent supported throughput. Three ticks lacked a preceding rate. The time series, device and endpoint differ from Rome. This evaluates the persistence protocol on one informative test date.
+
+<div class="table*">
+
+|          |             |        |        |     |      |       |       |         |
+|:---------|------------:|-------:|-------:|----:|-----:|------:|------:|--------:|
+| Carrier  |       Model | Issued | Scored | Pos | Fail |   Low |  High |       U |
+| ATT      | Persistence |    296 |    294 |  13 |    8 |  2.70 |  2.70 |  7.2872 |
+| ATT      |        Tree |    296 |    294 |  57 |   22 |  7.43 |  7.43 |  2.2524 |
+| T-Mobile | Persistence |    294 |    293 | 270 |  201 | 68.37 | 68.37 | 71.5503 |
+| T-Mobile |        Tree |    294 |    293 | 236 |  123 | 41.84 | 41.84 |  1.2536 |
+| Verizon  | Persistence |    287 |    283 |   4 |    4 |  1.39 |  1.39 |  0.3845 |
+| Verizon  |        Tree |    287 |    283 |   1 |    0 |  0.00 |  0.00 |  0.0031 |
+
+</div>
+
+On a second US drive we retained every released carrier and the same ten-label rule. Table XIII compares persistence and the original Rome-trained tree on identical active-transfer ticks. We aligned six serving-cell signal fields by device timestamp and used only measurements preceding issue. August 5–6 supplied calibration labels. August 7–9 supplied the suffix, with only two scheduled ticks per carrier after midnight on August 9. The three carriers shared the drive. The release lacked the last Verizon raw radio shard; we retained its rates and marked the signals missing.
+
+On AT&T, 22 of 296 issued tree commitments violated (7.43 percent), including 22 of 57 positive commitments (38.60 percent). T-Mobile had 123 violations among 294 issued and 236 positive commitments. On Verizon the sole positive offer was honored. Masking NR inputs at issue while preserving the full-input tree offset yielded zero positive offers on every carrier. The different carrier operating points and short shared trip limit extrapolation to future deployments.
+
+We also tested feasibility when the 10 percent ceiling applies specifically to positive promises. Selective risk assessment and testing candidate rules motivate this comparison (Geifman and El-Yaniv 2017; Angelopoulos et al. 2021). On the same pre-test validation dates we scaled each ten-label tree or persistence bound by 0.25, 0.5 or 1. The exploratory service floors required positive offers on at least 10 percent of opportunities and support for at least 5 percent of measured throughput. We counted unresolved positive offers as failures. None of the six candidates met all three empirical criteria on either operator. Requiring a one-sided exact binomial upper limit with a six-way Bonferroni adjustment also yielded no candidate. The quarter-rate E3 tree failed on zero of five positive offers across 252 validation opportunities; its supported fraction was only 0.22 percent. Abstention consequently delivered no service on either suffix. The binomial limit assumes independent offers and supplies no temporal deployment guarantee.
+
+## Separate trips and client outcomes
+
+We also replayed the Rome tree on eleven Irish driving-download traces across five held-out dates. The prior all-application calendar cutoff yielded no driving downloads for calibration. Before scoring this cohort, we moved calibration to its first two dates and retained all later dates. Four signal fields map to Rome; both SINR features remain missing. Under the full-minute clock, 334 of 335 ticks had an eligible lag, and 323 had observed outcomes. The tree broke 43 of 155 measurable positive promises, with four more positive promises unresolved. Its all-issued risk was 12.87–14.07 percent and supported throughput 7.74 percent. Persistence broke 31 of 41 positive promises, with all-issued risk 9.28 percent and supported throughput 16.42 percent. On these recordings persistence supported more rate and met the all-issued risk threshold, while failing more often conditional on a positive promise.
+
+To evaluate a client decision, we froze the Norwegian bus-trained lag model and replayed serial two-second video segment requests against measured TCP service on every remaining published route after the original cutoff. Twenty-two recordings on seven routes formed eleven route-date groups across seven calendar dates. Continuity breaks reset the client; each policy used identical blocks. The client selected among five representations from 0.15 to 3 Mbps, starting playback after the first segment and falling back to the lowest representation for smaller commitments. Calibration reduced the stall fraction on all eleven route-dates. Median route-date stall time as a fraction of post-start time fell from 19.12 to 12.93 percent, while median delivered representation fell from 1.01 to 0.24 Mbps. Constant 0.15 Mbps gave 12.30 percent median stalling. These counterfactual playback outcomes assume the measured service is unaffected by request size. They give no direct estimate of user preference or the effect of deploying the client on a live network.
+
+## Collection-date and client-model sensitivity
+
+We repeated the fixed-policy summaries with equal weight for each collection date and removed each date in turn. The released ledger provides counts of positive promises, observed failures and unresolved positive outcomes for every date. The Rome E3 tree has positive offers on one of seven test dates; the Verizon tree has them on one of three calendar dates. The final US date contains only a short continuation past midnight. Across five Irish dates, equal-date all-issued risk was 12.43 percent for the tree and 9.43 percent for persistence, with supported throughput 7.09 and 17.31 percent. These are sensitivity descriptions conditional on the archived campaigns. No tick-level confidence interval is used to claim independent replication.
+
+For playback, we varied segment duration over 1, 2 and 4 seconds and a fixed per-request delay over 0, 100 and 300 milliseconds. The representation decision used completed observations at request initiation. All routes on the same calendar date were pooled before comparing policies. On each of seven dates, calibration lowered both stall fraction and delivered bitrate under all nine settings. The median paired stall reduction across dates ranged from 5.50 to 11.81 percentage points; the median bitrate reduction ranged from 0.708 to 0.764 Mbps. This sensitivity supports the direction of the simulated trade-off under those assumptions. Real transport feedback, player buffer limits and user preferences remain outside the model.
 
 # Conclusion
 
@@ -307,6 +360,12 @@ OpenAI Codex assisted with code development, experimental checks and drafting an
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
+<div id="ref-angelopoulos2021ltt" class="csl-entry">
+
+Angelopoulos, Anastasios N., Stephen Bates, Emmanuel J. Candès, Michael I. Jordan, and Lihua Lei. 2021. *Learn Then Test: Calibrating Predictive Algorithms to Achieve Risk Control*. arXiv:2110.01052.
+
+</div>
+
 <div id="ref-angelopoulos2024crc" class="csl-entry">
 
 Angelopoulos, Anastasios N., Stephen Bates, Adam Fisch, Lihua Lei, and Tal Schuster. 2024. “Conformal Risk Control.” *International Conference on Learning Representations*.
@@ -316,6 +375,12 @@ Angelopoulos, Anastasios N., Stephen Bates, Adam Fisch, Lihua Lei, and Tal Schus
 <div id="ref-caso2024chronicles" class="csl-entry">
 
 Caso, Giuseppe, Mohammad Rajiullah, Konstantinos Kousias, et al. 2024. “The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution.” *IEEE Open Journal of the Communications Society* 5: 7380–99. <https://doi.org/10.1109/OJCOMS.2024.3499370>.
+
+</div>
+
+<div id="ref-geifman2017selective" class="csl-entry">
+
+Geifman, Yonatan, and Ran El-Yaniv. 2017. “Selective Classification for Deep Neural Networks.” *Advances in Neural Information Processing Systems*.
 
 </div>
 
@@ -352,6 +417,12 @@ Manski, Charles F. 1989. “Anatomy of the Selection Problem.” *Journal of Hum
 <div id="ref-narayanan2020lumos5g" class="csl-entry">
 
 Narayanan, Arvind, Eman Ramadan, Rishabh Mehta, et al. 2020. “Lumos5G: Mapping and Predicting Commercial mmWave 5G Throughput.” *Proceedings of the ACM Internet Measurement Conference (IMC)*, 176–93. <https://doi.org/10.1145/3419394.3423629>.
+
+</div>
+
+<div id="ref-nuwinsarchive" class="csl-entry">
+
+NUWiNS. 2025. *PAM 2025 Multi-Carrier Dataset*. Public data and transfer intervals, release 782b712.
 
 </div>
 
