@@ -1,0 +1,17 @@
+# Experimental design
+
+The reference configuration is configs/marur.json. All outputs are separate from historical experiments. The current suffixes are known, so this study is exploratory throughout. The development literature and method formulation precede execution of the controller.
+
+| Hypothesis | Independent variable | Outcome | Baseline and split | Unit and procedure | Expected limitation |
+|---|---|---|---|---|---|
+| Adaptive querying improves service at equal attempted-measurement budgets | Frozen, periodic, early, MARUR schedules; B=10,20,50 | Supported fraction, risk bounds, positive fraction, requests and responses | Same ten pre-test labels, same six existing cohort suffixes, both fixed models | Paired forecast ledger and per-date contrasts; no pooled tick significance | Event policy may consume a different fraction of the cap |
+| Missing-response accounting changes decisions | Conservative residual upper bound versus dropping unresolved requests | Query failures, commitments, audit risk, service | Same MARUR configuration and deterministic request censoring | Ledger per cohort, date and budget | Missingness intervention is synthetic and does not reproduce physical failure |
+| Pattern gating improves conditional reliability | MARUR versus NoPattern | Positive-conditional risk bounds and positive-date counts | Identical caps, same initial labels | Paired dates, report trade-offs and zero-positive cells | Three-entry support is a heuristic and can eliminate service |
+| Nominal-level adaptation helps budgeted feedback | Capped delayed ACI versus Periodic | Risk, utility and attempts | Same request opportunities before policy-dependent responses | Matched cohorts/date summaries | Full-feedback ACI theory does not apply |
+| Effect depends on deployment conditions | Rome, US carriers, Irish drives | Every metric individually by cohort | Existing chronological suffixes, all schedules kept | Campaign/date sensitivity; no cross-technology headline mean | US carriers share one trip, Ireland outcomes depend on recording |
+
+Record MAE, RMSE and median absolute error of the point predictor on measured eligible outcomes. Every policy retains the same point predictions, so changes in these errors would identify a matching bug. Record scheduled, eligible, abstained, positive, measured-positive, honored-positive and violated counts. Include unavailable audit outcomes, query attempts, observed query responses, unresolved query responses, recalibration events and execution time. The cost model counts calibration feedback requests, not model training or radio telemetry bytes.
+
+The complete Rome clock roster restores no-lag ticks without altering prior eligible predictions. Frozen controls must exactly reproduce each cohort's ten-label global lower bounds. Causality tests perturb future labels and require earlier actions to remain identical. Future-outcome availability must not affect query selection. A response that completes at the current tick can be used; one completing later cannot. All simultaneous forecast rows use an identical calibration snapshot.
+
+Conditional risk and supported throughput are reported jointly. No new policy qualifies as superior solely because it has fewer positive offers. Interpret date-level effects descriptively because there are few campaigns and repeated routes. If MARUR fails, retain that result and narrow the contribution to the acquisition/accounting test.

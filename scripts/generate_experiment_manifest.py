@@ -15,6 +15,9 @@ ROOT = Path(__file__).resolve().parents[1]
 PACKAGES = ['torch','pandas','numpy','scipy','scikit-learn','matplotlib','seaborn',
             'pypdf','pymupdf','pytest','pypandoc_binary','beautifulsoup4','pyarrow']
 PATTERNS = [
+    'results/marur/*','configs/*.json','docs/RESEARCH_BASELINE_AUDIT.md','docs/NOVELTY_COMPARISON_MATRIX.md',
+    'docs/PROPOSED_METHOD_FORMULATION.md','docs/EXPERIMENTAL_DESIGN.md','docs/STATISTICAL_ANALYSIS_PLAN.md',
+    'docs/IEEE_REVIEWER_RESPONSE.md','docs/FINAL_RESEARCH_READINESS.md','results/runs/isolated_baseline_reproduction.json','results/runs/isolated_marur_reproduction.json',
     'src/**/*.py','scripts/*.py','tests/**/*.py','results/diagnostics/*',
     'results/metrics/*','results/tables/*','results/figures/*','paper/**/*','app/*',
     'data/metadata/*.json','docs/*AUDIT.md','docs/MANUSCRIPT_CONSISTENCY_VALIDATION.md',
@@ -67,7 +70,7 @@ def main():
     runs = ROOT/'results/runs'
     receipt = read_json(runs/'external_validation.json')
     counts = test_counts(runs/'final_tests.xml')
-    receipt.update(scope='Rome reset and clock protocols, Irish published and chronological evaluations, Norwegian external evaluation',
+    receipt.update(scope='Rome reset and clock protocols, Irish published and chronological evaluations, Norwegian external evaluation, and six-cohort MARUR feedback replay',
                    validated_manuscript_tables=len(list((ROOT/'paper/tables').glob('*.tex'))),
                    manuscript_pages=len(PdfReader(ROOT/'paper/manuscript.pdf').pages),
                    package_pages=len(PdfReader(ROOT/'paper/submission_package.pdf').pages),
@@ -96,6 +99,9 @@ def main():
         'datasets':read_json(ROOT/'data/metadata/acquisition_manifest.json'),
         'settings': {'clock_prefix_max':{'E1':178,'E3':254},'primary_window_seconds':60,'alpha':0.1,'budgets':[0,1,2,5,8,9,10,15],
                      'bootstrap_draws':2000,'bootstrap_seed':42,'mask_seed':42,'neural_seed':42},
+        'marur': {'settings':read_json(ROOT/'configs/marur.json'),
+                  'execution':read_json(ROOT/'results/marur/execution.json'),
+                  'isolated_reproduction':read_json(runs/'isolated_marur_reproduction.json')},
         'execution':sorted(execution,key=lambda stage:stage['start_utc']),
         'tests':test_counts(runs/'final_tests.xml'),
         'ci':'Local working tree validated separately from hosted CI; no hosted result for these edits.',

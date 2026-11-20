@@ -1,0 +1,27 @@
+\begin{table*}[!ht]
+\centering\small
+\caption{Frozen-tree controllers under a cap of 50, including ten initial labels. Cost is initial labels plus paid query attempts. Offers counts positive commitments. PosLow and PosHigh bound violation among positive commitments, in percent. U is supported measured throughput in percent. Every model, budget, ablation and scenario is in the public ledger.}
+\begin{tabular}{lrrrrrr}
+\hline
+Cohort & Policy & Cost & Offers & PosLow & PosHigh & U \\
+E1 & Frozen & 10 & 130 & 51.54 & 57.69 & 7.154 \\
+E1 & Periodic & 26 & 33 & 42.42 & 51.52 & 1.008 \\
+E1 & MARUR & 50 & 29 & 44.83 & 44.83 & 2.025 \\
+E3 & Frozen & 10 & 3 & 66.67 & 66.67 & 0.065 \\
+E3 & Periodic & 22 & 16 & 43.75 & 50.00 & 0.605 \\
+E3 & MARUR & 39 & 20 & 45.00 & 55.00 & 0.504 \\
+ATT & Frozen & 10 & 57 & 38.60 & 38.60 & 2.252 \\
+ATT & Periodic & 30 & 30 & 23.33 & 23.33 & 0.402 \\
+ATT & MARUR & 50 & 111 & 43.24 & 43.24 & 6.481 \\
+T-Mobile & Frozen & 10 & 236 & 52.12 & 52.12 & 1.254 \\
+T-Mobile & Periodic & 30 & 47 & 55.32 & 55.32 & 0.141 \\
+T-Mobile & MARUR & 50 & 52 & 65.38 & 65.38 & 0.337 \\
+Verizon & Frozen & 10 & 1 & 0.00 & 0.00 & 0.003 \\
+Verizon & Periodic & 30 & 5 & 20.00 & 20.00 & 0.006 \\
+Verizon & MARUR & 50 & 21 & 61.90 & 61.90 & 0.597 \\
+Ireland & Frozen & 10 & 159 & 27.04 & 29.56 & 7.740 \\
+Ireland & Periodic & 33 & 159 & 11.32 & 13.84 & 2.966 \\
+Ireland & MARUR & 30 & 159 & 7.55 & 10.06 & 1.175 \\
+\hline
+\end{tabular}
+\end{table*}

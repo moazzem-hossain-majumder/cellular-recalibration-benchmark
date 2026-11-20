@@ -20,7 +20,7 @@ RADIO = dict(rsrp='LTE UE_PCell_RSRP',rsrq='LTE UE_PCell_RSRQ',sinr='LTE UE_PCel
              ss_rsrp='5G NR Carriers_SS-RSRP',ss_rsrq='5G NR Carriers_SS-RSRQ',ss_sinr='5G NR Carriers_SS-SINR')
 
 
-def load_ticks():
+def load_ticks(include_ineligible=False):
     rows = []
     for file in sorted((ROOT/'data/extracted/14073311').rglob('Ookla Speedtests/*Italy/*.csv')):
         frame = pd.read_csv(file,sep=';',low_memory=False)
@@ -33,7 +33,7 @@ def load_ticks():
                 return (clean_numeric(frame[col]) if col else pd.Series(np.nan,index=frame.index)),col
             rate,col = field('Mean Netw. DL')
             rate = rate.where(rate>=0)*(1 if '[MBit/s]' in col else .001)
-            pairs = clock_pairs(rate,frame.index.min(),frame.index.max()).set_index('time')
+            pairs = clock_pairs(rate,frame.index.min(),frame.index.max(),include_ineligible=include_ineligible).set_index('time')
             pairs['outcome_status'] = np.select(
                 [pairs.end>frame.index.max(),pairs.y.isna()],
                 ['trace_ended','no_valid_rate'],default='measured')

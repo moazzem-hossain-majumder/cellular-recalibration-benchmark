@@ -96,6 +96,14 @@ def tables(root=ROOT):
         carrier = 'ATT' if r.carrier=='AT&T' else r.carrier
         drive_rows.append([carrier,r.model,str(int(r.issued)),str(int(r.scored)),str(int(r.positive)),
                            str(int(r.violations)),f'{100*r.lo:.2f}',f'{100*r.hi:.2f}',f'{100*r.u:.4f}'])
+    controller=pd.read_csv(root/'results/marur/summary.csv')
+    chosen=controller[(controller.model=='HistGBM')&(controller.scenario=='Recorded')&
+                      (controller.budget==50)&controller.policy.isin(['Frozen','Periodic','MARUR'])]
+    controller_rows=[]
+    for r in chosen.itertuples():
+        label='ATT' if r.cohort=='AT&T' else r.cohort
+        controller_rows.append([label,r.policy,str(r.attempts),str(r.positive),
+            f'{100*r.positive_low:.2f}',f'{100*r.positive_high:.2f}',f'{100*r.u:.3f}'])
     return {
         'table1_point_predictors': ('Source validation errors in Mbps and measured fit time in seconds.', ['Model','MAE','RMSE','Seconds'],profiles),
         'table2_main_benchmark': ('Test sessions and lower-bound performance by regime and target prefix. P denotes point, G global, R radio access and M missingness groups. V denotes violations and U supported fraction.', ['Regime/K','N','PV','PU','GV','GU','RV','RU','MV','MU'],rows),
@@ -109,7 +117,8 @@ def tables(root=ROOT):
         'table10_protocols': ('Ten-label calibration for clock-triggered Rome forecasts and Norwegian interval forecasts. Error and offset are in Mbps. Violation and supported fractions are percentages.', ['Cohort','Model','Scored','Dates','MAE','Offset','Viol','Util'],replay),
         'table11_irish_groups': ('Chronological Irish persistence forecasts on 108519 rows from sixteen suffix dates. Local counts forecasts using a group-specific offset. Performance measures are percentages.', ['Labels','Rule','Local','Coverage','Violation','Supported'],group_rows),
         'table12_issued': ('Ten-label Rome clock forecasts. Positive gives measured positive commitments divided by issued positive commitments as counts. Errors counts measured violations. Low and High bound the all-issued violation percentage. U is supported throughput on measured outcomes in percent.', ['Regime','Predictor','Issued','Scored','Positive','Errors','Low','High','U'],issued_rows),
-        'table13_drive3': ('US Drive 3 with ten earlier labels per carrier. Pos counts issued positive commitments. Fail counts observed violations. Risk bounds and supported throughput are percentages.', ['Carrier','Model','Issued','Scored','Pos','Fail','Low','High','U'],drive_rows)}
+        'table13_drive3': ('US Drive 3 with ten earlier labels per carrier. Pos counts issued positive commitments. Fail counts observed violations. Risk bounds and supported throughput are percentages.', ['Carrier','Model','Issued','Scored','Pos','Fail','Low','High','U'],drive_rows),
+        'table14_marur': ('Frozen-tree controllers under a cap of 50, including ten initial labels. Cost is initial labels plus paid query attempts. Offers counts positive commitments. PosLow and PosHigh bound violation among positive commitments, in percent. U is supported measured throughput in percent. Every model, budget, ablation and scenario is in the public ledger.', ['Cohort','Policy','Cost','Offers','PosLow','PosHigh','U'],controller_rows)}
 
 def latex(spec):
     caption, header, rows = spec

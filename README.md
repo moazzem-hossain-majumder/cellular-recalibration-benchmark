@@ -1,5 +1,10 @@
 # Cellular throughput recalibration benchmark
 
+The [MARUR research extension](docs/FINAL_RESEARCH_READINESS.md) evaluates an empirical budgeted query-and-commitment controller on six archived cohorts. It includes 576 configurations, all scheduled opportunities, actual query costs and unsuccessful response accounting. The results show trade-offs and failures across networks. [Method](docs/PROPOSED_METHOD_FORMULATION.md) · [Novelty comparison](docs/NOVELTY_COMPARISON_MATRIX.md) · [Reviewer assessment](docs/IEEE_REVIEWER_RESPONSE.md)
+
+Run the full benchmark first with python scripts/reproduce_all.py, or run the extension against its prepared inputs with python scripts/run_marur.py and python scripts/validate_marur.py. The [configuration](configs/marur.json), [scientific summaries](results/marur/summary.csv), [action ledger](results/marur/actions.csv.gz), and [feedback ledger](results/marur/responses.csv.gz) record the complete comparison. The source-code license is currently unspecified pending the author's choice. Raw data licensing remains source-specific.
+
+
 The [November 20 revision](docs/REJECTION_RISK_REVISIONS.md) adds finite-record decision criteria, collection-date sensitivity and nine playback settings.
 
 The [positive-offer feasibility analysis and submission decision](docs/POSITIVE_OFFER_SELECTION.md) reports the outcome of imposing joint risk, frequency and throughput requirements.

@@ -37,7 +37,7 @@ def evaluate(cal, test, method, cp, tp, setting):
     return rows, stats
 
 
-def clock_pairs(series, start, stop):
+def clock_pairs(series, start, stop, include_ineligible=False):
     # Index limits use the logger clock, even if the channel has no future value.
     ticks = pd.date_range(start.ceil('min'),stop.floor('min'),freq='min')
     last = series.dropna().resample('min').last() if series.notna().any() else series
@@ -45,7 +45,8 @@ def clock_pairs(series, start, stop):
     y = last.reindex(ticks).to_numpy(dtype=float,copy=True)
     end = ticks + pd.Timedelta(minutes=1)
     y[end>stop] = np.nan
-    return pd.DataFrame(dict(time=ticks,end=end,lag=lag,y=y)).dropna(subset=['lag'])
+    frame = pd.DataFrame(dict(time=ticks,end=end,lag=lag,y=y))
+    return frame if include_ineligible else frame.dropna(subset=['lag'])
 
 
 def rome():

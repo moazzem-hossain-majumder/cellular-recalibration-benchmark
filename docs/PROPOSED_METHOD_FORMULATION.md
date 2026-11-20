@@ -1,0 +1,31 @@
+# Proposed method formulation
+
+MARUR is a provisional empirical controller. The novelty investigation identifies prior work on every broad component, including adaptive conformal inference, conditional missingness calibration, selective prediction, and label-efficient calibration. The experiment tests whether accounting for attempted measurements that fail to resolve changes the value of adaptive recalibration in the existing cellular traces.
+
+## Opportunity and decision ledger
+
+A scheduled tick exists independently of its future throughput. An eligible tick has the required preceding rate. On every eligible tick a fixed point predictor emits a point forecast p. A controller either offers a positive minimum rate L or records abstention L=0. No-lag ticks are retained separately. Observed coverage uses all resolved eligible outcomes. Positive-offer fraction uses scheduled ticks as its primary denominator, with eligible-tick fraction reported separately. Given e observed violations, m unresolved positive offers, M positive offers and N eligible issued point forecasts, finite-record risk lies in [e/N,(e+m)/N] and conditional risk in [e/M,(e+m)/M] for M>0. Zero offers have no positive-conditional denominator. Missing outcomes remain unresolved. A nonnegative latent outcome for each tick is required by these bounds.
+
+The design objective is to maximize measured supported throughput subject to a chosen upper conditional failure fraction and total attempt budget B. This objective defines what we measure; the controller below is a heuristic and may fail it. Its calibration quantile addresses marginal overprediction, while conditional positive-offer risk remains a separate reported outcome.
+
+## Information and cost
+
+Each model starts with the identical first ten complete pre-test labels. The finite window holds ten signed residuals p-y with their missingness pattern, issue and completion times. A feedback request is placed at an eligible issue time before reading y. Its unit cost is charged then, even if the request returns no outcome. At most one request is outstanding. At its known horizon completion, observed y gives residual p-y. For an unresolved outcome, the residual upper bound is p because y>=0. Completion may occur after the last issue time and is still recorded in the receipt. Observed labels and unresolved attempts are separate counts. Initial ten successful labels are historical initialization. Their acquisition attempts and failed acquisitions are unknown, so total budget means ten initial labels plus new requested attempts. Each eligible forecasting model still requires ordinary lag throughput feedback. The budget controls calibration queries, not all network measurement traffic or total telemetry collection cost.
+
+Every issue uses only completed requests. Simultaneous ticks receive the same pre-issue state, and a deterministic roster order reserves at most one query. The policy reads only current/past covariates plus requested feedback. Evaluation outcomes enter the accounting after the decisions. There is no model refitting.
+
+## Controller and baselines fixed before execution
+
+The residual window uses the ordinary finite-sample 90% signed quantile. Less than nine residuals gives an infinite offset and zero commitment. MARUR uses the current telemetry pattern's quantile if at least nine window entries share it, otherwise the pooled quantile. It abstains if fewer than three window entries match the current pattern. Pattern means numeric LTE/NR RSRP availability, not physical connectivity.
+
+MARUR requests feedback when the pattern differs from the latest calibration entry or that entry is at least sixty minutes old. It recomputes its offset whenever a requested outcome or missing-outcome bound arrives. The recorded recalibration count is the number of residual-buffer updates, including a final response after the last issue; effective_updates records updates available to at least one forecast. If budget is exhausted it freezes the window; it can still abstain for insufficient pattern support. These engineering thresholds are exploratory choices made on an already inspected archive. They have no validated optimality or deployment guarantee.
+
+Frozen keeps the initial offset. Periodic requests each fifteenth eligible roster position. Early requests the first eligible opportunity whenever no request is pending. Both use global offsets and the same total attempt cap. ACI uses Periodic requests and updates the nominal quantile level a <- a + 0.05*(0.1-error) at completion, initialized at 0.1. It uses the current finite window, and clips a finite rate to at most p when a>=1 would require an unbounded rate. An unresolved queried positive offer is conservatively treated as a possible violation for that update. This is a budgeted, delayed-feedback, capped-rate ACI adaptation; the original full-feedback guarantee does not transfer.
+
+Ablations remove pattern-based triggering, gating and grouping, omit unresolved residuals, or replace adaptive request timing with the periodic schedule. The drop-missing ablation still pays for unsuccessful attempts. Budgets B=10,20,50 mean 0,10,40 additional requests. Both persistence and the frozen Rome tree use every policy. No candidate is selected by suffix scores.
+
+## Missingness stress and external interpretation
+
+Recorded preserves the natural outcomes. QueryCensor20 additionally hides feedback on every fifth chronological eligible position from the controller only. The full recorded outcome remains in the evaluator so the two policies are scored on the same observations. This simulated calibration-response suppression is distinct from missing radio fields, missing audit outcomes and physical network failure. Existing raw feature-suppression and endpoint studies remain supporting evidence.
+
+Primary cohorts are the two Rome clock suffixes. US Drive 3 and Irish driving provide external transfer with the previously documented feature mappings and endpoint differences. US completed horizons stop at the publisher transfer end. Irish and Rome require full minute windows. None is a prospective untouched trial.

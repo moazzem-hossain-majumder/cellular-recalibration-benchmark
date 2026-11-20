@@ -1,5 +1,7 @@
 # Revision handoff
 
+The latest [MARUR assessment](docs/FINAL_RESEARCH_READINESS.md) supersedes earlier general readiness statements. The empirical controller has been implemented and evaluated; consistent superiority and deployment risk guarantees remain unestablished.
+
 The November 20 [reviewer-risk revision](docs/REJECTION_RISK_REVISIONS.md) strengthens the claim formulation, collection-date analysis and playback sensitivity. Venue-specific assessment remains pending. Earlier general readiness judgments below are provisional.
 
 

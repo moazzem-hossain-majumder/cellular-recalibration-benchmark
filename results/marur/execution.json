@@ -1,0 +1,46 @@
+{
+  "start_utc": "2026-11-20T17:15:09.676147+00:00",
+  "end_utc": "2026-11-20T17:16:36.900768+00:00",
+  "command": [
+    "python",
+    "scripts/run_marur.py"
+  ],
+  "config": {
+    "alpha": 0.1,
+    "initial_labels": 10,
+    "window": 10,
+    "total_attempt_budgets": [
+      10,
+      20,
+      50
+    ],
+    "period_ticks": 15,
+    "max_age_minutes": 60,
+    "minimum_pattern_support": 3,
+    "aci_step": 0.05,
+    "policies": [
+      "Frozen",
+      "Periodic",
+      "Early",
+      "ACI",
+      "MARUR",
+      "MARUR_NoPattern",
+      "MARUR_DropMissing",
+      "MARUR_Periodic"
+    ],
+    "scenarios": [
+      "Recorded",
+      "QueryCensor20"
+    ]
+  },
+  "scope": "Existing archived clock cohorts",
+  "sha256": {
+    "actions.csv.gz": "6e5a28aa75b9b253eb992eee82cf3a28d7996be4728533d5fbcbe49ee21846b5",
+    "dates.csv": "ec6b83779c8535c5ec7b37c57b9d597b9a0144e854f10bad814b1feb8fb313ca",
+    "opportunities.csv.gz": "6fc1c490106539f2c2c3f27bd141d391909cbe021f358dd9f2fdb1cadc6ce852",
+    "paired_date_contrasts.csv": "9fe3cd412855c31998cd31b131ce5c74bae56317b863921b0f0a4ed4f27beb52",
+    "paired_policy_contrasts.csv": "9a54380d14bbc0c8fc2c2962c5bc255819d451bf1426e85ddec22192b159f1f9",
+    "responses.csv.gz": "16c91a735d1ad13e824983e9238156d3f9a9990fd67ddc183eaea7ac8565a690",
+    "summary.csv": "a7e9909f65b70815c7ca8111970fe502719ceed751105cd639d95e444f4786ff"
+  }
+}

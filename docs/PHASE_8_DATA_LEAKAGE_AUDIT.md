@@ -1,5 +1,7 @@
 > Historical project record from before the pooled-calibration correction. For current estimates, validation status and publication assessment see [the final research audit](FINAL_RESEARCH_AUDIT.md). Interpret numerical claims below as superseded.
 
+Superseding audit note (November 20, 2026). CS-CP Protocol B explicitly fits its discriminator on target-test covariates and is transductive. Protocol A uses the earlier calibration pool. The historical blanket statement of test blindness below applies only to Protocol A. See RESEARCH_BASELINE_AUDIT.md for the current implementation audit.
+
 # Data Leakage and Causal Protocol Audit (Phase 8)
 
 **Project:** Cellular Recalibration Benchmark  

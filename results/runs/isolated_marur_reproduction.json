@@ -1,0 +1,14 @@
+{
+  "scope": "MARUR stage independently executed in the isolated baseline reproduction directory",
+  "exact_byte_matches": {
+    "actions.csv.gz": "6e5a28aa75b9b253eb992eee82cf3a28d7996be4728533d5fbcbe49ee21846b5",
+    "responses.csv.gz": "16c91a735d1ad13e824983e9238156d3f9a9990fd67ddc183eaea7ac8565a690",
+    "opportunities.csv.gz": "6fc1c490106539f2c2c3f27bd141d391909cbe021f358dd9f2fdb1cadc6ce852",
+    "dates.csv": "ec6b83779c8535c5ec7b37c57b9d597b9a0144e854f10bad814b1feb8fb313ca",
+    "paired_date_contrasts.csv": "9fe3cd412855c31998cd31b131ce5c74bae56317b863921b0f0a4ed4f27beb52",
+    "paired_policy_contrasts.csv": "9a54380d14bbc0c8fc2c2962c5bc255819d451bf1426e85ddec22192b159f1f9"
+  },
+  "summary": "All scientific fields identical; wall-clock timings excluded",
+  "configurations": 576,
+  "baseline_receipt": "results/runs/isolated_baseline_reproduction.json"
+}

@@ -4,7 +4,7 @@ Md. Moazzem Hossain Majumder
 
 ## Abstract
 
-A cellular throughput forecaster can appear reliable by promising a positive rate rarely, or by evaluating only forecasts whose outcomes are recorded. We study how these choices change the interpretation of a calibrated minimum-rate promise. A common decision ledger relates failure across all issued forecasts to failure among positive promises, bounds the effect of missing outcomes, and records useful rate. We replay frozen predictors on chronological Rome, US and Irish measurements. On Irish driving traces, persistence violated 31 of 334 issued commitments, satisfying a nominal ten-percent ceiling, while violating 31 of its 41 positive promises. The same comparison favored persistence over the Rome-trained tree in supported throughput. In Rome, none of six tested policies simultaneously met the chosen positive-promise risk, offer-frequency and throughput requirements on earlier validation dates. Across 22 Norwegian recordings, a separate frozen lag model reduced simulated video stalls through calibration while lowering delivered bitrate. This direction persisted across seven calendar dates under nine segment-length and request-delay settings. These results support an empirical evaluation procedure that reports observable reliability and service together. Sparse campaigns, retrospective design and dependence between measurements limit inference about future deployments.
+A cellular forecaster must decide whether to offer a useful minimum rate and whether further calibration is worth a limited measurement budget. Missing radio inputs and unreturned throughput measurements complicate both decisions. We evaluate an empirical controller, provisionally called Missingness-Aware Risk--Utility Recalibration (MARUR), using frozen predictors, a causal query ledger and explicit abstention. A request consumes budget before its outcome arrives; an unresolved response contributes a residual upper bound under nonnegative throughput. The controller responds to calibration age and input availability, with global, periodic, early-query and nominal-level adaptive comparators. Across two Rome suffixes, three US carriers and Irish drives, 576 configurations share their opportunities and initial labels. At a cap of 50, the Rome E1 tree controller supports 2.02 percent of measured throughput with 5.46 percent all-issued violations, but it violates 13 of its 29 positive offers and uses more requests than periodic recalibration. In Ireland, unresolved positive offers raise conditional risk from 7.74 to 10.06 percent. External outcomes and ablations show no consistent controller advantage. These results establish an auditable evaluation of budgeted calibration and service under incomplete feedback. The method is a heuristic evaluated retrospectively; few campaigns and selective feedback preclude a deployment risk guarantee.
 
 <div class="IEEEkeywords">
 
@@ -32,6 +32,16 @@ R\in[e/N,(e+m)/N],\qquad
 Each endpoint is attained by assigning every unobserved positive promise an outcome equal to its promise or zero, respectively. These bounds require a well-defined nonnegative latent rate at each opportunity. They do not identify service after logging ends. For a chosen positive-promise tolerance $`\alpha`$, the recorded ledger meets the tolerance under every completion exactly when $`e+m\leq\alpha M`$; it fails under every completion when $`e>\alpha M`$. Otherwise the missing outcomes leave the decision unresolved. A policy with $`M=0`$ has undefined conditional risk and no positive service. Report $`A`$ and measured supported throughput alongside this decision. The latter conditions on observed outcomes and cannot identify throughput on unrecorded service attempts.
 
 This finite-record test does not constitute a new distribution-free population guarantee. It connects the issued ledger to an operationally interpretable criterion and supplies a falsifiable test for the empirical claims. The main evidence is the clock replay and independent archives. Session-defined endpoints, alternative models and budget frontiers provide sensitivity analyses.
+
+## Budgeted commitment and recalibration
+
+We investigate whether an explicit measurement-attempt budget changes the preferred commitment policy. Prior cellular work already studies global, grouped and adaptive rate bounds (Sirhan 2026); missing-value conformal prediction treats input patterns (Zaffran et al. 2023); recent methods address costly labels and semi-bandit feedback (Ilyas et al. 2026; Ge et al. 2025). These precedents prevent a novelty claim for their generic combination. Our contribution is the causal acquisition ledger, the unresolved-response residual bound and a matched test of their consequences in the released cellular traces. MARUR is a provisional controller used to test that design.
+
+Let $`Q_t`$ indicate a calibration query chosen at issue time $`t`$, $`B`$ the budget, and $`L_t\geq0`$ the committed rate. The empirical design objective is to maximize supported measured throughput subject to $`\sum_t Q_t+10\leq B`$, a positive-offer requirement, and an acceptable upper conditional failure fraction $`(e+m)/M`$. The ten initial labels are pre-test successes; their original failed acquisition attempts are unknown. Lag-rate feedback needed for forecasting remains outside the charged query budget. These constraints define the evaluation objective. The heuristic below does not ensure they are feasible.
+
+At a tick with an available prior rate, the controller computes $`L_t=\max(0,p_t-q_t)`$. Its ten-entry residual window contains only completed calibration responses. If a requested outcome is unobserved, $`p_t-y_t\leq p_t`$ for nonnegative $`y_t`$, so we insert $`p_t`$ as a conservative residual bound. MARUR uses a pattern-specific 90 percent quantile when at least nine entries share the current LTE/NR availability pattern, otherwise the pooled quantile. Fewer than three entries in the current pattern triggers abstention. It requests a new outcome when the pattern differs from the most recent response or that response is at least sixty minutes old. There is at most one outstanding request, and each request is charged before reading its outcome. Budget exhaustion freezes updates. Simultaneous forecasts share the same state.
+
+Frozen calibration, queries every fifteenth eligible tick, and immediate queries whenever possible provide baselines. A delayed, budgeted ACI comparator updates its nominal error level by $`a\leftarrow a+0.05(0.1-\mathrm{error})`$ on requested feedback. Unresolved queried positive offers count conservatively in this update; rates are capped at the point forecast at the extreme quantile boundary. These changes and partial feedback prevent inheriting full-feedback ACI guarantees. Ablations remove pattern-dependent decisions, discard unresolved responses while still charging them, or use periodic acquisition. We report every cap $`B\in\{10,20,50\}`$, both predictors, and a simulated condition that hides every fifth eligible feedback response from the controller while retaining the recorded label for evaluation. All thresholds were specified for this experiment after earlier archive analyses; the experiment is exploratory.
 
 # Measurements and prediction time
 
@@ -350,9 +360,48 @@ We repeated the fixed-policy summaries with equal weight for each collection dat
 
 For playback, we varied segment duration over 1, 2 and 4 seconds and a fixed per-request delay over 0, 100 and 300 milliseconds. The representation decision used completed observations at request initiation. All routes on the same calendar date were pooled before comparing policies. On each of seven dates, calibration lowered both stall fraction and delivered bitrate under all nine settings. The median paired stall reduction across dates ranged from 5.50 to 11.81 percentage points; the median bitrate reduction ranged from 0.708 to 0.764 Mbps. This sensitivity supports the direction of the simulated trade-off under those assumptions. Real transport feedback, player buffer limits and user preferences remain outside the model.
 
+# Budgeted feedback controller results
+
+The complete Rome roster contains 254 E1 and 181 E3 scheduled ticks; 238 and 171 respectively have a prior rate. Existing issued-forecast results are unchanged. The US cohorts contain 301, 304 and 292 scheduled ticks, and Ireland 335. A no-lag tick remains in the ledger as ineligible. Each comparison uses the same point predictions and resolved outcomes, so point MAE, RMSE and median error remain constant across policies. Costs distinguish attempted requests from returned labels and residual-buffer updates.
+
+<div class="table*">
+
+|          |          |      |        |        |         |       |
+|:---------|---------:|-----:|-------:|-------:|--------:|------:|
+| Cohort   |   Policy | Cost | Offers | PosLow | PosHigh |     U |
+| E1       |   Frozen |   10 |    130 |  51.54 |   57.69 | 7.154 |
+| E1       | Periodic |   26 |     33 |  42.42 |   51.52 | 1.008 |
+| E1       |    MARUR |   50 |     29 |  44.83 |   44.83 | 2.025 |
+| E3       |   Frozen |   10 |      3 |  66.67 |   66.67 | 0.065 |
+| E3       | Periodic |   22 |     16 |  43.75 |   50.00 | 0.605 |
+| E3       |    MARUR |   39 |     20 |  45.00 |   55.00 | 0.504 |
+| ATT      |   Frozen |   10 |     57 |  38.60 |   38.60 | 2.252 |
+| ATT      | Periodic |   30 |     30 |  23.33 |   23.33 | 0.402 |
+| ATT      |    MARUR |   50 |    111 |  43.24 |   43.24 | 6.481 |
+| T-Mobile |   Frozen |   10 |    236 |  52.12 |   52.12 | 1.254 |
+| T-Mobile | Periodic |   30 |     47 |  55.32 |   55.32 | 0.141 |
+| T-Mobile |    MARUR |   50 |     52 |  65.38 |   65.38 | 0.337 |
+| Verizon  |   Frozen |   10 |      1 |   0.00 |    0.00 | 0.003 |
+| Verizon  | Periodic |   30 |      5 |  20.00 |   20.00 | 0.006 |
+| Verizon  |    MARUR |   50 |     21 |  61.90 |   61.90 | 0.597 |
+| Ireland  |   Frozen |   10 |    159 |  27.04 |   29.56 | 7.740 |
+| Ireland  | Periodic |   33 |    159 |  11.32 |   13.84 | 2.966 |
+| Ireland  |    MARUR |   30 |    159 |   7.55 |   10.06 | 1.175 |
+
+</div>
+
+Figure 8 reports the three predefined budgets for the recorded-outcome condition. On E1, MARUR supports 2.02 percent of measured throughput and has 5.46 percent all-issued risk, compared with 1.01 percent support and 5.88–7.14 percent risk for periodic updates. MARUR costs 50 including initialization, while periodic costs 26. This is an improvement at the same cap with different realized costs. The MARUR tree breaks 13 of 29 positive offers, leaving positive-conditional risk at 44.83 percent. On E3, periodic recalibration supports more throughput with a smaller all-issued upper risk than MARUR. On AT&T and T-Mobile, increased service under MARUR accompanies greater risk. No uniform superiority is established.
+
+For Ireland MARUR uses 30 including initialization and supports 1.18 percent, with 12 violations among 155 measured positive offers. Four positive offers are unresolved, so conditional risk lies between 7.55 and 10.06 percent over all 159 positive offers; the measured conditional estimate is 7.74 percent. Periodic supports 2.97 percent at a cost of 33, with higher risk. Missing-response suppression also produces mixed effects. On Ireland, conservative residual completion supports 1.17 percent with 3.89 percent all-issued upper risk; dropping unresolved responses supports 3.02 percent with 7.49 percent upper risk. Both incur 20 new attempts, of which only twelve return an outcome. A robust residual bound can trade away service, and it does not by itself control future positive-promise risk.
+
+<figure data-latex-placement="!ht">
+<embed src="figures/fig8_marur.png" />
+<figcaption>Frozen-tree controller comparison under attempt caps 10, 20 and 50. Each connected point is a predeclared cap, and bars span finite-record all-issued risk bounds. Actual costs differ between schedules. Horizontal axes use observed supported throughput. The nominal ten-percent line is a reference, not a guarantee. All conditional-risk, cost and ablation values are available in the action ledger.</figcaption>
+</figure>
+
 # Conclusion
 
-The same frozen tree failed the ten-percent target on one clock-triggered suffix and supported almost no throughput on the other. Missing labels can change whether the target is decidable; their impact depends on how often the forecaster actually commits a positive rate. Moving the calibration window or conditioning on radio availability did not produce a consistent improvement. More independent dates and logged test-start events are needed to assess future deployments.
+The budgeted controller demonstrates why attempted measurements, returned labels and useful positive commitments must be counted separately. Its recorded improvements do not persist uniformly across cohorts or at matched actual costs. MARUR therefore serves as an empirical risk-aware framework with a reproducible causal ledger, while stronger adaptive-method and deployment claims require additional evidence. The same frozen tree failed the ten-percent target on one clock-triggered suffix and supported almost no throughput on the other. Missing labels can change whether the target is decidable; their impact depends on how often the forecaster actually commits a positive rate. Moving the calibration window or conditioning on radio availability did not produce a consistent improvement. More independent dates and logged test-start events are needed to assess future deployments.
 
 # Acknowledgment
 
@@ -378,6 +427,12 @@ Caso, Giuseppe, Mohammad Rajiullah, Konstantinos Kousias, et al. 2024. “The Ch
 
 </div>
 
+<div id="ref-ge2025semibandit" class="csl-entry">
+
+Ge, Haosen, Hamsa Bastani, and Osbert Bastani. 2025. “Stochastic Online Conformal Prediction with Semi-Bandit Feedback.” *Proceedings of the International Conference on Machine Learning*, Proceedings of machine learning research, vol. 267: 18954–65. <https://proceedings.mlr.press/v267/ge25a.html>.
+
+</div>
+
 <div id="ref-geifman2017selective" class="csl-entry">
 
 Geifman, Yonatan, and Ran El-Yaniv. 2017. “Selective Classification for Deep Neural Networks.” *Advances in Neural Information Processing Systems*.
@@ -387,6 +442,12 @@ Geifman, Yonatan, and Ran El-Yaniv. 2017. “Selective Classification for Deep N
 <div id="ref-gibbs2021adaptive" class="csl-entry">
 
 Gibbs, Isaac, and Emmanuel Candès. 2021. “Adaptive Conformal Inference Under Distribution Shift.” *Advances in Neural Information Processing Systems (NeurIPS)* 34: 1660–72.
+
+</div>
+
+<div id="ref-ilyas2026labels" class="csl-entry">
+
+Ilyas, Andrew, Joonhyuk Ko, Jingwu Tang, Steven Wu, and Jiahao Zhang. 2026. “Provably Label-Efficient Conformal Prediction.” *Proceedings of the International Conference on Machine Learning*, Proceedings of machine learning research, vol. 306: 49578–97. <https://proceedings.mlr.press/v306/ilyas26a.html>.
 
 </div>
 

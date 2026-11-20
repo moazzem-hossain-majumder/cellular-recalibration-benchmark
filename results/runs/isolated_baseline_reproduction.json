@@ -1,0 +1,309 @@
+{
+  "scope": {
+    "source": "D:\\Telecom",
+    "snapshot": "C:\\Users\\MITHIL\\AppData\\Local\\Temp\\telecom-marur-reproduction-sum7zpci\\repo",
+    "base_commit": "a50c114ed2a5cffcb3a624c7b3ca7b63693c9159",
+    "raw_work_cache_copied": false
+  },
+  "exit_code": 0,
+  "environment": "Isolated working directory, same installed Python 3.11 environment",
+  "pipeline_stages": [
+    {
+      "command": [
+        "python",
+        "scripts/download_data.py"
+      ],
+      "start_utc": "2026-11-20T11:44:42.411456+00:00",
+      "end_utc": "2026-11-20T11:44:42.919164+00:00",
+      "seconds": 0.5,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/prepare_external_inputs.py"
+      ],
+      "start_utc": "2026-11-20T11:44:42.920164+00:00",
+      "end_utc": "2026-11-20T11:44:48.035196+00:00",
+      "seconds": 5.12,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/prepare_ookla_traces.py"
+      ],
+      "start_utc": "2026-11-20T11:44:48.038194+00:00",
+      "end_utc": "2026-11-20T11:44:48.973425+00:00",
+      "seconds": 0.94,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/reproduce_experiments.py"
+      ],
+      "start_utc": "2026-11-20T11:44:48.974424+00:00",
+      "end_utc": "2026-11-20T11:50:58.929129+00:00",
+      "seconds": 369.95,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/audit_data_quality.py"
+      ],
+      "start_utc": "2026-11-20T11:50:58.931127+00:00",
+      "end_utc": "2026-11-20T11:51:33.941832+00:00",
+      "seconds": 35.02,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/audit_trace_filters.py"
+      ],
+      "start_utc": "2026-11-20T11:51:33.942831+00:00",
+      "end_utc": "2026-11-20T13:16:40.327601+00:00",
+      "seconds": 5106.38,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/audit_session_segmentation.py"
+      ],
+      "start_utc": "2026-11-20T13:16:40.328601+00:00",
+      "end_utc": "2026-11-20T13:16:59.413174+00:00",
+      "seconds": 19.09,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_session_boundaries.py"
+      ],
+      "start_utc": "2026-11-20T13:16:59.414725+00:00",
+      "end_utc": "2026-11-20T13:19:04.401152+00:00",
+      "seconds": 124.98,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/audit_cluster_inference.py"
+      ],
+      "start_utc": "2026-11-20T13:19:04.402154+00:00",
+      "end_utc": "2026-11-20T13:19:05.214277+00:00",
+      "seconds": 0.81,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/audit_group_support.py"
+      ],
+      "start_utc": "2026-11-20T13:19:05.215277+00:00",
+      "end_utc": "2026-11-20T13:19:50.362921+00:00",
+      "seconds": 45.16,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_clock_and_network.py"
+      ],
+      "start_utc": "2026-11-20T13:19:50.363985+00:00",
+      "end_utc": "2026-11-20T13:20:13.650359+00:00",
+      "seconds": 23.28,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/clock_frontier.py"
+      ],
+      "start_utc": "2026-11-20T13:20:13.651360+00:00",
+      "end_utc": "2026-11-20T13:20:42.002301+00:00",
+      "seconds": 28.36,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/select_clock_policy.py"
+      ],
+      "start_utc": "2026-11-20T13:20:42.003301+00:00",
+      "end_utc": "2026-11-20T13:20:44.078026+00:00",
+      "seconds": 2.06,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/select_positive_offers.py"
+      ],
+      "start_utc": "2026-11-20T13:20:44.079025+00:00",
+      "end_utc": "2026-11-20T13:20:46.105542+00:00",
+      "seconds": 2.02,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/stress_clock_radio.py"
+      ],
+      "start_utc": "2026-11-20T13:20:46.106543+00:00",
+      "end_utc": "2026-11-20T13:20:55.553941+00:00",
+      "seconds": 9.45,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_nuwins_drive2.py"
+      ],
+      "start_utc": "2026-11-20T13:20:55.554940+00:00",
+      "end_utc": "2026-11-20T13:20:56.184371+00:00",
+      "seconds": 0.62,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/replicate_nuwins_drive3.py"
+      ],
+      "start_utc": "2026-11-20T13:20:56.184371+00:00",
+      "end_utc": "2026-11-20T13:21:30.931506+00:00",
+      "seconds": 34.75,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/metro_transfer.py"
+      ],
+      "start_utc": "2026-11-20T13:21:30.933506+00:00",
+      "end_utc": "2026-11-20T13:21:33.317045+00:00",
+      "seconds": 2.39,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/compare_sirhan_external.py",
+        "data/raw/sirhan-v1.zip"
+      ],
+      "start_utc": "2026-11-20T13:21:33.318045+00:00",
+      "end_utc": "2026-11-20T13:24:34.041203+00:00",
+      "seconds": 180.72,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/audit_external_traces.py"
+      ],
+      "start_utc": "2026-11-20T13:24:34.042201+00:00",
+      "end_utc": "2026-11-20T13:25:14.448690+00:00",
+      "seconds": 40.41,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/report_sirhan_external.py"
+      ],
+      "start_utc": "2026-11-20T13:25:14.449688+00:00",
+      "end_utc": "2026-11-20T13:25:15.059021+00:00",
+      "seconds": 0.61,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_irish_groups.py"
+      ],
+      "start_utc": "2026-11-20T13:25:15.060020+00:00",
+      "end_utc": "2026-11-20T13:25:19.541155+00:00",
+      "seconds": 4.48,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/ireland_drive_transfer.py"
+      ],
+      "start_utc": "2026-11-20T13:25:19.542155+00:00",
+      "end_utc": "2026-11-20T13:25:30.179487+00:00",
+      "seconds": 10.64,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/replay_oslo_playback.py"
+      ],
+      "start_utc": "2026-11-20T13:25:30.180488+00:00",
+      "end_utc": "2026-11-20T13:25:37.339068+00:00",
+      "seconds": 7.16,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/replay_oslo_playback.py",
+        "--sensitivity"
+      ],
+      "start_utc": "2026-11-20T13:25:37.340071+00:00",
+      "end_utc": "2026-11-20T13:26:02.297548+00:00",
+      "seconds": 24.97,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/check_campaign_robustness.py"
+      ],
+      "start_utc": "2026-11-20T13:26:02.298550+00:00",
+      "end_utc": "2026-11-20T13:26:03.082151+00:00",
+      "seconds": 0.78,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/build_paper_html.py"
+      ],
+      "start_utc": "2026-11-20T13:26:03.083151+00:00",
+      "end_utc": "2026-11-20T13:26:07.670985+00:00",
+      "seconds": 4.58,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_manuscript_consistency.py"
+      ],
+      "start_utc": "2026-11-20T13:26:07.671985+00:00",
+      "end_utc": "2026-11-20T13:26:12.456216+00:00",
+      "seconds": 4.8,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-ra",
+        "--junitxml=results/runs/final_tests.xml"
+      ],
+      "start_utc": "2026-11-20T13:26:12.457217+00:00",
+      "end_utc": "2026-11-20T13:27:29.960837+00:00",
+      "seconds": 77.5,
+      "exit_code": 0
+    }
+  ],
+  "tests": "71 passed before MARUR implementation",
+  "new_controller_included": false
+}

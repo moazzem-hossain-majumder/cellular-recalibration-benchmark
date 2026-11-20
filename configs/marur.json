@@ -1,0 +1,12 @@
+{
+  "alpha": 0.1,
+  "initial_labels": 10,
+  "window": 10,
+  "total_attempt_budgets": [10, 20, 50],
+  "period_ticks": 15,
+  "max_age_minutes": 60,
+  "minimum_pattern_support": 3,
+  "aci_step": 0.05,
+  "policies": ["Frozen", "Periodic", "Early", "ACI", "MARUR", "MARUR_NoPattern", "MARUR_DropMissing", "MARUR_Periodic"],
+  "scenarios": ["Recorded", "QueryCensor20"]
+}

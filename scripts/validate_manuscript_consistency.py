@@ -82,6 +82,8 @@ def validate(root=ROOT):
     verify_drive3(root)
     verify_playback_and_irish(root)
     verify_campaign_sensitivity(root)
+    from scripts.validate_marur import validate as validate_marur
+    validate_marur(root)
     specs = tables(root)
     verify_metrics(root)
     diag = root/'results/diagnostics'
@@ -141,7 +143,7 @@ def validate(root=ROOT):
                                    [len(ids),100*delta.mean(),(delta>0).sum(),risk['global'].mean(),risk.persistence.mean()])
     manuscript = (root/'paper/manuscript.tex').read_text(encoding='utf8')
     referenced = re.findall(r'\\includegraphics(?:\[[^\]]+\])?\{(figures/[^}]+\.pdf)\}',manuscript)
-    if len(set(referenced))!=7:
+    if len(set(referenced))!=8:
         raise ValueError('Incomplete manuscript figure set')
     for fig in referenced:
         for suffix in ['.pdf','.png']:

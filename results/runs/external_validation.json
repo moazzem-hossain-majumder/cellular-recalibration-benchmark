@@ -1,12 +1,12 @@
 {
   "date_local": "2026-11-12",
-  "scope": "Rome reset and clock protocols, Irish published and chronological evaluations, Norwegian external evaluation",
+  "scope": "Rome reset and clock protocols, Irish published and chronological evaluations, Norwegian external evaluation, and six-cohort MARUR feedback replay",
   "analysis_archive_sha256": "f0ca9183c28a55df9e655521eb31d4754d5b88d5b523c6c93e673ea5f8c06f37",
   "completed_irish_splits": 30,
   "unique_test_traces": 83,
-  "validated_manuscript_tables": 13,
-  "manuscript_pages": 12,
-  "package_pages": 13,
+  "validated_manuscript_tables": 14,
+  "manuscript_pages": 14,
+  "package_pages": 15,
   "tests": {
     "outcomes_by_suite": {
       "integration": {
@@ -16,7 +16,7 @@
         "passed": 13
       },
       "unit": {
-        "passed": 54
+        "passed": 61
       }
     },
     "report": "results/runs/final_tests.xml"
