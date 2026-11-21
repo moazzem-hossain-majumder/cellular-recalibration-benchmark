@@ -16,7 +16,13 @@ def offset(samples, alpha):
 
 
 def replay(initial, stream, policy, budget, config, scenario='Recorded'):
-    """Query before observing the target; reveal feedback only at its ready timestamp."""
+    """Replay with a hybrid cap: initial successful labels plus NEW query attempts.
+
+    Historical acquisition attempts are unknown. `attempts` is a legacy ledger
+    alias for this hybrid count, not a total measurement-attempt count.
+    last_ready/last_pattern describe the latest COMPLETED request, including
+    missing responses discarded by MARUR_DropMissing; they are not admission age.
+    """
     first = initial.sort_values(['issue','id']).head(config['initial_labels'])
     stream = stream.sort_values(['issue','id']).reset_index(drop=True)
     if len(first)!=config['initial_labels'] or first.y.isna().any():

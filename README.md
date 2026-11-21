@@ -1,3 +1,5 @@
+> November 21 critical audit: the legacy MARUR budget/attempt counter is ten historical successful labels plus NEW query attempts, not total measurement cost. See docs/FINAL_MARUR_CRITICAL_AUDIT.md, docs/MATCHED_COST_ANALYSIS.md and docs/IEEE_SUBMISSION_DECISION.md (paths relative to repository root) for the current assessment.
+
 # Cellular throughput recalibration benchmark
 
 The [MARUR research extension](docs/FINAL_RESEARCH_READINESS.md) evaluates an empirical budgeted query-and-commitment controller on six archived cohorts. It includes 576 configurations, all scheduled opportunities, actual query costs and unsuccessful response accounting. The results show trade-offs and failures across networks. [Method](docs/PROPOSED_METHOD_FORMULATION.md) · [Novelty comparison](docs/NOVELTY_COMPARISON_MATRIX.md) · [Reviewer assessment](docs/IEEE_REVIEWER_RESPONSE.md)
@@ -68,3 +70,7 @@ python scripts/validate_irish_groups.py
 python scripts/build_paper_html.py
 python scripts/validate_manuscript_consistency.py
 ```
+
+## November 21 critical audit
+
+The [critical audit](docs/FINAL_MARUR_CRITICAL_AUDIT.md), [all matched-cost results](docs/MATCHED_COST_ANALYSIS.md), [prospective protocol](docs/PROSPECTIVE_VALIDATION_PROTOCOL.md), and [submission decision](docs/IEEE_SUBMISSION_DECISION.md) supersede earlier readiness ratings. Reproduce the added audit with `python scripts/audit_marur.py`, validate with `python scripts/validate_marur_audit.py`, and render its report with `python scripts/write_matched_cost_report.py`. The full reproduction pipeline includes these stages.

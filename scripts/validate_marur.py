@@ -66,6 +66,13 @@ def validate(root=ROOT):
         assert r.attempts==10+len(records)
         assert r.response_labels==records.observed.sum()
         assert r.missing_responses==len(records)-records.observed.sum()
+        assert r.initial_calibration_observations==10
+        assert r.new_query_attempts==len(records)
+        assert r.initial_label_plus_query_count==r.attempts==10+len(records)
+        assert r.successful_responses==r.response_labels
+        assert r.unsuccessful_responses==r.missing_responses
+        assert r.admitted_calibration_updates==r.recalibrations==records.admitted.sum()
+        assert r.effective_updates==((records.admitted)&(records.ready<=d.issue.max())).sum()
         if key[4]=='Frozen':
             col='HistGBM' if key[0] in ['E1','E3'] and key[1]=='HistGBM' else 'Tree' if key[1]=='HistGBM' else 'Persistence'
             residual=(initial[col]-initial.y).max()

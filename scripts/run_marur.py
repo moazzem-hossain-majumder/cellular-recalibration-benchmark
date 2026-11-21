@@ -71,7 +71,13 @@ def aggregate(ledger,responses,initial=10):
         response_labels=int(responses.observed.sum()) if len(responses) else 0,
         missing_responses=int((~responses.observed).sum()) if len(responses) else 0,
         recalibrations=int(responses.admitted.sum()) if len(responses) else 0,
-        effective_updates=int(ledger.updates.max()) if len(ledger) else 0)
+        effective_updates=int(ledger.updates.max()) if len(ledger) else 0,
+        initial_calibration_observations=initial,
+        new_query_attempts=int(ledger['query'].sum()),
+        successful_responses=int(responses.observed.sum()) if len(responses) else 0,
+        unsuccessful_responses=int((~responses.observed).sum()) if len(responses) else 0,
+        admitted_calibration_updates=int(responses.admitted.sum()) if len(responses) else 0,
+        initial_label_plus_query_count=initial+int(ledger['query'].sum()))
     return stats
 
 
@@ -88,7 +94,7 @@ def main():
             initial=data[data.partition=='cal']
             stream=data[data.partition=='test']
             for scenario in config['scenarios']:
-                for budget in config['total_attempt_budgets']:
+                for budget in config['initial_label_plus_query_caps']:
                     for policy in config['policies']:
                         tick=time.perf_counter()
                         ledger,responses=replay(initial,stream,policy,budget,config,scenario)

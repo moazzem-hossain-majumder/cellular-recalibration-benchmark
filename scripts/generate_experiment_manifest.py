@@ -15,6 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 PACKAGES = ['torch','pandas','numpy','scipy','scikit-learn','matplotlib','seaborn',
             'pypdf','pymupdf','pytest','pypandoc_binary','beautifulsoup4','pyarrow']
 PATTERNS = [
+    'results/marur_audit/*','docs/FINAL_MARUR_CRITICAL_AUDIT.md','docs/MATCHED_COST_ANALYSIS.md',
+    'docs/PROSPECTIVE_VALIDATION_PROTOCOL.md','docs/IEEE_SUBMISSION_DECISION.md',
     'results/marur/*','configs/*.json','docs/RESEARCH_BASELINE_AUDIT.md','docs/NOVELTY_COMPARISON_MATRIX.md',
     'docs/PROPOSED_METHOD_FORMULATION.md','docs/EXPERIMENTAL_DESIGN.md','docs/STATISTICAL_ANALYSIS_PLAN.md',
     'docs/IEEE_REVIEWER_RESPONSE.md','docs/FINAL_RESEARCH_READINESS.md','results/runs/isolated_baseline_reproduction.json','results/runs/isolated_marur_reproduction.json',

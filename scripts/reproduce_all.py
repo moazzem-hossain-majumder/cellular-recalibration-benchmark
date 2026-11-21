@@ -22,6 +22,8 @@ def main():
         ['scripts/report_sirhan_external.py'], ['scripts/validate_irish_groups.py'], ['scripts/ireland_drive_transfer.py'], ['scripts/replay_oslo_playback.py'], ['scripts/replay_oslo_playback.py','--sensitivity'],
         ['scripts/check_campaign_robustness.py'],
         ['scripts/run_marur.py'], ['scripts/validate_marur.py'],
+        ['scripts/audit_marur.py'], ['scripts/validate_marur_audit.py'],
+        ['scripts/write_matched_cost_report.py'],
         ['scripts/build_paper_html.py'],
         ['scripts/validate_manuscript_consistency.py'], ['-m','pytest','-ra','--junitxml=results/runs/final_tests.xml'],
 

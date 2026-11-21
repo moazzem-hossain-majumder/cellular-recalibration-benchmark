@@ -82,3 +82,39 @@ def test_clock_roster_includes_scheduled_no_lag_rows():
     old=clock_pairs(series,times.min(),times.max())
     assert len(all_ticks)==3 and len(old)==1
     pd.testing.assert_frame_equal(all_ticks.dropna(subset=['lag']),old)
+
+
+@pytest.mark.parametrize('policy',['MARUR','MARUR_DropMissing'])
+def test_failed_response_resets_trigger_even_if_not_admitted(policy):
+    initial,stream=data()
+    stream.loc[:,'y']=np.nan
+    stream.loc[:,'pattern']=0
+    # All later rows have the same new pattern. Failure resets both trigger state
+    # variables, so there is no repeated query just because support remains zero.
+    a,r=replay(initial,stream,policy,50,CONFIG)
+    assert a['query'].tolist()==[True,False,False,False,False,False]
+    assert a.iloc[1].last_feedback==stream.iloc[0].ready
+    assert len(r)==1 and not r.iloc[0].observed
+    assert bool(r.iloc[0].admitted)==(policy=='MARUR')
+
+
+def test_failed_response_age_trigger_waits_sixty_minutes_from_completion():
+    initial,stream=data()
+    stream=stream.iloc[:3].copy()
+    stream.loc[:,'issue']=[10000.,13600.,13660.]
+    stream.loc[:,'ready']=stream.issue+60
+    stream.loc[:,'y']=np.nan
+    a,r=replay(initial,stream,'MARUR_DropMissing',50,CONFIG)
+    assert a['query'].tolist()==[True,False,True]
+    assert not r.admitted.any()
+
+
+def test_dropmissing_changes_admission_but_not_query_schedule():
+    initial,stream=data()
+    stream.loc[:,'y']=np.nan
+    stream.loc[:,'pattern']=[0,0,3,3,0,0]
+    a,ra=replay(initial,stream,'MARUR',50,CONFIG)
+    b,rb=replay(initial,stream,'MARUR_DropMissing',50,CONFIG)
+    pd.testing.assert_series_equal(a['query'],b['query'])
+    pd.testing.assert_series_equal(a.last_feedback,b.last_feedback)
+    assert ra.admitted.all() and not rb.admitted.any()

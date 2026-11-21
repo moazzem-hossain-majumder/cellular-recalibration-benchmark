@@ -1,0 +1,30 @@
+{
+  "start_utc": "2026-11-21T04:46:37.568346+00:00",
+  "end_utc": "2026-11-21T04:48:40.826534+00:00",
+  "command": [
+    "python",
+    "scripts/audit_marur.py"
+  ],
+  "new_query_caps": [
+    0,
+    1,
+    5,
+    10,
+    20,
+    40
+  ],
+  "policies": [
+    "Frozen",
+    "Periodic",
+    "Early",
+    "ACI",
+    "MARUR"
+  ],
+  "scope": "Exploratory full-suffix replay; exact achieved-cost matches only; Frozen zero-query reference",
+  "sha256": {
+    "src\\evaluation\\marur.py": "844b58e6247f18d78e4ec478df57eb77aff7a58b4fad107d11363213cd684c76",
+    "configs\\marur.json": "dfb8053d52aaaf1ce497b636f90f3c389859d434da42704d525dc756c13cf27c",
+    "results\\marur\\opportunities.csv.gz": "6fc1c490106539f2c2c3f27bd141d391909cbe021f358dd9f2fdb1cadc6ce852",
+    "scripts\\audit_marur.py": "73bffb3d985ac0df09668bbbb1547848db114187c0457ee4db7e4f227acc8bec"
+  }
+}

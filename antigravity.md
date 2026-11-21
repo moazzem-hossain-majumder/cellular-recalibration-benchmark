@@ -1,3 +1,5 @@
+> November 21 critical audit: the legacy MARUR budget/attempt counter is ten historical successful labels plus NEW query attempts, not total measurement cost. See docs/FINAL_MARUR_CRITICAL_AUDIT.md, docs/MATCHED_COST_ANALYSIS.md and docs/IEEE_SUBMISSION_DECISION.md (paths relative to repository root) for the current assessment.
+
 # Revision handoff
 
 The latest [MARUR assessment](docs/FINAL_RESEARCH_READINESS.md) supersedes earlier general readiness statements. The empirical controller has been implemented and evaluated; consistent superiority and deployment risk guarantees remain unestablished.

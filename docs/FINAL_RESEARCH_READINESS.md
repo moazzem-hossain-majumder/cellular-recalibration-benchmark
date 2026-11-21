@@ -1,3 +1,5 @@
+> November 21 critical audit: the legacy MARUR budget/attempt counter is ten historical successful labels plus NEW query attempts, not total measurement cost. See docs/FINAL_MARUR_CRITICAL_AUDIT.md, docs/MATCHED_COST_ANALYSIS.md and docs/IEEE_SUBMISSION_DECISION.md (paths relative to repository root) for the current assessment.
+
 # Final research readiness
 
 The MARUR experiment and required research documents are complete. The repository contains an executable empirical controller, causal acquisition and action ledgers, baselines, ablations, external replay, statistics, figures and a revised manuscript. The literature does not support claiming a new general conformal method or a universal controller advantage.

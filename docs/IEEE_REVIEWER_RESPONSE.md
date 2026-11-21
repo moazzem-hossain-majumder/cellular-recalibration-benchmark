@@ -1,3 +1,5 @@
+> November 21 critical audit: the legacy MARUR budget/attempt counter is ten historical successful labels plus NEW query attempts, not total measurement cost. See docs/FINAL_MARUR_CRITICAL_AUDIT.md, docs/MATCHED_COST_ANALYSIS.md and docs/IEEE_SUBMISSION_DECISION.md (paths relative to repository root) for the current assessment.
+
 # IEEE reviewer response and critical assessment
 
 These are author-side reviewer perspectives. They are not external IEEE reviews or acceptance predictions. The baseline audit used separate review agents; their final turns were interrupted by a usage limit. The final controller assessment below was completed by the primary agent using the generated ledgers, validator, isolated rerun and literature comparison.
