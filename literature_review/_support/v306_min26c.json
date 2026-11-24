@@ -1,0 +1,104 @@
+{
+  "url": "https://proceedings.mlr.press/v306/min26c.html",
+  "data": {
+    "meta": [
+      [
+        "viewport",
+        "width=device-width, initial-scale=1"
+      ],
+      [
+        "description",
+        "Questioning the Coverage-Length Metric in Conformal Prediction: When Shorter Intervals Are Not BetterYizhou Min, Yizhou Lu, Lanqi Li, Zhen Zha..."
+      ],
+      [
+        "citation_publisher",
+        "PMLR"
+      ],
+      [
+        "citation_title",
+        "Questioning the Coverage-Length Metric in Conformal Prediction: When Shorter Intervals Are Not Better"
+      ],
+      [
+        "citation_language",
+        "en"
+      ],
+      [
+        "citation_abstract_html_url",
+        "https://proceedings.mlr.press/v306/min26c.html"
+      ],
+      [
+        "citation_pdf_url",
+        "https://raw.githubusercontent.com/mlresearch/v306/main/assets/min26c/min26c.pdf"
+      ],
+      [
+        "citation_firstpage",
+        "88935"
+      ],
+      [
+        "citation_lastpage",
+        "88963"
+      ],
+      [
+        "citation_author",
+        "Yizhou Min"
+      ],
+      [
+        "citation_author",
+        "Yizhou Lu"
+      ],
+      [
+        "citation_author",
+        "Lanqi Li"
+      ],
+      [
+        "citation_author",
+        "Zhen Zhang"
+      ],
+      [
+        "citation_author",
+        "Jiaye Teng"
+      ],
+      [
+        "citation_publication_date",
+        "2026/09/29"
+      ],
+      [
+        "citation_inbook_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_conference_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_issn",
+        "2640-3498"
+      ],
+      [
+        "twitter:card",
+        "summary"
+      ],
+      [
+        "twitter:title",
+        "Questioning the Coverage-Length Metric in Conformal Prediction: When Shorter Intervals Are Not Better"
+      ],
+      [
+        "twitter:site",
+        "@MLResearchPress"
+      ],
+      [
+        "twitter:description",
+        "Conformal prediction (CP) has become a cornerstone of distribution-free uncertainty quantification, conventionally evaluated by its coverage and interval len..."
+      ],
+      [
+        "twitter:image",
+        "https://proceedings.mlr.press/v306/assets/images/logo-pmlr.png"
+      ],
+      [
+        "twitter:image:alt",
+        "PMLR Logo"
+      ]
+    ],
+    "text": "Questioning the Coverage-Length Metric in Conformal Prediction: When Shorter Intervals Are Not Better Proceedings of Machine Learning Research Volume 306 JMLR DMLR TMLR MLOSS FAQ Submission Format [ edit ] Questioning the Coverage-Length Metric in Conformal Prediction: When Shorter Intervals Are Not Better Yizhou Min, Yizhou Lu, Lanqi Li, Zhen Zhang, Jiaye Teng Proceedings of the 43rd International Conference on Machine Learning , PMLR 306:88935-88963, 2026. Abstract Conformal prediction (CP) has become a cornerstone of distribution-free uncertainty quantification, conventionally evaluated by its coverage and interval length. This work critically examines the sufficiency of these standard metrics. We demonstrate that the interval length might be deceptively improved through a counter-intuitive approach termed Prejudicial Trick (PT), while the coverage remains valid. Specifically, for any given test sample, PT probabilistically returns an interval, which is either null or constructed using an adjusted confidence level, thereby preserving marginal coverage. While PT potentially yields a deceptively lower interval length, it introduces practical vulnerabilities: the same input can yield completely different prediction intervals across repeated runs of the algorithm. We formally derive the conditions under which PT achieves these misleading improvements and provide extensive empirical evidence across various regression and classification tasks. Furthermore, we introduce a new metric interval stability which helps detect whether a new CP method implicitly improves the length based on such PT-like techniques. Code is available at https://github.com/benben-cd/PT-Conformal-Prediction Cite this Paper BibTeX @InProceedings{pmlr-v306-min26c,\n  title = \t {Questioning the Coverage-Length Metric in Conformal Prediction: When Shorter Intervals Are Not Better},\n  author =       {Min, Yizhou and Lu, Yizhou and Li, Lanqi and Zhang, Zhen and Teng, Jiaye},\n  booktitle = \t {Proceedings of the 43rd International Conference on Machine Learning},\n  pages = \t {88935--88963},\n  year = \t {2026},\n  editor = \t {Zhang, Tong and Dudik, Miroslav and Jaggi, Martin and Agarwal, Alekh and Li, Sharon and Schuurmans, Dale and Zhu, Jerry and Berkenkamp, Felix and Dong, Hanze and Bietti, Alberto},\n  volume = \t {306},\n  series = \t {Proceedings of Machine Learning Research},\n  month = \t {06--11 Jul},\n  publisher =    {PMLR},\n  pdf = \t {https://raw.githubusercontent.com/mlresearch/v306/main/assets/min26c/min26c.pdf},\n  url = \t {https://proceedings.mlr.press/v306/min26c.html},\n  abstract = \t {Conformal prediction (CP) has become a cornerstone of distribution-free uncertainty quantification, conventionally evaluated by its coverage and interval length. This work critically examines the sufficiency of these standard metrics. We demonstrate that the interval length might be deceptively improved through a counter-intuitive approach termed Prejudicial Trick (PT), while the coverage remains valid. Specifically, for any given test sample, PT probabilistically returns an interval, which is either null or constructed using an adjusted confidence level, thereby preserving marginal coverage. While PT potentially yields a deceptively lower interval length, it introduces practical vulnerabilities: the same input can yield completely different prediction intervals across repeated runs of the algorithm. We formally derive the conditions under which PT achieves these misleading improvements and provide extensive empirical evidence across various regression and classification tasks. Furthermore, we introduce a new metric interval stability which helps detect whether a new CP method implicitly improves the length based on such PT-like techniques. Code is available at https://github.com/benben-cd/PT-Conformal-Prediction}\n} Copy to Clipboard Download Endnote %0 Conference Paper\n%T Questioning the Coverage-Length Metric in Conformal Prediction: When Shorter Intervals Are Not Better\n%A Yizhou Min\n%A Yizhou Lu\n%A Lanqi Li\n%A Zhen Zhang\n%A Jiaye Teng\n%B Proceedings of the 43rd International Conference on Machine Learning\n%C Proceedings of Machine Learning Research\n%D 2026\n%E Tong Zhang\n%E Miroslav Dudik\n%E Martin Jaggi\n%E Alekh Agarwal\n%E Sharon Li\n%E Dale Schuurmans\n%E Jerry Zhu\n%E Felix Berkenkamp\n%E Hanze Dong\n%E Alberto Bietti\t\n%F pmlr-v306-min26c\n%I PMLR\n%P 88935--88963\n%U https://proceedings.mlr.press/v306/min26c.html\n%V 306\n%X Conformal prediction (CP) has become a cornerstone of distribution-free uncertainty quantification, conventionally evaluated by its coverage and interval length. This work critically examines the sufficiency of these standard metrics. We demonstrate that the interval length might be deceptively improved through a counter-intuitive approach termed Prejudicial Trick (PT), while the coverage remains valid. Specifically, for any given test sample, PT probabilistically returns an interval, which is either null or constructed using an adjusted confidence level, thereby preserving marginal coverage. While PT potentially yields a deceptively lower interval length, it introduces practical vulnerabilities: the same input can yield completely different prediction intervals across repeated runs of the algorithm. We formally derive the conditions under which PT achieves these misleading improvements and provide extensive empirical evidence across various regression and classification tasks. Furthermore, we introduce a new metric interval stability which helps detect whether a new CP method implicitly improves the length based on such PT-like techniques. Code is available at https://github.com/benben-cd/PT-Conformal-Prediction Copy to Clipboard Download APA Min, Y., Lu, Y., Li, L., Zhang, Z. & Teng, J.. (2026). Questioning the Coverage-Length Metric in Conformal Prediction: When Shorter Intervals Are Not Better. Proceedings of the 43rd International Conference on Machine Learning , in Proceedings of Machine Learning Research 306:88935-88963 Available from https://proceedings.mlr.press/v306/min26c.html. Copy to Clipboard Download Related Material Download PDF OpenReview Software This site last compiled Fri, 23 Oct 2026 21:44:39 +0000 Github Account Copyright © The authors and PMLR 2026. MLResearchPress"
+  }
+}

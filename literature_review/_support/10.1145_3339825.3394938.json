@@ -1,0 +1,365 @@
+{
+  "url": "https://api.crossref.org/works/10.1145/3339825.3394938",
+  "data": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          20
+        ]
+      ],
+      "date-time": "2026-11-20T19:57:51Z",
+      "timestamp": 1795204671415,
+      "version": "4.10.3"
+    },
+    "publisher-location": "New York, NY, USA",
+    "reference-count": 23,
+    "publisher": "ACM",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2020,
+              5,
+              27
+            ]
+          ],
+          "date-time": "2020-05-27T00:00:00Z",
+          "timestamp": 1590537600000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "https://www.acm.org/publications/policies/copyright_policy#Background"
+      }
+    ],
+    "funder": [
+      {
+        "name": "Science Foundation Ireland (SFI)",
+        "award": [
+          "13/RC/2077, 13/IA/1892"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "13/RC/2077, 13/IA/1892"
+            ]
+          }
+        ]
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "dl.acm.org"
+      ],
+      "crossmark-restriction": true
+    },
+    "short-container-title": [],
+    "published-print": {
+      "date-parts": [
+        [
+          2020,
+          5,
+          27
+        ]
+      ]
+    },
+    "DOI": "10.1145/3339825.3394938",
+    "type": "proceedings-article",
+    "created": {
+      "date-parts": [
+        [
+          2020,
+          5,
+          28
+        ]
+      ],
+      "date-time": "2020-05-28T00:34:06Z",
+      "timestamp": 1590626046000
+    },
+    "page": "303-308",
+    "update-policy": "https://doi.org/10.1145/crossmark-policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 282,
+    "title": [
+      "Beyond throughput, the next generation"
+    ],
+    "prefix": "10.1145",
+    "author": [
+      {
+        "given": "Darijo",
+        "family": "Raca",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "University of Sarajevo, Sarajevo"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Dylan",
+        "family": "Leahy",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "University College Cork, Ireland"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Cormac J.",
+        "family": "Sreenan",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "University College Cork, Ireland"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Jason J.",
+        "family": "Quinlan",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "University College Cork, Ireland"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "320",
+    "published-online": {
+      "date-parts": [
+        [
+          2020,
+          5,
+          27
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "key": "e_1_3_2_1_1_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/COMST.2016.2532458"
+      },
+      {
+        "key": "e_1_3_2_1_2_1",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Tanweer Alam. 2018. A Reliable Communication Framework and Its Use in Internet of Things (IoT).  Tanweer Alam. 2018. A Reliable Communication Framework and Its Use in Internet of Things (IoT).",
+        "DOI": "10.31219/osf.io/cmza5"
+      },
+      {
+        "key": "e_1_3_2_1_3_1",
+        "volume-title": "Proceedings of the 14th ACM International Conference on Modeling, Analysis and Simulation of Wireless and Mobile Systems (MSWiM '11)"
+      },
+      {
+        "key": "e_1_3_2_1_4_1",
+        "volume-title": "Proceedings of the 7th International Conference on Multimedia Systems (MMSys '16)"
+      },
+      {
+        "key": "e_1_3_2_1_5_1",
+        "volume-title": "IEEE International Packet Video Workshop.",
+        "author": "De L."
+      },
+      {
+        "key": "e_1_3_2_1_6_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/MCOM.2017.1700155"
+      },
+      {
+        "key": "e_1_3_2_1_7_1",
+        "volume-title": "Rate Adaptation: Evidence from a Large Video Streaming Service. In SIGCOMM. ACM.",
+        "author": "Huang T.-Y.",
+        "year": "2014"
+      },
+      {
+        "key": "e_1_3_2_1_8_1",
+        "volume-title": "Proceedings of the 2005 ACM SIGMETRICS International Conference on Measurement and Modeling of Computer Systems (SIGMETRICS '05)"
+      },
+      {
+        "key": "e_1_3_2_1_9_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.5555/2591204.2591228"
+      },
+      {
+        "key": "e_1_3_2_1_10_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/INFOCOM.2015.7218665"
+      },
+      {
+        "key": "e_1_3_2_1_11_1",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Marco Mezzavilla etal 2018. End-to-End Simulation of 5G mmWave Networks. https://ieeexplore.ieee.org/document/8344116  Marco Mezzavilla et al. 2018. End-to-End Simulation of 5G mmWave Networks. https://ieeexplore.ieee.org/document/8344116",
+        "DOI": "10.1109/COMST.2018.2828880"
+      },
+      {
+        "key": "e_1_3_2_1_12_1",
+        "unstructured": "Arvind Narayanan etal 2019. A First Measurement Study of Commercial mmWave 5G Performance on Smartphones. arXiv:cs.NI/1909.07532  Arvind Narayanan et al. 2019. A First Measurement Study of Commercial mmWave 5G Performance on Smartphones. arXiv:cs.NI/1909.07532"
+      },
+      {
+        "key": "e_1_3_2_1_13_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/TBC.2018.2816786"
+      },
+      {
+        "key": "e_1_3_2_1_14_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3304109.3306233"
+      },
+      {
+        "key": "e_1_3_2_1_15_1",
+        "volume-title": "Proceedings of the 12th International Conference on Quality of Multimedia Experience (QoMEX '20)",
+        "author": "Quinlan J."
+      },
+      {
+        "key": "e_1_3_2_1_16_1",
+        "volume-title": "9th ACM Multimedia Systems Conference (MMSys '18)",
+        "author": "Quinlan J."
+      },
+      {
+        "key": "e_1_3_2_1_17_1",
+        "volume-title": "Proceedings of the 4th ACM Multimedia Systems Conference (MMSys '13)"
+      },
+      {
+        "key": "e_1_3_2_1_18_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/1943552.1943572"
+      },
+      {
+        "key": "e_1_3_2_1_19_1",
+        "volume-title": "Proceedings of the 9th ACM Multimedia Systems Conference (MMSys '18)"
+      },
+      {
+        "key": "e_1_3_2_1_20_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/LCOMM.2016.2601087"
+      },
+      {
+        "key": "e_1_3_2_1_21_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/ICNP.2014.49"
+      },
+      {
+        "key": "e_1_3_2_1_22_1",
+        "volume-title": "Proceedings of the 21st Annual International Conference on Mobile Computing and Networking (MobiCom '15)"
+      },
+      {
+        "key": "e_1_3_2_1_23_1",
+        "unstructured": "C. Yue etal 2017. LinkForecast: Cellular Link Bandwidth Prediction in LTE Networks. IEEE Transactions on Mobile Computing (2017).  C. Yue et al. 2017. LinkForecast: Cellular Link Bandwidth Prediction in LTE Networks. IEEE Transactions on Mobile Computing (2017)."
+      }
+    ],
+    "event": {
+      "name": "MMSys '20: 11th ACM Multimedia Systems Conference",
+      "location": "Istanbul Turkey",
+      "acronym": "MMSys '20",
+      "sponsor": [
+        "SIGMM ACM Special Interest Group on Multimedia",
+        "SIGCOMM ACM Special Interest Group on Data Communication",
+        "SIGMOBILE ACM Special Interest Group on Mobility of Systems, Users, Data and Computing"
+      ]
+    },
+    "container-title": [
+      "Proceedings of the 11th ACM Multimedia Systems Conference"
+    ],
+    "original-title": [],
+    "link": [
+      {
+        "URL": "https://dl.acm.org/doi/10.1145/3339825.3394938",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://dl.acm.org/doi/pdf/10.1145/3339825.3394938",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2025,
+          6,
+          17
+        ]
+      ],
+      "date-time": "2025-06-17T20:26:10Z",
+      "timestamp": 1750191970000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://dl.acm.org/doi/10.1145/3339825.3394938"
+      }
+    },
+    "subtitle": [
+      "a 5G dataset with channel and context metrics"
+    ],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2020,
+          5,
+          27
+        ]
+      ]
+    },
+    "references-count": 23,
+    "alternative-id": [
+      "10.1145/3339825.3394938",
+      "10.1145/3339825"
+    ],
+    "URL": "https://doi.org/10.1145/3339825.3394938",
+    "relation": {},
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2020,
+          5,
+          27
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "2020-05-27",
+        "order": 2,
+        "name": "published",
+        "label": "Published",
+        "group": {
+          "name": "publication_history",
+          "label": "Publication History"
+        }
+      }
+    ]
+  }
+}

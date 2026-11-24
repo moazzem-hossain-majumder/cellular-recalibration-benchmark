@@ -1,0 +1,15 @@
+{
+  "papers": 30,
+  "recent_2022_2026": 24,
+  "themes": 4,
+  "comparison_prior_papers": 12,
+  "pdf_pages": 3,
+  "citations_resolved": true,
+  "no_overfull_boxes": true,
+  "files": {
+    "related_work.tex": "23c5ae9a8f5c00106310fae94b0d75217c4f4818700af2290ca5d09f54423fb9",
+    "references.bib": "6dcb3098153dc165d805bc96c1482531c6fb7223634621f6d3c18b57e00a59b7",
+    "review_matrix.csv": "8176f9e0072836c51a27ed7104bc78040528b3603b6c5663c3e7ec915737a622",
+    "review_preview.pdf": "60fe690b074817217ed28949b7b8604e4567d06eb809cc5f6a38d1ec5af3b1f5"
+  }
+}

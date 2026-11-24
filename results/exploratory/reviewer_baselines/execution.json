@@ -1,0 +1,40 @@
+{
+  "start_utc": "2026-11-23T15:45:45.699921+00:00",
+  "end_utc": "2026-11-23T15:48:30.930160+00:00",
+  "configurations": 792,
+  "spec": {
+    "status": "Fixed before replay; exploratory on inspected archives",
+    "new_query_caps": [
+      10,
+      40
+    ],
+    "feedback_conditions": [
+      "Recorded",
+      "IID20_seed42",
+      "Burst20_seed42"
+    ],
+    "random_schedule_seeds": [
+      42,
+      123,
+      2026
+    ],
+    "decaying_ogd_exponent": 0.6,
+    "models": [
+      "HistGBM",
+      "Persistence"
+    ]
+  },
+  "status": "exploratory",
+  "sha256": {
+    "results\\marur\\opportunities.csv.gz": "6fc1c490106539f2c2c3f27bd141d391909cbe021f358dd9f2fdb1cadc6ce852",
+    "scripts\\run_reviewer_baselines.py": "4c2909474496a2badc6a911369952ec4f6cd79f679be5943f47530b377c9596b",
+    "src\\evaluation\\marur.py": "9e8e7557627fd0837302ceec0fdd30f7313111f038674570feed3554608aa6ae",
+    "configs\\marur_reviewer_baselines.json": "9d42cfc8de05c25bb1a8ffaff061df534be89c3b8e17a7a4e5c300bcd3b7b0e4",
+    "docs\\REVIEWER_BASELINE_PROTOCOL.md": "428143a25c111bf0cf49711fd860ab1324acb13c85c17385cb02182dd8374296",
+    "results\\exploratory\\reviewer_baselines\\actions.csv.gz": "52c3386ab692e88e19f15f3bd703841cca6941441778cf871b168bd6cb0d8823",
+    "results\\exploratory\\reviewer_baselines\\dates.csv": "933e3275ea6236bec7d4837eb5cac654521a702bf91dc694d1ed7c8dbc007e39",
+    "results\\exploratory\\reviewer_baselines\\random_schedules.csv": "0135e5fa7adc266ea8292b2d3384c9ba37db66e9c07f6ef353d2bde95daff6dd",
+    "results\\exploratory\\reviewer_baselines\\responses.csv.gz": "5e4867a6aa428d2041ddcc23f7ef97ea1113fedca908024810a94891f346cf49",
+    "results\\exploratory\\reviewer_baselines\\summary.csv": "2e0a36aa618d1f7cac20f512c442cd891836ef2cc99146ace658ce42d584b55b"
+  }
+}

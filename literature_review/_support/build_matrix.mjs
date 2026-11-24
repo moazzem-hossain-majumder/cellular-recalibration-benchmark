@@ -1,0 +1,12 @@
+import fs from 'node:fs/promises';
+import {Workbook} from '@oai/artifact-tool';
+const dir='D:/Telecom/literature_review';
+const rows=JSON.parse(await fs.readFile(`${dir}/_support/matrix_rows.json`,'utf8'));
+const wb=Workbook.create();const sheet=wb.worksheets.add('Review matrix');
+const range=sheet.getRange('A1:G31');range.values=rows;
+wb.recalculate();
+const actual=range.values;
+if(JSON.stringify(actual)!==JSON.stringify(rows)) throw Error('Matrix round-trip mismatch');
+const escape=v=>'"'+String(v??'').replaceAll('"','""')+'"';
+await fs.writeFile(`${dir}/review_matrix.csv`,actual.map(r=>r.map(escape).join(',')).join('\r\n')+'\r\n','utf8');
+console.log(JSON.stringify({rows:actual.length-1,columns:actual[0].length,recent:actual.slice(1).filter(r=>r[2]>=2022).length}));

@@ -1,0 +1,108 @@
+{
+  "url": "https://proceedings.mlr.press/v271/hou25a.html",
+  "data": {
+    "meta": [
+      [
+        "viewport",
+        "width=device-width, initial-scale=1"
+      ],
+      [
+        "description",
+        "Online Conformal Probabilistic Numerics via Adaptive Edge-Cloud OffloadingQiushuo Hou, Sangwoo Park, Matteo Zecchin, Yunlong Cai, Guandin..."
+      ],
+      [
+        "citation_publisher",
+        "PMLR"
+      ],
+      [
+        "citation_title",
+        "Online Conformal Probabilistic Numerics via Adaptive Edge-Cloud Offloading"
+      ],
+      [
+        "citation_language",
+        "en"
+      ],
+      [
+        "citation_abstract_html_url",
+        "https://proceedings.mlr.press/v271/hou25a.html"
+      ],
+      [
+        "citation_pdf_url",
+        "https://raw.githubusercontent.com/mlresearch/v271/main/assets/hou25a/hou25a.pdf"
+      ],
+      [
+        "citation_firstpage",
+        "138"
+      ],
+      [
+        "citation_lastpage",
+        "146"
+      ],
+      [
+        "citation_author",
+        "Qiushuo Hou"
+      ],
+      [
+        "citation_author",
+        "Sangwoo Park"
+      ],
+      [
+        "citation_author",
+        "Matteo Zecchin"
+      ],
+      [
+        "citation_author",
+        "Yunlong Cai"
+      ],
+      [
+        "citation_author",
+        "Guanding Yu"
+      ],
+      [
+        "citation_author",
+        "Osvaldo Simeone"
+      ],
+      [
+        "citation_publication_date",
+        "2025/08/27"
+      ],
+      [
+        "citation_inbook_title",
+        "First International Conference on Probabilistic Numerics"
+      ],
+      [
+        "citation_conference_title",
+        "First International Conference on Probabilistic Numerics"
+      ],
+      [
+        "citation_issn",
+        "2640-3498"
+      ],
+      [
+        "twitter:card",
+        "summary"
+      ],
+      [
+        "twitter:title",
+        "Online Conformal Probabilistic Numerics via Adaptive Edge-Cloud Offloading"
+      ],
+      [
+        "twitter:site",
+        "@MLResearchPress"
+      ],
+      [
+        "twitter:description",
+        "Consider an edge computing setting in which a user submits queries for the solution of a linear system to an edge processor, which is subject to time-varying..."
+      ],
+      [
+        "twitter:image",
+        "https://proceedings.mlr.press/v271/assets/images/logo-pmlr.png"
+      ],
+      [
+        "twitter:image:alt",
+        "PMLR Logo"
+      ]
+    ],
+    "text": "Online Conformal Probabilistic Numerics via Adaptive Edge-Cloud Offloading Proceedings of Machine Learning Research Volume 271 JMLR DMLR TMLR MLOSS FAQ Submission Format [ edit ] Online Conformal Probabilistic Numerics via Adaptive Edge-Cloud Offloading Qiushuo Hou, Sangwoo Park, Matteo Zecchin, Yunlong Cai, Guanding Yu, Osvaldo Simeone Proceedings of the First International Conference on Probabilistic Numerics , PMLR 271:138-146, 2025. Abstract Consider an edge computing setting in which a user submits queries for the solution of a linear system to an edge processor, which is subject to time-varying computing availability. The edge processor applies a probabilistic linear solver (PLS) so as to be able to respond to the user’s query within the allotted time and computing budget. Feedback to the user is in the form of a set of plausible solutions. Due to model misspecification, the highest-probability-density (HPD) set obtained via a direct application of PLS does not come with coverage guarantees with respect to the true solution of the linear system. This work introduces a new method to calibrate the HPD sets produced by PLS with the aim of guaranteeing long-term coverage requirements. The proposed method, referred to as online conformal prediction-PLS (OCP-PLS), assumes sporadic feedback from cloud to edge. This enables the online calibration of uncertainty thresholds via online conformal prediction (OCP), an online optimization method previously studied in the context of prediction models. The validity of OCP-PLS is verified via experiments that bring insights into trade-offs between coverage, prediction set size, and cloud usage. Cite this Paper BibTeX @InProceedings{pmlr-v271-hou25a,\n  title = \t {Online Conformal Probabilistic Numerics via Adaptive Edge-Cloud Offloading},\n  author =       {Hou, Qiushuo and Park, Sangwoo and Zecchin, Matteo and Cai, Yunlong and Yu, Guanding and Simeone, Osvaldo},\n  booktitle = \t {Proceedings of the First International Conference on Probabilistic Numerics},\n  pages = \t {138--146},\n  year = \t {2025},\n  editor = \t {Kanagawa, Motonobu and Cockayne, Jon and Gessner, Alexandra and Hennig, Philipp},\n  volume = \t {271},\n  series = \t {Proceedings of Machine Learning Research},\n  month = \t {01--03 Sep},\n  publisher =    {PMLR},\n  pdf = \t {https://raw.githubusercontent.com/mlresearch/v271/main/assets/hou25a/hou25a.pdf},\n  url = \t {https://proceedings.mlr.press/v271/hou25a.html},\n  abstract = \t {Consider an edge computing setting in which a user submits queries for the solution of a linear system to an edge processor, which is subject to time-varying computing availability. The edge processor applies a probabilistic linear solver (PLS) so as to be able to respond to the user’s query within the allotted time and computing budget. Feedback to the user is in the form of a set of plausible solutions. Due to model misspecification, the highest-probability-density (HPD) set obtained via a direct application of PLS does not come with coverage guarantees with respect to the true solution of the linear system. This work introduces a new method to calibrate the HPD sets produced by PLS with the aim of guaranteeing long-term coverage requirements. The proposed method, referred to as online conformal prediction-PLS (OCP-PLS), assumes sporadic feedback from cloud to edge. This enables the online calibration of uncertainty thresholds via online conformal prediction (OCP), an online optimization method previously studied in the context of prediction models. The validity of OCP-PLS is verified via experiments that bring insights into trade-offs between coverage, prediction set size, and cloud usage.}\n} Copy to Clipboard Download Endnote %0 Conference Paper\n%T Online Conformal Probabilistic Numerics via Adaptive Edge-Cloud Offloading\n%A Qiushuo Hou\n%A Sangwoo Park\n%A Matteo Zecchin\n%A Yunlong Cai\n%A Guanding Yu\n%A Osvaldo Simeone\n%B Proceedings of the First International Conference on Probabilistic Numerics\n%C Proceedings of Machine Learning Research\n%D 2025\n%E Motonobu Kanagawa\n%E Jon Cockayne\n%E Alexandra Gessner\n%E Philipp Hennig\t\n%F pmlr-v271-hou25a\n%I PMLR\n%P 138--146\n%U https://proceedings.mlr.press/v271/hou25a.html\n%V 271\n%X Consider an edge computing setting in which a user submits queries for the solution of a linear system to an edge processor, which is subject to time-varying computing availability. The edge processor applies a probabilistic linear solver (PLS) so as to be able to respond to the user’s query within the allotted time and computing budget. Feedback to the user is in the form of a set of plausible solutions. Due to model misspecification, the highest-probability-density (HPD) set obtained via a direct application of PLS does not come with coverage guarantees with respect to the true solution of the linear system. This work introduces a new method to calibrate the HPD sets produced by PLS with the aim of guaranteeing long-term coverage requirements. The proposed method, referred to as online conformal prediction-PLS (OCP-PLS), assumes sporadic feedback from cloud to edge. This enables the online calibration of uncertainty thresholds via online conformal prediction (OCP), an online optimization method previously studied in the context of prediction models. The validity of OCP-PLS is verified via experiments that bring insights into trade-offs between coverage, prediction set size, and cloud usage. Copy to Clipboard Download APA Hou, Q., Park, S., Zecchin, M., Cai, Y., Yu, G. & Simeone, O.. (2025). Online Conformal Probabilistic Numerics via Adaptive Edge-Cloud Offloading. Proceedings of the First International Conference on Probabilistic Numerics , in Proceedings of Machine Learning Research 271:138-146 Available from https://proceedings.mlr.press/v271/hou25a.html. Copy to Clipboard Download Related Material Download PDF OpenReview This site last compiled Wed, 07 Oct 2026 11:42:20 +0000 Github Account Copyright © The authors and PMLR 2026. MLResearchPress"
+  }
+}

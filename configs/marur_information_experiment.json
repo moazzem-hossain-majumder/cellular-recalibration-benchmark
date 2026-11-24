@@ -1,0 +1,11 @@
+{
+  "status": "Exploratory on previously inspected cohorts; fixed before this run",
+  "new_query_caps": [10, 40],
+  "mask_seeds": [42, 123, 2026],
+  "mask_probability": 0.2,
+  "burst_bin_minutes": 10,
+  "minimum_attempt_spacing_minutes": 5,
+  "windows": [10, 20, 40],
+  "freshness_sources": ["completed", "observed"],
+  "models": ["HistGBM", "Persistence"]
+}

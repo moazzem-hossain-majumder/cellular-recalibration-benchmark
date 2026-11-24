@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Md. Moazzem Hossain Majumder" />
-  <title>How Much Recalibration Is Enough? Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry</title>
+  <title>When Limited Recalibration Fails: Accounting for Cellular Throughput Commitments</title>
   <style>
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -203,1144 +203,174 @@
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">How Much Recalibration Is Enough? Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry</h1>
+<h1 class="title">When Limited Recalibration Fails: Accounting for Cellular Throughput Commitments</h1>
 <p class="author">Md. Moazzem Hossain Majumder</p>
 <div class="abstract">
 <div class="abstract-title">Abstract</div>
-<p>A cellular forecaster must decide whether to offer a useful minimum rate and whether further calibration is worth a limited measurement budget. Missing radio inputs and unreturned throughput measurements complicate both decisions. We evaluate an empirical controller, provisionally called Missingness-Aware Risk–Utility Recalibration (MARUR), using frozen predictors, a causal query ledger and explicit abstention. A request consumes budget before its outcome arrives; an unresolved response contributes a residual upper bound under nonnegative throughput. The controller responds to calibration age and input availability, with global, periodic, early-query and nominal-level adaptive comparators. Across two Rome suffixes, three US carriers and Irish drives, 576 configurations share their opportunities and initial labels. With ten initial labels and a cap of forty new queries, the Rome E1 tree controller supports 2.02 percent of measured throughput with 5.46 percent all-issued violations, but it violates 13 of its 29 positive offers and uses more requests than periodic recalibration. In Ireland, unresolved positive offers raise conditional risk from 7.74 to 10.06 percent. External outcomes and ablations show no consistent controller advantage. These results establish an auditable evaluation of budgeted calibration and service under incomplete feedback. The method is a heuristic evaluated retrospectively; few campaigns and selective feedback preclude a deployment risk guarantee.</p>
+<p>Cellular throughput commitments depend on both the forecast and the feedback available to recalibrate it. Comparing calibration policies at the same nominal budget can conceal unequal acquisition cost, failed responses and abstention. We present an empirical acquisition-and-decision framework with frozen predictors, delayed query receipts and finite-record bounds for missing outcomes. Its provisional MARUR controller uses age and telemetry-pattern heuristics; it does not optimize utility or guarantee conditional risk. Six archived cohorts support 576 original configurations and 720 additional full-suffix replays, yielding 384 exact-cost contrasts. At ten new queries on Rome E1, MARUR supports 2.907 percent of measured throughput versus Periodic’s 0.523 percent, while all-issued upper risk rises from 6.303 to 10.924 percent. On Ireland, both policies issue 159 positive commitments; MARUR removes fourteen observed violations by reducing commitment sizes, with supported throughput falling from 4.117 to 1.129 percent. Other cohorts and baselines show different trade-offs and no consistent superiority. The framework separates service selection, commitment size and acquisition cost, and exposes schedule aliasing in a deterministic missing-feedback stress test. All findings are retrospective and exploratory. Limited independent campaigns, selective feedback and unresolved outcomes prevent claims of deployment risk control or live application benefit.</p>
 </div>
 </header>
 <div class="IEEEkeywords">
-<p>Cellular throughput, conformal prediction, measurement methodology, missing radio telemetry.</p>
+<p>Cellular throughput, calibration feedback, selective prediction, measurement methodology.</p>
 </div>
-<h1 id="question-and-related-work">Question and related work</h1>
-<p>An application that chooses a sending rate before a download needs to know how often its forecast exceeds delivered throughput and how much usable rate it gives up to reduce those violations. We ask how those quantities change when an operator has only a few labeled examples from the destination network. The contribution is an empirical comparison on released traces, with a common predictor and a fixed test suffix across label budgets. Prior work characterizes the underlying campaigns <span class="citation" data-cites="kousias2024large caso2024chronicles">(Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024)</span>, additive prediction with missing observations <span class="citation" data-cites="jacobson2025predicting">(Jacobson et al. 2025)</span>, and conditional calibration under missing covariates <span class="citation" data-cites="zaffran2023conformal">(Zaffran et al. 2023)</span>. The BAMMO-inspired baseline uses our pattern-specific boosted trees. We did not replicate the original authors’ implementation. Grouping by recorded telemetry availability gives a simple comparator. Its interpretation depends on support within each group.</p>
-<p>Our central question is how the calibration budget affects the reliability and usefulness of cellular throughput commitments under incomplete radio telemetry and chronological distribution changes. The clock replay supplies the primary evidence. On the later source operator the ten-label tree violated 67 of its 122 measurable positive commitments. On the destination operator it violated two of only three. The following questions guide the analysis. Does measured risk resolve the target across all issued commitments? Does the session-trained tree retain its operating point on a fixed clock? Do more recent or telemetry-specific calibration labels improve the risk and supported-rate tradeoff on the same forecast opportunities? We answer these questions with a decision ledger, matched predictors and chronological prefix comparisons. The external analyses distinguish transfer of a fitted predictor from transfer of its calibration offset. Narayanan et al. mapped and predicted commercial millimeter-wave throughput <span class="citation" data-cites="narayanan2020lumos5g">(Narayanan et al. 2020)</span>, while Kousias et al. modeled performance in non-standalone networks <span class="citation" data-cites="kousias2024empirical">(Kousias, Rajiullah, Caso, Alay, et al. 2024)</span>. Our benchmark evaluates how much measured rate remains supportable when an existing point forecast receives only a short destination calibration prefix.</p>
-<h1 id="decision-criteria-and-contribution">Decision criteria and contribution</h1>
-<p>The primary contribution is a reproducible empirical test of whether a reliability conclusion survives explicit accounting for positive offers, unobserved outcomes and independent collection units. The algebra below makes the decision rule auditable. Selective prediction already relates conditional risk to acceptance frequency; our study applies that relationship to minimum-rate promises with incomplete outcomes and measured service.</p>
-<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> denote all issued promises, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math> the positive promises, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math> observed violations, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> positive promises without an outcome. For a completed ledger let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math> be failure across all issued promises, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mo>+</mo></msub><annotation encoding="application/x-tex">R_+</annotation></semantics></math> failure conditional on a positive promise, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mi>M</mi><mi>/</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">A=M/N</annotation></semantics></math>. Since a zero promise cannot violate a nonnegative rate, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mi>A</mi><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R=A R_+</annotation></semantics></math>. Thus a ceiling <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>≤</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">R\leq\alpha</annotation></semantics></math> permits conditional failure as high as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mi>α</mi><mi>/</mi><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\min(1,\alpha/A)</annotation></semantics></math>. The earlier selection experiment illustrates why an overall risk ceiling can coexist with poor positive-promise reliability.</p>
-<p>When outcomes are unavailable, the sharp bounds are <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>N</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>R</mi><mo>+</mo></msub><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>M</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi><mo stretchy="false" form="postfix">]</mo><mspace width="1.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mo>&gt;</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">R\in[e/N,(e+m)/N],\qquad
- R_+\in[e/M,(e+m)/M]\quad(M&gt;0).</annotation></semantics></math> Each endpoint is attained by assigning every unobserved positive promise an outcome equal to its promise or zero, respectively. These bounds require a well-defined nonnegative latent rate at each opportunity. They do not identify service after logging ends. For a chosen positive-promise tolerance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>, the recorded ledger meets the tolerance under every completion exactly when <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>+</mo><mi>m</mi><mo>≤</mo><mi>α</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">e+m\leq\alpha M</annotation></semantics></math>; it fails under every completion when <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>&gt;</mo><mi>α</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">e&gt;\alpha M</annotation></semantics></math>. Otherwise the missing outcomes leave the decision unresolved. A policy with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">M=0</annotation></semantics></math> has undefined conditional risk and no positive service. Report <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math> and measured supported throughput alongside this decision. The latter conditions on observed outcomes and cannot identify throughput on unrecorded service attempts.</p>
-<p>This finite-record test does not constitute a new distribution-free population guarantee. It connects the issued ledger to an operationally interpretable criterion and supplies a falsifiable test for the empirical claims. The main evidence is the clock replay and independent archives. Session-defined endpoints, alternative models and budget frontiers provide sensitivity analyses.</p>
-<h2 id="budgeted-commitment-and-recalibration">Budgeted commitment and recalibration</h2>
-<p>We investigate whether an explicit budget for new calibration queries changes the preferred commitment policy. Prior cellular work already studies global, grouped and adaptive rate bounds <span class="citation" data-cites="sirhan2026handover">(Sirhan 2026)</span>; missing-value conformal prediction treats input patterns <span class="citation" data-cites="zaffran2023conformal">(Zaffran et al. 2023)</span>; recent methods address costly labels and semi-bandit feedback <span class="citation" data-cites="ilyas2026labels ge2025semibandit">(Ilyas et al. 2026; Ge et al. 2025)</span>. These precedents prevent a novelty claim for their generic combination. Our contribution is the causal acquisition ledger, the unresolved-response residual bound and a matched test of their consequences in the released cellular traces. MARUR is a provisional controller used to test that design.</p>
-<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Q</mi><mi>t</mi></msub><annotation encoding="application/x-tex">Q_t</annotation></semantics></math> indicate a new calibration query chosen at issue time <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math> the new-query cap, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>t</mi></msub><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L_t\geq0</annotation></semantics></math> the committed rate. The empirical design objective is to maximize supported measured throughput subject to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mi>t</mi></msub><msub><mi>Q</mi><mi>t</mi></msub><mo>≤</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">\sum_t Q_t\leq C</annotation></semantics></math>, a positive-offer requirement, and an acceptable upper conditional failure fraction <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">(e+m)/M</annotation></semantics></math>. The ten initial labels are pre-test successes; their original failed acquisition attempts are unknown. Lag-rate feedback needed for forecasting remains outside the charged query budget. These constraints define an evaluation aspiration, not an optimization solved by the controller. It neither optimizes utility nor enforces positive-offer frequency or conditional risk. We retain the legacy hybrid index <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>10</mn><mo>+</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">B=10+C</annotation></semantics></math> only to identify archived runs; it is not total measurement cost.</p>
-<p>At a tick with an available prior rate, the controller computes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>t</mi></msub><mo>=</mo><mrow><mi mathvariant="normal">max</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><msub><mi>p</mi><mi>t</mi></msub><mo>−</mo><msub><mi>q</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L_t=\max(0,p_t-q_t)</annotation></semantics></math>. Its ten-entry residual window contains initial successful labels and completed query scores. At a nominal level of 0.1, a nine- or ten-entry finite-sample quantile is the maximum residual. If a requested outcome is unobserved, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>t</mi></msub><mo>−</mo><msub><mi>y</mi><mi>t</mi></msub><mo>≤</mo><msub><mi>p</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">p_t-y_t\leq p_t</annotation></semantics></math> for nonnegative <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>t</mi></msub><annotation encoding="application/x-tex">y_t</annotation></semantics></math>, so we insert <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>t</mi></msub><annotation encoding="application/x-tex">p_t</annotation></semantics></math> as a conservative residual bound. MARUR uses a pattern-specific 90 percent quantile when at least nine entries share the current LTE/NR availability pattern, otherwise the pooled quantile. Fewer than three entries in the current pattern triggers abstention. It requests a new outcome when the pattern differs from the most recent response or that response is at least sixty minutes old. A failed response resets the age and pattern trigger even when the drop-missing variant discards its score. There is at most one outstanding request, and each request is charged before reading its outcome. Budget exhaustion prevents new requests; an outstanding paid response can still update the window. Simultaneous forecasts share the same state.</p>
-<p>Frozen calibration, queries every fifteenth eligible tick, and immediate queries whenever possible provide baselines. A delayed, budgeted ACI comparator updates its nominal error level by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>←</mo><mi>a</mi><mo>+</mo><mn>0.05</mn><mo stretchy="false" form="prefix">(</mo><mn>0.1</mn><mo>−</mo><mrow><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">r</mi></mrow><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a\leftarrow a+0.05(0.1-\mathrm{error})</annotation></semantics></math> on requested feedback. Unresolved queried positive offers count conservatively in this update; rates are capped at the point forecast for every nominal level. These changes and partial feedback prevent inheriting full-feedback ACI guarantees. Ablations remove pattern-dependent decisions, discard unresolved responses while still charging them, or use periodic acquisition. We report every new-query cap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>10</mn><mo>,</mo><mn>40</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">C\in\{0,10,40\}</annotation></semantics></math>, both predictors, and a simulated condition that hides feedback from every fifth eligible opportunity from the controller while retaining the recorded label for evaluation. All thresholds were specified for this experiment after earlier archive analyses; the experiment is exploratory.</p>
-<h1 id="measurements-and-prediction-time">Measurements and prediction time</h1>
-<p>The earlier campaign uses the active throughput CSV in Zenodo 8224890. We take the last available mean download throughput at a DQA completion marker within a campaign and convert kb/s to Mbps. In the later active archive (Zenodo 14073311), we use 43 Ookla traces and process each operator’s nonnegative numeric mean-download series separately, converting its documented column units to Mbps. With reset segmentation the releases yield 1,132 operational sessions and 1,001 eligible forecast pairs across development and evaluation. The main evaluation uses only held-out suffixes. Each forecast uses the preceding result, elapsed time since that segment ended, its duration, recent radio measurements and availability indicators, and scenario. Among the 1,001 eligible pairs, 585 have only LTE measurements and 416 have both LTE and NR. No eligible pair lacks LTE. Consequently, grouping by NR presence and grouping by the two radio indicators define the same partition in this sample. In the later archive, the first throughput reading triggering a reset identifies the prediction time retrospectively. An online deployment would need an independent test-start signal. Even when predictors exclude that reading, selecting forecast times from the outcome trajectory can change the evaluated population. The primary protocol allows up to 60 seconds of lag age. Missing indicators describe what the logger observed. A missing NR signal by itself cannot identify a particular network state or its cause. Lagged throughput requires feedback from completed tests throughout evaluation. A budget of zero refers only to target labels used to fit the calibration offset.</p>
-<p>E0 uses five successive blocks of earlier Op1 collection days for training, validation, source calibration, target prefixes and testing. The first three blocks contribute 57, 9 and 33 observations. The benchmark freezes that predictor and source offset for all four regimes. E1 moves to later Op1, E2 to earlier Op2 and E3 to later Op2. Transfer calibration and test blocks use the first approximately 40 percent and last approximately 60 percent of target days, respectively, with integer day boundaries. We take the first <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> eligible sessions in timestamp order from the calibration pool. E0 has ten available, so its fifteen-session comparison is unavailable. Cross-operator analysis on contemporaneous campaigns is retrospective.</p>
-<h1 id="calibration-and-metrics">Calibration and metrics</h1>
-<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math> denote the frozen histogram gradient boosting model and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math> the endpoint throughput. Split calibration orders the signed scores <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><msub><mi>y</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">f(x_i)-y_i</annotation></semantics></math>. For <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> finite scores, take rank <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mo stretchy="false" form="prefix">⌈</mo><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⌉</mo></mrow><annotation encoding="application/x-tex">r=\lceil(n+1)(1-\alpha)\rceil</annotation></semantics></math> in ascending order. When <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>&gt;</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">r&gt;n</annotation></semantics></math> we use positive infinity. The lower forecast is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mrow><mi mathvariant="normal">max</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>q</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L=\max(0,f(x)-q)</annotation></semantics></math>. A tie at the bound counts as covered. Since <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">r\le n</annotation></semantics></math> is equivalent to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">(n+1)(1-\alpha)\le n</annotation></semantics></math>, finite scores yield a finite selected order statistic exactly when <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mo stretchy="false" form="prefix">⌈</mo><mn>1</mn><mi>/</mi><mi>α</mi><mo stretchy="false" form="postfix">⌉</mo><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n\geq\lceil1/\alpha\rceil-1</annotation></semantics></math>. At <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math> the first finite rank occurs at nine scores and selects their maximum. Ten also selects the maximum. This calculation gives no estimate of the campaign size needed for a useful rate. The rank argument follows the standard conformal construction <span class="citation" data-cites="vovk2005algorithmic">(Vovk et al. 2005)</span>. Under exchangeability of calibration and future scores conditional on an independently fitted predictor, the rank construction yields marginal coverage of at least <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">1-\alpha</annotation></semantics></math>. The data do not establish this assumption across consecutive sessions, dates or networks. With an infinite target quantile the benchmark uses a frozen source offset. Its target-domain coverage is empirical. The grouped rules try a finite group offset, then a finite pooled target offset, then the source offset. The row gate is three and the session gate one. A group still needs enough scores for a finite rank. The RAT proxy groups by recorded NR presence. The missingness rule also uses LTE availability.</p>
-<p>We compute <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><msub><mo>∑</mo><mi>i</mi></msub><mn mathvariant="bold">𝟏</mn><mo stretchy="false" form="prefix">{</mo><msub><mi>y</mi><mi>i</mi></msub><mo>&lt;</mo><msub><mi>L</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">}</mo><mi>/</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">V=\sum_i\mathbf{1}\{y_i&lt;L_i\}/N</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><msub><mo>∑</mo><mi>i</mi></msub><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>L</mi><mi>i</mi></msub><mo>,</mo><msub><mi>y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><msub><mo>∑</mo><mi>i</mi></msub><msub><mi>y</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">U=\sum_i\min(L_i,y_i)/\sum_i y_i</annotation></semantics></math>. A near-zero bound can yield few violations while providing little usable throughput. These are offline measures. The benchmark does not measure an application outage, a contractual breach or a revenue loss.</p>
+<h1 id="introduction">Introduction</h1>
+<p>An application that commits to a rate needs useful service and a tolerable frequency of broken commitments. Accurate point forecasts, low average violations and small nominal calibration budgets do not independently establish those properties. A controller can make fewer positive offers, avoid expensive feedback, or encounter unobserved outcomes. Each changes the meaning of a favorable reported number.</p>
+<p>We ask: when does limited recalibration provide useful cellular throughput commitments, and when do missing feedback and abstention make apparent reliability misleading? We study frozen predictors on outcome-independent scheduled opportunities. MARUR is an implemented age-and-pattern heuristic used to expose these effects. It is neither an optimal acquisition rule nor a method with guaranteed positive-conditional risk.</p>
+<p>The contribution comprises three empirical findings: attempted measurements differ from information available to later forecasts; low overall risk can conceal poor reliability among positive commitments; and calibration choices produce cohort-dependent utility–risk trade-offs. The accompanying event ledgers, exact-cost comparisons and offer decompositions make these findings auditable. The archives were already inspected during method development, so subsequent experiments are exploratory. We retain negative findings and do not select a deployment policy from test performance.</p>
+<h1 id="sec:related_work">Related Work</h1>
+<h2 id="cellular-measurement-prediction-and-rate-decisions">Cellular Measurement, Prediction, and Rate Decisions</h2>
+<p>Operational measurements establish that cellular throughput depends on radio conditions, mobility, and the collection regime. The channel/context dataset of Raca et al. <span class="citation" data-cites="raca2020">(Raca et al. 2020)</span> and the commercial mmWave measurements underlying Lumos5G <span class="citation" data-cites="narayanan2020">(Narayanan et al. 2020)</span> support context-aware prediction. More recent multi-technology measurements, longitudinal service analysis, and machine-learning modeling extend this evidence to evolving non-standalone networks <span class="citation" data-cites="kousias2024data caso2024 kousias2024model">(Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; Kousias, Rajiullah, Caso, Alay, et al. 2024)</span>. These resources support evaluation across conditions, but forecast counts within a shared route or campaign do not constitute independent replications. Moreover, prediction-error metrics do not directly measure the risk of promising an unsustainable rate.</p>
+<p>Missing predictors and deployment constraints motivate complementary approaches. BAMMO incorporates missing covariates into additive boosting and variable-importance estimation on commercial 5G data <span class="citation" data-cites="jacobson2025">(Jacobson et al. 2025)</span>. Its treatment of absent radio measurements addresses the input side of prediction; unsuccessful acquisition of future calibration outcomes is a separate problem. Real-time smartphone experiments demonstrate the importance of sampling, labeling, distribution shift, and application integration <span class="citation" data-cites="raca2024">(Raca et al. 2024)</span>. Conversely, fine-grained multi-carrier experiments expose conflicting measurement histories and limits to achievable prediction accuracy <span class="citation" data-cites="basit2024">(Basit et al. 2024)</span>. Together, these findings favor evaluation at a specified prediction horizon and operational objective rather than comparisons of headline accuracy across incompatible datasets.</p>
+<p>The closest application-level work is Sirhan’s comparison of global, regime-conditioned, and adaptive conformal throughput intervals <span class="citation" data-cites="sirhan2026">(Sirhan 2026)</span>. Conditioning on radio-access technology and handover state can improve two-sided interval behavior without improving one-sided rate selection; a global bound can yield a better utilization–stall trade-off. Thus, neither conformal throughput bounds nor decision-oriented evaluation is a new contribution here. Our question concerns how the resulting commitments behave when acquiring calibration feedback consumes a limited number of attempts, responses can be unsuccessful, and telemetry patterns change.</p>
+<h2 id="missingness-and-calibration-beyond-exchangeability">Missingness and Calibration Beyond Exchangeability</h2>
+<p>Conformal calibration under missing covariates explicitly distinguishes marginal validity from coverage conditional on missingness patterns <span class="citation" data-cites="zaffran2023">(Zaffran et al. 2023)</span>. Partitioning a calibration sample by pattern can address heterogeneous errors but reduces the number of available scores. A pattern-specific quantile obtained from a small, adaptively collected window cannot inherit a coverage statement solely because its construction resembles conformal prediction. Similarly, likelihood-ratio weighting under covariate shift <span class="citation" data-cites="tibshirani2019">(Tibshirani et al. 2019)</span> and weighted methods beyond exchangeability <span class="citation" data-cites="barber2023">(Barber et al. 2023)</span> establish results under specified distributional and weighting conditions, rather than under unrestricted temporal drift and outcome-dependent observation.</p>
+<p>Time-series methods exploit temporal structure in different ways. Adaptive conformal aggregation <span class="citation" data-cites="zaffran2022">(Zaffran et al. 2022)</span>, sequential prediction of residual quantiles <span class="citation" data-cites="xu2023">(Xu and Xie 2023)</span>, and temporal quantile adjustments <span class="citation" data-cites="lin2022">(Lin et al. 2022)</span> evaluate coverage together with interval efficiency. Online conformal inference also studies arbitrary distribution shifts and long-run calibration <span class="citation" data-cites="gibbs2024">(Gibbs and Candès 2024)</span>. Their guarantees concern different sampling models and coverage targets: asymptotic conditional validity, longitudinal or cross-sectional behavior, and time-averaged coverage are not interchangeable. For cellular commitments, the relevant distinction is between missing input telemetry, a requested label that never becomes usable, and a label unavailable until its measurement horizon closes. Evaluation must retain these distinctions instead of removing unresolved outcomes from the denominator.</p>
+<h2 id="online-adaptation-and-limited-feedback">Online Adaptation and Limited Feedback</h2>
+<p>Adaptive conformal inference adjusts the nominal error level using observed mistakes <span class="citation" data-cites="gibbs2021">(Gibbs and Candes 2021)</span>. Strongly adaptive online learning emphasizes performance over local time intervals <span class="citation" data-cites="bhatnagar2023">(Bhatnagar et al. 2023)</span>; conformal PID control uses feedback and score forecasting <span class="citation" data-cites="pid2023">(Angelopoulos et al. 2023)</span>; decaying step sizes connect retrospective coverage with stable-distribution quantile estimation <span class="citation" data-cites="angelopoulos2024online">(Anastasios Nikolas Angelopoulos et al. 2024)</span>; and betting-based adaptation reduces manual learning-rate selection <span class="citation" data-cites="podkopaev2024">(Podkopaev et al. 2024)</span>. These developments provide substantive methodological baselines. However, replacing their feedback stream with selectively requested, delayed, or imputed scores changes the assumptions and does not preserve their guarantees automatically.</p>
+<p>Label efficiency and partial feedback have also been studied directly. Ilyas et al. <span class="citation" data-cites="ilyas2026">(Ilyas et al. 2026)</span> balance upfront calibration-label cost against prediction-set efficiency using a stopping rule for independently and identically distributed arrivals. Ge et al. <span class="citation" data-cites="ge2025">(Ge et al. 2025)</span> analyze stochastic online conformal prediction when the label is revealed through inclusion in the selected prediction set. Hou et al. <span class="citation" data-cites="hou2025">(Hou et al. 2025)</span> calibrate probabilistic linear-system solvers using sporadic cloud feedback and examine coverage, set size, and cloud usage. Therefore, adaptive querying, sparse feedback, and calibration-cost trade-offs are established research directions. The cellular setting considered here differs in its physical measurement attempts, unsuccessful responses, delayed admission of scores, and one-sided throughput commitments. These differences motivate an explicit event ledger and matched realized-cost evaluation; they do not by themselves establish algorithmic novelty or a new theoretical guarantee.</p>
+<h2 id="selective-risk-and-decision-oriented-evaluation">Selective Risk and Decision-Oriented Evaluation</h2>
+<p>Selective classification formalizes the trade-off between accepting predictions and reducing conditional error <span class="citation" data-cites="geifman2017">(Geifman and El-Yaniv 2017)</span>. Risk-controlling prediction sets <span class="citation" data-cites="bates2021">(Bates et al. 2021)</span> and conformal risk control <span class="citation" data-cites="angelopoulos2024risk">(Anastasios N. Angelopoulos et al. 2024)</span> extend calibration beyond a single coverage event, subject to their respective risk definitions and assumptions. Conditional conformal guarantees can target specified classes of shifts or subgroups <span class="citation" data-cites="gibbs2025">(Gibbs et al. 2025)</span>, while adaptive coverage policies use a dedicated statistical construction to choose example-dependent coverage levels <span class="citation" data-cites="gauthier2026">(Gauthier et al. 2026)</span>. A heuristic abstention gate is not equivalent to any of these constructions.</p>
+<p>Metric choice is consequential. Min et al. <span class="citation" data-cites="min2026">(Min et al. 2026)</span> demonstrate that coverage and average interval length can conceal undesirable prediction behavior. For nonnegative throughput and zero-rate abstention, an analogous accounting distinction is elementary but essential: with a common eligible-opportunity denominator, all-issued violation risk equals the positive-offer frequency multiplied by violation risk conditional on a positive offer. Lower all-issued risk can therefore accompany unchanged or worse reliability among actual commitments. Missing outcomes additionally require finite-record risk bounds, which are not confidence intervals or prospective coverage guarantees. Supported throughput, positive-offer frequency, abstention, unresolved outcomes, and dates with positive commitments must consequently be reported alongside risk and realized query cost.</p>
 <div class="table*">
 <table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Work</strong></th>
+<th style="text-align: left;"><strong>Modality</strong></th>
+<th style="text-align: left;"><strong>Dataset or environment</strong></th>
+<th style="text-align: left;"><strong>Core method</strong></th>
+<th style="text-align: left;"><strong>Relevant limitation</strong></th>
+<th style="text-align: left;"><strong>Ours: distinction</strong></th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td style="text-align: left;">Model</td>
-<td style="text-align: right;">MAE</td>
-<td style="text-align: right;">RMSE</td>
-<td style="text-align: right;">Seconds</td>
+<td style="text-align: left;">BAMMO <span class="citation" data-cites="jacobson2025">(Jacobson et al. 2025)</span></td>
+<td style="text-align: left;">Radio/context</td>
+<td style="text-align: left;">Commercial mmWave 5G</td>
+<td style="text-align: left;">Missing-covariate additive boosting</td>
+<td style="text-align: left;">Outcome acquisition differs from missing predictors</td>
+<td style="text-align: left;">Separates input and feedback missingness</td>
 </tr>
 <tr>
-<td style="text-align: left;">Persistence</td>
-<td style="text-align: right;">3.22</td>
-<td style="text-align: right;">7.21</td>
-<td style="text-align: right;">0.000</td>
+<td style="text-align: left;">Raca et al. <span class="citation" data-cites="raca2024">(Raca et al. 2024)</span></td>
+<td style="text-align: left;">Smartphone telemetry</td>
+<td style="text-align: left;">Live cellular video streaming</td>
+<td style="text-align: left;">On-device throughput prediction</td>
+<td style="text-align: left;">No corresponding selective conformal guarantee</td>
+<td style="text-align: left;">Retrospective commitment audit; no live-deployment claim</td>
 </tr>
 <tr>
-<td style="text-align: left;">Ridge</td>
-<td style="text-align: right;">6.03</td>
-<td style="text-align: right;">8.78</td>
-<td style="text-align: right;">0.041</td>
+<td style="text-align: left;">Basit et al. <span class="citation" data-cites="basit2024">(Basit et al. 2024)</span></td>
+<td style="text-align: left;">Rate histories/context</td>
+<td style="text-align: left;">Multi-carrier LTE/5G driving</td>
+<td style="text-align: left;">Fine-grained prediction feasibility</td>
+<td style="text-align: left;">Accuracy limits depend on task and horizon</td>
+<td style="text-align: left;">Reports commitment risk and useful service</td>
 </tr>
 <tr>
-<td style="text-align: left;">HistGradientBoosting</td>
-<td style="text-align: right;">11.00</td>
-<td style="text-align: right;">12.00</td>
-<td style="text-align: right;">0.040</td>
+<td style="text-align: left;">Sirhan <span class="citation" data-cites="sirhan2026">(Sirhan 2026)</span></td>
+<td style="text-align: left;">Rate, RAT, handover</td>
+<td style="text-align: left;">Commercial mobile 5G traces</td>
+<td style="text-align: left;">Global/group/adaptive conformal rate bounds</td>
+<td style="text-align: left;">Does not establish MARUR’s failed-query accounting</td>
+<td style="text-align: left;">Matched attempts and unresolved-outcome accounting</td>
 </tr>
 <tr>
-<td style="text-align: left;">BAMMO</td>
-<td style="text-align: right;">15.46</td>
-<td style="text-align: right;">23.86</td>
-<td style="text-align: right;">0.372</td>
+<td style="text-align: left;">Zaffran et al. <span class="citation" data-cites="zaffran2023">(Zaffran et al. 2023)</span></td>
+<td style="text-align: left;">Incomplete covariates</td>
+<td style="text-align: left;">Regression with missing inputs</td>
+<td style="text-align: left;">Missing-pattern conformal calibration</td>
+<td style="text-align: left;">Input-pattern validity differs from missing labels</td>
+<td style="text-align: left;">Logs unsuccessful requested responses separately</td>
 </tr>
 <tr>
-<td style="text-align: left;">QuantileGBM p10</td>
-<td style="text-align: right;">5.01</td>
-<td style="text-align: right;">8.68</td>
-<td style="text-align: right;">0.100</td>
+<td style="text-align: left;">Conformal PID <span class="citation" data-cites="pid2023">(Angelopoulos et al. 2023)</span></td>
+<td style="text-align: left;">Temporal scores</td>
+<td style="text-align: left;">Public forecasting time series</td>
+<td style="text-align: left;">Feedback and predictive quantile control</td>
+<td style="text-align: left;">Feedback assumptions require rechecking</td>
+<td style="text-align: left;">Delayed and unsuccessful response ledger</td>
 </tr>
 <tr>
-<td style="text-align: left;">GPU ThroughputResNet</td>
-<td style="text-align: right;">5.85</td>
-<td style="text-align: right;">8.33</td>
-<td style="text-align: right;">0.632</td>
+<td style="text-align: left;">Ilyas et al. <span class="citation" data-cites="ilyas2026">(Ilyas et al. 2026)</span></td>
+<td style="text-align: left;">Labeled and unlabeled data</td>
+<td style="text-align: left;">IID calibration arrivals</td>
+<td style="text-align: left;">Cost-efficient stopping rule</td>
+<td style="text-align: left;">Upfront labels differ from drifting online probes</td>
+<td style="text-align: left;">Realized new attempts distinguished from seed labels</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ge et al. <span class="citation" data-cites="ge2025">(Ge et al. 2025)</span></td>
+<td style="text-align: left;">Sets and partial labels</td>
+<td style="text-align: left;">Stochastic semi-bandit tasks</td>
+<td style="text-align: left;">Online conformal regret analysis</td>
+<td style="text-align: left;">Set-dependent reveal mechanism differs</td>
+<td style="text-align: left;">Failed physical feedback and temporal availability</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hou et al. <span class="citation" data-cites="hou2025">(Hou et al. 2025)</span></td>
+<td style="text-align: left;">Solver outputs</td>
+<td style="text-align: left;">Edge–cloud linear systems</td>
+<td style="text-align: left;">Sporadic-feedback calibration</td>
+<td style="text-align: left;">Solution-set coverage differs from rate risk</td>
+<td style="text-align: left;">One-sided throughput commitments</td>
+</tr>
+<tr>
+<td style="text-align: left;">CRC <span class="citation" data-cites="angelopoulos2024risk">(Anastasios N. Angelopoulos et al. 2024)</span></td>
+<td style="text-align: left;">Scores and losses</td>
+<td style="text-align: left;">Vision/language examples</td>
+<td style="text-align: left;">Expected monotone-loss control</td>
+<td style="text-align: left;">Assumptions do not imply MARUR validity</td>
+<td style="text-align: left;">Empirical risk bounds; no transferred theorem</td>
+</tr>
+<tr>
+<td style="text-align: left;">Min et al. <span class="citation" data-cites="min2026">(Min et al. 2026)</span></td>
+<td style="text-align: left;">Predictive sets</td>
+<td style="text-align: left;">Regression and classification</td>
+<td style="text-align: left;">Coverage–length critique; stability</td>
+<td style="text-align: left;">Diagnostic, not cellular controller</td>
+<td style="text-align: left;">Separates abstention from commitment reliability</td>
+</tr>
+<tr>
+<td style="text-align: left;">Gauthier et al. <span class="citation" data-cites="gauthier2026">(Gauthier et al. 2026)</span></td>
+<td style="text-align: left;">Covariates and sets</td>
+<td style="text-align: left;">Adaptive-coverage tasks</td>
+<td style="text-align: left;">E-values; learned coverage policy</td>
+<td style="text-align: left;">Dedicated validity construction required</td>
+<td style="text-align: left;">Pattern gate is treated as a heuristic</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Present study</strong></td>
+<td style="text-align: left;"><strong>Rate and missing telemetry</strong></td>
+<td style="text-align: left;"><strong>Six retrospective cohorts</strong></td>
+<td style="text-align: left;"><strong>MARUR query/commit/abstain heuristic</strong></td>
+<td style="text-align: left;"><strong>Correlated trips; no formal conditional guarantee</strong></td>
+<td style="text-align: left;"><strong>Auditable events, matched costs, and risk–utility decomposition</strong></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Regime/K</td>
-<td style="text-align: right;">N</td>
-<td style="text-align: right;">PV</td>
-<td style="text-align: right;">PU</td>
-<td style="text-align: right;">GV</td>
-<td style="text-align: right;">GU</td>
-<td style="text-align: right;">RV</td>
-<td style="text-align: right;">RU</td>
-<td style="text-align: right;">MV</td>
-<td style="text-align: right;">MU</td>
-</tr>
-<tr>
-<td style="text-align: left;">E0K0</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">0.4390</td>
-<td style="text-align: right;">0.3705</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-</tr>
-<tr>
-<td style="text-align: left;">E0K1</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">0.4390</td>
-<td style="text-align: right;">0.3705</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-</tr>
-<tr>
-<td style="text-align: left;">E0K2</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">0.4390</td>
-<td style="text-align: right;">0.3705</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-</tr>
-<tr>
-<td style="text-align: left;">E0K5</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">0.4390</td>
-<td style="text-align: right;">0.3705</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-</tr>
-<tr>
-<td style="text-align: left;">E0K8</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">0.4390</td>
-<td style="text-align: right;">0.3705</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1761</td>
-</tr>
-<tr>
-<td style="text-align: left;">E0K9</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">0.4390</td>
-<td style="text-align: right;">0.3705</td>
-<td style="text-align: right;">0.0976</td>
-<td style="text-align: right;">0.0858</td>
-<td style="text-align: right;">0.0976</td>
-<td style="text-align: right;">0.0858</td>
-<td style="text-align: right;">0.0976</td>
-<td style="text-align: right;">0.0858</td>
-</tr>
-<tr>
-<td style="text-align: left;">E0K10</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">0.4390</td>
-<td style="text-align: right;">0.3705</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0285</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0285</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0285</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1K0</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">0.4101</td>
-<td style="text-align: right;">0.4102</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1K1</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">0.4101</td>
-<td style="text-align: right;">0.4102</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1K2</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">0.4101</td>
-<td style="text-align: right;">0.4102</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1K5</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">0.4101</td>
-<td style="text-align: right;">0.4102</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1K8</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">0.4101</td>
-<td style="text-align: right;">0.4102</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-<td style="text-align: right;">0.1655</td>
-<td style="text-align: right;">0.1717</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1K9</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">0.4101</td>
-<td style="text-align: right;">0.4102</td>
-<td style="text-align: right;">0.0719</td>
-<td style="text-align: right;">0.0725</td>
-<td style="text-align: right;">0.0719</td>
-<td style="text-align: right;">0.0725</td>
-<td style="text-align: right;">0.0719</td>
-<td style="text-align: right;">0.0725</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1K10</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">0.4101</td>
-<td style="text-align: right;">0.4102</td>
-<td style="text-align: right;">0.0719</td>
-<td style="text-align: right;">0.0725</td>
-<td style="text-align: right;">0.0719</td>
-<td style="text-align: right;">0.0725</td>
-<td style="text-align: right;">0.0719</td>
-<td style="text-align: right;">0.0725</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1K15</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">0.4101</td>
-<td style="text-align: right;">0.4102</td>
-<td style="text-align: right;">0.0719</td>
-<td style="text-align: right;">0.0725</td>
-<td style="text-align: right;">0.1007</td>
-<td style="text-align: right;">0.0833</td>
-<td style="text-align: right;">0.1007</td>
-<td style="text-align: right;">0.0833</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2K0</td>
-<td style="text-align: right;">256</td>
-<td style="text-align: right;">0.6211</td>
-<td style="text-align: right;">0.4232</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2K1</td>
-<td style="text-align: right;">256</td>
-<td style="text-align: right;">0.6211</td>
-<td style="text-align: right;">0.4232</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2K2</td>
-<td style="text-align: right;">256</td>
-<td style="text-align: right;">0.6211</td>
-<td style="text-align: right;">0.4232</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2K5</td>
-<td style="text-align: right;">256</td>
-<td style="text-align: right;">0.6211</td>
-<td style="text-align: right;">0.4232</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2K8</td>
-<td style="text-align: right;">256</td>
-<td style="text-align: right;">0.6211</td>
-<td style="text-align: right;">0.4232</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-<td style="text-align: right;">0.1641</td>
-<td style="text-align: right;">0.1888</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2K9</td>
-<td style="text-align: right;">256</td>
-<td style="text-align: right;">0.6211</td>
-<td style="text-align: right;">0.4232</td>
-<td style="text-align: right;">0.0234</td>
-<td style="text-align: right;">0.0177</td>
-<td style="text-align: right;">0.0234</td>
-<td style="text-align: right;">0.0177</td>
-<td style="text-align: right;">0.0234</td>
-<td style="text-align: right;">0.0177</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2K10</td>
-<td style="text-align: right;">256</td>
-<td style="text-align: right;">0.6211</td>
-<td style="text-align: right;">0.4232</td>
-<td style="text-align: right;">0.0234</td>
-<td style="text-align: right;">0.0177</td>
-<td style="text-align: right;">0.0234</td>
-<td style="text-align: right;">0.0177</td>
-<td style="text-align: right;">0.0234</td>
-<td style="text-align: right;">0.0177</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2K15</td>
-<td style="text-align: right;">256</td>
-<td style="text-align: right;">0.6211</td>
-<td style="text-align: right;">0.4232</td>
-<td style="text-align: right;">0.0234</td>
-<td style="text-align: right;">0.0177</td>
-<td style="text-align: right;">0.0977</td>
-<td style="text-align: right;">0.0993</td>
-<td style="text-align: right;">0.0977</td>
-<td style="text-align: right;">0.0993</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3K0</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">0.3301</td>
-<td style="text-align: right;">0.3527</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3K1</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">0.3301</td>
-<td style="text-align: right;">0.3527</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3K2</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">0.3301</td>
-<td style="text-align: right;">0.3527</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3K5</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">0.3301</td>
-<td style="text-align: right;">0.3527</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3K8</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">0.3301</td>
-<td style="text-align: right;">0.3527</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1451</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3K9</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">0.3301</td>
-<td style="text-align: right;">0.3527</td>
-<td style="text-align: right;">0.0291</td>
-<td style="text-align: right;">0.0578</td>
-<td style="text-align: right;">0.0291</td>
-<td style="text-align: right;">0.0578</td>
-<td style="text-align: right;">0.0291</td>
-<td style="text-align: right;">0.0578</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3K10</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">0.3301</td>
-<td style="text-align: right;">0.3527</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0060</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0060</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0060</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3K15</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">0.3301</td>
-<td style="text-align: right;">0.3527</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0060</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0060</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0060</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="session-endpoint-comparison">Session-endpoint comparison</h1>
-<p>Table I reports source model selection. Table II and Fig. 1 show the full budget curve. Fig. 2 compares observed subgroups. Persistence had a lower validation MAE than the histogram model on nine source-validation observations. We use the common histogram predictor to isolate differences between calibration rules. We examine persistence separately on the external benchmark and in the joint-shift analysis below. The point baseline exceeds the measured throughput in roughly one third to three fifths of held-out sessions. With source calibration, every regime exceeds ten percent violations at each tested budget below nine. At ten labels the global method records zero violations in E0 and E3, approximately seven percent in E1 and two percent in E2. In E3 it supports less than one percent of measured rate. At fifteen labels the grouped E1 rule exceeds the nominal target (0.1007), while grouped E2 increases supported fraction to 0.0993 with a violation rate of 0.0977. All four regimes give identical global and missingness-group results at ten labels when the pooled fallback is applied consistently. Thus this comparison provides no evidence of a grouping advantage at that budget. At ten labels the tree offsets were 27.81, 22.79, 28.70 and 30.29 Mbps, respectively. Clipping then produced zero rates on 65.85, 59.71, 75.00 and 93.20 percent of the suffixes. Group-level support existed for 54 of 539 forecasts; the remaining 485 used the pooled target. The identical bounds therefore reflect both fallback and coincident offsets.</p>
-<figure data-latex-placement="!ht">
-<embed src="figures/fig1_budget_vs_usefulness.png" />
-<figcaption>Performance across chronological calibration budgets. The same suffix is used at every available budget within a regime.</figcaption>
-</figure>
-<figure data-latex-placement="!ht">
-<embed src="figures/fig2_subgroup_and_tradeoff.png" />
-<figcaption>Subgroup performance and the empirical rate trade-off on the observed campaigns.</figcaption>
-</figure>
-<h1 id="sensitivity-to-the-observational-unit">Sensitivity to the observational unit</h1>
-<p>Table III compares the operational units. After numeric filtering, reset starts a segment on a drop exceeding 5 Mbps to below 5 Mbps. Relative drop starts on a drop exceeding 2 Mbps to below 1 Mbps. The active-start rule begins on an upward crossing above 1 Mbps or a gap over ten seconds. All three retain the last numeric row as the target. The active-start rule therefore frequently attaches the subsequent idle tail to the preceding burst. Its endpoint can differ even on a continuously logged trace. We use it as an alternative-endpoint stress test. There is no independent truth label for a physical download boundary. The reset rule aligns with a reinitializing mean-rate series and preserves the original benchmark definition. Its agreement with actual test starts remains unknown. The sensitivity analysis evaluates all eligible later pairs with a source-fitted model. Its denominator differs from the held-out benchmark. After excluding zero endpoints from scoring while keeping the fitted predictor, burst violations remain 0.3742 and 0.4651 on the two operators. Thus zero endpoints explain only part of the shift. Relative drop also changes the sample and the rates. None of these heuristics establishes ground-truth session boundaries.</p>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Boundary</td>
-<td style="text-align: right;">Segments</td>
-<td style="text-align: right;">Zeros</td>
-<td style="text-align: right;">E1V</td>
-<td style="text-align: right;">E3V</td>
-</tr>
-<tr>
-<td style="text-align: left;">Reset</td>
-<td style="text-align: right;">584</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">0.1479</td>
-<td style="text-align: right;">0.2523</td>
-</tr>
-<tr>
-<td style="text-align: left;">Drop</td>
-<td style="text-align: right;">712</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">0.1339</td>
-<td style="text-align: right;">0.2172</td>
-</tr>
-<tr>
-<td style="text-align: left;">Burst</td>
-<td style="text-align: right;">930</td>
-<td style="text-align: right;">183</td>
-<td style="text-align: right;">0.4024</td>
-<td style="text-align: right;">0.4918</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Median durations were 76, 72 and 53 seconds for reset, relative drop and active start. On later Op2 the corresponding tree errors were 27.41, 22.67 and 14.99 Mbps, while supported fractions were 0.2559, 0.2360 and 0.1490. A smaller absolute error coexisted with more violations as the endpoint population moved towards small values.</p>
-<h1 id="uncertainty-and-secondary-experiments">Uncertainty and secondary experiments</h1>
-<p>Table IV reports the paired contrasts. We resample collection dates with replacement, retaining all sessions from each selected date and pairing methods within each draw. The percentile endpoints from 2,000 draws describe empirical between-date variability conditional on this fitted model and prefix. Two to eight observed dates per regime offer little information about the population of future dates. A zero contrast interval follows algebraically when bounds coincide. Shared routes, equipment and measurement schedules can induce dependence across dates.</p>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Contrast</td>
-<td style="text-align: right;">Days</td>
-<td style="text-align: right;">dV</td>
-<td style="text-align: right;">Vlo</td>
-<td style="text-align: right;">Vhi</td>
-<td style="text-align: right;">dU</td>
-<td style="text-align: right;">Ulo</td>
-<td style="text-align: right;">Uhi</td>
-</tr>
-<tr>
-<td style="text-align: left;">E0D</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1D</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2D</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3D</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0000</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>The repository includes every date’s estimates and leave-one-date-out contrasts. Single-prefix testing leaves calibration-prefix variability unmeasured. Thirty-, sixty- and 120-second sensitivity runs change the eligible cohort and covariates together. Sixty seconds is the selected primary window. The supplementary analyses also examine group-support gates and artificial removal of observed NR fields. Artificial removal tests model response to controlled masking and does not identify why telemetry was absent in the field.</p>
-<p>Table V and Figs. 3–5 report the feedback, weighting and decision analyses. The online experiment updates an offset after each observed label with a fixed step size. Its feedback requirements differ from static prefix calibration. This score-offset update is inspired by adaptive conformal inference <span class="citation" data-cites="gibbs2021adaptive">(Gibbs and Candès 2021)</span>. The weighted experiment estimates source-to-target density ratios with a domain classifier and compares two clipping ranges. One variant uses calibration-pool covariates and the other uses unlabeled test covariates. The tight weight range is 0.1 to 10 and the wide range 0.01 to 100. Covariate-shift theory requires a stable conditional outcome law and appropriate density ratios <span class="citation" data-cites="tibshirani2019conformal">(Tibshirani et al. 2019)</span>. Estimated, clipped weights and small effective sample sizes limit this interpretation. The alpha sweep and convex offline cost proxy show how the chosen threshold or penalty affects the displayed trade-off. The secondary sensitivity fits can use regime-specific source splits and should be compared within their own protocols.</p>
-<figure data-latex-placement="!ht">
-<embed src="figures/fig3_aci_adaptation.png" />
-<figcaption>Offset trajectory as labeled test sessions arrive in the online experiment.</figcaption>
-</figure>
-<figure data-latex-placement="!ht">
-<embed src="figures/fig4_pareto_frontier.png" />
-<figcaption>Observed violations and supported throughput at the tested nominal levels.</figcaption>
-</figure>
-<figure data-latex-placement="!ht">
-<embed src="figures/fig5_sla_cost_curve.png" />
-<figcaption>Offline loss under alternative weights on violations and unsupported throughput.</figcaption>
-</figure>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Protocol</td>
-<td style="text-align: right;">Violation</td>
-<td style="text-align: right;">Supported</td>
-</tr>
-<tr>
-<td style="text-align: left;">E0Online</td>
-<td style="text-align: right;">0.1220</td>
-<td style="text-align: right;">0.1762</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1Online</td>
-<td style="text-align: right;">0.1583</td>
-<td style="text-align: right;">0.1653</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2Online</td>
-<td style="text-align: right;">0.1562</td>
-<td style="text-align: right;">0.1775</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3Online</td>
-<td style="text-align: right;">0.1262</td>
-<td style="text-align: right;">0.1447</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1Atight</td>
-<td style="text-align: right;">0.0072</td>
-<td style="text-align: right;">0.0127</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1Awide</td>
-<td style="text-align: right;">0.0288</td>
-<td style="text-align: right;">0.0450</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1Btight</td>
-<td style="text-align: right;">0.0144</td>
-<td style="text-align: right;">0.0063</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1Bwide</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0003</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2Atight</td>
-<td style="text-align: right;">0.0156</td>
-<td style="text-align: right;">0.0304</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2Awide</td>
-<td style="text-align: right;">0.0156</td>
-<td style="text-align: right;">0.0295</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2Btight</td>
-<td style="text-align: right;">0.0469</td>
-<td style="text-align: right;">0.0791</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2Bwide</td>
-<td style="text-align: right;">0.0664</td>
-<td style="text-align: right;">0.1130</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3Atight</td>
-<td style="text-align: right;">0.0097</td>
-<td style="text-align: right;">0.0159</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3Awide</td>
-<td style="text-align: right;">0.0097</td>
-<td style="text-align: right;">0.0083</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3Btight</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0096</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3Bwide</td>
-<td style="text-align: right;">0.0000</td>
-<td style="text-align: right;">0.0085</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="published-baseline-and-endpoint-comparisons">Published-baseline and endpoint comparisons</h1>
-<p>We reproduced Sirhan’s global one-sided forecast on the Irish 5G traces of Raca et al. <span class="citation" data-cites="sirhan2026handover raca2020beyond">(Sirhan 2026; Raca et al. 2020)</span>. Each of 30 splits assigns whole traces to training, calibration and testing. We retained the released features, predictor training and signed-error calibration. For target row <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t+1</annotation></semantics></math>, persistence uses the downlink measurement at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t-1</annotation></semantics></math>, the latest throughput feature available to the tree. A second candidate takes the smaller of that lag and the nonnegative tree estimate before calibration. The Rome experiments informed the candidate choice before its Irish evaluation.</p>
-<p>The published frontier chooses among twenty nominal levels using the realized test violations. Table VI averages the best supported fractions over feasible splits for each method. At ten percent, 29 splits were feasible for the global rule and all 30 for persistence and the minimum. The paired persistence gain was 3.58 percentage points on the 29 jointly feasible splits. The minimum lost 3.83 points on the corresponding comparison with global.</p>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Budget</td>
-<td style="text-align: right;">Published</td>
-<td style="text-align: right;">Rerun</td>
-<td style="text-align: right;">Minimum</td>
-<td style="text-align: right;">Persistence</td>
-<td style="text-align: right;">Gain</td>
-<td style="text-align: right;">Wins</td>
-</tr>
-<tr>
-<td style="text-align: left;">2</td>
-<td style="text-align: right;">33.1</td>
-<td style="text-align: right;">33.22</td>
-<td style="text-align: right;">32.48</td>
-<td style="text-align: right;">34.25</td>
-<td style="text-align: right;">1.05</td>
-<td style="text-align: right;">13/24</td>
-</tr>
-<tr>
-<td style="text-align: left;">5</td>
-<td style="text-align: right;">47.2</td>
-<td style="text-align: right;">47.14</td>
-<td style="text-align: right;">45.27</td>
-<td style="text-align: right;">49.73</td>
-<td style="text-align: right;">2.58</td>
-<td style="text-align: right;">22/28</td>
-</tr>
-<tr>
-<td style="text-align: left;">10</td>
-<td style="text-align: right;">56.9</td>
-<td style="text-align: right;">56.98</td>
-<td style="text-align: right;">53.30</td>
-<td style="text-align: right;">60.54</td>
-<td style="text-align: right;">3.58</td>
-<td style="text-align: right;">27/29</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>At a fixed nominal level of 0.10, all splits contribute. Persistence increased mean supported throughput from 55.60 to 59.44 percent and mean violations from 9.60 to 9.71 percent. Each rule met the ten percent target on 18 of 30 splits. The minimum reduced mean supported throughput to 52.81 percent.</p>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Predictor</td>
-<td style="text-align: right;">MeanV</td>
-<td style="text-align: right;">MeanU</td>
-<td style="text-align: right;">Passes</td>
-</tr>
-<tr>
-<td style="text-align: left;">Global</td>
-<td style="text-align: right;">9.60</td>
-<td style="text-align: right;">55.60</td>
-<td style="text-align: right;">18</td>
-</tr>
-<tr>
-<td style="text-align: left;">Minimum</td>
-<td style="text-align: right;">9.72</td>
-<td style="text-align: right;">52.81</td>
-<td style="text-align: right;">17</td>
-</tr>
-<tr>
-<td style="text-align: left;">Persistence</td>
-<td style="text-align: right;">9.71</td>
-<td style="text-align: right;">59.44</td>
-<td style="text-align: right;">18</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>We kept each fitted forecast and calibration offset fixed and omitted traces only from test scoring. After dropping any one trace from every split in which it appeared, the mean paired gain ranged from 3.53 to 4.64 percentage points. Separately, we averaged each trace’s utility difference over its test appearances. Persistence improved 79 of 83 traces, with a median gain of 5.04 points. The five largest download traces contributed 54.4 percent of the sum of measured rates across unique rows. Removing those traces raised the gain to 6.81 points. Removing all 21 download traces left 62 streaming traces and a gain of 10.96 points, alongside a higher violation rate than the tree. These sensitivity estimates reuse overlapping partitions of the same recordings.</p>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Sample</td>
-<td style="text-align: right;">Omitted</td>
-<td style="text-align: right;">Gain</td>
-<td style="text-align: right;">Wins</td>
-<td style="text-align: right;">TreeV</td>
-<td style="text-align: right;">LagV</td>
-</tr>
-<tr>
-<td style="text-align: left;">All</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3.84</td>
-<td style="text-align: right;">27</td>
-<td style="text-align: right;">9.60</td>
-<td style="text-align: right;">9.71</td>
-</tr>
-<tr>
-<td style="text-align: left;">OmitTop5</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">6.81</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">5.89</td>
-<td style="text-align: right;">7.14</td>
-</tr>
-<tr>
-<td style="text-align: left;">OmitDownloads</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">10.96</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">2.90</td>
-<td style="text-align: right;">4.86</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Table IX compares recorded throughput transitions. NearZero counts endpoints at or below 0.001 Mbps. Fall and Rise count changes of at least 10 Mbps from the available lag in the indicated direction. NearZero can overlap Fall. A near-zero measurement does not identify an application stall. In Ireland the lag had a 6.59 Mbps mean absolute error. In the Rome joint shift (E3) it had a 35.44 Mbps error and 40.8 percent of endpoints fell at least 10 Mbps below the lag. On the first ten calibration sessions in E3, persistence supported 51.65 percent with 20.39 percent violations. The tree supported 0.60 percent with zero violations. With the same held-out suffix and eleven disjoint ten-label calibration blocks, persistence met the violation target zero times and the tree eleven times. The higher frequency of large downward changes is consistent with a riskier lag-based lower bound. Forecast horizon, endpoint construction, traffic mix and collection conditions differ together across the two datasets, so this comparison cannot isolate a cause.</p>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Setting</td>
-<td style="text-align: right;">Pairs</td>
-<td style="text-align: right;">Pearson</td>
-<td style="text-align: right;">Spearman</td>
-<td style="text-align: right;">LagMAE</td>
-<td style="text-align: right;">NearZero</td>
-<td style="text-align: right;">Fall</td>
-<td style="text-align: right;">Rise</td>
-</tr>
-<tr>
-<td style="text-align: left;">Ireland</td>
-<td style="text-align: right;">188545</td>
-<td style="text-align: right;">0.77</td>
-<td style="text-align: right;">0.67</td>
-<td style="text-align: right;">6.59</td>
-<td style="text-align: right;">45.0</td>
-<td style="text-align: right;">5.8</td>
-<td style="text-align: right;">6.3</td>
-</tr>
-<tr>
-<td style="text-align: left;">E0</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">0.29</td>
-<td style="text-align: right;">0.41</td>
-<td style="text-align: right;">35.14</td>
-<td style="text-align: right;">0.0</td>
-<td style="text-align: right;">22.0</td>
-<td style="text-align: right;">22.0</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">0.52</td>
-<td style="text-align: right;">0.57</td>
-<td style="text-align: right;">32.69</td>
-<td style="text-align: right;">7.2</td>
-<td style="text-align: right;">37.4</td>
-<td style="text-align: right;">14.4</td>
-</tr>
-<tr>
-<td style="text-align: left;">E2</td>
-<td style="text-align: right;">256</td>
-<td style="text-align: right;">0.70</td>
-<td style="text-align: right;">0.61</td>
-<td style="text-align: right;">17.57</td>
-<td style="text-align: right;">2.0</td>
-<td style="text-align: right;">19.1</td>
-<td style="text-align: right;">16.0</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">0.49</td>
-<td style="text-align: right;">0.55</td>
-<td style="text-align: right;">35.44</td>
-<td style="text-align: right;">1.0</td>
-<td style="text-align: right;">40.8</td>
-<td style="text-align: right;">24.3</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="outcome-independent-scheduling-and-external-evaluation">Outcome-independent scheduling and external evaluation</h1>
-<p>In the later Rome release, a drop in measured throughput identifies both the start of a segment and the close of its predecessor. An observer who has yet to see that reading cannot identify the same candidate starts. To evaluate a trigger available at forecast time, we used each whole minute of logger operation and required a numeric rate in the preceding minute. Persistence predicts the last available reading in the next minute. We retained the original calendar partitions and calibrated on the first ten labeled opportunities. This changes the endpoint as well as the sample. Of 238 and 171 issued forecasts in E1 and E3, respectively, 211 and 152 had a target in a fully observed window. Missing labels could be informative.</p>
-<p>Table X compares the two clock-triggered suffixes with an independent ten-label evaluation on Telenor HSDPA bus measurements released by Riiser et al. <span class="citation" data-cites="riiser2013commute">(Riiser et al. 2013)</span>. We selected all logs on the first route listed by the publisher before measuring forecast performance. At each completed interval we predict the next interval’s received bytes per elapsed second, converted to Mbps. Seven chronological dates supply three training dates, two calibration-pool dates and two test dates. The tree uses the last two rates; persistence uses the last rate. Both use the same ten target calibration labels. This evaluates the calibration procedure with a locally fitted predictor. The Irish results in Tables VI–VIII instead reproduce and extend an existing trace-level protocol. The Norwegian logs lack radio measurements needed to validate the grouped rule.</p>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Cohort</td>
-<td style="text-align: right;">Model</td>
-<td style="text-align: right;">Scored</td>
-<td style="text-align: right;">Dates</td>
-<td style="text-align: right;">MAE</td>
-<td style="text-align: right;">Offset</td>
-<td style="text-align: right;">Viol</td>
-<td style="text-align: right;">Util</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1</td>
-<td style="text-align: right;">Persistence</td>
-<td style="text-align: right;">211</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">44.35</td>
-<td style="text-align: right;">114.00</td>
-<td style="text-align: right;">8.06</td>
-<td style="text-align: right;">8.29</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3</td>
-<td style="text-align: right;">Persistence</td>
-<td style="text-align: right;">152</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">50.72</td>
-<td style="text-align: right;">53.90</td>
-<td style="text-align: right;">13.82</td>
-<td style="text-align: right;">16.00</td>
-</tr>
-<tr>
-<td style="text-align: left;">Norway</td>
-<td style="text-align: right;">Persistence</td>
-<td style="text-align: right;">1278</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0.38</td>
-<td style="text-align: right;">1.49</td>
-<td style="text-align: right;">0.78</td>
-<td style="text-align: right;">26.78</td>
-</tr>
-<tr>
-<td style="text-align: left;">Norway</td>
-<td style="text-align: right;">HistGBM</td>
-<td style="text-align: right;">1278</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0.37</td>
-<td style="text-align: right;">1.38</td>
-<td style="text-align: right;">1.02</td>
-<td style="text-align: right;">30.60</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Figure 6 shows how often recalibration clips the commitment to zero at every available prefix length in the primary benchmark. This is the fraction of opportunities on which a lower forecast makes no positive rate commitment.</p>
-<figure data-latex-placement="!ht">
-<embed src="figures/fig6_zero_bounds.png" />
-<figcaption>Fraction of zero global lower bounds by target calibration budget and Rome regime.</figcaption>
-</figure>
-<p>For reset-based persistence in Rome E3, violations and supported throughput were 20.39 and 51.65 percent. With the clock they were 13.82 and 16.00 percent. On the Norwegian route both methods met the empirical violation target on the pooled suffix. Their two test dates provide little information about other days or routes. Neither experiment measures prospective application outcomes. Finally we applied the missingness rule to the Irish measurements in a separate chronological analysis (Table XI). We used the current availability of numeric primary and NR signal-power fields before any forward filling, the preceding downlink as the point forecast, and the following row as the endpoint. We required strictly ordered lag, issue and target timestamps. The first eleven of 27 collection dates supplied the calibration pool. On the remaining sixteen dates, point MAE was 9.05 Mbps. All first ten calibration rows lacked an NR reading, so both rules gave the same bound on all 108,519 test rows. Violations reached 34.81 percent. Deleting one test date at a time gave 34.03 to 36.68 percent. Even with all 64,265 calibration rows, grouped violations remained 29.86 percent. This failure on a chronological split limits the interpretation of the favorable random-trace results. Split, calibration size and timestamp eligibility differ together.</p>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Labels</td>
-<td style="text-align: right;">Rule</td>
-<td style="text-align: right;">Local</td>
-<td style="text-align: right;">Coverage</td>
-<td style="text-align: right;">Violation</td>
-<td style="text-align: right;">Supported</td>
-</tr>
-<tr>
-<td style="text-align: left;">10</td>
-<td style="text-align: right;">Global</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">65.19</td>
-<td style="text-align: right;">34.81</td>
-<td style="text-align: right;">71.62</td>
-</tr>
-<tr>
-<td style="text-align: left;">10</td>
-<td style="text-align: right;">Grouped</td>
-<td style="text-align: right;">21372</td>
-<td style="text-align: right;">65.19</td>
-<td style="text-align: right;">34.81</td>
-<td style="text-align: right;">71.62</td>
-</tr>
-<tr>
-<td style="text-align: left;">64265</td>
-<td style="text-align: right;">Global</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">69.50</td>
-<td style="text-align: right;">30.50</td>
-<td style="text-align: right;">71.31</td>
-</tr>
-<tr>
-<td style="text-align: left;">64265</td>
-<td style="text-align: right;">Grouped</td>
-<td style="text-align: right;">108519</td>
-<td style="text-align: right;">70.14</td>
-<td style="text-align: right;">29.86</td>
-<td style="text-align: right;">71.36</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="reliability-over-all-issued-commitments">Reliability over all issued commitments</h1>
-<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> be the number of issued forecasts, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math> the observed violations and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mo>+</mo></msub><annotation encoding="application/x-tex">m_+</annotation></semantics></math> the positive commitments with unavailable outcomes. Assuming a nonnegative rate exists for each opportunity, the realized violation fraction lies in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>N</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><msub><mi>m</mi><mo>+</mo></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[e/N,(e+m_+)/N]</annotation></semantics></math>. On missing rows, assigning throughput equal to the commitment attains the lower endpoint; assigning zero attains the upper endpoint. Zero commitments cannot violate. This elementary partial-identification argument follows the logic of worst-case selection bounds <span class="citation" data-cites="manski1989selection">(Manski 1989)</span>. It describes a finite ledger. If a forecasted service ceased to exist at trace end, a service-level violation would need its own definition. Sampling uncertainty and conformal expected-risk control <span class="citation" data-cites="angelopoulos2024crc">(Angelopoulos et al. 2024)</span> answer different questions.</p>
-<p>We froze the original tree fitted on 57 earlier Op1 sessions and replayed it alongside persistence. Session features require an explicit clock analogue: lag is the last valid rate in the preceding minute, age is time since that reading, and prior duration is the span between the first and last valid rates in that minute. The six radio fields take their most recent available values strictly before the tick within the same minute. Leaving duration missing gave the same aggregate ten-label tree results. Each policy uses identical ticks, dates, labels and endpoints.</p>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Regime</td>
-<td style="text-align: right;">Predictor</td>
-<td style="text-align: right;">Issued</td>
-<td style="text-align: right;">Scored</td>
-<td style="text-align: right;">Positive</td>
-<td style="text-align: right;">Errors</td>
-<td style="text-align: right;">Low</td>
-<td style="text-align: right;">High</td>
-<td style="text-align: right;">U</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1</td>
-<td style="text-align: right;">Persistence</td>
-<td style="text-align: right;">238</td>
-<td style="text-align: right;">211</td>
-<td style="text-align: right;">22/23</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">7.14</td>
-<td style="text-align: right;">7.56</td>
-<td style="text-align: right;">8.29</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1</td>
-<td style="text-align: right;">HistGBM</td>
-<td style="text-align: right;">238</td>
-<td style="text-align: right;">211</td>
-<td style="text-align: right;">122/130</td>
-<td style="text-align: right;">67</td>
-<td style="text-align: right;">28.15</td>
-<td style="text-align: right;">31.51</td>
-<td style="text-align: right;">7.15</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3</td>
-<td style="text-align: right;">Persistence</td>
-<td style="text-align: right;">171</td>
-<td style="text-align: right;">152</td>
-<td style="text-align: right;">36/37</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">12.28</td>
-<td style="text-align: right;">12.87</td>
-<td style="text-align: right;">16.00</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3</td>
-<td style="text-align: right;">HistGBM</td>
-<td style="text-align: right;">171</td>
-<td style="text-align: right;">152</td>
-<td style="text-align: right;">3/3</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1.17</td>
-<td style="text-align: right;">1.17</td>
-<td style="text-align: right;">0.06</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Table XII shows that the ten-label tree exceeded the target on E1 even if every unmeasured outcome covered its commitment. On E3 its three positive commitments across 171 opportunities supported just 0.065 percent of measured throughput. Group offsets gave the same bounds at ten labels. Figure 7 reports every feasible chronological prefix. For example, at 95 labels the E1 grouped tree violated 21 of 211 measured forecasts (9.95 percent). Six positive commitments lacked outcomes, leaving the all-issued risk between 8.82 and 11.34 percent. This is a retrospective illustration of an unresolved decision.</p>
-<figure data-latex-placement="!ht">
-<embed src="figures/fig7_clock_frontier.png" />
-<figcaption>Rome clock replay at every available prefix size. Each point shows supported throughput and violations on measured outcomes. Lines connect nondominated measured operating points within each policy. The dashed horizontal line is the nominal risk ceiling. The lower panels show the percentage of all issued ticks with a strictly positive commitment at each budget. Solid lines denote global offsets and dotted lines denote grouped offsets.</figcaption>
-</figure>
-<p>At ten labels the E1 tree issued 130 positive commitments. Of the 122 with outcomes, 55 were honored. All three positive E3 commitments occurred on one date and only one was honored. Persistence issued 23 and 37 positive commitments, respectively, of which 22 and 36 were measurable and five and fifteen were honored. For 26 of 27 missing E1 outcomes and all 19 missing E3 outcomes, the recording ended before the forecast horizon. This identifies a limit of observation. The logs cannot establish whether service continued after recording stopped.</p>
-<p>We simulated loss of otherwise recorded NR inputs at deployment while holding tick times, measured rates and the ten-label tree offset fixed. On E1, periodic, burst and weak-signal masking reduced supported throughput from 7.15 percent to 5.93, 5.78 and 4.76 percent. Each reduced measured violations as well. Choosing the smaller of each tick’s recorded-input and masked-input commitments reduced support to 1.49 percent on E1 and zero on E3. This prediction-based sensitivity envelope describes the implemented tree. It cannot establish the effect of a physical radio outage.</p>
-<p>Replacing the first ten tree calibration labels with the latest ten available before each test day reduced E1 measured violations from 31.75 to 4.74 percent and supported throughput from 7.15 to 1.08 percent. On E3, violations increased from 1.32 to 13.16 percent. In a separate same-endpoint Norwegian transfer, the bus-trained tree on three metro test dates supported 5.30 percent with 0.24 percent violations using bus calibration. Ten earlier metro labels changed these to 28.13 and 11.99 percent. A local metro refit and local calibration gave 29.20 and 0.80 percent. Route, dates and predictor must accompany any reported operating point. An exploratory selection rule maximized validation supported throughput subject to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><msub><mi>m</mi><mo>+</mo></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>N</mi><mo>≤</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">(e+m_+)/N\leq0.10</annotation></semantics></math>. Candidates were zero commitment and both clock predictors with global or grouped offsets at 9, 10, 15 or 20 labels from the first target date. Ties favored smaller budgets, then fixed candidate order. Validation used the remaining pre-test dates (155 measured labels across three dates for E1, 231 across four dates for E3). No offset was refitted. E1 selected nine-label persistence and reproduced the ten-label persistence operating point. E3 selected twenty-label persistence, supporting 19.52 percent of measured throughput with an all-issued violation fraction between 15.20 and 15.79 percent. The fixed ten-label persistence baseline supported 16.00 percent with risk between 12.28 and 12.87 percent. Even with extra validation labels the empirical constraint failed to transfer. The historical test suffix was already known when we designed this analysis.</p>
-<p>In an independently collected US drive, we applied ten-label persistence within the publisher’s logged AT&amp;T downlink transfer intervals <span class="citation" data-cites="nuwinsarchive">(NUWiNS 2025)</span>. May 13–14, 2023 supplied the calibration pool. Of the two reserved dates, only May 16 contained eligible intervals. Of 36 scheduled ticks, 33 had a preceding rate and all 33 issued forecasts had outcomes. Eight commitments were positive and six violated, giving 18.18 percent all-issued violations and 49.46 percent supported throughput. Three ticks lacked a preceding rate. The time series, device and endpoint differ from Rome. This evaluates the persistence protocol on one informative test date.</p>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Carrier</td>
-<td style="text-align: right;">Model</td>
-<td style="text-align: right;">Issued</td>
-<td style="text-align: right;">Scored</td>
-<td style="text-align: right;">Pos</td>
-<td style="text-align: right;">Fail</td>
-<td style="text-align: right;">Low</td>
-<td style="text-align: right;">High</td>
-<td style="text-align: right;">U</td>
-</tr>
-<tr>
-<td style="text-align: left;">ATT</td>
-<td style="text-align: right;">Persistence</td>
-<td style="text-align: right;">296</td>
-<td style="text-align: right;">294</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2.70</td>
-<td style="text-align: right;">2.70</td>
-<td style="text-align: right;">7.2872</td>
-</tr>
-<tr>
-<td style="text-align: left;">ATT</td>
-<td style="text-align: right;">Tree</td>
-<td style="text-align: right;">296</td>
-<td style="text-align: right;">294</td>
-<td style="text-align: right;">57</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">7.43</td>
-<td style="text-align: right;">7.43</td>
-<td style="text-align: right;">2.2524</td>
-</tr>
-<tr>
-<td style="text-align: left;">T-Mobile</td>
-<td style="text-align: right;">Persistence</td>
-<td style="text-align: right;">294</td>
-<td style="text-align: right;">293</td>
-<td style="text-align: right;">270</td>
-<td style="text-align: right;">201</td>
-<td style="text-align: right;">68.37</td>
-<td style="text-align: right;">68.37</td>
-<td style="text-align: right;">71.5503</td>
-</tr>
-<tr>
-<td style="text-align: left;">T-Mobile</td>
-<td style="text-align: right;">Tree</td>
-<td style="text-align: right;">294</td>
-<td style="text-align: right;">293</td>
-<td style="text-align: right;">236</td>
-<td style="text-align: right;">123</td>
-<td style="text-align: right;">41.84</td>
-<td style="text-align: right;">41.84</td>
-<td style="text-align: right;">1.2536</td>
-</tr>
-<tr>
-<td style="text-align: left;">Verizon</td>
-<td style="text-align: right;">Persistence</td>
-<td style="text-align: right;">287</td>
-<td style="text-align: right;">283</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">1.39</td>
-<td style="text-align: right;">1.39</td>
-<td style="text-align: right;">0.3845</td>
-</tr>
-<tr>
-<td style="text-align: left;">Verizon</td>
-<td style="text-align: right;">Tree</td>
-<td style="text-align: right;">287</td>
-<td style="text-align: right;">283</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">0.0031</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>On a second US drive we retained every released carrier and the same ten-label rule. Table XIII compares persistence and the original Rome-trained tree on identical active-transfer ticks. We aligned six serving-cell signal fields by device timestamp and used only measurements preceding issue. August 5–6 supplied calibration labels. August 7–9 supplied the suffix, with only two scheduled ticks per carrier after midnight on August 9. The three carriers shared the drive. The release lacked the last Verizon raw radio shard; we retained its rates and marked the signals missing.</p>
-<p>On AT&amp;T, 22 of 296 issued tree commitments violated (7.43 percent), including 22 of 57 positive commitments (38.60 percent). T-Mobile had 123 violations among 294 issued and 236 positive commitments. On Verizon the sole positive offer was honored. Masking NR inputs at issue while preserving the full-input tree offset yielded zero positive offers on every carrier. The different carrier operating points and short shared trip limit extrapolation to future deployments.</p>
-<p>We also tested feasibility when the 10 percent ceiling applies specifically to positive promises. Selective risk assessment and testing candidate rules motivate this comparison <span class="citation" data-cites="geifman2017selective angelopoulos2021ltt">(Geifman and El-Yaniv 2017; Angelopoulos et al. 2021)</span>. On the same pre-test validation dates we scaled each ten-label tree or persistence bound by 0.25, 0.5 or 1. The exploratory service floors required positive offers on at least 10 percent of opportunities and support for at least 5 percent of measured throughput. We counted unresolved positive offers as failures. None of the six candidates met all three empirical criteria on either operator. Requiring a one-sided exact binomial upper limit with a six-way Bonferroni adjustment also yielded no candidate. The quarter-rate E3 tree failed on zero of five positive offers across 252 validation opportunities; its supported fraction was only 0.22 percent. Abstention consequently delivered no service on either suffix. The binomial limit assumes independent offers and supplies no temporal deployment guarantee.</p>
-<h2 id="separate-trips-and-client-outcomes">Separate trips and client outcomes</h2>
-<p>We also replayed the Rome tree on eleven Irish driving-download traces across five held-out dates. The prior all-application calendar cutoff yielded no driving downloads for calibration. Before scoring this cohort, we moved calibration to its first two dates and retained all later dates. Four signal fields map to Rome; both SINR features remain missing. Under the full-minute clock, 334 of 335 ticks had an eligible lag, and 323 had observed outcomes. The tree broke 43 of 155 measurable positive promises, with four more positive promises unresolved. Its all-issued risk was 12.87–14.07 percent and supported throughput 7.74 percent. Persistence broke 31 of 41 positive promises, with all-issued risk 9.28 percent and supported throughput 16.42 percent. On these recordings persistence supported more rate and met the all-issued risk threshold, while failing more often conditional on a positive promise.</p>
-<p>To evaluate a client decision, we froze the Norwegian bus-trained lag model and replayed serial two-second video segment requests against measured TCP service on every remaining published route after the original cutoff. Twenty-two recordings on seven routes formed eleven route-date groups across seven calendar dates. Continuity breaks reset the client; each policy used identical blocks. The client selected among five representations from 0.15 to 3 Mbps, starting playback after the first segment and falling back to the lowest representation for smaller commitments. Calibration reduced the stall fraction on all eleven route-dates. Median route-date stall time as a fraction of post-start time fell from 19.12 to 12.93 percent, while median delivered representation fell from 1.01 to 0.24 Mbps. Constant 0.15 Mbps gave 12.30 percent median stalling. These counterfactual playback outcomes assume the measured service is unaffected by request size. They give no direct estimate of user preference or the effect of deploying the client on a live network.</p>
-<h2 id="collection-date-and-client-model-sensitivity">Collection-date and client-model sensitivity</h2>
-<p>We repeated the fixed-policy summaries with equal weight for each collection date and removed each date in turn. The released ledger provides counts of positive promises, observed failures and unresolved positive outcomes for every date. The Rome E3 tree has positive offers on one of seven test dates; the Verizon tree has them on one of three calendar dates. The final US date contains only a short continuation past midnight. Across five Irish dates, equal-date all-issued risk was 12.43 percent for the tree and 9.43 percent for persistence, with supported throughput 7.09 and 17.31 percent. These are sensitivity descriptions conditional on the archived campaigns. No tick-level confidence interval is used to claim independent replication.</p>
-<p>For playback, we varied segment duration over 1, 2 and 4 seconds and a fixed per-request delay over 0, 100 and 300 milliseconds. The representation decision used completed observations at request initiation. All routes on the same calendar date were pooled before comparing policies. On each of seven dates, calibration lowered both stall fraction and delivered bitrate under all nine settings. The median paired stall reduction across dates ranged from 5.50 to 11.81 percentage points; the median bitrate reduction ranged from 0.708 to 0.764 Mbps. This sensitivity supports the direction of the simulated trade-off under those assumptions. Real transport feedback, player buffer limits and user preferences remain outside the model.</p>
-<h1 id="budgeted-feedback-controller-results">Budgeted feedback controller results</h1>
-<p>The complete Rome roster contains 254 E1 and 181 E3 scheduled ticks; 238 and 171 respectively have a prior rate. Existing issued-forecast results are unchanged. The US cohorts contain 301, 304 and 292 scheduled ticks, and Ireland 335. A no-lag tick remains in the ledger as ineligible. Each comparison uses the same point predictions and resolved outcomes, so point MAE, RMSE and median error remain constant across policies. Costs distinguish attempted requests from returned labels and residual-buffer updates.</p>
+<h4 id="research-gap-and-contribution">Research Gap and Contribution</h4>
+<p>The reviewed literature already establishes missingness-aware prediction, adaptive calibration, selective risk, and label-cost optimization. The defensible contribution of the present study is their operational evaluation under explicitly accounted cellular feedback constraints, rather than their combination under a new name. We examine whether a fixed, missingness-aware query/commit/abstain controller improves useful throughput at matched realized attempts without concealing risk through abstention or unresolved outcomes. The evaluation uses outcome-independent scheduled opportunities and distinguishes initial successful calibration observations, new attempts, successful responses, admitted scores, and updates used by later forecasts. Comparisons are reported separately by cohort and include adverse results. This supports an empirical systems contribution; a claim of optimal recalibration, guaranteed conditional risk, or consistent superiority requires additional theory or independent prospective evidence.</p>
+<h1 id="decision-process-and-evaluation">Decision Process and Evaluation</h1>
+<h2 id="scheduled-opportunities-and-acquisition-accounting">Scheduled opportunities and acquisition accounting</h2>
+<p>At issue time <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>, a frozen predictor outputs <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>t</mi></msub><annotation encoding="application/x-tex">p_t</annotation></semantics></math> using only information available before issue. The controller returns a nonnegative commitment <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mi>t</mi></msub><annotation encoding="application/x-tex">L_t</annotation></semantics></math> and may request the future outcome. Its response is revealed only after the measurement horizon closes. All scheduled opportunities remain in the ledger; those without a usable predictor are marked ineligible. The eligible denominator includes zero commitments.</p>
+<p>Every policy starts with the same ten historical successful labels. Their original acquisition attempts are unknown and are not counted as ten physical measurement attempts. We charge each new query when issued, including requests that fail or finish after the last forecast. We separately record successful responses, unsuccessful responses, admitted calibration scores and updates available to later forecasts. Lag-rate and evaluator measurements remain outside this feedback-access budget. Accordingly, a reduction in requested labels does not demonstrate physical byte, energy or measurement savings.</p>
+<p>The primary comparison retains a fixed full suffix and reports actual query attempts. Equal caps do not ensure equal costs. Frozen incurs zero new attempts and cannot be presented as an equal-cost positive-budget comparator. Unmatched comparisons remain descriptive and are not interpolated into matched operating points.</p>
+<h2 id="risk-service-and-abstention">Risk, service and abstention</h2>
+<p>For <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> eligible opportunities, let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math> denote positive offers, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math> observed violations, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> positive offers with missing outcomes. Since throughput is nonnegative and zero offers cannot violate, all-issued risk and positive-conditional risk satisfy <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R=(M/N)R_+</annotation></semantics></math>. Thus reducing acceptance can reduce overall risk without improving the reliability of actual commitments. <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>N</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>R</mi><mo>+</mo></msub><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>M</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mspace width="1.0em"></mspace><mi>M</mi><mo>&gt;</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">R\in[e/N,(e+m)/N],\quad R_+\in[e/M,(e+m)/M],\quad M&gt;0.</annotation></semantics></math> These are finite-record identification bounds, not confidence intervals or prospective guarantees. If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">M=0</annotation></semantics></math>, conditional risk is undefined. At trace ends, an unobserved latent service outcome additionally requires a clearly defined measurement target; logs cannot establish that service continued after recording stopped.</p>
+<p>Supported-throughput utility is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><msub><mo>∑</mo><mrow><mi>t</mi><mo>:</mo><msub><mi>y</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> observed</mtext></mrow></mrow></msub><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>L</mi><mi>t</mi></msub><mo>,</mo><msub><mi>y</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><msub><mo>∑</mo><mrow><mi>t</mi><mo>:</mo><msub><mi>y</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> observed</mtext></mrow></mrow></msub><msub><mi>y</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">U=\sum_{t:y_t\text{ observed}}\min(L_t,y_t)/\sum_{t:y_t\text{ observed}}y_t</annotation></semantics></math>. It is conditional on measured service. We also report observed supported Mbps per eligible opportunity, with no credited service for missing outcomes. Neither metric measures live application benefit. We report offer frequency, abstention, positive dates, unknown outcomes and feedback costs beside risk and utility. No operational superiority is asserted without independently specified utility, offer-frequency and risk requirements.</p>
+<h2 id="implemented-policies">Implemented policies</h2>
+<p>MARUR maintains ten recent admitted scores <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mi>p</mi><mo>−</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">s=p-y</annotation></semantics></math>. A missing requested outcome contributes the conservative upper score <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>, since <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y\geq0</annotation></semantics></math>. At nominal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.1</mn></mrow><annotation encoding="application/x-tex">\alpha=0.1</annotation></semantics></math>, the corrected quantile uses rank <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⌈</mo><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⌉</mo></mrow><annotation encoding="application/x-tex">\lceil(n+1)(1-\alpha)\rceil</annotation></semantics></math>; with ten scores this is the maximum. The commitment is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">max</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>p</mi><mo>−</mo><mi>q</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\max(0,p-q)</annotation></semantics></math>. Matching-pattern scores are used only with at least nine entries; fewer than three matching entries causes abstention. Query triggers use a sixty-minute completed-response age or a telemetry-pattern change, subject to the remaining cap and at most one pending request. Failed completed responses reset the original trigger state even when an ablation discards their scores.</p>
+<p>This is a heuristic with a stated design objective, not a solution to constrained utility maximization. Conservative completion bounds an individual missing score but does not establish a sequential calibration theorem under selective feedback and drift. Periodic, Early and modified ACI share the same feedback interface; ACI here is an explicitly modified sparse-feedback comparator.</p>
+<h1 id="experimental-evidence">Experimental Evidence</h1>
+<h2 id="cohorts-and-dependence">Cohorts and dependence</h2>
+<p>The main replay uses Rome E1 and E3, three carriers from one US drive, and an Irish cohort. Both the archived histogram-gradient-boosted predictor and persistence are evaluated. Rome has seven test dates per cohort with six shared dates; the US carriers share one campaign with two substantial driving days and a short third calendar date; the Irish cohort has five test dates. Multiple carriers, forecast ticks and repeated masks do not increase independent-trip replication.</p>
+<p>The supplementary document preserves session-endpoint comparisons, alternative boundaries, weighting, prediction-model selection, external endpoint protocols, calibration-prefix curves and playback simulations. Those analyses have different units or splits and cannot be pooled as if they were additional samples from the main experiment. Playback is simulation over recorded service, not randomized deployment evidence.</p>
+<h2 id="equal-cost-comparisons-and-conditional-risk">Equal-cost comparisons and conditional risk</h2>
+<p>The original 576 configurations and 720 audit replays yield 384 exact-cost contrasts across the audit family. On E1 with the frozen tree and ten new queries, MARUR supports 2.907 percent of measured throughput versus Periodic’s 0.523 percent, while the all-issued upper-risk bound increases from 6.303 to 10.924 percent. This is a service–risk trade-off, not a reliability gain.</p>
+<p>On Ireland both issue 159 positive offers; MARUR eliminates fourteen observed violations on shared offers by reducing their sizes, while support declines from 4.117 to 1.129 percent. On Verizon, removing ten of Early’s offers removes six violations, with no failure improvement on the shared offers. The former reflects conservative sizing; the latter reflects selection. Neither establishes a uniformly better policy.</p>
 <div class="table*">
 <table>
 <tbody>
@@ -1518,77 +548,112 @@
 </tbody>
 </table>
 </div>
-<p>Figure 8 reports the three predefined budgets for the recorded-outcome condition. On E1, MARUR supports 2.02 percent of measured throughput and has 5.46 percent all-issued risk, compared with 1.01 percent support and 5.88–7.14 percent risk for periodic updates. MARUR uses 40 new query attempts, while periodic uses 16; both start with ten successful historical labels. This is an improvement at the same cap with different realized costs. The MARUR tree breaks 13 of 29 positive offers, leaving positive-conditional risk at 44.83 percent. On E3, periodic recalibration supports more throughput with a smaller all-issued upper risk than MARUR. On AT&amp;T and T-Mobile, increased service under MARUR accompanies greater risk. No uniform superiority is established.</p>
-<p>For Ireland MARUR uses 20 new query attempts and supports 1.18 percent, with 12 violations among 155 measured positive offers. Four positive offers are unresolved, so conditional risk lies between 7.55 and 10.06 percent over all 159 positive offers; the measured conditional estimate is 7.74 percent. Periodic supports 2.97 percent using 23 new query attempts, with higher risk. Missing-response suppression also produces mixed effects. On Ireland, conservative residual completion supports 1.17 percent with 3.89 percent all-issued upper risk; dropping unresolved responses supports 3.02 percent with 7.49 percent upper risk. Both incur 20 new attempts, of which only twelve return an outcome. A robust residual bound can trade away service, and it does not by itself control future positive-promise risk.</p>
-<figure data-latex-placement="!ht">
-<embed src="figures/fig8_marur.png" />
-<figcaption>Frozen-tree controller comparison under new-query caps 0, 10 and 40. Each connected point is a predeclared cap, and bars span finite-record all-issued risk bounds. Actual costs differ between schedules. Horizontal axes use observed supported throughput. The nominal ten-percent line is a reference, not a guarantee. All conditional-risk, cost and ablation values are available in the action ledger.</figcaption>
-</figure>
-<h2 id="critical-audit-at-matched-realized-query-cost">Critical audit at matched realized query cost</h2>
-<p>An additional exploratory replay fixes new-query caps at 0, 1, 5, 10, 20 and 40 for Frozen, Periodic, Early, modified ACI and MARUR, with both predictors and feedback scenarios. All 720 configurations are retained. A pair is matched only when both policies actually spend the stated number of queries on the full suffix; 384 such contrasts include zero-cost comparisons. Frozen spends zero and is therefore not a positive-cost comparator. No interpolation, shortened suffix or test-selected deployment policy is used.</p>
-<p>At ten new queries with the frozen tree, MARUR’s E1 support is 2.907 percent versus Periodic’s 0.523 percent, but its all-issued upper risk is 10.924 versus 6.303 percent. On Ireland both make 159 positive offers: MARUR has fourteen fewer observed failures on those same offers while reducing support from 4.117 to 1.129 percent. This is smaller commitment size rather than increased abstention. On Verizon, MARUR removes ten of Early’s offers and six failures, without improving failures on shared offers. Complete costs, conditional risks, offer frequencies and date counts for every configuration are in the matched-cost supplement. These examples do not establish uniform superiority.</p>
-<p>The audit also clarifies that failed responses reset the query cooldown even when their score is discarded. Removing pattern dependence jointly removes triggering, gating and grouping, so it is not an isolated gate ablation. The synthetic missing-feedback mask applies to eligible positions divisible by five; periodic positions 1, 16, 31 and so on avoid it. It is therefore position-based censoring, not a uniform twenty-percent loss of requested labels. Prospective independent trips with frozen policies are needed to test replication.</p>
+<p>The table reports all six cohorts at a common cap but displays realized costs explicitly; its rows are not automatically matched-cost comparisons. Positive-conditional risk is frequently high even when overall risk appears low. At ten new queries in the completed-clock, five-minute-spacing experiment, recorded HistGBM conditional upper-risk bounds range from approximately 8.8 percent in Ireland to 62.5 percent in E3. A blanket claim of reliable positive commitments is therefore unsupported.</p>
+<h2 id="controlled-freshness-and-window-sensitivity">Controlled freshness and window sensitivity</h2>
+<p>An additional 1,848-configuration experiment uses fixed timestamp-based independent and burst feedback masks. It separates latest attempt, completed response, successful observed label and admitted-score times. The primary contrast changes only the age clock, with identical five-minute attempt spacing and pattern logic. All 24 recorded-feedback comparisons are unchanged. Across recorded and stressed conditions there are six matched utility gains without higher conditional upper risk, seven losses without lower risk, eight trade-offs or risk-only changes, 129 unchanged cases and eighteen unmatched-cost cases. These dependent configuration counts are descriptive, not replication counts.</p>
+<p>Increasing the window to twenty or forty adds no free initial labels. Some cohorts gain utility with nonincreasing conditional upper risk, while E3 and Verizon lose substantial useful throughput. Retaining more scores changes both their ages and pattern support; improvement cannot be attributed solely to quantile stabilization. The main conclusion is heterogeneity, not an optimal window selected from these results.</p>
+<h2 id="targeted-baselines-and-mechanism-checks">Targeted baselines and mechanism checks</h2>
+<p>Three seeded nonadaptive random query schedules test whether adaptive timing adds value beyond acquiring labels. A decaying-step quantile tracker, motivated by online conformal prediction <span class="citation" data-cites="angelopoulos2024online">(Anastasios Nikolas Angelopoulos et al. 2024)</span>, uses the Periodic feedback schedule. Its signed scores, delayed responses and conservative missing-feedback substitution differ from the published setting, so no theorem is transferred. Separate ablations compare pattern and pooled quantiles with the gate fixed, then remove only the gate with the query schedule fixed. Every cohort, cap and feedback condition is retained. Complete operating points and offer decompositions are provided in the reviewer-baseline supplement; no best test schedule is promoted.</p>
+<p>The targeted grid contains 792 configurations. Pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed. Removing the gate yields sixteen utility gains without higher conditional upper risk, ten trade-offs or risk-only changes and 46 unchanged cases. Against Periodic, the decaying-step adaptation yields nine utility gains without higher conditional upper risk, eighteen losses without lower risk, and 45 trade-offs or risk-only changes. Random-schedule comparisons also vary by seed and cohort. These configuration counts share observations and do not constitute statistical replication.</p>
+<p>Reconstructing the retained scores identifies specific failure mechanisms. In recorded HistGBM Verizon at cap forty and window twenty, a conservative missing-response score is tied at the quantile on 159 of 287 eligible ticks; all 159 have a zero raw bound. Yet window forty has no such binding missing score and still loses substantial utility. E3 has neither binding missing scores nor gate vetoes in this recorded window comparison. Thus neither missing-score completion nor abstention alone explains all losses. The complete shared/added/removed-offer decomposition is descriptive; it does not identify the physical cause of temporal residual changes.</p>
+<h1 id="limitations-and-prospective-validation">Limitations and Prospective Validation</h1>
+<p>The random-priority comparator knows the full eligible-opportunity roster. It is an offline nonadaptive control, not a deployable policy with unknown future eligibility. A prospective random comparator must fix its tick schedule before departure and explicitly retain skipped and unsuccessful requests in its accounting. All reported optimization and added comparisons use previously inspected archives. The clocks are outcome-independent, but requested observations remain selectively acquired. Finite-record missingness bounds do not quantify uncertainty over future independent trips. Synthetic feedback failures test specified mechanisms rather than estimating physical outage processes. In addition, a prospective full-minute service definition will not perfectly reproduce every archive’s transfer-truncated endpoint.</p>
+<p>The next study must freeze predictor hashes, feature mappings, initialization, policies, schedules, application requirements and analysis before collection. We propose an adaptive-video-streaming application, first using a synchronized shadow measurement study and subsequently a separate randomized live application trial. These are unexecuted designs. Practical thresholds are planning assumptions requiring application validation, not values inferred from favorable archive results.</p>
+<p>Eighteen usable paired trips provide roughly five-percentage-point utility precision only under an assumed paired standard deviation of 0.10. This does not justify rare-violation precision or a ten-percent conditional-risk certification. The protocol retains all started trips, clusters simultaneous carriers, records zero-positive and wholly missing trips, and requires a new precision calculation using outcome-blinded pilot variability before registration. Live QoE claims require application outcomes and measurement-overhead accounting, not replay alone.</p>
 <h1 id="conclusion">Conclusion</h1>
-<p>The budgeted controller demonstrates why attempted measurements, returned labels and useful positive commitments must be counted separately. Its recorded improvements do not persist uniformly across cohorts; exact-cost contrasts are separately reported in the critical audit supplement. MARUR therefore serves as an empirical risk-aware framework with a reproducible causal ledger, while stronger adaptive-method and deployment claims require additional evidence. The same frozen tree failed the ten-percent target on one clock-triggered suffix and supported almost no throughput on the other. Missing labels can change whether the target is decidable; their impact depends on how often the forecaster actually commits a positive rate. Moving the calibration window or conditioning on radio availability did not produce a consistent improvement. More independent dates and logged test-start events are needed to assess future deployments.</p>
+<p>Limited recalibration does not consistently produce useful, reliable positive throughput commitments across the examined cellular cohorts. An auditable decision ledger distinguishes acquisition attempts, usable information, selective offers and unresolved outcomes. Matched-cost and controlled ablation results expose both benefits and substantial failures. The defensible contribution is empirical measurement and evaluation methodology; claims of optimal control, guaranteed conditional risk or deployment superiority remain unestablished.</p>
 <h1 class="unnumbered" id="acknowledgment">Acknowledgment</h1>
-<p>OpenAI Codex assisted with code development, experimental checks and drafting and revising the manuscript.</p>
+<p>OpenAI Codex assisted with code development, experimental checks, and manuscript drafting and revision.</p>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-angelopoulos2021ltt" class="csl-entry" role="listitem">
-Angelopoulos, Anastasios N., Stephen Bates, Emmanuel J. Candès, Michael I. Jordan, and Lihua Lei. 2021. <em>Learn Then Test: Calibrating Predictive Algorithms to Achieve Risk Control</em>. arXiv:2110.01052.
+<div id="ref-angelopoulos2024risk" class="csl-entry" role="listitem">
+Angelopoulos, Anastasios N., Stephen Bates, Adam Fisch, Lihua Lei, and Tal Schuster. 2024. <span>“<span>Conformal Risk Control</span>.”</span> <em>Proceedings of the International Conference on Learning Representations</em>. <a href="https://openreview.net/forum?id=33XGfHLtZg">https://openreview.net/forum?id=33XGfHLtZg</a>.
 </div>
-<div id="ref-angelopoulos2024crc" class="csl-entry" role="listitem">
-Angelopoulos, Anastasios N., Stephen Bates, Adam Fisch, Lihua Lei, and Tal Schuster. 2024. <span>“Conformal Risk Control.”</span> <em>International Conference on Learning Representations</em>.
+<div id="ref-angelopoulos2024online" class="csl-entry" role="listitem">
+Angelopoulos, Anastasios Nikolas, Rina Barber, and Stephen Bates. 2024. <span>“<span class="nocase">Online conformal prediction with decaying step sizes</span>.”</span> <em>Proceedings of the International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 235: 1616–30. <a href="https://proceedings.mlr.press/v235/angelopoulos24a.html">https://proceedings.mlr.press/v235/angelopoulos24a.html</a>.
 </div>
-<div id="ref-caso2024chronicles" class="csl-entry" role="listitem">
-Caso, Giuseppe, Mohammad Rajiullah, Konstantinos Kousias, et al. 2024. <span>“The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution.”</span> <em>IEEE Open Journal of the Communications Society</em> 5: 7380–99. <a href="https://doi.org/10.1109/OJCOMS.2024.3499370">https://doi.org/10.1109/OJCOMS.2024.3499370</a>.
+<div id="ref-pid2023" class="csl-entry" role="listitem">
+Angelopoulos, Anastasios, Emmanuel Candes, and Ryan J Tibshirani. 2023. <span>“<span class="nocase">Conformal PID Control for Time Series Prediction</span>.”</span> <em>Advances in Neural Information Processing Systems</em> 36: 23047–74. <a href="https://doi.org/10.52202/075280-1000">https://doi.org/10.52202/075280-1000</a>.
 </div>
-<div id="ref-ge2025semibandit" class="csl-entry" role="listitem">
-Ge, Haosen, Hamsa Bastani, and Osbert Bastani. 2025. <span>“Stochastic Online Conformal Prediction with Semi-Bandit Feedback.”</span> <em>Proceedings of the International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 267: 18954–65. <a href="https://proceedings.mlr.press/v267/ge25a.html">https://proceedings.mlr.press/v267/ge25a.html</a>.
+<div id="ref-barber2023" class="csl-entry" role="listitem">
+Barber, Rina Foygel, Emmanuel J. Candès, Aaditya Ramdas, and Ryan J. Tibshirani. 2023. <span>“<span class="nocase">Conformal prediction beyond exchangeability</span>.”</span> <em>The Annals of Statistics</em> 51 (2): 816–45. <a href="https://doi.org/10.1214/23-aos2276">https://doi.org/10.1214/23-aos2276</a>.
 </div>
-<div id="ref-geifman2017selective" class="csl-entry" role="listitem">
-Geifman, Yonatan, and Ran El-Yaniv. 2017. <span>“Selective Classification for Deep Neural Networks.”</span> <em>Advances in Neural Information Processing Systems</em>.
+<div id="ref-basit2024" class="csl-entry" role="listitem">
+Basit, Omar, Phuc Dinh, Imran Khan, et al. 2024. <span>“<span class="nocase">On the Predictability of Fine-Grained Cellular Network Throughput Using Machine Learning Models</span>.”</span> <em>2024 IEEE 21st International Conference on Mobile Ad-Hoc and Smart Systems (MASS)</em>, 47–56. <a href="https://doi.org/10.1109/mass62177.2024.00018">https://doi.org/10.1109/mass62177.2024.00018</a>.
 </div>
-<div id="ref-gibbs2021adaptive" class="csl-entry" role="listitem">
-Gibbs, Isaac, and Emmanuel Candès. 2021. <span>“Adaptive Conformal Inference Under Distribution Shift.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em> 34: 1660–72.
+<div id="ref-bates2021" class="csl-entry" role="listitem">
+Bates, Stephen, Anastasios Angelopoulos, Lihua Lei, Jitendra Malik, and Michael Jordan. 2021. <span>“<span class="nocase">Distribution-free, Risk-controlling Prediction Sets</span>.”</span> <em>Journal of the ACM</em> 68 (6): 1–34. <a href="https://doi.org/10.1145/3478535">https://doi.org/10.1145/3478535</a>.
 </div>
-<div id="ref-ilyas2026labels" class="csl-entry" role="listitem">
-Ilyas, Andrew, Joonhyuk Ko, Jingwu Tang, Steven Wu, and Jiahao Zhang. 2026. <span>“Provably Label-Efficient Conformal Prediction.”</span> <em>Proceedings of the International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 306: 49578–97. <a href="https://proceedings.mlr.press/v306/ilyas26a.html">https://proceedings.mlr.press/v306/ilyas26a.html</a>.
+<div id="ref-bhatnagar2023" class="csl-entry" role="listitem">
+Bhatnagar, Aadyot, Huan Wang, Caiming Xiong, and Yu Bai. 2023. <span>“<span class="nocase">Improved Online Conformal Prediction via Strongly Adaptive Online Learning</span>.”</span> <em>Proceedings of the International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 202: 2337–63. <a href="https://proceedings.mlr.press/v202/bhatnagar23a.html">https://proceedings.mlr.press/v202/bhatnagar23a.html</a>.
 </div>
-<div id="ref-jacobson2025predicting" class="csl-entry" role="listitem">
-Jacobson, Tate, Jie Ding, and Hui Zou. 2025. <span>“Predicting 5G Throughput with <span>BAMMO</span>, a Boosted Additive Model for Data with Missing Observations.”</span> <em>Journal of the Royal Statistical Society Series C: Applied Statistics</em> 74 (1): 249–73. <a href="https://doi.org/10.1093/jrsssc/qlae054">https://doi.org/10.1093/jrsssc/qlae054</a>.
+<div id="ref-caso2024" class="csl-entry" role="listitem">
+Caso, Giuseppe, Mohammad Rajiullah, Konstantinos Kousias, et al. 2024. <span>“<span class="nocase">The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution</span>.”</span> <em>IEEE Open Journal of the Communications Society</em> 5: 7380–99. <a href="https://doi.org/10.1109/ojcoms.2024.3499370">https://doi.org/10.1109/ojcoms.2024.3499370</a>.
 </div>
-<div id="ref-kousias2024large" class="csl-entry" role="listitem">
-Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Usman Ali, et al. 2024. <span>“A Large-Scale Dataset of 4G, NB-IoT, and 5G Non-Standalone Network Measurements.”</span> <em>IEEE Communications Magazine</em> 62 (5): 44–49. <a href="https://doi.org/10.1109/MCOM.011.2200707">https://doi.org/10.1109/MCOM.011.2200707</a>.
+<div id="ref-gauthier2026" class="csl-entry" role="listitem">
+Gauthier, Etienne, Francis Bach, and Michael I. Jordan. 2026. <span>“<span class="nocase">Adaptive Coverage Policies in Conformal Prediction</span>.”</span> <em>Proceedings of the International Conference on Artificial Intelligence and Statistics</em>, Proceedings of machine learning research, vol. 300: 3196–204. <a href="https://proceedings.mlr.press/v300/gauthier26a.html">https://proceedings.mlr.press/v300/gauthier26a.html</a>.
 </div>
-<div id="ref-kousias2024empirical" class="csl-entry" role="listitem">
-Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Ozgu Alay, et al. 2024. <span>“Empirical Performance Analysis and ML-Based Modeling of 5G Non-Standalone Networks.”</span> <em>Computer Networks</em> 241: 110207. <a href="https://doi.org/10.1016/j.comnet.2024.110207">https://doi.org/10.1016/j.comnet.2024.110207</a>.
+<div id="ref-ge2025" class="csl-entry" role="listitem">
+Ge, Haosen, Hamsa Bastani, and Osbert Bastani. 2025. <span>“<span class="nocase">Stochastic Online Conformal Prediction with Semi-Bandit Feedback</span>.”</span> <em>Proceedings of the International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 267: 18954–65. <a href="https://proceedings.mlr.press/v267/ge25a.html">https://proceedings.mlr.press/v267/ge25a.html</a>.
 </div>
-<div id="ref-manski1989selection" class="csl-entry" role="listitem">
-Manski, Charles F. 1989. <span>“Anatomy of the Selection Problem.”</span> <em>Journal of Human Resources</em> 24 (3): 343–60. <a href="https://doi.org/10.2307/145818">https://doi.org/10.2307/145818</a>.
+<div id="ref-geifman2017" class="csl-entry" role="listitem">
+Geifman, Yonatan, and Ran El-Yaniv. 2017. <span>“<span class="nocase">Selective Classification for Deep Neural Networks</span>.”</span> <em>Advances in Neural Information Processing Systems</em> 30. <a href="https://proceedings.neurips.cc/paper_files/paper/2017/hash/4a8423d5e91fda00bb7e46540e2b0cf1-Abstract.html">https://proceedings.neurips.cc/paper_files/paper/2017/hash/4a8423d5e91fda00bb7e46540e2b0cf1-Abstract.html</a>.
 </div>
-<div id="ref-narayanan2020lumos5g" class="csl-entry" role="listitem">
-Narayanan, Arvind, Eman Ramadan, Rishabh Mehta, et al. 2020. <span>“Lumos5G: Mapping and Predicting Commercial mmWave 5G Throughput.”</span> <em>Proceedings of the ACM Internet Measurement Conference (IMC)</em>, 176–93. <a href="https://doi.org/10.1145/3419394.3423629">https://doi.org/10.1145/3419394.3423629</a>.
+<div id="ref-gibbs2021" class="csl-entry" role="listitem">
+Gibbs, Isaac, and Emmanuel Candes. 2021. <span>“<span>Adaptive Conformal Inference Under Distribution Shift</span>.”</span> <em>Advances in Neural Information Processing Systems</em> 34: 1660–72. <a href="https://proceedings.neurips.cc/paper_files/paper/2021/hash/0d441de75945e5acbc865406fc9a2559-Abstract.html">https://proceedings.neurips.cc/paper_files/paper/2021/hash/0d441de75945e5acbc865406fc9a2559-Abstract.html</a>.
 </div>
-<div id="ref-nuwinsarchive" class="csl-entry" role="listitem">
-NUWiNS. 2025. <em><span>PAM 2025 Multi-Carrier Dataset</span></em>. Public data and transfer intervals, release 782b712.
+<div id="ref-gibbs2024" class="csl-entry" role="listitem">
+Gibbs, Isaac, and Emmanuel J. Candès. 2024. <span>“<span class="nocase">Conformal Inference for Online Prediction with Arbitrary Distribution Shifts</span>.”</span> <em>Journal of Machine Learning Research</em> 25 (162): 1–36. <a href="https://jmlr.org/papers/v25/22-1218.html">https://jmlr.org/papers/v25/22-1218.html</a>.
 </div>
-<div id="ref-raca2020beyond" class="csl-entry" role="listitem">
-Raca, Darijo, Dylan Leahy, Cormac J. Sreenan, and Jason J. Quinlan. 2020. <span>“Beyond Throughput, the Next Generation: A 5G Dataset with Channel and Context Metrics.”</span> <em>Proceedings of the 11th ACM Multimedia Systems Conference (MMSys)</em>, 303–8. <a href="https://doi.org/10.1145/3339825.3394938">https://doi.org/10.1145/3339825.3394938</a>.
+<div id="ref-gibbs2025" class="csl-entry" role="listitem">
+Gibbs, Isaac, John J Cherian, and Emmanuel J Candès. 2025. <span>“<span class="nocase">Conformal prediction with conditional guarantees</span>.”</span> <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> 87 (4): 1100–1126. <a href="https://doi.org/10.1093/jrsssb/qkaf008">https://doi.org/10.1093/jrsssb/qkaf008</a>.
 </div>
-<div id="ref-riiser2013commute" class="csl-entry" role="listitem">
-Riiser, Haakon, Paul Vigmostad, Carsten Griwodz, and Pål Halvorsen. 2013. <span>“Commute Path Bandwidth Traces from <span>3G</span> Networks: Analysis and Applications.”</span> <em>Proceedings of the ACM Multimedia Systems Conference</em>, 114–18.
+<div id="ref-hou2025" class="csl-entry" role="listitem">
+Hou, Qiushuo, Sangwoo Park, Matteo Zecchin, Yunlong Cai, Guanding Yu, and Osvaldo Simeone. 2025. <span>“<span class="nocase">Online Conformal Probabilistic Numerics via Adaptive Edge-Cloud Offloading</span>.”</span> <em>Proceedings of the First International Conference on Probabilistic Numerics</em>, Proceedings of machine learning research, vol. 271: 138–46. <a href="https://proceedings.mlr.press/v271/hou25a.html">https://proceedings.mlr.press/v271/hou25a.html</a>.
 </div>
-<div id="ref-sirhan2026handover" class="csl-entry" role="listitem">
-Sirhan, N. N. 2026. <span>“Handover-Aware Conformal Throughput Intervals for Risk-Sensitive Rate Selection in Mobile 5G.”</span> <em>Network</em> 6 (4): 92. <a href="https://doi.org/10.3390/network6040092">https://doi.org/10.3390/network6040092</a>.
+<div id="ref-ilyas2026" class="csl-entry" role="listitem">
+Ilyas, Andrew, Joonhyuk Ko, Jingwu Tang, Steven Wu, and Jiahao Zhang. 2026. <span>“<span>Provably Label-Efficient Conformal Prediction</span>.”</span> <em>Proceedings of the International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 306: 49578–97. <a href="https://proceedings.mlr.press/v306/ilyas26a.html">https://proceedings.mlr.press/v306/ilyas26a.html</a>.
 </div>
-<div id="ref-tibshirani2019conformal" class="csl-entry" role="listitem">
-Tibshirani, Ryan J., Rina Foygel Barber, Emmanuel Candès, and Aaditya Ramdas. 2019. <span>“Conformal Prediction Under Covariate Shift.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em> 32: 2530–40.
+<div id="ref-jacobson2025" class="csl-entry" role="listitem">
+Jacobson, Tate, Jie Ding, and Hui Zou. 2025. <span>“<span class="nocase">Predicting 5G throughput with BAMMO, a boosted additive model for data with missing observations</span>.”</span> <em>Journal of the Royal Statistical Society Series C: Applied Statistics</em> 74 (1): 249–73. <a href="https://doi.org/10.1093/jrsssc/qlae054">https://doi.org/10.1093/jrsssc/qlae054</a>.
 </div>
-<div id="ref-vovk2005algorithmic" class="csl-entry" role="listitem">
-Vovk, Vladimir, Alex Gammerman, and Glenn Shafer. 2005. <em>Algorithmic Learning in a Random World</em>. Springer.
+<div id="ref-kousias2024data" class="csl-entry" role="listitem">
+Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Usman Ali, et al. 2024. <span>“<span class="nocase">A Large-Scale Dataset of 4G, NB-IoT, and 5G Non-Standalone Network Measurements</span>.”</span> <em>IEEE Communications Magazine</em> 62 (5): 44–49. <a href="https://doi.org/10.1109/mcom.011.2200707">https://doi.org/10.1109/mcom.011.2200707</a>.
 </div>
-<div id="ref-zaffran2023conformal" class="csl-entry" role="listitem">
-Zaffran, Margaux, Aymeric Dieuleveut, Julie Josse, and Yaniv Romano. 2023. <span>“Conformal Prediction with Missing Values.”</span> <em>Proceedings of the 40th International Conference on Machine Learning (ICML)</em>, Proceedings of machine learning research, vol. 202: 40578–604.
+<div id="ref-kousias2024model" class="csl-entry" role="listitem">
+Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Ozgu Alay, et al. 2024. <span>“<span class="nocase">Empirical performance analysis and ML-based modeling of 5G non-standalone networks</span>.”</span> <em>Computer Networks</em> 241: 110207. <a href="https://doi.org/10.1016/j.comnet.2024.110207">https://doi.org/10.1016/j.comnet.2024.110207</a>.
+</div>
+<div id="ref-lin2022" class="csl-entry" role="listitem">
+Lin, Zhen, Shubhendu Trivedi, and Jimeng Sun. 2022. <span>“<span class="nocase">Conformal Prediction with Temporal Quantile Adjustments</span>.”</span> <em>Advances in Neural Information Processing Systems</em> 35: 31017–30. <a href="https://doi.org/10.52202/068431-2249">https://doi.org/10.52202/068431-2249</a>.
+</div>
+<div id="ref-min2026" class="csl-entry" role="listitem">
+Min, Yizhou, Yizhou Lu, Lanqi Li, Zhen Zhang, and Jiaye Teng. 2026. <span>“<span class="nocase">Questioning the Coverage-Length Metric in Conformal Prediction: When Shorter Intervals Are Not Better</span>.”</span> <em>Proceedings of the International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 306: 88935–63. <a href="https://proceedings.mlr.press/v306/min26c.html">https://proceedings.mlr.press/v306/min26c.html</a>.
+</div>
+<div id="ref-narayanan2020" class="csl-entry" role="listitem">
+Narayanan, Arvind, Eman Ramadan, Rishabh Mehta, et al. 2020. <span>“<span class="nocase">Lumos5G: Mapping and Predicting Commercial mmWave 5G Throughput</span>.”</span> <em>Proceedings of the ACM Internet Measurement Conference</em>, 176–93. <a href="https://doi.org/10.1145/3419394.3423629">https://doi.org/10.1145/3419394.3423629</a>.
+</div>
+<div id="ref-podkopaev2024" class="csl-entry" role="listitem">
+Podkopaev, Aleksandr, Dong Xu, and Kuang-Chih Lee. 2024. <span>“<span class="nocase">Adaptive Conformal Inference by Betting</span>.”</span> <em>Proceedings of the International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 235: 40886–907. <a href="https://proceedings.mlr.press/v235/podkopaev24a.html">https://proceedings.mlr.press/v235/podkopaev24a.html</a>.
+</div>
+<div id="ref-raca2020" class="csl-entry" role="listitem">
+Raca, Darijo, Dylan Leahy, Cormac J. Sreenan, and Jason J. Quinlan. 2020. <span>“<span class="nocase">Beyond throughput, the next generation: a 5G dataset with channel and context metrics</span>.”</span> <em>Proceedings of the 11th ACM Multimedia Systems Conference</em>, 303–8. <a href="https://doi.org/10.1145/3339825.3394938">https://doi.org/10.1145/3339825.3394938</a>.
+</div>
+<div id="ref-raca2024" class="csl-entry" role="listitem">
+Raca, Darijo, Ahmed H. Zahran, Cormac J. Sreenan, Rakesh K. Sinha, Emir Halepovic, and Vijay Gopalakrishnan. 2024. <span>“<span class="nocase">Device-Based Cellular Throughput Prediction for Video Streaming: Lessons From a Real-World Evaluation</span>.”</span> <em>IEEE Transactions on Machine Learning in Communications and Networking</em> 2: 318–34. <a href="https://doi.org/10.1109/tmlcn.2024.3352541">https://doi.org/10.1109/tmlcn.2024.3352541</a>.
+</div>
+<div id="ref-sirhan2026" class="csl-entry" role="listitem">
+Sirhan, Najem N. 2026. <span>“<span class="nocase">Handover-Aware Conformal Throughput Intervals for Risk-Sensitive Rate Selection in Mobile 5G</span>.”</span> <em>Network</em> 6 (4): 92. <a href="https://doi.org/10.3390/network6040092">https://doi.org/10.3390/network6040092</a>.
+</div>
+<div id="ref-tibshirani2019" class="csl-entry" role="listitem">
+Tibshirani, Ryan J, Rina Foygel Barber, Emmanuel Candes, and Aaditya Ramdas. 2019. <span>“<span>Conformal Prediction Under Covariate Shift</span>.”</span> <em>Advances in Neural Information Processing Systems</em> 32. <a href="https://proceedings.neurips.cc/paper_files/paper/2019/hash/8fb21ee7a2207526da55a679f0332de2-Abstract.html">https://proceedings.neurips.cc/paper_files/paper/2019/hash/8fb21ee7a2207526da55a679f0332de2-Abstract.html</a>.
+</div>
+<div id="ref-xu2023" class="csl-entry" role="listitem">
+Xu, Chen, and Yao Xie. 2023. <span>“<span class="nocase">Sequential Predictive Conformal Inference for Time Series</span>.”</span> <em>Proceedings of the International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 202: 38707–27. <a href="https://proceedings.mlr.press/v202/xu23r.html">https://proceedings.mlr.press/v202/xu23r.html</a>.
+</div>
+<div id="ref-zaffran2023" class="csl-entry" role="listitem">
+Zaffran, Margaux, Aymeric Dieuleveut, Julie Josse, and Yaniv Romano. 2023. <span>“<span class="nocase">Conformal Prediction with Missing Values</span>.”</span> <em>Proceedings of the International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 202: 40578–604. <a href="https://proceedings.mlr.press/v202/zaffran23a.html">https://proceedings.mlr.press/v202/zaffran23a.html</a>.
+</div>
+<div id="ref-zaffran2022" class="csl-entry" role="listitem">
+Zaffran, Margaux, Olivier Feron, Yannig Goude, Julie Josse, and Aymeric Dieuleveut. 2022. <span>“<span class="nocase">Adaptive Conformal Predictions for Time Series</span>.”</span> <em>Proceedings of the International Conference on Machine Learning</em>, Proceedings of machine learning research, vol. 162: 25834–66. <a href="https://proceedings.mlr.press/v162/zaffran22a.html">https://proceedings.mlr.press/v162/zaffran22a.html</a>.
 </div>
 </div>
 </body>

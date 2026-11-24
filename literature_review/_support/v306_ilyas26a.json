@@ -1,0 +1,104 @@
+{
+  "url": "https://proceedings.mlr.press/v306/ilyas26a.html",
+  "data": {
+    "meta": [
+      [
+        "viewport",
+        "width=device-width, initial-scale=1"
+      ],
+      [
+        "description",
+        "Provably Label-Efficient Conformal PredictionAndrew Ilyas, Joonhyuk Ko, Jingwu Tang, Steven Wu, Jiahao Zhang            Conformal predict..."
+      ],
+      [
+        "citation_publisher",
+        "PMLR"
+      ],
+      [
+        "citation_title",
+        "Provably Label-Efficient Conformal Prediction"
+      ],
+      [
+        "citation_language",
+        "en"
+      ],
+      [
+        "citation_abstract_html_url",
+        "https://proceedings.mlr.press/v306/ilyas26a.html"
+      ],
+      [
+        "citation_pdf_url",
+        "https://raw.githubusercontent.com/mlresearch/v306/main/assets/ilyas26a/ilyas26a.pdf"
+      ],
+      [
+        "citation_firstpage",
+        "49578"
+      ],
+      [
+        "citation_lastpage",
+        "49597"
+      ],
+      [
+        "citation_author",
+        "Andrew Ilyas"
+      ],
+      [
+        "citation_author",
+        "Joonhyuk Ko"
+      ],
+      [
+        "citation_author",
+        "Jingwu Tang"
+      ],
+      [
+        "citation_author",
+        "Steven Wu"
+      ],
+      [
+        "citation_author",
+        "Jiahao Zhang"
+      ],
+      [
+        "citation_publication_date",
+        "2026/09/29"
+      ],
+      [
+        "citation_inbook_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_conference_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_issn",
+        "2640-3498"
+      ],
+      [
+        "twitter:card",
+        "summary"
+      ],
+      [
+        "twitter:title",
+        "Provably Label-Efficient Conformal Prediction"
+      ],
+      [
+        "twitter:site",
+        "@MLResearchPress"
+      ],
+      [
+        "twitter:description",
+        "            Conformal prediction converts any black-box predictor into one with finite-sample, distribution-free coverage guarantees, outputting prediction s..."
+      ],
+      [
+        "twitter:image",
+        "https://proceedings.mlr.press/v306/assets/images/logo-pmlr.png"
+      ],
+      [
+        "twitter:image:alt",
+        "PMLR Logo"
+      ]
+    ],
+    "text": "Provably Label-Efficient Conformal Prediction Proceedings of Machine Learning Research Volume 306 JMLR DMLR TMLR MLOSS FAQ Submission Format [ edit ] Provably Label-Efficient Conformal Prediction Andrew Ilyas, Joonhyuk Ko, Jingwu Tang, Steven Wu, Jiahao Zhang Proceedings of the 43rd International Conference on Machine Learning , PMLR 306:49578-49597, 2026. Abstract Conformal prediction converts any black-box predictor into one with finite-sample, distribution-free coverage guarantees, outputting prediction sets $T(x)$ that contain the true label with probability at least $1-\\alpha$. To construct these prediction sets, conformal prediction relies on a randomly sampled “calibration set” of labeled examples. In many applications, however, this labeled calibration set is costly to collect, creating a tradeoff between upfront labeling cost and downstream utility of the conformal predictor. In this work, we study conformal prediction with costly label queries , where unlabeled examples arrive i.i.d. and labels can be queried one at a time. After $m$ queries, we form a conformal predictor; the upfront cost of this predictor is the calibration set size $m$, and its efficiency is the expected prediction set size $\\mathbb{E}|T_m(X)|$. We design an online stopping rule $\\hat{m}$ that automatically balances the upfront cost against conformal efficiency while preserving the original conformal guarantee . Theoretically, we show that under mild regularity assumptions, the expected total cost of our stopping rule matches the best fixed calibration size in hindsight. Experimentally, we find that our stopping rule reduces cost compared to standard choices of $m$ from the literature by 40.6% $\\pm$ 2.3%. Finally, we demonstrate a reduction from the probably approximately correct labeling problem of Candès et al. (2025) to CP, under which our stopping rule minimizes the total labeling cost. Cite this Paper BibTeX @InProceedings{pmlr-v306-ilyas26a,\n  title = \t {Provably Label-Efficient Conformal Prediction},\n  author =       {Ilyas, Andrew and Ko, Joonhyuk and Tang, Jingwu and Wu, Steven and Zhang, Jiahao},\n  booktitle = \t {Proceedings of the 43rd International Conference on Machine Learning},\n  pages = \t {49578--49597},\n  year = \t {2026},\n  editor = \t {Zhang, Tong and Dudik, Miroslav and Jaggi, Martin and Agarwal, Alekh and Li, Sharon and Schuurmans, Dale and Zhu, Jerry and Berkenkamp, Felix and Dong, Hanze and Bietti, Alberto},\n  volume = \t {306},\n  series = \t {Proceedings of Machine Learning Research},\n  month = \t {06--11 Jul},\n  publisher =    {PMLR},\n  pdf = \t {https://raw.githubusercontent.com/mlresearch/v306/main/assets/ilyas26a/ilyas26a.pdf},\n  url = \t {https://proceedings.mlr.press/v306/ilyas26a.html},\n  abstract = \t {Conformal prediction converts any black-box predictor into one with finite-sample, distribution-free coverage guarantees, outputting prediction sets $T(x)$ that contain the true label with probability at least $1-\\alpha$. To construct these prediction sets, conformal prediction relies on a randomly sampled “calibration set” of labeled examples. In many applications, however, this labeled calibration set is costly to collect, creating a tradeoff between upfront labeling cost and downstream utility of the conformal predictor. In this work, we study conformal prediction with costly label queries , where unlabeled examples arrive i.i.d. and labels can be queried one at a time. After $m$ queries, we form a conformal predictor; the upfront cost of this predictor is the calibration set size $m$, and its efficiency is the expected prediction set size $\\mathbb{E}|T_m(X)|$. We design an online stopping rule $\\hat{m}$ that automatically balances the upfront cost against conformal efficiency while preserving the original conformal guarantee . Theoretically, we show that under mild regularity assumptions, the expected total cost of our stopping rule matches the best fixed calibration size in hindsight. Experimentally, we find that our stopping rule reduces cost compared to standard choices of $m$ from the literature by 40.6% $\\pm$ 2.3%. Finally, we demonstrate a reduction from the probably approximately correct labeling problem of Candès et al. (2025) to CP, under which our stopping rule minimizes the total labeling cost.}\n} Copy to Clipboard Download Endnote %0 Conference Paper\n%T Provably Label-Efficient Conformal Prediction\n%A Andrew Ilyas\n%A Joonhyuk Ko\n%A Jingwu Tang\n%A Steven Wu\n%A Jiahao Zhang\n%B Proceedings of the 43rd International Conference on Machine Learning\n%C Proceedings of Machine Learning Research\n%D 2026\n%E Tong Zhang\n%E Miroslav Dudik\n%E Martin Jaggi\n%E Alekh Agarwal\n%E Sharon Li\n%E Dale Schuurmans\n%E Jerry Zhu\n%E Felix Berkenkamp\n%E Hanze Dong\n%E Alberto Bietti\t\n%F pmlr-v306-ilyas26a\n%I PMLR\n%P 49578--49597\n%U https://proceedings.mlr.press/v306/ilyas26a.html\n%V 306\n%X Conformal prediction converts any black-box predictor into one with finite-sample, distribution-free coverage guarantees, outputting prediction sets $T(x)$ that contain the true label with probability at least $1-\\alpha$. To construct these prediction sets, conformal prediction relies on a randomly sampled “calibration set” of labeled examples. In many applications, however, this labeled calibration set is costly to collect, creating a tradeoff between upfront labeling cost and downstream utility of the conformal predictor. In this work, we study conformal prediction with costly label queries , where unlabeled examples arrive i.i.d. and labels can be queried one at a time. After $m$ queries, we form a conformal predictor; the upfront cost of this predictor is the calibration set size $m$, and its efficiency is the expected prediction set size $\\mathbb{E}|T_m(X)|$. We design an online stopping rule $\\hat{m}$ that automatically balances the upfront cost against conformal efficiency while preserving the original conformal guarantee . Theoretically, we show that under mild regularity assumptions, the expected total cost of our stopping rule matches the best fixed calibration size in hindsight. Experimentally, we find that our stopping rule reduces cost compared to standard choices of $m$ from the literature by 40.6% $\\pm$ 2.3%. Finally, we demonstrate a reduction from the probably approximately correct labeling problem of Candès et al. (2025) to CP, under which our stopping rule minimizes the total labeling cost. Copy to Clipboard Download APA Ilyas, A., Ko, J., Tang, J., Wu, S. & Zhang, J.. (2026). Provably Label-Efficient Conformal Prediction. Proceedings of the 43rd International Conference on Machine Learning , in Proceedings of Machine Learning Research 306:49578-49597 Available from https://proceedings.mlr.press/v306/ilyas26a.html. Copy to Clipboard Download Related Material Download PDF OpenReview This site last compiled Fri, 23 Oct 2026 21:44:39 +0000 Github Account Copyright © The authors and PMLR 2026. MLResearchPress"
+  }
+}

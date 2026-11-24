@@ -1,0 +1,403 @@
+{
+  "url": "https://api.crossref.org/works/10.3390/network6040092",
+  "data": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          15
+        ]
+      ],
+      "date-time": "2026-10-15T14:45:07Z",
+      "timestamp": 1792075507964,
+      "version": "4.4.0"
+    },
+    "reference-count": 26,
+    "publisher": "MDPI AG",
+    "issue": "4",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2026,
+              10,
+              15
+            ]
+          ],
+          "date-time": "2026-10-15T00:00:00Z",
+          "timestamp": 1792022400000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2026,
+              10,
+              15
+            ]
+          ],
+          "date-time": "2026-10-15T00:00:00Z",
+          "timestamp": 1792022400000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "content-domain": {
+      "domain": [],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [
+      "Network"
+    ],
+    "abstract": "<jats:p>Mobile applications that must commit to a data rate—video streaming, guaranteed-rate admission, uplink scheduling—can stall or breach a service-level agreement whenever they promise more than the radio link can deliver. What protects them is not an accurate average-throughput forecast but a trustworthy lower bound on the rate that will actually be available. Conformal prediction (CP) can produce such bounds without distributional assumptions, but mobile 5G throughput is piecewise non-stationary: it jumps at cell handovers and radio-access-technology (RAT) transitions, exactly where a rate decision is most fragile. A natural fix is to condition the CP calibration on the mobility-regime state (RAT and time since the last handover). Using 188,711 s of real commercial 5G traces, we show that whether this conditioning helps is task-dependent. It helps two-sided prediction intervals, whose error scale varies by an order of magnitude across RATs, and it removes the post-handover under-coverage of online adaptive CP at no width cost. But for the one-sided lower bound that actually governs rate selection, a single global CP bound is better: it delivers higher link utilization at the same stall budget, and this advantage is robust to the data’s zero-inflation. The practical lesson for rate-control designers is to match the conditioning to the tail the decision uses, and to judge uncertainty methods by the operational outcome rather than by coverage alone. All results are reproducible from a released pipeline.</jats:p>",
+    "DOI": "10.3390/network6040092",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          15
+        ]
+      ],
+      "date-time": "2026-10-15T13:35:29Z",
+      "timestamp": 1792071329000
+    },
+    "page": "92",
+    "update-policy": "https://doi.org/10.3390/mdpi_crossmark_policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 0,
+    "title": [
+      "Handover-Aware Conformal Throughput Intervals for Risk-Sensitive Rate Selection in Mobile 5G"
+    ],
+    "prefix": "10.3390",
+    "volume": "6",
+    "author": [
+      {
+        "ORCID": "https://orcid.org/0000-0001-7928-4787",
+        "authenticated-orcid": false,
+        "given": "Najem N.",
+        "family": "Sirhan",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Computer Science Department, Faculty of Information Technology, University of Petra, Amman 11196, Jordan"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "1968",
+    "published-online": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          15
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "key": "ref_1",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Narayanan, A., Ramadan, E., Mehta, R., Hu, X., Liu, Q., Fezeu, R.A.K., Dayalan, U.K., Verma, S., Ji, P., and Li, T. (2020, January 27–29). Lumos5G: Mapping and Predicting Commercial mmWave 5G Throughput. Proceedings of the ACM Internet Measurement Conference (IMC), Virtual.",
+        "DOI": "10.1145/3419394.3423629"
+      },
+      {
+        "key": "ref_2",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Raca, D., Leahy, D., Sreenan, C.J., and Quinlan, J.J. (2020, January 8–11). Beyond Throughput, the Next Generation: A 5G Dataset with Channel and Context Metrics. Proceedings of the 11th ACM Multimedia Systems Conference (MMSys), Istanbul, Turkey.",
+        "DOI": "10.1145/3339825.3394938"
+      },
+      {
+        "key": "ref_3",
+        "doi-asserted-by": "crossref",
+        "first-page": "11",
+        "DOI": "10.1109/MCOM.001.1900394",
+        "article-title": "On Leveraging Machine and Deep Learning for Throughput Prediction in Cellular Networks: Design, Performance, and Challenges",
+        "volume": "58",
+        "author": "Raca",
+        "year": "2020",
+        "journal-title": "IEEE Commun. Mag."
+      },
+      {
+        "key": "ref_4",
+        "doi-asserted-by": "crossref",
+        "first-page": "7089",
+        "DOI": "10.1109/TVT.2023.3339649",
+        "article-title": "A Kalman Filter Based Low Complexity Throughput Prediction Algorithm for 5G Cellular Networks",
+        "volume": "73",
+        "author": "Biswas",
+        "year": "2024",
+        "journal-title": "IEEE Trans. Veh. Technol."
+      },
+      {
+        "key": "ref_5",
+        "unstructured": "Vovk, V., Gammerman, A., and Shafer, G. (2005). Algorithmic Learning in a Random World, Springer."
+      },
+      {
+        "key": "ref_6",
+        "doi-asserted-by": "crossref",
+        "first-page": "1094",
+        "DOI": "10.1080/01621459.2017.1307116",
+        "article-title": "Distribution-Free Predictive Inference for Regression",
+        "volume": "113",
+        "author": "Lei",
+        "year": "2018",
+        "journal-title": "J. Am. Stat. Assoc."
+      },
+      {
+        "key": "ref_7",
+        "doi-asserted-by": "crossref",
+        "first-page": "494",
+        "DOI": "10.1561/2200000101",
+        "article-title": "A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification",
+        "volume": "16",
+        "author": "Angelopoulos",
+        "year": "2023",
+        "journal-title": "Found. Trends Mach. Learn."
+      },
+      {
+        "key": "ref_8",
+        "first-page": "1660",
+        "article-title": "Adaptive Conformal Inference Under Distribution Shift",
+        "volume": "Volume 34",
+        "author": "Gibbs",
+        "year": "2021",
+        "journal-title": "Advances in Neural Information Processing Systems (NeurIPS)"
+      },
+      {
+        "key": "ref_9",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Sirhan, N.N., Alrousan, R., Al-Saqqa, S., Hamad, F., and Khrisat, Z. (2026). Risk-Aware Downlink Throughput Prediction in High-Density 5G Networks. Computation, 14.",
+        "DOI": "10.3390/computation14050105"
+      },
+      {
+        "key": "ref_10",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Samba, A., Busnel, Y., Blanc, A., Dooze, P., and Simon, G. (2017, January 8–12). Instantaneous Throughput Prediction in Cellular Networks: Which Information Is Needed?. Proceedings of the IFIP/IEEE Symposium on Integrated Network and Service Management (IM), Lisbon, Portugal.",
+        "DOI": "10.23919/INM.2017.7987345"
+      },
+      {
+        "key": "ref_11",
+        "doi-asserted-by": "crossref",
+        "first-page": "1582",
+        "DOI": "10.1109/TMC.2017.2756937",
+        "article-title": "LinkForecast: Cellular Link Bandwidth Prediction in LTE Networks",
+        "volume": "17",
+        "author": "Yue",
+        "year": "2018",
+        "journal-title": "IEEE Trans. Mob. Comput."
+      },
+      {
+        "key": "ref_12",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Raca, D., Zahran, A.H., Sreenan, C.J., Sinha, R.K., Halepovic, E., Jana, R., Gopalakrishnan, V., Bathula, B., and Varvello, M. (2019, January 18–21). Empowering Video Players in Cellular: Throughput Prediction from Radio Network Measurements. Proceedings of the 10th ACM Multimedia Systems Conference (MMSys), Amherst, MA, USA.",
+        "DOI": "10.1145/3304109.3306233"
+      },
+      {
+        "key": "ref_13",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Narayanan, A., Zhang, X., Zhu, R., Hassan, A., Jin, S., Zhu, X., Zhang, X., Rybkin, D., Yang, Z., and Mao, Z.M. (2021, January 23–27). A Variegated Look at 5G in the Wild: Performance, Power, and QoE Implications. Proceedings of the ACM SIGCOMM Conference, Virtual.",
+        "DOI": "10.1145/3452296.3472923"
+      },
+      {
+        "key": "ref_14",
+        "first-page": "1825",
+        "article-title": "Throughput Prediction Using Machine Learning in LTE and 5G Networks",
+        "volume": "22",
+        "author": "Minovski",
+        "year": "2023",
+        "journal-title": "IEEE Trans. Mob. Comput."
+      },
+      {
+        "key": "ref_15",
+        "first-page": "3538",
+        "article-title": "Conformalized Quantile Regression",
+        "volume": "Volume 32",
+        "author": "Romano",
+        "year": "2019",
+        "journal-title": "Advances in Neural Information Processing Systems (NeurIPS)"
+      },
+      {
+        "key": "ref_16",
+        "doi-asserted-by": "crossref",
+        "first-page": "1100",
+        "DOI": "10.1093/jrsssb/qkaf008",
+        "article-title": "Conformal Prediction with Conditional Guarantees",
+        "volume": "87",
+        "author": "Gibbs",
+        "year": "2025",
+        "journal-title": "J. R. Stat. Soc. Ser. B"
+      },
+      {
+        "key": "ref_17",
+        "first-page": "11559",
+        "article-title": "Conformal Prediction Interval for Dynamic Time-Series",
+        "volume": "Volume 139",
+        "author": "Xu",
+        "year": "2021",
+        "journal-title": "Proceedings of the 38th International Conference on Machine Learning (ICML)"
+      },
+      {
+        "key": "ref_18",
+        "first-page": "25834",
+        "article-title": "Adaptive Conformal Predictions for Time Series",
+        "volume": "Volume 162",
+        "author": "Zaffran",
+        "year": "2022",
+        "journal-title": "Proceedings of the 39th International Conference on Machine Learning (ICML)"
+      },
+      {
+        "key": "ref_19",
+        "first-page": "1",
+        "article-title": "Conformal Inference for Online Prediction with Arbitrary Distribution Shifts",
+        "volume": "25",
+        "author": "Gibbs",
+        "year": "2024",
+        "journal-title": "J. Mach. Learn. Res."
+      },
+      {
+        "key": "ref_20",
+        "first-page": "2530",
+        "article-title": "Conformal Prediction Under Covariate Shift",
+        "volume": "Volume 32",
+        "author": "Tibshirani",
+        "year": "2019",
+        "journal-title": "Advances in Neural Information Processing Systems (NeurIPS)"
+      },
+      {
+        "key": "ref_21",
+        "doi-asserted-by": "crossref",
+        "first-page": "816",
+        "DOI": "10.1214/23-AOS2276",
+        "article-title": "Conformal Prediction Beyond Exchangeability",
+        "volume": "51",
+        "author": "Barber",
+        "year": "2023",
+        "journal-title": "Ann. Stat."
+      },
+      {
+        "key": "ref_22",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Spiteri, K., Urgaonkar, R., and Sitaraman, R.K. (2016, January 10–15). BOLA: Near-Optimal Bitrate Adaptation for Online Videos. Proceedings of the IEEE INFOCOM, San Francisco, CA, USA.",
+        "DOI": "10.1109/INFOCOM.2016.7524428"
+      },
+      {
+        "key": "ref_23",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Yin, X., Jindal, A., Sekar, V., and Sinopoli, B. (2015, January 17–21). A Control-Theoretic Approach for Dynamic Adaptive Video Streaming over HTTP. Proceedings of the ACM SIGCOMM Conference, London, UK.",
+        "DOI": "10.1145/2785956.2787486"
+      },
+      {
+        "key": "ref_24",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Sun, Y., Yin, X., Jiang, J., Sekar, V., Lin, F., Wang, N., Liu, T., and Sinopoli, B. (2016, January 22–26). CS2P: Improving Video Bitrate Selection and Adaptation with Data-Driven Throughput Prediction. Proceedings of the ACM SIGCOMM Conference, Florianópolis, Brazil.",
+        "DOI": "10.1145/2934872.2934898"
+      },
+      {
+        "key": "ref_25",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Mao, H., Netravali, R., and Alizadeh, M. (2017, January 21–25). Neural Adaptive Video Streaming with Pensieve. Proceedings of the ACM SIGCOMM Conference, Los Angeles, CA, USA.",
+        "DOI": "10.1145/3098822.3098843"
+      },
+      {
+        "key": "ref_26",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Xu, S., Nikravesh, A., and Mao, Z.M. (2019, January 27–29). Leveraging Context-Triggered Measurements to Characterize LTE Handover Performance. Proceedings of the Passive and Active Measurement Conference (PAM), Puerto Varas, Chile.",
+        "DOI": "10.1007/978-3-030-15986-3_1"
+      }
+    ],
+    "container-title": [
+      "Network"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://www.mdpi.com/2673-8732/6/4/92/pdf",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          15
+        ]
+      ],
+      "date-time": "2026-10-15T13:55:14Z",
+      "timestamp": 1792072514000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://www.mdpi.com/2673-8732/6/4/92"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          15
+        ]
+      ]
+    },
+    "references-count": 26,
+    "journal-issue": {
+      "issue": "4",
+      "published-online": {
+        "date-parts": [
+          [
+            2026,
+            12
+          ]
+        ]
+      }
+    },
+    "alternative-id": [
+      "network6040092"
+    ],
+    "URL": "https://doi.org/10.3390/network6040092",
+    "relation": {},
+    "ISSN": [
+      "2673-8732"
+    ],
+    "issn-type": [
+      {
+        "value": "2673-8732",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          15
+        ]
+      ]
+    }
+  }
+}

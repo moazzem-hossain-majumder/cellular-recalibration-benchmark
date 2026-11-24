@@ -1,0 +1,96 @@
+{
+  "url": "https://proceedings.mlr.press/v235/podkopaev24a.html",
+  "data": {
+    "meta": [
+      [
+        "viewport",
+        "width=device-width, initial-scale=1"
+      ],
+      [
+        "description",
+        "Adaptive Conformal Inference by BettingAleksandr Podkopaev, Dong Xu, Kuang-Chih LeeConformal prediction is a valuable tool for quantifying predicti..."
+      ],
+      [
+        "citation_publisher",
+        "PMLR"
+      ],
+      [
+        "citation_title",
+        "Adaptive Conformal Inference by Betting"
+      ],
+      [
+        "citation_language",
+        "en"
+      ],
+      [
+        "citation_abstract_html_url",
+        "https://proceedings.mlr.press/v235/podkopaev24a.html"
+      ],
+      [
+        "citation_pdf_url",
+        "https://raw.githubusercontent.com/mlresearch/v235/main/assets/podkopaev24a/podkopaev24a.pdf"
+      ],
+      [
+        "citation_firstpage",
+        "40886"
+      ],
+      [
+        "citation_lastpage",
+        "40907"
+      ],
+      [
+        "citation_author",
+        "Aleksandr Podkopaev"
+      ],
+      [
+        "citation_author",
+        "Dong Xu"
+      ],
+      [
+        "citation_author",
+        "Kuang-Chih Lee"
+      ],
+      [
+        "citation_publication_date",
+        "2024/07/08"
+      ],
+      [
+        "citation_inbook_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_conference_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_issn",
+        "2640-3498"
+      ],
+      [
+        "twitter:card",
+        "summary"
+      ],
+      [
+        "twitter:title",
+        "Adaptive Conformal Inference by Betting"
+      ],
+      [
+        "twitter:site",
+        "@MLResearchPress"
+      ],
+      [
+        "twitter:description",
+        "Conformal prediction is a valuable tool for quantifying predictive uncertainty of machine learning models. However, its applicability relies on the assumptio..."
+      ],
+      [
+        "twitter:image",
+        "https://proceedings.mlr.press/v235/assets/images/logo-pmlr.png"
+      ],
+      [
+        "twitter:image:alt",
+        "PMLR Logo"
+      ]
+    ],
+    "text": "Adaptive Conformal Inference by Betting Proceedings of Machine Learning Research Volume 235 JMLR DMLR TMLR MLOSS FAQ Submission Format [ edit ] Adaptive Conformal Inference by Betting Aleksandr Podkopaev, Dong Xu, Kuang-Chih Lee Proceedings of the 41st International Conference on Machine Learning , PMLR 235:40886-40907, 2024. Abstract Conformal prediction is a valuable tool for quantifying predictive uncertainty of machine learning models. However, its applicability relies on the assumption of data exchangeability, a condition which is often not met in real-world scenarios. In this paper, we consider the problem of adaptive conformal inference without any assumptions about the data generating process. Existing approaches for adaptive conformal inference are based on optimizing the pinball loss using variants of online gradient descent. A notable shortcoming of such approaches is in their explicit dependence on and sensitivity to the choice of the learning rates. In this paper, we propose a different approach for adaptive conformal inference that leverages parameter-free online convex optimization techniques. We prove that our method controls long-term miscoverage frequency at a nominal level and demonstrate its convincing empirical performance without any need of performing cumbersome parameter tuning. Cite this Paper BibTeX @InProceedings{pmlr-v235-podkopaev24a,\n  title = \t {Adaptive Conformal Inference by Betting},\n  author =       {Podkopaev, Aleksandr and Xu, Dong and Lee, Kuang-Chih},\n  booktitle = \t {Proceedings of the 41st International Conference on Machine Learning},\n  pages = \t {40886--40907},\n  year = \t {2024},\n  editor = \t {Salakhutdinov, Ruslan and Kolter, Zico and Heller, Katherine and Weller, Adrian and Oliver, Nuria and Scarlett, Jonathan and Berkenkamp, Felix},\n  volume = \t {235},\n  series = \t {Proceedings of Machine Learning Research},\n  month = \t {21--27 Jul},\n  publisher =    {PMLR},\n  pdf = \t {https://raw.githubusercontent.com/mlresearch/v235/main/assets/podkopaev24a/podkopaev24a.pdf},\n  url = \t {https://proceedings.mlr.press/v235/podkopaev24a.html},\n  abstract = \t {Conformal prediction is a valuable tool for quantifying predictive uncertainty of machine learning models. However, its applicability relies on the assumption of data exchangeability, a condition which is often not met in real-world scenarios. In this paper, we consider the problem of adaptive conformal inference without any assumptions about the data generating process. Existing approaches for adaptive conformal inference are based on optimizing the pinball loss using variants of online gradient descent. A notable shortcoming of such approaches is in their explicit dependence on and sensitivity to the choice of the learning rates. In this paper, we propose a different approach for adaptive conformal inference that leverages parameter-free online convex optimization techniques. We prove that our method controls long-term miscoverage frequency at a nominal level and demonstrate its convincing empirical performance without any need of performing cumbersome parameter tuning.}\n} Copy to Clipboard Download Endnote %0 Conference Paper\n%T Adaptive Conformal Inference by Betting\n%A Aleksandr Podkopaev\n%A Dong Xu\n%A Kuang-Chih Lee\n%B Proceedings of the 41st International Conference on Machine Learning\n%C Proceedings of Machine Learning Research\n%D 2024\n%E Ruslan Salakhutdinov\n%E Zico Kolter\n%E Katherine Heller\n%E Adrian Weller\n%E Nuria Oliver\n%E Jonathan Scarlett\n%E Felix Berkenkamp\t\n%F pmlr-v235-podkopaev24a\n%I PMLR\n%P 40886--40907\n%U https://proceedings.mlr.press/v235/podkopaev24a.html\n%V 235\n%X Conformal prediction is a valuable tool for quantifying predictive uncertainty of machine learning models. However, its applicability relies on the assumption of data exchangeability, a condition which is often not met in real-world scenarios. In this paper, we consider the problem of adaptive conformal inference without any assumptions about the data generating process. Existing approaches for adaptive conformal inference are based on optimizing the pinball loss using variants of online gradient descent. A notable shortcoming of such approaches is in their explicit dependence on and sensitivity to the choice of the learning rates. In this paper, we propose a different approach for adaptive conformal inference that leverages parameter-free online convex optimization techniques. We prove that our method controls long-term miscoverage frequency at a nominal level and demonstrate its convincing empirical performance without any need of performing cumbersome parameter tuning. Copy to Clipboard Download APA Podkopaev, A., Xu, D. & Lee, K.. (2024). Adaptive Conformal Inference by Betting. Proceedings of the 41st International Conference on Machine Learning , in Proceedings of Machine Learning Research 235:40886-40907 Available from https://proceedings.mlr.press/v235/podkopaev24a.html. Copy to Clipboard Download Related Material Download PDF OpenReview This site last compiled Wed, 07 Oct 2026 11:41:07 +0000 Github Account Copyright © The authors and PMLR 2026. MLResearchPress"
+  }
+}

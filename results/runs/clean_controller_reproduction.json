@@ -1,0 +1,33 @@
+{
+  "start_utc": "2026-11-23T15:45:45.192148+00:00",
+  "end_utc": "2026-11-23T15:47:51.714506+00:00",
+  "command": [
+    "C:\\Users\\MITHIL\\AppData\\Local\\Temp\\telecom-final-audit-venv\\Scripts\\python.exe",
+    "scripts/reproduce_saved_marur.py"
+  ],
+  "configurations": 1296,
+  "prefix": "C:\\Users\\MITHIL\\AppData\\Local\\Temp\\telecom-final-audit-venv",
+  "base_prefix": "C:\\Users\\MITHIL\\AppData\\Local\\Programs\\Python\\Python311",
+  "installed": [
+    "colorama==0.4.6",
+    "iniconfig==2.3.1",
+    "numpy==2.4.6",
+    "packaging==26.3",
+    "pandas==3.0.3",
+    "pluggy==1.7.0",
+    "Pygments==2.21.0",
+    "pytest==9.1.1",
+    "python-dateutil==4.0.0",
+    "tzdata==2026.6"
+  ],
+  "scope": "All 576 original and 720 audit controllers replayed from saved frozen forecasts; no raw-data reacquisition, model fitting, PDF rebuild or full dependency-stack verification",
+  "status": "passed",
+  "sha256": {
+    "src/evaluation/marur.py": "9e8e7557627fd0837302ceec0fdd30f7313111f038674570feed3554608aa6ae",
+    "src/evaluation/conformal.py": "58583caeec8f9dbe234d76e36fa6d87304534ddd84635e71c3b9561f3f9d0739",
+    "configs/marur.json": "dfb8053d52aaaf1ce497b636f90f3c389859d434da42704d525dc756c13cf27c",
+    "results/marur/opportunities.csv.gz": "6fc1c490106539f2c2c3f27bd141d391909cbe021f358dd9f2fdb1cadc6ce852",
+    "scripts/reproduce_saved_marur.py": "177ab9b286c8677a5a69728e4f6fd7f0a2de1aeb8d15c3bcea0297a23d9c4dfb",
+    "scripts/validate_marur_audit.py": "62d1aceb649b001fd14fcf157161c924474e70beeab8311c6c6090a03668394a"
+  }
+}

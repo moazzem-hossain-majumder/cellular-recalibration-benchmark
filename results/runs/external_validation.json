@@ -5,8 +5,8 @@
   "completed_irish_splits": 30,
   "unique_test_traces": 83,
   "validated_manuscript_tables": 14,
-  "manuscript_pages": 14,
-  "package_pages": 15,
+  "manuscript_pages": 6,
+  "package_pages": 7,
   "tests": {
     "outcomes_by_suite": {
       "integration": {
@@ -16,7 +16,7 @@
         "passed": 13
       },
       "unit": {
-        "passed": 65
+        "passed": 110
       }
     },
     "report": "results/runs/final_tests.xml"

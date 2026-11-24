@@ -32,3 +32,26 @@ def test_reject_stale_real_pdf():
     with pytest.raises(ValueError,match='Stale PDF'):
         pdf_tables(ROOT/'paper/manuscript.pdf',tables(),source_digest(ROOT)+'changed')
 
+
+
+def test_every_generated_table_matches_authoritative_specification():
+    for name,spec in tables().items():
+        generated=latex(spec)
+        for folder in ['paper/tables','results/tables']:
+            saved=(ROOT/folder/(name+'.tex')).read_text(encoding='utf8')
+            assert saved==generated, name
+
+
+def test_frontier_displays_all_observed_risks(monkeypatch):
+    import json
+    import matplotlib.pyplot as plt
+    from matplotlib.figure import Figure
+    from scripts.plot_saved_frontier import plot
+    captured=[]
+    monkeypatch.setattr(Figure,'savefig',lambda self,*a,**k: captured.append(self))
+    data=json.loads((ROOT/'results/metrics/multi_alpha_frontier.json').read_text())
+    plot(data)
+    axis=captured[0].axes[0]
+    assert axis.get_ylim()[1]>=max(max(v['proposed']['V']) for v in data.values())
+    assert all('Guarantee' not in line.get_label() for line in axis.lines)
+    plt.close('all')

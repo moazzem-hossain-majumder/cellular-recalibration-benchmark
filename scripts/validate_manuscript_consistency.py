@@ -14,7 +14,7 @@ from scripts.publication_tables import ROOT, METHODS, tables, read_json
 
 def source_digest(root):
     h = hashlib.sha256()
-    for path in sorted([root/'paper/manuscript.tex',root/'paper/references.bib',root/'paper/cover_letter.tex',*list((root/'paper/tables').glob('*.tex')),*list((root/'paper/figures').glob('*.pdf'))]):
+    for path in sorted([*list((root/'paper').glob('*.tex')),root/'paper/references.bib',*list((root/'paper/tables').glob('*.tex')),*list((root/'paper/figures').glob('*.pdf'))]):
         payload = path.read_bytes()
         if path.suffix in {'.tex','.bib'}:
             payload = payload.replace(b'\r\n',b'\n')
@@ -76,7 +76,37 @@ def verify_metrics(root):
     if observed != set(metrics.index):
         raise ValueError('Forecast keys differ from metric keys')
 
+def validate_marur_claims(root):
+    """Bind the revised abstract's numerical claims to the authoritative audit."""
+    manuscript=(root/'paper/manuscript.tex').read_text(encoding='utf8')
+    abstract=manuscript.split(r'\begin{abstract}')[1].split(r'\end{abstract}')[0]
+    folder=root/'results/marur_audit'
+    summary=pd.read_csv(folder/'matched_cost_summary.csv')
+    pairs=pd.read_csv(folder/'matched_cost_pairs.csv')
+    original=pd.read_csv(root/'results/marur/summary.csv')
+    for value,phrase in [(len(original),'original configurations'),(len(summary),'additional full-suffix replays'),
+                         (int(pairs.matched.sum()),'exact-cost contrasts')]:
+        if f'{value} {phrase}' not in abstract:
+            raise ValueError(f'Abstract configuration/count mismatch: {value} {phrase}')
+    chosen=summary[(summary.model=='HistGBM')&(summary.scenario=='Recorded')&(summary.new_query_cap==10)]
+    e1=chosen[chosen.cohort=='E1'].set_index('policy')
+    ie=chosen[chosen.cohort=='Ireland'].set_index('policy')
+    for value in [e1.loc['MARUR','u'],e1.loc['Periodic','u'],e1.loc['MARUR','hi'],e1.loc['Periodic','hi'],
+                  ie.loc['MARUR','u'],ie.loc['Periodic','u']]:
+        if f'{100*value:.3f}' not in abstract:
+            raise ValueError(f'Abstract matched-cost value missing: {100*value:.3f}')
+    if ie.loc['MARUR','positive']!=159 or ie.loc['Periodic','positive']!=159:
+        raise ValueError('Abstract Ireland shared-offer count changed')
+    decomposition=pd.read_csv(folder/'offer_decomposition.csv')
+    row=decomposition[(decomposition.cohort=='Ireland')&(decomposition.model=='HistGBM')&
+        (decomposition.scenario=='Recorded')&(decomposition.new_query_cap==10)&(decomposition.baseline=='Periodic')]
+    if len(row)!=1 or row.iloc[0].shared_offers!=159 or row.iloc[0].shared_failure_delta!=-14:
+        raise ValueError('Abstract Ireland fourteen-failure attribution changed')
+
+
 def validate(root=ROOT):
+    validate_marur_claims(root)
+    validate_reviewer_claims(root)
     verify_clock_frontier(root)
     verify_revision_ledgers(root)
     verify_drive3(root)
@@ -142,7 +172,9 @@ def validate(root=ROOT):
         np.testing.assert_allclose(exclusions.loc[label,['excluded','mean_gain_pp','positive_splits','tree_v','persistence_v']],
                                    [len(ids),100*delta.mean(),(delta>0).sum(),risk['global'].mean(),risk.persistence.mean()])
     manuscript = (root/'paper/manuscript.tex').read_text(encoding='utf8')
-    referenced = re.findall(r'\\includegraphics(?:\[[^\]]+\])?\{(figures/[^}]+\.pdf)\}',manuscript)
+    supplement=(root/'paper/supplementary.tex').read_text(encoding='utf8')
+    combined=manuscript+'\n'+supplement
+    referenced = re.findall(r'\\includegraphics(?:\[[^\]]+\])?\{(figures/[^}]+\.pdf)\}',combined)
     if len(set(referenced))!=8:
         raise ValueError('Incomplete manuscript figure set')
     for fig in referenced:
@@ -150,17 +182,20 @@ def validate(root=ROOT):
             name = Path(fig).with_suffix(suffix)
             if (root/'paper'/name).read_bytes()!=(root/'results'/name).read_bytes():
                 raise ValueError(f'Figure mismatch: {name}')
-    html = BeautifulSoup((root/'paper/manuscript.html').read_text(encoding='utf8'),'html.parser')
+    html = BeautifulSoup((root/'paper/supplementary.html').read_text(encoding='utf8')+(root/'paper/manuscript.html').read_text(encoding='utf8'),'html.parser')
     html_tables = [[[c.get_text(strip=True) for c in tr.find_all(['td','th'])] for tr in tab.find_all('tr')] for tab in html.find_all('table')]
-    md = (root/'paper/manuscript.md').read_text(encoding='utf8')
+    md = (root/'paper/supplementary.md').read_text(encoding='utf8')+'\n'+(root/'paper/manuscript.md').read_text(encoding='utf8')
     md_tables = []
     for block in re.findall(r'(?:^\|[^\n]*\n)+',md,re.M):
         md_tables.append([[c.strip() for c in line.strip('|').split('|')] for line in block.splitlines() if not re.fullmatch(r'[|: \-]+',line)])
     expected = [[head,*data] for _,head,data in specs.values()]
+    known_headers=[x[0] for x in expected]
+    html_tables=[t for t in html_tables if t and t[0] in known_headers]
+    md_tables=[t for t in md_tables if t and t[0] in known_headers]
     check_rows(html_tables,expected,'HTML')
     check_rows(md_tables,expected,'Markdown')
     for name,(_,header,rows) in specs.items():
-        if manuscript.count(r'\input{tables/'+name+'}') != 1:
+        if combined.count(r'\input{tables/'+name+'}') != 1:
             raise ValueError(f'Missing or duplicated table {name}')
         for folder in ['results/tables','paper/tables']:
             check_rows(tex_rows((root/folder/(name+'.tex')).read_text(encoding='utf8')),[header,*rows],name)
@@ -199,8 +234,11 @@ def validate(root=ROOT):
         expected_summary.append([label,f"{part['n_samples']} / {part['n_days']}",source[2],source[4],ten[4],ten[5]])
     check_rows(summary,expected_summary,'README')
     digest = source_digest(root)
-    pages = pdf_tables(root/'paper/manuscript.pdf',specs,digest)
-    package = pdf_tables(root/'paper/submission_package.pdf',specs,digest)
+    main_specs={k:v for k,v in specs.items() if r'\input{tables/'+k+'}' in manuscript}
+    supplementary_specs={k:v for k,v in specs.items() if k not in main_specs}
+    pages = pdf_tables(root/'paper/manuscript.pdf',main_specs,digest)
+    pdf_tables(root/'paper/supplementary.pdf',supplementary_specs,digest)
+    package = pdf_tables(root/'paper/submission_package.pdf',main_specs,digest)
     if package[1:] != pages or 'Dear Editor' not in package[0]:
         raise ValueError('Package must contain cover and exact manuscript pages')
     with pymupdf.open(root/'paper/manuscript.pdf') as manuscript_pdf, pymupdf.open(root/'paper/submission_package.pdf') as package_pdf:
@@ -208,7 +246,7 @@ def validate(root=ROOT):
             if page.get_pixmap().digest != package_pdf[i+1].get_pixmap().digest:
                 raise ValueError(f'Package rendering mismatch on manuscript page {i+1}')
     with ZipFile(root/'paper/submission_package.zip') as archive:
-        required = {'manuscript.pdf','submission_package.pdf','cover_letter.tex','manuscript.tex','references.bib','supplement/REPRODUCE.md'}
+        required = {'manuscript.pdf','supplementary.pdf','supplementary.tex','related_work.tex','submission_package.pdf','cover_letter.tex','manuscript.tex','references.bib','supplement/REPRODUCE.md'}
         required.update('tables/'+name+'.tex' for name in specs)
         required.update(referenced)
         if required.difference(archive.namelist()):
@@ -395,6 +433,32 @@ def verify_clock_frontier(root):
             if r.k==10:
                 actual = ledger[(ledger.regime==reg)&(ledger.model==model)&(ledger.policy==policy)].sort_values(['time','trace'])
                 np.testing.assert_allclose(actual.lower,lower,atol=1e-12)
+
+
+def validate_reviewer_claims(root):
+    """Bind new manuscript counts and mechanisms to saved experimental evidence."""
+    source=(root/'paper/manuscript.tex').read_text(encoding='utf8')
+    folder=root/'results/exploratory/reviewer_baselines'
+    summary=pd.read_csv(folder/'summary.csv')
+    if len(summary)!=792 or '792 configurations' not in source:
+        raise ValueError('Reviewer baseline count mismatch')
+    pairs=pd.read_csv(folder/'classified_contrasts.csv')
+    pooled=pairs[(pairs.candidate=='MARUR_Pooled')&(pairs.reference=='MARUR')]
+    if len(pooled)!=72 or not (pooled.outcome=='unchanged').all() or 'all 72 paired configurations' not in source:
+        raise ValueError('Pattern-quantile claim mismatch')
+    counts=pairs[(pairs.candidate=='DecayingOGD')&(pairs.reference=='Periodic')].outcome.value_counts()
+    expected={'utility gain without higher risk bound':9,'utility loss without lower risk bound':18,'trade-off or risk-only change':45}
+    if counts.to_dict()!=expected:raise ValueError('Decaying baseline claim mismatch')
+    scores=pd.read_csv(folder/'window_score_diagnostics.csv')
+    row=scores[(scores.cohort=='Verizon')&(scores.model=='HistGBM')&(scores.scenario=='Recorded')&(scores.new_query_cap==40)&(scores.variant=='completed_W20')]
+    if len(row)!=1 or tuple(row.iloc[0][['binding_missing','bound_zero_with_binding_missing','eligible']])!=(159,159,287) or '159 of 287' not in source:
+        raise ValueError('Binding missing-score claim mismatch')
+    related=(root/'paper/related_work.tex').read_text(encoding='utf8')
+    bib=(root/'paper/references.bib').read_text(encoding='utf8')
+    keys=re.findall(r'@\w+\{([^,]+)',bib)
+    if len(keys)!=len(set(keys)):raise ValueError('Duplicate bibliography keys')
+    cited={k.strip() for group in re.findall(r'\\cite\{([^}]+)\}',related) for k in group.split(',')}
+    if len(cited)!=30 or not cited<=set(keys):raise ValueError('Related-work citation mismatch')
 
 
 if __name__ == '__main__':

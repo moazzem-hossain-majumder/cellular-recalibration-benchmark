@@ -15,6 +15,13 @@ ROOT = Path(__file__).resolve().parents[1]
 PACKAGES = ['torch','pandas','numpy','scipy','scikit-learn','matplotlib','seaborn',
             'pypdf','pymupdf','pytest','pypandoc_binary','beautifulsoup4','pyarrow']
 PATTERNS = [
+    'results/runs/reviewer_revision_completion.json',
+    'results/exploratory/reviewer_baselines/*','results/prospective_planning/*','docs/REVIEWER_*md','docs/PROSPECTIVE_VIDEO_VALIDATION_PLAN.md',
+    'results/exploratory/marur_information/*','docs/MARUR_INFORMATION_EXPERIMENT*.md',
+    'literature_review/*.tex','literature_review/*.bib','literature_review/*.csv','literature_review/*.md','literature_review/*.pdf',
+    'literature_review/_support/verification_sources.json','literature_review/_support/validation.json',
+    "docs/MARUR_IMPLEMENTATION_SPECIFICATION.md","results/runs/final_scientific_audit*.json",
+    "results/runs/clean_controller_reproduction.json","results/runs/clean_audit_tests.xml","results/runs/dependency_licenses.json",
     'results/marur_audit/*','docs/FINAL_MARUR_CRITICAL_AUDIT.md','docs/MATCHED_COST_ANALYSIS.md',
     'docs/PROSPECTIVE_VALIDATION_PROTOCOL.md','docs/IEEE_SUBMISSION_DECISION.md',
     'results/marur/*','configs/*.json','docs/RESEARCH_BASELINE_AUDIT.md','docs/NOVELTY_COMPARISON_MATRIX.md',

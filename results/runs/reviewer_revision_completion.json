@@ -1,0 +1,115 @@
+{
+  "completed_utc": "2026-11-24T12:44:18.113436+00:00",
+  "status": "retrospective_revision_complete_prospective_evidence_outstanding",
+  "baseline_validation": {
+    "baseline_configurations": 792,
+    "baseline_actions": 220044,
+    "baseline_responses": 15120,
+    "baseline_contrasts": 720,
+    "reconstructed_window_configurations": 1008,
+    "old_offer_decompositions": 1848,
+    "status": "passed"
+  },
+  "tests": {
+    "tests": 127,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "fresh_minimal_tests": {
+    "tests": 35,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "preserved_original_scientific_files": 49,
+  "controller_reproduction": {
+    "start_utc": "2026-11-23T15:45:45.192148+00:00",
+    "end_utc": "2026-11-23T15:47:51.714506+00:00",
+    "command": [
+      "C:\\Users\\MITHIL\\AppData\\Local\\Temp\\telecom-final-audit-venv\\Scripts\\python.exe",
+      "scripts/reproduce_saved_marur.py"
+    ],
+    "configurations": 1296,
+    "prefix": "C:\\Users\\MITHIL\\AppData\\Local\\Temp\\telecom-final-audit-venv",
+    "base_prefix": "C:\\Users\\MITHIL\\AppData\\Local\\Programs\\Python\\Python311",
+    "installed": [
+      "colorama==0.4.6",
+      "iniconfig==2.3.1",
+      "numpy==2.4.6",
+      "packaging==26.3",
+      "pandas==3.0.3",
+      "pluggy==1.7.0",
+      "Pygments==2.21.0",
+      "pytest==9.1.1",
+      "python-dateutil==4.0.0",
+      "tzdata==2026.6"
+    ],
+    "scope": "All 576 original and 720 audit controllers replayed from saved frozen forecasts; no raw-data reacquisition, model fitting, PDF rebuild or full dependency-stack verification",
+    "status": "passed",
+    "sha256": {
+      "src/evaluation/marur.py": "9e8e7557627fd0837302ceec0fdd30f7313111f038674570feed3554608aa6ae",
+      "src/evaluation/conformal.py": "58583caeec8f9dbe234d76e36fa6d87304534ddd84635e71c3b9561f3f9d0739",
+      "configs/marur.json": "dfb8053d52aaaf1ce497b636f90f3c389859d434da42704d525dc756c13cf27c",
+      "results/marur/opportunities.csv.gz": "6fc1c490106539f2c2c3f27bd141d391909cbe021f358dd9f2fdb1cadc6ce852",
+      "scripts/reproduce_saved_marur.py": "177ab9b286c8677a5a69728e4f6fd7f0a2de1aeb8d15c3bcea0297a23d9c4dfb",
+      "scripts/validate_marur_audit.py": "62d1aceb649b001fd14fcf157161c924474e70beeab8311c6c6090a03668394a"
+    }
+  },
+  "manuscript_consistency": "passed including reviewer claims, 14 numerical tables and package contents",
+  "visual_check": "All 6 main and 15 supplementary pages inspected in rendered contact sheets; no visible clipping",
+  "pdf_pages": {
+    "manuscript": 6,
+    "supplementary": 15
+  },
+  "prospective_readiness": {
+    "status": "not_ready_for_collection",
+    "missing": [
+      "network_operator",
+      "location_and_route_strata",
+      "device_and_modem",
+      "approved_measurement_endpoint",
+      "registered_protocol_url",
+      "requirements_validated_by_application_owner",
+      "field_feature_mapping_verified"
+    ],
+    "prospective_trips_collected": 0,
+    "zero_failures_independent_Bernoulli_n_for_5percent": 59,
+    "warning": "59 independent fully observed Bernoulli outcomes with zero failures is not 59 correlated ticks or a sample-size justification for this trip study"
+  },
+  "model_freeze": {
+    "training_rows": 57,
+    "verified_rome_predictions": 877,
+    "maximum_absolute_prediction_difference": 3.552713678800501e-15,
+    "model_sha256": "9cdf05dc9b9d28ff2ba07dfcb7b393e422ec5d4e3a0f0048f7419f6bb6986447",
+    "features": [
+      "y_lag1",
+      "prev_duration_s",
+      "lag_age_s",
+      "has_lte",
+      "has_nr",
+      "group_id",
+      "rsrp",
+      "rsrq",
+      "sinr",
+      "ss_rsrp",
+      "ss_rsrq",
+      "ss_sinr",
+      "scenario_IS",
+      "scenario_OD",
+      "scenario_OW"
+    ],
+    "python": "3.11.9",
+    "sklearn": "1.9.0",
+    "status": "existing model recreated and frozen; field feature compatibility unverified",
+    "initialization": "E1 earliest ten archived calibration labels; proposal only",
+    "raw_source_sha256": "97de559315f6ec872ef87f4165587251f30e42bd5c7a3d67df1042919d6dbd3f"
+  },
+  "recommendation": "Major revision: prospective evidence and validated application requirements remain outstanding",
+  "artifact_sha256": {
+    "paper/manuscript.pdf": "50c257846cd0369642d01df7329ba31781986a883f621809039f0dc11ad3050e",
+    "paper/supplementary.pdf": "776e201de0c96ada2fd2f31eef5b6d052c848ad7db10fdea7f9fc11c1a11908b",
+    "paper/submission_package.zip": "13f6418c7b7517c41250741943704dcaa5bd45160e0389672fcc1d3647171a2c",
+    "docs/REVIEWER_REVISION_COMPLETION.md": "b1abbf0337f5de5c8e46e52a44112abb4786c5edf669f6927660df278511a483"
+  }
+}

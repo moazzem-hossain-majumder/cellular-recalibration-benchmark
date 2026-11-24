@@ -1,0 +1,490 @@
+{
+  "url": "https://api.crossref.org/works/10.1093/jrsssc/qlae054",
+  "data": {
+    "indexed": {
+      "date-parts": [
+        [
+          2025,
+          10,
+          23
+        ]
+      ],
+      "date-time": "2025-10-23T02:11:02Z",
+      "timestamp": 1761185462513,
+      "version": "build-2065373602"
+    },
+    "reference-count": 21,
+    "publisher": "Oxford University Press (OUP)",
+    "issue": "1",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              10,
+              23
+            ]
+          ],
+          "date-time": "2024-10-23T00:00:00Z",
+          "timestamp": 1729641600000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "https://academic.oup.com/pages/standard-publication-reuse-rights"
+      }
+    ],
+    "funder": [
+      {
+        "DOI": "10.13039/100000001",
+        "name": "National Science Foundation",
+        "doi-asserted-by": "publisher",
+        "award": [
+          "CNS-2220286"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "CNS-2220286"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/100000001",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      }
+    ],
+    "content-domain": {
+      "domain": [],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [],
+    "published-print": {
+      "date-parts": [
+        [
+          2025,
+          1,
+          13
+        ]
+      ]
+    },
+    "abstract": "<jats:title>Abstract</jats:title>\n                  <jats:p>To deliver on the promise of 5G, network providers and application developers need to understand the factors impacting millimetre wave (mmWave) 5G throughput. Missing data, however, pose significant challenges for modelling throughput. Even in controlled settings, signal strength data may be only intermittently observed when a device’s connection is weak, leading to missing predictor values in model training. In addition, users may choose not to share their data once the model is deployed, meaning that key predictors may be missing when we want to predict throughput for their devices. To address these challenges, we introduce boosted additive model for data with missing observation (BAMMO), a novel additive model estimator obtained via a componentwise boosting algorithm that naturally incorporates data with missing values in model fitting. We validate BAMMO’s approach to handling missing data by comparing it with competing methods on real 5G network data with a high proportion of missing values and in simulations, finding that it delivers more accurate predictions and takes less time to compute. To identify key predictors of mmWave 5G throughput, we develop a novel extension of sparsity oriented importance learning for BAMMO, giving us a measure of variable importance based on the entire boosting solution path rather than a single selected model.</jats:p>",
+    "DOI": "10.1093/jrsssc/qlae054",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2024,
+          10,
+          7
+        ]
+      ],
+      "date-time": "2024-10-07T15:27:47Z",
+      "timestamp": 1728314867000
+    },
+    "page": "249-273",
+    "source": "Crossref",
+    "is-referenced-by-count": 0,
+    "title": [
+      "Predicting 5G throughput with BAMMO, a boosted additive model for data with missing observations"
+    ],
+    "prefix": "10.1093",
+    "volume": "74",
+    "author": [
+      {
+        "ORCID": "https://orcid.org/0000-0002-7496-9688",
+        "authenticated-orcid": false,
+        "given": "Tate",
+        "family": "Jacobson",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Department of Statistics, Oregon State University , 103 SW Memorial Pl Corvallis, OR 97331 ,",
+            "place": [
+              "USA"
+            ]
+          }
+        ],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-3584-6140",
+        "authenticated-orcid": false,
+        "given": "Jie",
+        "family": "Ding",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "School of Statistics, University of Minnesota , 313 Church St SE Minneapolis, MN 55455 ,",
+            "place": [
+              "USA"
+            ]
+          }
+        ],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-4798-9904",
+        "authenticated-orcid": false,
+        "given": "Hui",
+        "family": "Zou",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "School of Statistics, University of Minnesota , 313 Church St SE Minneapolis, MN 55455 ,",
+            "place": [
+              "USA"
+            ]
+          }
+        ],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      }
+    ],
+    "member": "286",
+    "published-online": {
+      "date-parts": [
+        [
+          2024,
+          10,
+          23
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "issue": "4",
+        "key": "2025102220020383900_qlae054-B1",
+        "doi-asserted-by": "publisher",
+        "first-page": "477",
+        "DOI": "10.1214/07-STS242",
+        "article-title": "Boosting algorithms: Regularization, prediction and model fitting",
+        "volume": "22",
+        "author": "Bühlmann",
+        "year": "2007",
+        "journal-title": "Statistical Science"
+      },
+      {
+        "key": "2025102220020383900_qlae054-B2",
+        "doi-asserted-by": "publisher",
+        "first-page": "453",
+        "DOI": "10.1214/aos/1176347115",
+        "article-title": "Linear smoothers and additive models",
+        "volume": "17",
+        "author": "Buja",
+        "year": "1989",
+        "journal-title": "The Annals of Statistics"
+      },
+      {
+        "issue": "467",
+        "key": "2025102220020383900_qlae054-B3",
+        "doi-asserted-by": "publisher",
+        "first-page": "619",
+        "DOI": "10.1198/016214504000000692",
+        "article-title": "The estimation of prediction error",
+        "volume": "99",
+        "author": "Efron",
+        "year": "2004",
+        "journal-title": "Journal of the American Statistical Association"
+      },
+      {
+        "issue": "1",
+        "key": "2025102220020383900_qlae054-B4",
+        "doi-asserted-by": "publisher",
+        "first-page": "140",
+        "DOI": "10.1186/s40537-021-00516-9",
+        "article-title": "A survey on missing data in machine learning",
+        "volume": "8",
+        "author": "Emmanuel",
+        "year": "2021",
+        "journal-title": "Journal of Big Data"
+      },
+      {
+        "year": "2019",
+        "author": "ESNET",
+        "key": "2025102220020383900_qlae054-B5"
+      },
+      {
+        "key": "2025102220020383900_qlae054-B6",
+        "doi-asserted-by": "publisher",
+        "first-page": "297",
+        "DOI": "10.1214/ss/1177013604",
+        "article-title": "Generalized additive models",
+        "volume": "1",
+        "author": "Hastie",
+        "year": "1986",
+        "journal-title": "Statistical Science"
+      },
+      {
+        "issue": "4",
+        "key": "2025102220020383900_qlae054-B7",
+        "doi-asserted-by": "publisher",
+        "first-page": "956",
+        "DOI": "10.1198/jcgs.2011.09220",
+        "article-title": "A framework for unbiased model selection based on boosting",
+        "volume": "20",
+        "author": "Hofner",
+        "year": "2011",
+        "journal-title": "Journal of Computational and Graphical Statistics"
+      },
+      {
+        "year": "2022",
+        "author": "Hollington",
+        "key": "2025102220020383900_qlae054-B8"
+      },
+      {
+        "key": "2025102220020383900_qlae054-B9",
+        "doi-asserted-by": "publisher",
+        "first-page": "626",
+        "DOI": "10.1111/biom.2009.65.issue-2",
+        "article-title": "Variable selection and model choice in geoadditive regression models",
+        "volume": "65",
+        "author": "Kneib",
+        "year": "2009",
+        "journal-title": "Biometrics"
+      },
+      {
+        "year": "2022",
+        "author": "Lin",
+        "key": "2025102220020383900_qlae054-B10"
+      },
+      {
+        "key": "2025102220020383900_qlae054-B11",
+        "doi-asserted-by": "publisher",
+        "first-page": "108736",
+        "DOI": "10.1016/j.comnet.2021.108736",
+        "article-title": "Realtime mobile bandwidth and handoff predictions in 4G/5G networks",
+        "volume": "204",
+        "author": "Mei",
+        "year": "2022",
+        "journal-title": "Computer Networks"
+      },
+      {
+        "key": "2025102220020383900_qlae054-B12",
+        "doi-asserted-by": "publisher",
+        "first-page": "1825",
+        "DOI": "10.1109/TMC.2021.3099397",
+        "article-title": "Throughput prediction using machine learning in LTE and 5G networks",
+        "volume": "22",
+        "author": "Minovski",
+        "year": "2023",
+        "journal-title": "IEEE Transactions on Mobile Computing"
+      },
+      {
+        "issue": "3",
+        "key": "2025102220020383900_qlae054-B13",
+        "doi-asserted-by": "publisher",
+        "first-page": "636",
+        "DOI": "10.1080/10618600.2013.829780",
+        "article-title": "Variable selection diagnostics measures for high-dimensional regression",
+        "volume": "23",
+        "author": "Nan",
+        "year": "2014",
+        "journal-title": "Journal of Computational and Graphical Statistics"
+      },
+      {
+        "year": "2020",
+        "author": "Narayanan",
+        "key": "2025102220020383900_qlae054-B14"
+      },
+      {
+        "year": "2020",
+        "author": "Narayanan",
+        "key": "2025102220020383900_qlae054-B15"
+      },
+      {
+        "issue": "3",
+        "key": "2025102220020383900_qlae054-B16",
+        "doi-asserted-by": "publisher",
+        "first-page": "11",
+        "DOI": "10.1109/MCOM.35",
+        "article-title": "On leveraging machine and deep learning for throughput prediction in cellular networks: Design, performance, and challenges",
+        "volume": "58",
+        "author": "Raca",
+        "year": "2020",
+        "journal-title": "IEEE Communications Magazine"
+      },
+      {
+        "issue": "3",
+        "key": "2025102220020383900_qlae054-B17",
+        "doi-asserted-by": "publisher",
+        "first-page": "581",
+        "DOI": "10.1093/biomet/63.3.581",
+        "article-title": "Inference and missing data",
+        "volume": "63",
+        "author": "Rubin",
+        "year": "1976",
+        "journal-title": "Biometrika"
+      },
+      {
+        "issue": "1",
+        "key": "2025102220020383900_qlae054-B18",
+        "doi-asserted-by": "publisher",
+        "first-page": "112",
+        "DOI": "10.1093/bioinformatics/btr597",
+        "article-title": "Missforest - non-parametric missing value imputation for mixed-type data",
+        "volume": "28",
+        "author": "Stekhoven",
+        "year": "2012",
+        "journal-title": "Bioinformatics"
+      },
+      {
+        "issue": "3",
+        "key": "2025102220020383900_qlae054-B19",
+        "doi-asserted-by": "publisher",
+        "first-page": "1",
+        "DOI": "10.18637/jss.v045.i03",
+        "article-title": "mice: Multivariate imputation by chained equations in R",
+        "volume": "45",
+        "author": "van Buuren",
+        "year": "2011",
+        "journal-title": "Journal of Statistical Software"
+      },
+      {
+        "issue": "454",
+        "key": "2025102220020383900_qlae054-B20",
+        "doi-asserted-by": "publisher",
+        "first-page": "574",
+        "DOI": "10.1198/016214501753168262",
+        "article-title": "Adaptive regression by mixing",
+        "volume": "96",
+        "author": "Yang",
+        "year": "2001",
+        "journal-title": "Journal of the American Statistical Association"
+      },
+      {
+        "issue": "524",
+        "key": "2025102220020383900_qlae054-B21",
+        "doi-asserted-by": "publisher",
+        "first-page": "1797",
+        "DOI": "10.1080/01621459.2017.1377080",
+        "article-title": "Sparsity oriented importance learning for high-dimensional linear regression",
+        "volume": "113",
+        "author": "Ye",
+        "year": "2018",
+        "journal-title": "Journal of the American Statistical Association"
+      }
+    ],
+    "container-title": [
+      "Journal of the Royal Statistical Society Series C: Applied Statistics"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://academic.oup.com/jrsssc/article-pdf/74/1/249/59980949/qlae054.pdf",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "syndication"
+      },
+      {
+        "URL": "https://academic.oup.com/jrsssc/article-pdf/74/1/249/59980949/qlae054.pdf",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2025,
+          10,
+          23
+        ]
+      ],
+      "date-time": "2025-10-23T00:02:08Z",
+      "timestamp": 1761177728000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://academic.oup.com/jrsssc/article/74/1/249/7831710"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2024,
+          10,
+          23
+        ]
+      ]
+    },
+    "references-count": 21,
+    "journal-issue": {
+      "issue": "1",
+      "published-online": {
+        "date-parts": [
+          [
+            2024,
+            10,
+            23
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2025,
+            1,
+            13
+          ]
+        ]
+      }
+    },
+    "URL": "https://doi.org/10.1093/jrsssc/qlae054",
+    "relation": {},
+    "ISSN": [
+      "0035-9254",
+      "1467-9876"
+    ],
+    "issn-type": [
+      {
+        "type": "print",
+        "value": "0035-9254"
+      },
+      {
+        "type": "electronic",
+        "value": "1467-9876"
+      }
+    ],
+    "subject": [],
+    "published-other": {
+      "date-parts": [
+        [
+          2025,
+          1
+        ]
+      ]
+    },
+    "published": {
+      "date-parts": [
+        [
+          2024,
+          10,
+          23
+        ]
+      ]
+    }
+  }
+}

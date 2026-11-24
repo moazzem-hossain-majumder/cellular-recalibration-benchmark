@@ -68,7 +68,7 @@ Operating environments across Bangladesh present distinct propagation, clutter, 
 ### Cluster 3: Rural & Riverine Topographies (Haor, Chars, Southern Coastal Belt)
 - **Radio Environment:** Extended inter-site distances ($> 5\text{ km}$), predominantly 900 MHz (Band 8) LTE coverage, virtually zero 5G NR deployment.
 - **Telemetry Missingness:** 100% of 5G NR indicators are structurally missing.
-- **Engineering Principle:** Applying our proposed Group 2 (LTE-only) fallback calibrator guarantees that rural predictions are bounded by realistic LTE anchor channel limits without throwing missing-feature exceptions.
+- **Engineering Principle:** Applying our proposed Group 2 (LTE-only) fallback calibrator does not establish that rural predictions respect physical LTE channel limits; it only uses the available predictor fields without throwing missing-feature exceptions.
 
 ---
 
@@ -96,7 +96,7 @@ $$k = \lceil (n + 1)(1 - \alpha) \rceil \le n \iff \lceil (n+1) \cdot 0.90 \rcei
 **Operational Takeaway for Planning Engineers:**
 - Running small drive tests with $K \in \{1, 2, 5, 8\}$ sessions falls back to the source distribution because finite-sample bounds require $n \ge 9$ target samples to activate target-domain order statistics. While source fallback provides non-target calibration, target-specific recalibration only activates at $K \ge 9$.
 - Mobile operators should plan drive-test routes that collect at least **10 complete measurement sessions per target area** to ensure target-specific recalibration can activate with valid empirical quantile support.
-- Consolidating drive-test routes to guarantee $K \ge 10$ ensures that measurement resources produce actionable target-domain calibration adjustments rather than relying exclusively on source fallbacks.
+- Collecting at least ten labels makes the nominal order statistic finite, but does not ensure useful commitments, independent samples or target-domain reliability.
 
 ---
 
@@ -163,5 +163,5 @@ When the operator operates under strict regulatory scrutiny or premium enterpris
 
 ## 7. Conclusion
 
-By shifting cellular throughput forecasting from uncalibrated point estimates to finite-sample conformal lower bounds, Bangladeshi telecommunications operators can achieve mathematical QoS guarantees, prevent catastrophic service violations under network upgrades, and optimize multi-million BDT drive-test campaign budgets.
+By shifting cellular throughput forecasting from uncalibrated point estimates to finite-sample conformal lower bounds, future studies could evaluate service-risk trade-offs in Bangladesh. This repository establishes no local QoS guarantee, prevention of service failures, or economic savings.
 

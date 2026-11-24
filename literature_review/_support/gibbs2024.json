@@ -1,0 +1,58 @@
+{
+  "url": "https://jmlr.org/papers/v25/22-1218.html",
+  "text": "Conformal Inference for Online Prediction with Arbitrary Distribution Shifts Home Page Papers Submissions News Editorial Board Special Issues Open Source Software Proceedings (PMLR) Data (DMLR) Transactions (TMLR) Search Statistics Login Frequently Asked Questions Contact Us Conformal Inference for Online Prediction with Arbitrary Distribution Shifts Isaac Gibbs, Emmanuel J. Candès ; 25(162):1−36, 2024. Abstract We consider the problem of forming prediction sets in an online setting where the distribution generating the data is allowed to vary over time. Previous approaches to this problem suffer from over-weighting historical data and thus may fail to quickly react to the underlying dynamics. Here, we correct this issue and develop a novel procedure with provably small regret over all local time intervals of a given width. We achieve this by modifying the adaptive conformal inference (ACI) algorithm of Gibbs and Candès (2021) to contain an additional step in which the step-size parameter of ACI's gradient descent update is tuned over time. Crucially, this means that unlike ACI, which requires knowledge of the rate of change of the data-generating mechanism, our new procedure is adaptive to both the size and type of the distribution shift. Our methods are highly flexible and can be used in combination with any baseline predictive algorithm that produces point estimates or estimated quantiles of the target without the need for distributional assumptions. We test our techniques on two real-world datasets aimed at predicting stock market volatility and COVID-19 case counts and find that they are robust and adaptive to real-world distribution shifts. [abs] [ pdf ][ bib ]\n          \n    [ code ] © JMLR 2024. \n( edit , beta ) Mastodon",
+  "meta": [
+    [
+      "citation_title",
+      "Conformal Inference for Online Prediction with Arbitrary Distribution Shifts"
+    ],
+    [
+      "citation_author",
+      "Isaac Gibbs"
+    ],
+    [
+      "citation_author",
+      "Emmanuel J. Candès"
+    ],
+    [
+      "citation_journal_title",
+      "Journal of Machine Learning Research"
+    ],
+    [
+      "citation_volume",
+      "25"
+    ],
+    [
+      "citation_issue",
+      "162"
+    ],
+    [
+      "citation_firstpage",
+      "1"
+    ],
+    [
+      "citation_lastpage",
+      "36"
+    ],
+    [
+      "citation_pdf_url",
+      "http://jmlr.org/papers/volume25/22-1218/22-1218.pdf"
+    ],
+    [
+      "citation_publication_date",
+      "2024"
+    ],
+    [
+      "citation_public_url",
+      "http://jmlr.org/papers/v25/22-1218.html"
+    ],
+    [
+      "citation_abstract_html_url",
+      "http://jmlr.org/papers/v25/22-1218.html"
+    ],
+    [
+      "citation_issn",
+      "1533-7928"
+    ]
+  ]
+}

@@ -1,0 +1,606 @@
+{
+  "url": "https://api.crossref.org/works/10.1016/j.comnet.2024.110207",
+  "data": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          20
+        ]
+      ],
+      "date-time": "2026-10-20T18:23:50Z",
+      "timestamp": 1792520630216,
+      "version": "4.5.0"
+    },
+    "reference-count": 37,
+    "publisher": "Elsevier BV",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              3,
+              1
+            ]
+          ],
+          "date-time": "2024-03-01T00:00:00Z",
+          "timestamp": 1709251200000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              3,
+              1
+            ]
+          ],
+          "date-time": "2024-03-01T00:00:00Z",
+          "timestamp": 1709251200000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/legal/tdmrep-license"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              2,
+              5
+            ]
+          ],
+          "date-time": "2024-02-05T00:00:00Z",
+          "timestamp": 1707091200000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "http://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "elsevier.com",
+        "sciencedirect.com"
+      ],
+      "crossmark-restriction": true
+    },
+    "short-container-title": [
+      "Computer Networks"
+    ],
+    "published-print": {
+      "date-parts": [
+        [
+          2024,
+          3
+        ]
+      ]
+    },
+    "DOI": "10.1016/j.comnet.2024.110207",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2024,
+          1,
+          23
+        ]
+      ],
+      "date-time": "2024-01-23T02:32:38Z",
+      "timestamp": 1705977158000
+    },
+    "page": "110207",
+    "update-policy": "https://doi.org/10.1016/elsevier_cm_policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 23,
+    "special_numbering": "C",
+    "title": [
+      "Empirical performance analysis and ML-based modeling of 5G non-standalone networks"
+    ],
+    "prefix": "10.1016",
+    "volume": "241",
+    "author": [
+      {
+        "given": "Konstantinos",
+        "family": "Kousias",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Mohammad",
+        "family": "Rajiullah",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Giuseppe",
+        "family": "Caso",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Ozgu",
+        "family": "Alay",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Anna",
+        "family": "Brunstrom",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Usman",
+        "family": "Ali",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Luca",
+        "family": "De Nardis",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Marco",
+        "family": "Neri",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Maria-Gabriella",
+        "family": "Di Benedetto",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "78",
+    "reference": [
+      {
+        "issue": "11",
+        "key": "10.1016/j.comnet.2024.110207_b1",
+        "doi-asserted-by": "crossref",
+        "first-page": "83",
+        "DOI": "10.1109/MCOM.001.2000230",
+        "article-title": "5G deployment: Standalone vs. non-standalone from the operator perspective",
+        "volume": "58",
+        "author": "Liu",
+        "year": "2020",
+        "journal-title": "IEEE Commun. Mag."
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b2",
+        "article-title": "A large-scale dataset of 4G, NB-IoT, and 5G non-standalone network measurements",
+        "author": "Kousias",
+        "year": "2023",
+        "journal-title": "IEEE Commun. Mag."
+      },
+      {
+        "issue": "6",
+        "key": "10.1016/j.comnet.2024.110207_b3",
+        "doi-asserted-by": "crossref",
+        "first-page": "753",
+        "DOI": "10.1631/FITEE.1601817",
+        "article-title": "Beamforming techniques for massive MIMO systems in 5G: Overview, classification, and trends for future research",
+        "volume": "18",
+        "author": "Ali",
+        "year": "2017",
+        "journal-title": "Front. Inf. Technol. Electron. Eng."
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b4",
+        "unstructured": "3GPP, NR; Multi-Connectivity; Overall Description; Stage 2 (Rel-15), Technical Specification (TS) 37.340, 2018."
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b5",
+        "unstructured": "3GPP, NR and NG-RAN Overall Description; Stage 2 (Rel-15), Technical Specification (TS) 38.300, 2020."
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b6",
+        "author": "OpenCellID",
+        "year": "2023"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b7",
+        "author": "RTR Netztest",
+        "year": "2023"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b8",
+        "author": "LTE Italy",
+        "year": "2023"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b9",
+        "series-title": "Proceedings of the 16th ACM Workshop on Wireless Network Testbeds, Experimental Evaluation & CHaracterization",
+        "isbn-type": "print",
+        "doi-asserted-by": "crossref",
+        "first-page": "61",
+        "DOI": "10.1145/3556564.3558233",
+        "article-title": "Coverage and performance analysis of 5g non-standalone deployments",
+        "author": "Kousias",
+        "year": "2022",
+        "ISBN": "https://id.crossref.org/isbn/9781450395274"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b10",
+        "series-title": "The 5G infrastructure public private partnership",
+        "author": "5GPPP",
+        "year": "2023"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b11",
+        "series-title": "Platforms for advanced wireless research - PAWR",
+        "author": "PAWR",
+        "year": "2023"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b12",
+        "series-title": "Proceedings of the Web Conference 2020",
+        "first-page": "894",
+        "article-title": "A first look at commercial 5G performance on smartphones",
+        "author": "Narayanan",
+        "year": "2020"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b13",
+        "series-title": "Proceedings of the ACM SIGCOMM 2020 Conference",
+        "first-page": "479",
+        "article-title": "Understanding operational 5G: A first measurement study on its coverage, performance and energy consumption",
+        "author": "Xu",
+        "year": "2020"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b14",
+        "series-title": "Proceedings of the ACM Internet Measurement Conference 2020",
+        "first-page": "176",
+        "article-title": "Lumos5G: Mapping and predicting commercial mmwave 5G throughput",
+        "author": "Narayanan",
+        "year": "2020"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b15",
+        "series-title": "Proceedings of the ACM SIGCOMM 2021 Conference",
+        "first-page": "610",
+        "article-title": "A variegated look at 5G in the wild: Performance, power, and QoE implications",
+        "author": "Narayanan",
+        "year": "2021"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b16",
+        "series-title": "Proceedings of the ACM SIGCOMM 2022 Conference",
+        "article-title": "Vivisecting mobility management in 5G cellular networks",
+        "author": "Hassan",
+        "year": "2022"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b17",
+        "series-title": "Proceedings of the ACM SIGCOMM 2021 Workshop on 5G Measurements, Modeling, and Use Cases",
+        "first-page": "27",
+        "article-title": "Case for 5G-aware video streaming applications",
+        "author": "Ramadan",
+        "year": "2021"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b18",
+        "series-title": "Proceedings of the ACM SIGCOMM 2020 Poster and Demo Sessions",
+        "first-page": "65",
+        "article-title": "5G tracker: A crowdsourced platform to enable research using commercial 5G services",
+        "author": "Narayanan",
+        "year": "2020"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b19",
+        "series-title": "Proceedings of the ACM SIGCOMM Workshop on 5G and Beyond Network Measurements, Modeling, and Use Cases",
+        "isbn-type": "print",
+        "doi-asserted-by": "crossref",
+        "first-page": "22",
+        "DOI": "10.1145/3538394.3546041",
+        "article-title": "Implications of handover events in commercial 5g non-standalone deployments in rome",
+        "author": "Kousias",
+        "year": "2022",
+        "ISBN": "https://id.crossref.org/isbn/9781450393935"
+      },
+      {
+        "issue": "3",
+        "key": "10.1016/j.comnet.2024.110207_b20",
+        "doi-asserted-by": "crossref",
+        "first-page": "34",
+        "DOI": "10.3390/data7030034",
+        "article-title": "Large-scale dataset for the analysis of outdoor-to-indoor propagation for 5G mid-band operational networks",
+        "volume": "7",
+        "author": "Ali",
+        "year": "2022",
+        "journal-title": "Data"
+      },
+      {
+        "issue": "8",
+        "key": "10.1016/j.comnet.2024.110207_b21",
+        "doi-asserted-by": "crossref",
+        "first-page": "239",
+        "DOI": "10.3390/fi14080239",
+        "article-title": "Data-driven analysis of outdoor-to-indoor propagation for 5G mid-band operational networks",
+        "volume": "14",
+        "author": "Ali",
+        "year": "2022",
+        "journal-title": "Future Internet"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b22",
+        "series-title": "Proceedings of the IEEE 5G World Forum",
+        "first-page": "299",
+        "article-title": "Machine learning-enabled data rate prediction for 5G NSA vehicle-to-cloud communications",
+        "author": "Sliwa",
+        "year": "2021"
+      },
+      {
+        "issue": "2",
+        "key": "10.1016/j.comnet.2024.110207_b23",
+        "doi-asserted-by": "crossref",
+        "first-page": "211",
+        "DOI": "10.1109/TBDATA.2018.2884489",
+        "article-title": "A big data enabled channel model for 5G wireless communication systems",
+        "volume": "6",
+        "author": "Huang",
+        "year": "2018",
+        "journal-title": "IEEE Trans. Big Data"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b24",
+        "author": "Speedtest",
+        "year": "2023"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b25",
+        "series-title": "How does Speedtest measure my network speeds?",
+        "author": "Overturf",
+        "year": "2023"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b26",
+        "series-title": "QualiPoc android",
+        "author": "Rohde-Schwarz",
+        "year": "2023"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b27",
+        "unstructured": "ETSI, Speech and Multimedia Transmission Quality (STQ); QoS Parameters and Test Scenarios for Assessing Network Capabilities in 5G Performance Measurements, ETSI TR 103 702 V1.1.1 (2020-11), 2020."
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b28",
+        "unstructured": "ITU-T, Latency Measurement and Interactivity Scoring Under Real Application Data Traffic Patterns, Recommendation ITU-T G.1051 (2023-03), 2023."
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b29",
+        "unstructured": "IETF, A Two-Way Active Measurement Protocol (TWAMP), IETF RFC 5357, 2008, Accessed on January 2024. URL."
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b30",
+        "series-title": "Packet Delay Variation Applicability Statement",
+        "author": "Claise",
+        "year": "2009"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b31",
+        "unstructured": "3GPP, 5G; System Architecture for the 5G System (Rel-15), Technical Specification (TS) 23.501, 2018."
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b32",
+        "unstructured": "3GPP, 5G; NR; Base Station (BS) Radio Transmission and Reception (Rel-15), Technical Specification (TS) 38.300, 2019."
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b33",
+        "doi-asserted-by": "crossref",
+        "first-page": "321",
+        "DOI": "10.1613/jair.953",
+        "article-title": "SMOTE: synthetic minority over-sampling technique",
+        "volume": "16",
+        "author": "Chawla",
+        "year": "2002",
+        "journal-title": "J. Artificial Intelligence Res."
+      },
+      {
+        "issue": "4",
+        "key": "10.1016/j.comnet.2024.110207_b34",
+        "doi-asserted-by": "crossref",
+        "first-page": "18",
+        "DOI": "10.1109/5254.708428",
+        "article-title": "Support vector machines",
+        "volume": "13",
+        "author": "Hearst",
+        "year": "1998",
+        "journal-title": "IEEE Intell. Syst. Appl."
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b35",
+        "series-title": "Proceedings of the 22nd Acm Sigkdd International Conference on Knowledge Discovery and Data Mining",
+        "first-page": "785",
+        "article-title": "Xgboost: A scalable tree boosting system",
+        "author": "Chen",
+        "year": "2016"
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b36",
+        "doi-asserted-by": "crossref",
+        "first-page": "5",
+        "DOI": "10.1023/A:1010933404324",
+        "article-title": "Random forests",
+        "volume": "45",
+        "author": "Breiman",
+        "year": "2001",
+        "journal-title": "Mach. Learn."
+      },
+      {
+        "key": "10.1016/j.comnet.2024.110207_b37",
+        "series-title": "Forest floor visualizations of random forests",
+        "author": "Welling",
+        "year": "2016"
+      }
+    ],
+    "container-title": [
+      "Computer Networks"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S1389128624000392?httpAccept=text/xml",
+        "content-type": "text/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S1389128624000392?httpAccept=text/plain",
+        "content-type": "text/plain",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2025,
+          10,
+          25
+        ]
+      ],
+      "date-time": "2025-10-25T13:38:01Z",
+      "timestamp": 1761399481000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://linkinghub.elsevier.com/retrieve/pii/S1389128624000392"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2024,
+          3
+        ]
+      ]
+    },
+    "references-count": 37,
+    "alternative-id": [
+      "S1389128624000392"
+    ],
+    "URL": "https://doi.org/10.1016/j.comnet.2024.110207",
+    "relation": {},
+    "ISSN": [
+      "1389-1286"
+    ],
+    "issn-type": [
+      {
+        "value": "1389-1286",
+        "type": "print"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2024,
+          3
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "Elsevier",
+        "name": "publisher",
+        "label": "This article is maintained by"
+      },
+      {
+        "value": "Empirical performance analysis and ML-based modeling of 5G non-standalone networks",
+        "name": "articletitle",
+        "label": "Article Title"
+      },
+      {
+        "value": "Computer Networks",
+        "name": "journaltitle",
+        "label": "Journal Title"
+      },
+      {
+        "value": "https://doi.org/10.1016/j.comnet.2024.110207",
+        "name": "articlelink",
+        "label": "CrossRef DOI link to publisher maintained version"
+      },
+      {
+        "value": "article",
+        "name": "content_type",
+        "label": "Content Type"
+      },
+      {
+        "value": "© 2024 The Authors. Published by Elsevier B.V.",
+        "name": "copyright",
+        "label": "Copyright"
+      }
+    ],
+    "article-number": "110207"
+  }
+}

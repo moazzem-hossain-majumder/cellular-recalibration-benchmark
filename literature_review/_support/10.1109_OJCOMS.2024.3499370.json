@@ -1,0 +1,540 @@
+{
+  "url": "https://api.crossref.org/works/10.1109/OJCOMS.2024.3499370",
+  "data": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          20
+        ]
+      ],
+      "date-time": "2026-11-20T11:25:08Z",
+      "timestamp": 1795173908050,
+      "version": "4.10.3"
+    },
+    "reference-count": 42,
+    "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2024,
+              1,
+              1
+            ]
+          ],
+          "date-time": "2024-01-01T00:00:00Z",
+          "timestamp": 1704067200000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+      }
+    ],
+    "funder": [
+      {
+        "DOI": "10.13039/100003077",
+        "name": "Knowledge Foundation",
+        "doi-asserted-by": "publisher",
+        "id": [
+          {
+            "id": "10.13039/100003077",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      }
+    ],
+    "content-domain": {
+      "domain": [],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [
+      "IEEE Open J. Commun. Soc."
+    ],
+    "published-print": {
+      "date-parts": [
+        [
+          2024
+        ]
+      ]
+    },
+    "DOI": "10.1109/ojcoms.2024.3499370",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2024,
+          11,
+          14
+        ]
+      ],
+      "date-time": "2024-11-14T18:44:16Z",
+      "timestamp": 1731609856000
+    },
+    "page": "7380-7399",
+    "source": "Crossref",
+    "is-referenced-by-count": 15,
+    "title": [
+      "The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution"
+    ],
+    "prefix": "10.1109",
+    "volume": "5",
+    "author": [
+      {
+        "ORCID": "https://orcid.org/0000-0003-0611-5637",
+        "authenticated-orcid": false,
+        "given": "Giuseppe",
+        "family": "Caso",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Department of Mathematics and Computer Science, Karlstad University, Karlstad, Sweden"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-2765-7873",
+        "authenticated-orcid": false,
+        "given": "Mohammad",
+        "family": "Rajiullah",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Mathematics and Computer Science, Karlstad University, Karlstad, Sweden"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-5058-4532",
+        "authenticated-orcid": false,
+        "given": "Konstantinos",
+        "family": "Kousias",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Informatics, University of Oslo, Oslo, Norway"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-0239-802X",
+        "authenticated-orcid": false,
+        "given": "Usman",
+        "family": "Ali",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Information Engineering, Electronics and Telecommunication, Sapienza University of Rome, Rome, Italy"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0009-0001-9417-1294",
+        "authenticated-orcid": false,
+        "given": "Nadir",
+        "family": "Bouzar",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Information Engineering, Electronics and Telecommunication, Sapienza University of Rome, Rome, Italy"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-9286-8744",
+        "authenticated-orcid": false,
+        "given": "Luca De",
+        "family": "Nardis",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Information Engineering, Electronics and Telecommunication, Sapienza University of Rome, Rome, Italy"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-7311-9334",
+        "authenticated-orcid": false,
+        "given": "Anna",
+        "family": "Brunstrom",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Mathematics and Computer Science, Karlstad University, Karlstad, Sweden"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-5800-2779",
+        "authenticated-orcid": false,
+        "given": "Ozgu",
+        "family": "Alay",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Mathematics and Computer Science, Karlstad University, Karlstad, Sweden"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-0603-889X",
+        "authenticated-orcid": false,
+        "given": "Marco",
+        "family": "Neri",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Rohde &#x0026; Schwarz, Mobile Network Testing Unit, Rome, Italy"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-1523-5083",
+        "authenticated-orcid": false,
+        "given": "Maria-Gabriella Di",
+        "family": "Benedetto",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Information Engineering, Electronics and Telecommunication, Sapienza University of Rome, Rome, Italy"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "263",
+    "reference": [
+      {
+        "key": "ref1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/MCOM.001.2000230"
+      },
+      {
+        "key": "ref2",
+        "volume-title": "5G Core Deployments Worldwide from 2018 to 2023, by Type",
+        "year": "2022"
+      },
+      {
+        "key": "ref3",
+        "volume-title": "Second Wave of 5G: 30 Countries to Launch Services in 2023",
+        "year": "2023"
+      },
+      {
+        "key": "ref4",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/mcom.011.2200707"
+      },
+      {
+        "key": "ref5",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.3390/s22134757"
+      },
+      {
+        "key": "ref6",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3366423.3380169"
+      },
+      {
+        "key": "ref7",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3452296.3472923"
+      },
+      {
+        "key": "ref8",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3387514.3405882"
+      },
+      {
+        "key": "ref9",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3556564.3558233"
+      },
+      {
+        "key": "ref10",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3538394.3546041"
+      },
+      {
+        "key": "ref11",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/j.comnet.2024.110207"
+      },
+      {
+        "key": "ref12",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.23919/tma58422.2023.10199039"
+      },
+      {
+        "key": "ref13",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.3390/data7030034"
+      },
+      {
+        "key": "ref14",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.3390/fi14080239"
+      },
+      {
+        "key": "ref15",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3565473.3569186"
+      },
+      {
+        "key": "ref16",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1007/978-3-031-28486-1_13"
+      },
+      {
+        "key": "ref17",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3419394.3423629"
+      },
+      {
+        "key": "ref18",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3544216.3544217"
+      },
+      {
+        "key": "ref19",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3595288"
+      },
+      {
+        "key": "ref20",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/j.comcom.2023.07.020"
+      },
+      {
+        "key": "ref21",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3472771.3474036"
+      },
+      {
+        "key": "ref22",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1155/2023/6205689"
+      },
+      {
+        "key": "ref23",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/j.comnet.2023.110060"
+      },
+      {
+        "key": "ref24",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/MeditCom58224.2023.10266621"
+      },
+      {
+        "key": "ref25",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/INFOCOM53939.2023.10229016"
+      },
+      {
+        "key": "ref26",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3618257.3624814"
+      },
+      {
+        "key": "ref27",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/INFOCOM53939.2023.10229108"
+      },
+      {
+        "key": "ref28",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3544216.3544219"
+      },
+      {
+        "key": "ref29",
+        "volume-title": "QualiPoc Android—The Premium Handheld Troubleshooter",
+        "year": "2023"
+      },
+      {
+        "key": "ref30",
+        "volume-title": "5G NR: The Next Generation Wireless Access Technology",
+        "author": "Dahlman",
+        "year": "2020"
+      },
+      {
+        "key": "ref31",
+        "volume-title": "Speedtest",
+        "year": "2006"
+      },
+      {
+        "key": "ref32",
+        "article-title": "Speech and multimedia transmission quality (STQ); best practices for robust network QoS benchmark testing and scoring; Version 1.1.1",
+        "year": "2019"
+      },
+      {
+        "key": "ref33",
+        "article-title": "Speech and multimedia transmission quality (STQ); QoS parameter measurements based on fixed data transfer times; Version 1.2.1",
+        "year": "2011"
+      },
+      {
+        "key": "ref34",
+        "article-title": "Speech and multimedia transmission quality (STQ); QoS parameters and test scenarios for assessing network capabilities in 5G performance measurements; Version 1.1.1",
+        "year": "2020"
+      },
+      {
+        "key": "ref35",
+        "volume-title": "Latency Measurement and Interactivity Scoring Under Real Application Data Traffic Patterns",
+        "year": "2023"
+      },
+      {
+        "key": "ref36",
+        "volume-title": "Interactivity Test: QoS/QoE Measurements in 5G (Part 1)",
+        "year": "2020"
+      },
+      {
+        "key": "ref37",
+        "volume-title": "A two-way active measurement protocol (TWAMP)",
+        "year": "2008"
+      },
+      {
+        "key": "ref38",
+        "volume-title": "5G; System Architecture for the 5G System, Release 15",
+        "year": "2018"
+      },
+      {
+        "key": "ref39",
+        "article-title": "Study on communication for automation in vertical domains (CAV)",
+        "year": "2017"
+      },
+      {
+        "key": "ref40",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/TMC.2021.3058787"
+      },
+      {
+        "key": "ref41",
+        "volume-title": "5G; NR; Radio Resource Control (RRC); Protocol Specification, Release 15, Version 15.15.0",
+        "year": "2021"
+      },
+      {
+        "key": "ref42",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/tmc.2019.2908865"
+      }
+    ],
+    "container-title": [
+      "IEEE Open Journal of the Communications Society"
+    ],
+    "original-title": [],
+    "link": [
+      {
+        "URL": "http://xplorestaging.ieee.org/ielx8/8782661/10362961/10753472.pdf?arnumber=10753472",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2024,
+          11,
+          29
+        ]
+      ],
+      "date-time": "2024-11-29T07:38:43Z",
+      "timestamp": 1732865923000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://ieeexplore.ieee.org/document/10753472/"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2024
+        ]
+      ]
+    },
+    "references-count": 42,
+    "URL": "https://doi.org/10.1109/ojcoms.2024.3499370",
+    "relation": {},
+    "ISSN": [
+      "2644-125X"
+    ],
+    "issn-type": [
+      {
+        "value": "2644-125X",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2024
+        ]
+      ]
+    }
+  }
+}

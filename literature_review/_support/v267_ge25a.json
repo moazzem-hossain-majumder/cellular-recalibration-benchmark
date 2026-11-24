@@ -1,0 +1,96 @@
+{
+  "url": "https://proceedings.mlr.press/v267/ge25a.html",
+  "data": {
+    "meta": [
+      [
+        "viewport",
+        "width=device-width, initial-scale=1"
+      ],
+      [
+        "description",
+        "Stochastic Online Conformal Prediction with Semi-Bandit FeedbackHaosen Ge, Hamsa Bastani, Osbert BastaniConformal prediction has emerged as an effe..."
+      ],
+      [
+        "citation_publisher",
+        "PMLR"
+      ],
+      [
+        "citation_title",
+        "Stochastic Online Conformal Prediction with Semi-Bandit Feedback"
+      ],
+      [
+        "citation_language",
+        "en"
+      ],
+      [
+        "citation_abstract_html_url",
+        "https://proceedings.mlr.press/v267/ge25a.html"
+      ],
+      [
+        "citation_pdf_url",
+        "https://raw.githubusercontent.com/mlresearch/v267/main/assets/ge25a/ge25a.pdf"
+      ],
+      [
+        "citation_firstpage",
+        "18954"
+      ],
+      [
+        "citation_lastpage",
+        "18965"
+      ],
+      [
+        "citation_author",
+        "Haosen Ge"
+      ],
+      [
+        "citation_author",
+        "Hamsa Bastani"
+      ],
+      [
+        "citation_author",
+        "Osbert Bastani"
+      ],
+      [
+        "citation_publication_date",
+        "2025/10/06"
+      ],
+      [
+        "citation_inbook_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_conference_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_issn",
+        "2640-3498"
+      ],
+      [
+        "twitter:card",
+        "summary"
+      ],
+      [
+        "twitter:title",
+        "Stochastic Online Conformal Prediction with Semi-Bandit Feedback"
+      ],
+      [
+        "twitter:site",
+        "@MLResearchPress"
+      ],
+      [
+        "twitter:description",
+        "Conformal prediction has emerged as an effective strategy for uncertainty quantification by modifying a model to output sets of labels instead of a single la..."
+      ],
+      [
+        "twitter:image",
+        "https://proceedings.mlr.press/v267/assets/images/logo-pmlr.png"
+      ],
+      [
+        "twitter:image:alt",
+        "PMLR Logo"
+      ]
+    ],
+    "text": "Stochastic Online Conformal Prediction with Semi-Bandit Feedback Proceedings of Machine Learning Research Volume 267 JMLR DMLR TMLR MLOSS FAQ Submission Format [ edit ] Stochastic Online Conformal Prediction with Semi-Bandit Feedback Haosen Ge, Hamsa Bastani, Osbert Bastani Proceedings of the 42nd International Conference on Machine Learning , PMLR 267:18954-18965, 2025. Abstract Conformal prediction has emerged as an effective strategy for uncertainty quantification by modifying a model to output sets of labels instead of a single label. These prediction sets come with the guarantee that they contain the true label with high probability. However, conformal prediction typically requires a large calibration dataset of i.i.d. examples. We consider the online learning setting, where examples arrive over time, and the goal is to construct prediction sets dynamically. Departing from existing work, we assume semi-bandit feedback, where we only observe the true label if it is contained in the prediction set . For instance, consider calibrating a document retrieval model to a new domain; in this setting, a user would only be able to provide the true label if the target document is in the prediction set of retrieved documents. We propose a novel conformal prediction algorithm targeted at this setting, and prove that it obtains sublinear regret compared to the optimal conformal predictor. We evaluate our algorithm on a retrieval task, an image classification task, and an auction price-setting task, and demonstrate that it empirically achieves good performance compared to several baselines. Cite this Paper BibTeX @InProceedings{pmlr-v267-ge25a,\n  title = \t {Stochastic Online Conformal Prediction with Semi-Bandit Feedback},\n  author =       {Ge, Haosen and Bastani, Hamsa and Bastani, Osbert},\n  booktitle = \t {Proceedings of the 42nd International Conference on Machine Learning},\n  pages = \t {18954--18965},\n  year = \t {2025},\n  editor = \t {Singh, Aarti and Fazel, Maryam and Hsu, Daniel and Lacoste-Julien, Simon and Berkenkamp, Felix and Maharaj, Tegan and Wagstaff, Kiri and Zhu, Jerry},\n  volume = \t {267},\n  series = \t {Proceedings of Machine Learning Research},\n  month = \t {13--19 Jul},\n  publisher =    {PMLR},\n  pdf = \t {https://raw.githubusercontent.com/mlresearch/v267/main/assets/ge25a/ge25a.pdf},\n  url = \t {https://proceedings.mlr.press/v267/ge25a.html},\n  abstract = \t {Conformal prediction has emerged as an effective strategy for uncertainty quantification by modifying a model to output sets of labels instead of a single label. These prediction sets come with the guarantee that they contain the true label with high probability. However, conformal prediction typically requires a large calibration dataset of i.i.d. examples. We consider the online learning setting, where examples arrive over time, and the goal is to construct prediction sets dynamically. Departing from existing work, we assume semi-bandit feedback, where we only observe the true label if it is contained in the prediction set . For instance, consider calibrating a document retrieval model to a new domain; in this setting, a user would only be able to provide the true label if the target document is in the prediction set of retrieved documents. We propose a novel conformal prediction algorithm targeted at this setting, and prove that it obtains sublinear regret compared to the optimal conformal predictor. We evaluate our algorithm on a retrieval task, an image classification task, and an auction price-setting task, and demonstrate that it empirically achieves good performance compared to several baselines.}\n} Copy to Clipboard Download Endnote %0 Conference Paper\n%T Stochastic Online Conformal Prediction with Semi-Bandit Feedback\n%A Haosen Ge\n%A Hamsa Bastani\n%A Osbert Bastani\n%B Proceedings of the 42nd International Conference on Machine Learning\n%C Proceedings of Machine Learning Research\n%D 2025\n%E Aarti Singh\n%E Maryam Fazel\n%E Daniel Hsu\n%E Simon Lacoste-Julien\n%E Felix Berkenkamp\n%E Tegan Maharaj\n%E Kiri Wagstaff\n%E Jerry Zhu\t\n%F pmlr-v267-ge25a\n%I PMLR\n%P 18954--18965\n%U https://proceedings.mlr.press/v267/ge25a.html\n%V 267\n%X Conformal prediction has emerged as an effective strategy for uncertainty quantification by modifying a model to output sets of labels instead of a single label. These prediction sets come with the guarantee that they contain the true label with high probability. However, conformal prediction typically requires a large calibration dataset of i.i.d. examples. We consider the online learning setting, where examples arrive over time, and the goal is to construct prediction sets dynamically. Departing from existing work, we assume semi-bandit feedback, where we only observe the true label if it is contained in the prediction set . For instance, consider calibrating a document retrieval model to a new domain; in this setting, a user would only be able to provide the true label if the target document is in the prediction set of retrieved documents. We propose a novel conformal prediction algorithm targeted at this setting, and prove that it obtains sublinear regret compared to the optimal conformal predictor. We evaluate our algorithm on a retrieval task, an image classification task, and an auction price-setting task, and demonstrate that it empirically achieves good performance compared to several baselines. Copy to Clipboard Download APA Ge, H., Bastani, H. & Bastani, O.. (2025). Stochastic Online Conformal Prediction with Semi-Bandit Feedback. Proceedings of the 42nd International Conference on Machine Learning , in Proceedings of Machine Learning Research 267:18954-18965 Available from https://proceedings.mlr.press/v267/ge25a.html. Copy to Clipboard Download Related Material Download PDF OpenReview This site last compiled Sat, 21 Nov 2026 07:21:39 +0000 Github Account Copyright © The authors and PMLR 2026. MLResearchPress"
+  }
+}

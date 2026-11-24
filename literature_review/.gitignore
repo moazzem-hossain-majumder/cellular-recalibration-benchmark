@@ -1,0 +1,5 @@
+_support/node_modules/
+_support/*.txt
+_support/preview.png
+*.log
+*.blg

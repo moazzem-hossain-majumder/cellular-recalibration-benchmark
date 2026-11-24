@@ -1,0 +1,28 @@
+{
+  "training_rows": 57,
+  "verified_rome_predictions": 877,
+  "maximum_absolute_prediction_difference": 3.552713678800501e-15,
+  "model_sha256": "9cdf05dc9b9d28ff2ba07dfcb7b393e422ec5d4e3a0f0048f7419f6bb6986447",
+  "features": [
+    "y_lag1",
+    "prev_duration_s",
+    "lag_age_s",
+    "has_lte",
+    "has_nr",
+    "group_id",
+    "rsrp",
+    "rsrq",
+    "sinr",
+    "ss_rsrp",
+    "ss_rsrq",
+    "ss_sinr",
+    "scenario_IS",
+    "scenario_OD",
+    "scenario_OW"
+  ],
+  "python": "3.11.9",
+  "sklearn": "1.9.0",
+  "status": "existing model recreated and frozen; field feature compatibility unverified",
+  "initialization": "E1 earliest ten archived calibration labels; proposal only",
+  "raw_source_sha256": "97de559315f6ec872ef87f4165587251f30e42bd5c7a3d67df1042919d6dbd3f"
+}

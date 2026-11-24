@@ -1,0 +1,583 @@
+[
+  {
+    "key": "kousias2024data",
+    "type": "article",
+    "fields": {
+      "author": "Konstantinos Kousias and Mohammad Rajiullah and Giuseppe Caso and Usman Ali and Ozgu Alay and Anna Brunstrom and Luca De Nardis and Marco Neri and Maria-Gabriella Di Benedetto",
+      "title": "{A Large-Scale Dataset of 4G, NB-IoT, and 5G Non-Standalone Network Measurements}",
+      "journal": "IEEE Communications Magazine",
+      "year": "2024",
+      "volume": "62",
+      "number": "5",
+      "pages": "44--49",
+      "doi": "10.1109/mcom.011.2200707",
+      "url": "https://doi.org/10.1109/mcom.011.2200707"
+    },
+    "source": "https://api.crossref.org/works/10.1109/MCOM.011.2200707",
+    "theme": "Cellular measurement and throughput decisions",
+    "method": "Multi-technology operational measurements with radio and throughput context",
+    "limitation": "Dataset contribution; does not establish an attempt-budgeted commitment policy"
+  },
+  {
+    "key": "caso2024",
+    "type": "article",
+    "fields": {
+      "author": "Giuseppe Caso and Mohammad Rajiullah and Konstantinos Kousias and Usman Ali and Nadir Bouzar and Luca {De Nardis} and Anna Brunstrom and Ozgu Alay and Marco Neri and Maria-Gabriella {Di Benedetto}",
+      "title": "{The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution}",
+      "journal": "IEEE Open Journal of the Communications Society",
+      "year": "2024",
+      "volume": "5",
+      "number": "",
+      "pages": "7380--7399",
+      "doi": "10.1109/ojcoms.2024.3499370",
+      "url": "https://doi.org/10.1109/ojcoms.2024.3499370"
+    },
+    "source": "https://api.crossref.org/works/10.1109/OJCOMS.2024.3499370",
+    "theme": "Cellular measurement and throughput decisions",
+    "method": "Longitudinal empirical characterization of 5G NSA service evolution",
+    "limitation": "Observed service changes do not establish reliability of sparse-feedback commitments"
+  },
+  {
+    "key": "kousias2024model",
+    "type": "article",
+    "fields": {
+      "author": "Konstantinos Kousias and Mohammad Rajiullah and Giuseppe Caso and Ozgu Alay and Anna Brunstrom and Usman Ali and Luca De Nardis and Marco Neri and Maria-Gabriella Di Benedetto",
+      "title": "{Empirical performance analysis and ML-based modeling of 5G non-standalone networks}",
+      "journal": "Computer Networks",
+      "year": "2024",
+      "volume": "241",
+      "number": "",
+      "pages": "110207",
+      "doi": "10.1016/j.comnet.2024.110207",
+      "url": "https://doi.org/10.1016/j.comnet.2024.110207"
+    },
+    "source": "https://api.crossref.org/works/10.1016/j.comnet.2024.110207",
+    "theme": "Cellular measurement and throughput decisions",
+    "method": "Empirical 5G NSA performance analysis and supervised ML modeling",
+    "limitation": "Point-prediction accuracy is distinct from positive-commitment violation risk"
+  },
+  {
+    "key": "jacobson2025",
+    "type": "article",
+    "fields": {
+      "author": "Tate Jacobson and Jie Ding and Hui Zou",
+      "title": "{Predicting 5G throughput with BAMMO, a boosted additive model for data with missing observations}",
+      "journal": "Journal of the Royal Statistical Society Series C: Applied Statistics",
+      "year": "2025",
+      "volume": "74",
+      "number": "1",
+      "pages": "249--273",
+      "doi": "10.1093/jrsssc/qlae054",
+      "url": "https://doi.org/10.1093/jrsssc/qlae054"
+    },
+    "source": "https://api.crossref.org/works/10.1093/jrsssc/qlae054",
+    "theme": "Cellular measurement and throughput decisions",
+    "method": "BAMMO componentwise boosting with missing predictors and variable importance",
+    "limitation": "Missing covariates are handled; failed acquisition of calibration labels is a different problem"
+  },
+  {
+    "key": "sirhan2026",
+    "type": "article",
+    "fields": {
+      "author": "Najem N. Sirhan",
+      "title": "{Handover-Aware Conformal Throughput Intervals for Risk-Sensitive Rate Selection in Mobile 5G}",
+      "journal": "Network",
+      "year": "2026",
+      "volume": "6",
+      "number": "4",
+      "pages": "92",
+      "doi": "10.3390/network6040092",
+      "url": "https://doi.org/10.3390/network6040092"
+    },
+    "source": "https://api.crossref.org/works/10.3390/network6040092",
+    "theme": "Cellular measurement and throughput decisions",
+    "method": "Global and handover/RAT-conditioned conformal bounds with risk-sensitive rate selection",
+    "limitation": "Trace-based operational analysis does not certify MARUR under attempt-limited missing feedback"
+  },
+  {
+    "key": "raca2020",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Darijo Raca and Dylan Leahy and Cormac J. Sreenan and Jason J. Quinlan",
+      "title": "{Beyond throughput, the next generation: a 5G dataset with channel and context metrics}",
+      "booktitle": "Proceedings of the 11th ACM Multimedia Systems Conference",
+      "year": "2020",
+      "volume": "",
+      "number": "",
+      "pages": "303--308",
+      "doi": "10.1145/3339825.3394938",
+      "url": "https://doi.org/10.1145/3339825.3394938"
+    },
+    "source": "https://api.crossref.org/works/10.1145/3339825.3394938",
+    "theme": "Cellular measurement and throughput decisions",
+    "method": "5G channel/context dataset for throughput and application research",
+    "limitation": "Collection conditions and correlated observations constrain generalization"
+  },
+  {
+    "key": "narayanan2020",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Arvind Narayanan and Eman Ramadan and Rishabh Mehta and Xinyue Hu and Qingxu Liu and Rostand A. K. Fezeu and Udhaya Kumar Dayalan and Saurabh Verma and Peiqi Ji and Tao Li and Feng Qian and Zhi-Li Zhang",
+      "title": "{Lumos5G: Mapping and Predicting Commercial mmWave 5G Throughput}",
+      "booktitle": "Proceedings of the ACM Internet Measurement Conference",
+      "year": "2020",
+      "volume": "",
+      "number": "",
+      "pages": "176--193",
+      "doi": "10.1145/3419394.3423629",
+      "url": "https://doi.org/10.1145/3419394.3423629"
+    },
+    "source": "https://api.crossref.org/works/10.1145/3419394.3423629",
+    "theme": "Cellular measurement and throughput decisions",
+    "method": "Commercial mmWave measurement mapping and throughput prediction",
+    "limitation": "Prediction performance alone does not quantify cost of obtaining calibration feedback"
+  },
+  {
+    "key": "raca2024",
+    "type": "article",
+    "fields": {
+      "author": "Darijo Raca and Ahmed H. Zahran and Cormac J. Sreenan and Rakesh K. Sinha and Emir Halepovic and Vijay Gopalakrishnan",
+      "title": "{Device-Based Cellular Throughput Prediction for Video Streaming: Lessons From a Real-World Evaluation}",
+      "journal": "IEEE Transactions on Machine Learning in Communications and Networking",
+      "year": "2024",
+      "volume": "2",
+      "number": "",
+      "pages": "318--334",
+      "doi": "10.1109/tmlcn.2024.3352541",
+      "url": "https://doi.org/10.1109/tmlcn.2024.3352541"
+    },
+    "source": "https://api.crossref.org/works/10.1109/TMLCN.2024.3352541",
+    "theme": "Cellular measurement and throughput decisions",
+    "method": "Real-time smartphone throughput prediction and real-network streaming evaluation",
+    "limitation": "Operational deployment evidence does not imply a conformal positive-conditional risk guarantee"
+  },
+  {
+    "key": "basit2024",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Omar Basit and Phuc Dinh and Imran Khan and Z. Jonny Kong and Y. Charlie Hu and Dimitrios Koutsonikolas and Myungjin Lee and Chaoyue Liu",
+      "title": "{On the Predictability of Fine-Grained Cellular Network Throughput Using Machine Learning Models}",
+      "booktitle": "2024 IEEE 21st International Conference on Mobile Ad-Hoc and Smart Systems (MASS)",
+      "year": "2024",
+      "volume": "",
+      "number": "",
+      "pages": "47--56",
+      "doi": "10.1109/mass62177.2024.00018",
+      "url": "https://doi.org/10.1109/mass62177.2024.00018"
+    },
+    "source": "https://api.crossref.org/works/10.1109/MASS62177.2024.00018",
+    "theme": "Cellular measurement and throughput decisions",
+    "method": "Fine-grained cellular prediction feasibility study using MLP MVTS and GBDT",
+    "limitation": "Conflicting histories limit fine-grained predictability; no universal accuracy conclusion across horizons"
+  },
+  {
+    "key": "zaffran2023",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Margaux Zaffran and Aymeric Dieuleveut and Julie Josse and Yaniv Romano",
+      "title": "{Conformal Prediction with Missing Values}",
+      "booktitle": "Proceedings of the International Conference on Machine Learning",
+      "year": "2023",
+      "volume": "202",
+      "number": "",
+      "pages": "40578--40604",
+      "doi": "",
+      "series": "Proceedings of Machine Learning Research",
+      "url": "https://proceedings.mlr.press/v202/zaffran23a.html"
+    },
+    "source": "https://proceedings.mlr.press/v202/zaffran23a.html",
+    "theme": "Missingness and nonexchangeable calibration",
+    "method": "Conformal intervals with missing covariates and missing-pattern conditioning",
+    "limitation": "Covariate-missingness assumptions do not license treating unobserved outcomes as successes"
+  },
+  {
+    "key": "barber2023",
+    "type": "article",
+    "fields": {
+      "author": "Rina Foygel Barber and Emmanuel J. Candès and Aaditya Ramdas and Ryan J. Tibshirani",
+      "title": "{Conformal prediction beyond exchangeability}",
+      "journal": "The Annals of Statistics",
+      "year": "2023",
+      "volume": "51",
+      "number": "2",
+      "pages": "816--845",
+      "doi": "10.1214/23-aos2276",
+      "url": "https://doi.org/10.1214/23-aos2276"
+    },
+    "source": "https://api.crossref.org/works/10.1214/23-AOS2276",
+    "theme": "Missingness and nonexchangeable calibration",
+    "method": "Weighted conformal inference and coverage degradation beyond exchangeability",
+    "limitation": "Validity depends on the stated weighting and distribution-shift conditions"
+  },
+  {
+    "key": "tibshirani2019",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Tibshirani, Ryan J and Foygel Barber, Rina and Candes, Emmanuel and Ramdas, Aaditya",
+      "title": "{Conformal Prediction Under Covariate Shift}",
+      "booktitle": "Advances in Neural Information Processing Systems",
+      "year": "2019",
+      "volume": "32",
+      "pages": "",
+      "doi": "",
+      "number": "",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2019/hash/8fb21ee7a2207526da55a679f0332de2-Abstract.html"
+    },
+    "source": "https://proceedings.neurips.cc/paper_files/paper/2019/hash/8fb21ee7a2207526da55a679f0332de2-Abstract.html",
+    "theme": "Missingness and nonexchangeable calibration",
+    "method": "Likelihood-ratio weighted conformal prediction under covariate shift",
+    "limitation": "Requires covariate-shift structure and suitable density-ratio information"
+  },
+  {
+    "key": "xu2023",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Chen Xu and Yao Xie",
+      "title": "{Sequential Predictive Conformal Inference for Time Series}",
+      "booktitle": "Proceedings of the International Conference on Machine Learning",
+      "year": "2023",
+      "volume": "202",
+      "number": "",
+      "pages": "38707--38727",
+      "doi": "",
+      "series": "Proceedings of Machine Learning Research",
+      "url": "https://proceedings.mlr.press/v202/xu23r.html"
+    },
+    "source": "https://proceedings.mlr.press/v202/xu23r.html",
+    "theme": "Missingness and nonexchangeable calibration",
+    "method": "Sequential prediction of conditional residual quantiles for time series",
+    "limitation": "Asymptotic conditional validity relies on quantile estimation conditions; not arbitrary missing feedback"
+  },
+  {
+    "key": "zaffran2022",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Margaux Zaffran and Olivier Feron and Yannig Goude and Julie Josse and Aymeric Dieuleveut",
+      "title": "{Adaptive Conformal Predictions for Time Series}",
+      "booktitle": "Proceedings of the International Conference on Machine Learning",
+      "year": "2022",
+      "volume": "162",
+      "number": "",
+      "pages": "25834--25866",
+      "doi": "",
+      "series": "Proceedings of Machine Learning Research",
+      "url": "https://proceedings.mlr.press/v162/zaffran22a.html"
+    },
+    "source": "https://proceedings.mlr.press/v162/zaffran22a.html",
+    "theme": "Missingness and nonexchangeable calibration",
+    "method": "AgACI aggregation of adaptive conformal procedures for time series",
+    "limitation": "Electricity-price and simulated-series evidence does not establish cellular commitment performance"
+  },
+  {
+    "key": "gibbs2024",
+    "type": "article",
+    "fields": {
+      "author": "Isaac Gibbs and Emmanuel J. Candès",
+      "title": "{Conformal Inference for Online Prediction with Arbitrary Distribution Shifts}",
+      "journal": "Journal of Machine Learning Research",
+      "year": "2024",
+      "volume": "25",
+      "number": "162",
+      "pages": "1--36",
+      "doi": "",
+      "url": "https://jmlr.org/papers/v25/22-1218.html"
+    },
+    "source": "https://jmlr.org/papers/v25/22-1218.html",
+    "theme": "Missingness and nonexchangeable calibration",
+    "method": "Online conformal inference robust to arbitrary distribution shifts",
+    "limitation": "Long-run coverage target differs from finite-trip positive-conditional risk"
+  },
+  {
+    "key": "lin2022",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Lin, Zhen and Trivedi, Shubhendu and Sun, Jimeng",
+      "title": "{Conformal Prediction with Temporal Quantile Adjustments}",
+      "booktitle": "Advances in Neural Information Processing Systems",
+      "year": "2022",
+      "volume": "35",
+      "pages": "31017--31030",
+      "doi": "10.52202/068431-2249",
+      "number": "",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2022/hash/c8d2860e1b51a1ffadc7ed0a06f8d8f5-Abstract-Conference.html"
+    },
+    "source": "https://proceedings.neurips.cc/paper_files/paper/2022/hash/c8d2860e1b51a1ffadc7ed0a06f8d8f5-Abstract-Conference.html",
+    "theme": "Missingness and nonexchangeable calibration",
+    "method": "Temporal quantile adjustment for longitudinal and cross-sectional calibration",
+    "limitation": "Repeated-series calibration setting differs from unsuccessful requested cellular feedback"
+  },
+  {
+    "key": "gibbs2021",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Gibbs, Isaac and Candes, Emmanuel",
+      "title": "{Adaptive Conformal Inference Under Distribution Shift}",
+      "booktitle": "Advances in Neural Information Processing Systems",
+      "year": "2021",
+      "volume": "34",
+      "pages": "1660--1672",
+      "doi": "",
+      "number": "",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2021/hash/0d441de75945e5acbc865406fc9a2559-Abstract.html"
+    },
+    "source": "https://proceedings.neurips.cc/paper_files/paper/2021/hash/0d441de75945e5acbc865406fc9a2559-Abstract.html",
+    "theme": "Online adaptation and limited feedback",
+    "method": "Adaptive miscoverage-level updates under distribution shift",
+    "limitation": "Feedback-dependent long-run calibration does not automatically hold after selective missing-label substitution"
+  },
+  {
+    "key": "bhatnagar2023",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Aadyot Bhatnagar and Huan Wang and Caiming Xiong and Yu Bai",
+      "title": "{Improved Online Conformal Prediction via Strongly Adaptive Online Learning}",
+      "booktitle": "Proceedings of the International Conference on Machine Learning",
+      "year": "2023",
+      "volume": "202",
+      "number": "",
+      "pages": "2337--2363",
+      "doi": "",
+      "series": "Proceedings of Machine Learning Research",
+      "url": "https://proceedings.mlr.press/v202/bhatnagar23a.html"
+    },
+    "source": "https://proceedings.mlr.press/v202/bhatnagar23a.html",
+    "theme": "Online adaptation and limited feedback",
+    "method": "Strongly adaptive online learning for locally adaptive conformal intervals",
+    "limitation": "Local adaptation bounds are not a guarantee for the implemented MARUR heuristic"
+  },
+  {
+    "key": "pid2023",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Angelopoulos, Anastasios and Candes, Emmanuel and Tibshirani, Ryan J",
+      "title": "{Conformal PID Control for Time Series Prediction}",
+      "booktitle": "Advances in Neural Information Processing Systems",
+      "year": "2023",
+      "volume": "36",
+      "pages": "23047--23074",
+      "doi": "10.52202/075280-1000",
+      "number": "",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/47f2fad8c1111d07f83c91be7870f8db-Abstract-Conference.html"
+    },
+    "source": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/47f2fad8c1111d07f83c91be7870f8db-Abstract-Conference.html",
+    "theme": "Online adaptation and limited feedback",
+    "method": "Proportional-integral-derivative-inspired online quantile control",
+    "limitation": "Score-feedback assumptions must be checked before deployment with failed responses"
+  },
+  {
+    "key": "angelopoulos2024online",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Anastasios Nikolas Angelopoulos and Rina Barber and Stephen Bates",
+      "title": "{Online conformal prediction with decaying step sizes}",
+      "booktitle": "Proceedings of the International Conference on Machine Learning",
+      "year": "2024",
+      "volume": "235",
+      "number": "",
+      "pages": "1616--1630",
+      "doi": "",
+      "series": "Proceedings of Machine Learning Research",
+      "url": "https://proceedings.mlr.press/v235/angelopoulos24a.html"
+    },
+    "source": "https://proceedings.mlr.press/v235/angelopoulos24a.html",
+    "theme": "Online adaptation and limited feedback",
+    "method": "Online conformal calibration using decaying step sizes",
+    "limitation": "Asymptotic calibration and stationary convergence do not certify finite sparse-feedback trips"
+  },
+  {
+    "key": "podkopaev2024",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Aleksandr Podkopaev and Dong Xu and Kuang-Chih Lee",
+      "title": "{Adaptive Conformal Inference by Betting}",
+      "booktitle": "Proceedings of the International Conference on Machine Learning",
+      "year": "2024",
+      "volume": "235",
+      "number": "",
+      "pages": "40886--40907",
+      "doi": "",
+      "series": "Proceedings of Machine Learning Research",
+      "url": "https://proceedings.mlr.press/v235/podkopaev24a.html"
+    },
+    "source": "https://proceedings.mlr.press/v235/podkopaev24a.html",
+    "theme": "Online adaptation and limited feedback",
+    "method": "Betting-based parameter-free adaptive conformal inference",
+    "limitation": "Adaptive calibration does not itself account for cellular measurement-attempt costs"
+  },
+  {
+    "key": "ilyas2026",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Andrew Ilyas and Joonhyuk Ko and Jingwu Tang and Steven Wu and Jiahao Zhang",
+      "title": "{Provably Label-Efficient Conformal Prediction}",
+      "booktitle": "Proceedings of the International Conference on Machine Learning",
+      "year": "2026",
+      "volume": "306",
+      "number": "",
+      "pages": "49578--49597",
+      "doi": "",
+      "series": "Proceedings of Machine Learning Research",
+      "url": "https://proceedings.mlr.press/v306/ilyas26a.html"
+    },
+    "source": "https://proceedings.mlr.press/v306/ilyas26a.html",
+    "theme": "Online adaptation and limited feedback",
+    "method": "Stopping rule balancing iid calibration-label cost and prediction-set efficiency",
+    "limitation": "Upfront iid calibration differs from delayed unsuccessful queries under temporal drift"
+  },
+  {
+    "key": "ge2025",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Haosen Ge and Hamsa Bastani and Osbert Bastani",
+      "title": "{Stochastic Online Conformal Prediction with Semi-Bandit Feedback}",
+      "booktitle": "Proceedings of the International Conference on Machine Learning",
+      "year": "2025",
+      "volume": "267",
+      "number": "",
+      "pages": "18954--18965",
+      "doi": "",
+      "series": "Proceedings of Machine Learning Research",
+      "url": "https://proceedings.mlr.press/v267/ge25a.html"
+    },
+    "source": "https://proceedings.mlr.press/v267/ge25a.html",
+    "theme": "Online adaptation and limited feedback",
+    "method": "Stochastic online conformal prediction with semi-bandit feedback and regret analysis",
+    "limitation": "Labels revealed through prediction-set inclusion differ from independently failing radio probes"
+  },
+  {
+    "key": "hou2025",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Qiushuo Hou and Sangwoo Park and Matteo Zecchin and Yunlong Cai and Guanding Yu and Osvaldo Simeone",
+      "title": "{Online Conformal Probabilistic Numerics via Adaptive Edge-Cloud Offloading}",
+      "booktitle": "Proceedings of the First International Conference on Probabilistic Numerics",
+      "year": "2025",
+      "volume": "271",
+      "number": "",
+      "pages": "138--146",
+      "doi": "",
+      "series": "Proceedings of Machine Learning Research",
+      "url": "https://proceedings.mlr.press/v271/hou25a.html"
+    },
+    "source": "https://proceedings.mlr.press/v271/hou25a.html",
+    "theme": "Online adaptation and limited feedback",
+    "method": "Online calibration of probabilistic linear solvers with sporadic cloud feedback",
+    "limitation": "Linear-system solution coverage and cloud cost differ from cellular throughput commitments"
+  },
+  {
+    "key": "geifman2017",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Geifman, Yonatan and El-Yaniv, Ran",
+      "title": "{Selective Classification for Deep Neural Networks}",
+      "booktitle": "Advances in Neural Information Processing Systems",
+      "year": "2017",
+      "volume": "30",
+      "pages": "",
+      "doi": "",
+      "number": "",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2017/hash/4a8423d5e91fda00bb7e46540e2b0cf1-Abstract.html"
+    },
+    "source": "https://proceedings.neurips.cc/paper_files/paper/2017/hash/4a8423d5e91fda00bb7e46540e2b0cf1-Abstract.html",
+    "theme": "Selective risk and decision objectives",
+    "method": "Selective classification with abstention and risk-coverage trade-offs",
+    "limitation": "Classification selective risk is not a guarantee for throughput lower bounds"
+  },
+  {
+    "key": "bates2021",
+    "type": "article",
+    "fields": {
+      "author": "Stephen Bates and Anastasios Angelopoulos and Lihua Lei and Jitendra Malik and Michael Jordan",
+      "title": "{Distribution-free, Risk-controlling Prediction Sets}",
+      "journal": "Journal of the ACM",
+      "year": "2021",
+      "volume": "68",
+      "number": "6",
+      "pages": "1--34",
+      "doi": "10.1145/3478535",
+      "url": "https://doi.org/10.1145/3478535"
+    },
+    "source": "https://api.crossref.org/works/10.1145/3478535",
+    "theme": "Selective risk and decision objectives",
+    "method": "Distribution-free risk-controlling prediction sets",
+    "limitation": "Risk-control conditions do not transfer unchanged to adaptive missing-feedback time series"
+  },
+  {
+    "key": "gibbs2025",
+    "type": "article",
+    "fields": {
+      "author": "Isaac Gibbs and John J Cherian and Emmanuel J Candès",
+      "title": "{Conformal prediction with conditional guarantees}",
+      "journal": "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+      "year": "2025",
+      "volume": "87",
+      "number": "4",
+      "pages": "1100--1126",
+      "doi": "10.1093/jrsssb/qkaf008",
+      "url": "https://doi.org/10.1093/jrsssb/qkaf008"
+    },
+    "source": "https://api.crossref.org/works/10.1093/jrsssb/qkaf008",
+    "theme": "Selective risk and decision objectives",
+    "method": "Conformal guarantees over specified classes of covariate shifts and subgroups",
+    "limitation": "Finite-dimensional or approximation conditions are required; not universal conditional coverage"
+  },
+  {
+    "key": "min2026",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Yizhou Min and Yizhou Lu and Lanqi Li and Zhen Zhang and Jiaye Teng",
+      "title": "{Questioning the Coverage-Length Metric in Conformal Prediction: When Shorter Intervals Are Not Better}",
+      "booktitle": "Proceedings of the International Conference on Machine Learning",
+      "year": "2026",
+      "volume": "306",
+      "number": "",
+      "pages": "88935--88963",
+      "doi": "",
+      "series": "Proceedings of Machine Learning Research",
+      "url": "https://proceedings.mlr.press/v306/min26c.html"
+    },
+    "source": "https://proceedings.mlr.press/v306/min26c.html",
+    "theme": "Selective risk and decision objectives",
+    "method": "Counterexamples to coverage-length evaluation and interval-stability diagnostic",
+    "limitation": "Metric critique does not prescribe a cellular query policy or prove utility improvements"
+  },
+  {
+    "key": "gauthier2026",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Etienne Gauthier and Francis Bach and Michael I. Jordan",
+      "title": "{Adaptive Coverage Policies in Conformal Prediction}",
+      "booktitle": "Proceedings of the International Conference on Artificial Intelligence and Statistics",
+      "year": "2026",
+      "volume": "300",
+      "number": "",
+      "pages": "3196--3204",
+      "doi": "",
+      "series": "Proceedings of Machine Learning Research",
+      "url": "https://proceedings.mlr.press/v300/gauthier26a.html"
+    },
+    "source": "https://proceedings.mlr.press/v300/gauthier26a.html",
+    "theme": "Selective risk and decision objectives",
+    "method": "E-value/post-hoc conformal adaptive coverage policies trained with leave-one-out",
+    "limitation": "Formal adaptive coverage construction is distinct from MARUR pattern gating"
+  },
+  {
+    "key": "angelopoulos2024risk",
+    "type": "inproceedings",
+    "fields": {
+      "author": "Anastasios N. Angelopoulos and Stephen Bates and Adam Fisch and Lihua Lei and Tal Schuster",
+      "title": "{Conformal Risk Control}",
+      "booktitle": "Proceedings of the International Conference on Learning Representations",
+      "year": "2024",
+      "volume": "",
+      "number": "",
+      "pages": "",
+      "doi": "",
+      "url": "https://openreview.net/forum?id=33XGfHLtZg"
+    },
+    "source": "https://openreview.net/pdf?id=33XGfHLtZg",
+    "theme": "Selective risk and decision objectives",
+    "method": "Finite-sample control of expected monotone loss via conformal calibration",
+    "limitation": "Expected-loss guarantees require the stated sampling and loss assumptions; not arbitrary selective conditional risk"
+  }
+]

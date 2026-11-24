@@ -1,3 +1,5 @@
+> Latest handoff: start with docs/REVIEWER_REVISION_COMPLETION.md, docs/REVIEWER_BASELINE_RESULTS.md and docs/PROSPECTIVE_VIDEO_VALIDATION_PLAN.md. The 792 baseline runs and window-mechanism reconstruction are complete; do not restart them. The six-page manuscript and fifteen-page supplement are separate artifacts. Frozen model and proposed initialization are in results/prospective_planning; actual field collection and application acceptance remain outstanding. Preserve prior validators and results. Do not claim hosted CI, prospective evidence or guaranteed risk control.
+
 > November 21 critical audit: the legacy MARUR budget/attempt counter is ten historical successful labels plus NEW query attempts, not total measurement cost. See docs/FINAL_MARUR_CRITICAL_AUDIT.md, docs/MATCHED_COST_ANALYSIS.md and docs/IEEE_SUBMISSION_DECISION.md (paths relative to repository root) for the current assessment.
 
 # Revision handoff
@@ -327,3 +329,6 @@ Maintain this handoff or a linked progress log as the work advances: what change
   - Added unit tests for Covariate-Shift Conformal Calibrator in `tests/test_conformal.py` (all tests passing).
   - Integrated dashboard build into Step 5 of `scripts/reproduce_experiments.py`.
 
+# Information-clock experiment completed
+
+See `docs/MARUR_INFORMATION_EXPERIMENT_RESULTS.md` and `results/exploratory/marur_information/validation.json`. The 1,848-configuration experiment is complete, not pending: all 24 natural-feedback primary comparisons were unchanged; synthetic-feedback primary contrasts include 6 equal-cost utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs/risk-only changes, 129 unchanged and 18 unmatched-cost cases overall. These are dependent configuration counts, not independent replications. Window sensitivity has gains and severe regressions across cohorts. No default or manuscript performance claim was promoted. Optional replay controls preserve legacy outputs; 1,296 archived runs reproduced and 124 unit tests passed. Do not restart this grid or select the best test window as confirmatory. The full ledgers and fixed pre-run protocol are saved.

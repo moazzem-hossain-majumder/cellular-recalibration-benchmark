@@ -1,3 +1,7 @@
+> Latest reviewer revision: [all six recommendations and outstanding evidence](docs/REVIEWER_REVISION_COMPLETION.md), [792 targeted baseline runs and mechanisms](docs/REVIEWER_BASELINE_RESULTS.md), [six-page main paper](paper/manuscript.pdf), [separate detailed supplement](paper/supplementary.pdf), and [prospective video plan](docs/PROSPECTIVE_VIDEO_VALIDATION_PLAN.md). The original results are preserved. No prospective trips, live application evidence, external IEEE review or acceptance guarantee is claimed.
+
+> Prior final audit: [scientific findings and score](docs/FINAL_REPOSITORY_SCIENTIFIC_AUDIT.md), [contribution](docs/NOVELTY_AND_CONTRIBUTION_AUDIT.md), [exact implementation](docs/MARUR_IMPLEMENTATION_SPECIFICATION.md), and [prospective readiness](docs/PROSPECTIVE_VALIDATION_READINESS_AUDIT.md). Major revision remains the recommendation.
+
 > November 21 critical audit: the legacy MARUR budget/attempt counter is ten historical successful labels plus NEW query attempts, not total measurement cost. See docs/FINAL_MARUR_CRITICAL_AUDIT.md, docs/MATCHED_COST_ANALYSIS.md and docs/IEEE_SUBMISSION_DECISION.md (paths relative to repository root) for the current assessment.
 
 # Cellular throughput recalibration benchmark
@@ -74,3 +78,24 @@ python scripts/validate_manuscript_consistency.py
 ## November 21 critical audit
 
 The [critical audit](docs/FINAL_MARUR_CRITICAL_AUDIT.md), [all matched-cost results](docs/MATCHED_COST_ANALYSIS.md), [prospective protocol](docs/PROSPECTIVE_VALIDATION_PROTOCOL.md), and [submission decision](docs/IEEE_SUBMISSION_DECISION.md) supersede earlier readiness ratings. Reproduce the added audit with `python scripts/audit_marur.py`, validate with `python scripts/validate_marur_audit.py`, and render its report with `python scripts/write_matched_cost_report.py`. The full reproduction pipeline includes these stages.
+
+## Reproducing the final scientific checks
+
+Use Python 3.11. For the complete research environment, install `python -m pip install -r requirements.txt -c constraints-research.txt`; supply Tectonic through `TECTONIC`. The full `python scripts/reproduce_all.py` acquires data, refits original models, replays policies and builds the paper. That full stack has not been newly rerun in a fresh environment in the final audit.
+
+A smaller clean-environment check of every stored controller decision requires only NumPy and pandas:
+
+```sh
+python -m venv .venv-audit
+# Activate .venv-audit using your platform's activation command.
+python -m pip install -c constraints-research.txt numpy pandas pytest
+python scripts/reproduce_saved_marur.py
+python -m pytest tests/unit/test_marur_audit_validator.py -q
+```
+
+This replays all 576 original and 720 matched-cost configurations from frozen saved opportunities, compares every action/response field, and independently validates all 576 candidate pairs (384 exact-cost). It does not reacquire raw archives, refit predictors, or validate the complete dependency stack. The execution receipt records the actual interpreter, packages, inputs and result. Fresh dependencies and stored forecasts are different reproducibility boundaries.
+
+With the full environment installed, run `python scripts/validate_manuscript_consistency.py`, `python -m pytest -q --junitxml=results/runs/final_tests.xml`, then regenerate and verify the artifact manifest after any source/artifact changes. Table 14 reports NEW queries, never an assumed physical cost for ten historical labels. Frozen's positive-cap rows remain lower-cost references. The synthetic feedback mask is position-based and aliases with Periodic.
+# Exploratory information-freshness extension
+
+The fixed-model clock/window experiment is documented in [its protocol](docs/MARUR_INFORMATION_EXPERIMENT_PROTOCOL.md) and [complete results](docs/MARUR_INFORMATION_EXPERIMENT_RESULTS.md). It is exploratory on previously inspected cohorts, uses shared timestamp-based feedback masks, and preserves the original MARUR outputs. The observed-label freshness clock is optional; production defaults are unchanged. Reproduce with `python scripts/run_marur_information_experiment.py`, validate with `python scripts/validate_marur_information_experiment.py`, and regenerate the report with `python scripts/report_marur_information_experiment.py`.

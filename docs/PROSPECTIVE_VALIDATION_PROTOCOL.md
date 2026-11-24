@@ -1,3 +1,5 @@
+> Final audit clarification: use the fixed-started-trip stopping and cancellation rules in PROSPECTIVE_VALIDATION_READINESS_AUDIT.md. Eighteen usable pairs are a precision assumption, not a license to replace started trips with missing or unfavorable outcomes. No prospective study has been executed.
+
 # Minimum prospective validation protocol
 
 Status: proposed and unexecuted. Freeze and register this protocol, the selected operator/location/routes, source model hash, initial residual IDs, feature mapping, software revision and analysis script before any new outcome is inspected. The smallest useful study tests replication of the empirical trade-off; it cannot establish a general algorithmic theorem or live application benefit.

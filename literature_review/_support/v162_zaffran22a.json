@@ -1,0 +1,104 @@
+{
+  "url": "https://proceedings.mlr.press/v162/zaffran22a.html",
+  "data": {
+    "meta": [
+      [
+        "viewport",
+        "width=device-width, initial-scale=1"
+      ],
+      [
+        "description",
+        "Adaptive Conformal Predictions for Time SeriesMargaux Zaffran, Olivier Feron, Yannig Goude, Julie Josse, Aymeric DieuleveutUncertainty qu..."
+      ],
+      [
+        "citation_publisher",
+        "PMLR"
+      ],
+      [
+        "citation_title",
+        "Adaptive Conformal Predictions for Time Series"
+      ],
+      [
+        "citation_language",
+        "en"
+      ],
+      [
+        "citation_abstract_html_url",
+        "https://proceedings.mlr.press/v162/zaffran22a.html"
+      ],
+      [
+        "citation_pdf_url",
+        "https://proceedings.mlr.press/v162/zaffran22a/zaffran22a.pdf"
+      ],
+      [
+        "citation_firstpage",
+        "25834"
+      ],
+      [
+        "citation_lastpage",
+        "25866"
+      ],
+      [
+        "citation_author",
+        "Margaux Zaffran"
+      ],
+      [
+        "citation_author",
+        "Olivier Feron"
+      ],
+      [
+        "citation_author",
+        "Yannig Goude"
+      ],
+      [
+        "citation_author",
+        "Julie Josse"
+      ],
+      [
+        "citation_author",
+        "Aymeric Dieuleveut"
+      ],
+      [
+        "citation_publication_date",
+        "2022/06/28"
+      ],
+      [
+        "citation_inbook_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_conference_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_issn",
+        "2640-3498"
+      ],
+      [
+        "twitter:card",
+        "summary"
+      ],
+      [
+        "twitter:title",
+        "Adaptive Conformal Predictions for Time Series"
+      ],
+      [
+        "twitter:site",
+        "@MLResearchPress"
+      ],
+      [
+        "twitter:description",
+        "Uncertainty quantification of predictive models is crucial in decision-making problems. Conformal prediction is a general and theoretically sound answer. How..."
+      ],
+      [
+        "twitter:image",
+        "https://proceedings.mlr.press/v162/assets/images/logo-pmlr.png"
+      ],
+      [
+        "twitter:image:alt",
+        "PMLR Logo"
+      ]
+    ],
+    "text": "Adaptive Conformal Predictions for Time Series Proceedings of Machine Learning Research Volume 162 JMLR DMLR TMLR MLOSS FAQ Submission Format [ edit ] Adaptive Conformal Predictions for Time Series Margaux Zaffran, Olivier Feron, Yannig Goude, Julie Josse, Aymeric Dieuleveut Proceedings of the 39th International Conference on Machine Learning , PMLR 162:25834-25866, 2022. Abstract Uncertainty quantification of predictive models is crucial in decision-making problems. Conformal prediction is a general and theoretically sound answer. However, it requires exchangeable data, excluding time series. While recent works tackled this issue, we argue that Adaptive Conformal Inference (ACI, Gibbs & Cand{è}s, 2021), developed for distribution-shift time series, is a good procedure for time series with general dependency. We theoretically analyse the impact of the learning rate on its efficiency in the exchangeable and auto-regressive case. We propose a parameter-free method, AgACI, that adaptively builds upon ACI based on online expert aggregation. We lead extensive fair simulations against competing methods that advocate for ACI’s use in time series. We conduct a real case study: electricity price forecasting. The proposed aggregation algorithm provides efficient prediction intervals for day-ahead forecasting. All the code and data to reproduce the experiments are made available on GitHub. Cite this Paper BibTeX @InProceedings{pmlr-v162-zaffran22a,\n  title = \t {Adaptive Conformal Predictions for Time Series},\n  author =       {Zaffran, Margaux and Feron, Olivier and Goude, Yannig and Josse, Julie and Dieuleveut, Aymeric},\n  booktitle = \t {Proceedings of the 39th International Conference on Machine Learning},\n  pages = \t {25834--25866},\n  year = \t {2022},\n  editor = \t {Chaudhuri, Kamalika and Jegelka, Stefanie and Song, Le and Szepesvari, Csaba and Niu, Gang and Sabato, Sivan},\n  volume = \t {162},\n  series = \t {Proceedings of Machine Learning Research},\n  month = \t {17--23 Jul},\n  publisher =    {PMLR},\n  pdf = \t {https://proceedings.mlr.press/v162/zaffran22a/zaffran22a.pdf},\n  url = \t {https://proceedings.mlr.press/v162/zaffran22a.html},\n  abstract = \t {Uncertainty quantification of predictive models is crucial in decision-making problems. Conformal prediction is a general and theoretically sound answer. However, it requires exchangeable data, excluding time series. While recent works tackled this issue, we argue that Adaptive Conformal Inference (ACI, Gibbs & Cand{è}s, 2021), developed for distribution-shift time series, is a good procedure for time series with general dependency. We theoretically analyse the impact of the learning rate on its efficiency in the exchangeable and auto-regressive case. We propose a parameter-free method, AgACI, that adaptively builds upon ACI based on online expert aggregation. We lead extensive fair simulations against competing methods that advocate for ACI’s use in time series. We conduct a real case study: electricity price forecasting. The proposed aggregation algorithm provides efficient prediction intervals for day-ahead forecasting. All the code and data to reproduce the experiments are made available on GitHub.}\n} Copy to Clipboard Download Endnote %0 Conference Paper\n%T Adaptive Conformal Predictions for Time Series\n%A Margaux Zaffran\n%A Olivier Feron\n%A Yannig Goude\n%A Julie Josse\n%A Aymeric Dieuleveut\n%B Proceedings of the 39th International Conference on Machine Learning\n%C Proceedings of Machine Learning Research\n%D 2022\n%E Kamalika Chaudhuri\n%E Stefanie Jegelka\n%E Le Song\n%E Csaba Szepesvari\n%E Gang Niu\n%E Sivan Sabato\t\n%F pmlr-v162-zaffran22a\n%I PMLR\n%P 25834--25866\n%U https://proceedings.mlr.press/v162/zaffran22a.html\n%V 162\n%X Uncertainty quantification of predictive models is crucial in decision-making problems. Conformal prediction is a general and theoretically sound answer. However, it requires exchangeable data, excluding time series. While recent works tackled this issue, we argue that Adaptive Conformal Inference (ACI, Gibbs & Cand{è}s, 2021), developed for distribution-shift time series, is a good procedure for time series with general dependency. We theoretically analyse the impact of the learning rate on its efficiency in the exchangeable and auto-regressive case. We propose a parameter-free method, AgACI, that adaptively builds upon ACI based on online expert aggregation. We lead extensive fair simulations against competing methods that advocate for ACI’s use in time series. We conduct a real case study: electricity price forecasting. The proposed aggregation algorithm provides efficient prediction intervals for day-ahead forecasting. All the code and data to reproduce the experiments are made available on GitHub. Copy to Clipboard Download APA Zaffran, M., Feron, O., Goude, Y., Josse, J. & Dieuleveut, A.. (2022). Adaptive Conformal Predictions for Time Series. Proceedings of the 39th International Conference on Machine Learning , in Proceedings of Machine Learning Research 162:25834-25866 Available from https://proceedings.mlr.press/v162/zaffran22a.html. Copy to Clipboard Download Related Material Download PDF This site last compiled Sun, 04 Oct 2026 21:09:47 +0000 Github Account Copyright © The authors and PMLR 2026. MLResearchPress"
+  }
+}

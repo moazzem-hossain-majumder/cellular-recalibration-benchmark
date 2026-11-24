@@ -1,0 +1,320 @@
+candidate,reference,cohort,model,outcome,configuration_contrasts
+completed_W10,MARUR,AT&T,HistGBM,trade-off or risk-only change,6
+completed_W10,MARUR,AT&T,HistGBM,unchanged,2
+completed_W10,MARUR,AT&T,HistGBM,utility loss without lower risk bound,6
+completed_W10,MARUR,AT&T,Persistence,trade-off or risk-only change,3
+completed_W10,MARUR,AT&T,Persistence,unchanged,7
+completed_W10,MARUR,AT&T,Persistence,utility loss without lower risk bound,4
+completed_W10,MARUR,E1,HistGBM,trade-off or risk-only change,7
+completed_W10,MARUR,E1,HistGBM,unmatched cost,7
+completed_W10,MARUR,E1,Persistence,unchanged,7
+completed_W10,MARUR,E1,Persistence,unmatched cost,7
+completed_W10,MARUR,E3,HistGBM,unmatched cost,7
+completed_W10,MARUR,E3,HistGBM,utility loss without lower risk bound,7
+completed_W10,MARUR,E3,Persistence,trade-off or risk-only change,7
+completed_W10,MARUR,E3,Persistence,unmatched cost,7
+completed_W10,MARUR,Ireland,HistGBM,unchanged,4
+completed_W10,MARUR,Ireland,HistGBM,unmatched cost,7
+completed_W10,MARUR,Ireland,HistGBM,utility gain without higher risk bound,2
+completed_W10,MARUR,Ireland,HistGBM,utility loss without lower risk bound,1
+completed_W10,MARUR,Ireland,Persistence,unchanged,4
+completed_W10,MARUR,Ireland,Persistence,unmatched cost,7
+completed_W10,MARUR,Ireland,Persistence,utility loss without lower risk bound,3
+completed_W10,MARUR,T-Mobile,HistGBM,trade-off or risk-only change,8
+completed_W10,MARUR,T-Mobile,HistGBM,unchanged,2
+completed_W10,MARUR,T-Mobile,HistGBM,utility gain without higher risk bound,4
+completed_W10,MARUR,T-Mobile,Persistence,trade-off or risk-only change,1
+completed_W10,MARUR,T-Mobile,Persistence,unchanged,4
+completed_W10,MARUR,T-Mobile,Persistence,utility gain without higher risk bound,9
+completed_W10,MARUR,Verizon,HistGBM,trade-off or risk-only change,7
+completed_W10,MARUR,Verizon,HistGBM,utility gain without higher risk bound,6
+completed_W10,MARUR,Verizon,HistGBM,utility loss without lower risk bound,1
+completed_W10,MARUR,Verizon,Persistence,trade-off or risk-only change,13
+completed_W10,MARUR,Verizon,Persistence,utility gain without higher risk bound,1
+completed_W20,completed_W10,AT&T,HistGBM,trade-off or risk-only change,9
+completed_W20,completed_W10,AT&T,HistGBM,unchanged,2
+completed_W20,completed_W10,AT&T,HistGBM,utility loss without lower risk bound,3
+completed_W20,completed_W10,AT&T,Persistence,trade-off or risk-only change,14
+completed_W20,completed_W10,E1,HistGBM,trade-off or risk-only change,10
+completed_W20,completed_W10,E1,HistGBM,utility gain without higher risk bound,4
+completed_W20,completed_W10,E1,Persistence,trade-off or risk-only change,6
+completed_W20,completed_W10,E1,Persistence,utility loss without lower risk bound,8
+completed_W20,completed_W10,E3,HistGBM,trade-off or risk-only change,6
+completed_W20,completed_W10,E3,HistGBM,utility loss without lower risk bound,8
+completed_W20,completed_W10,E3,Persistence,trade-off or risk-only change,7
+completed_W20,completed_W10,E3,Persistence,utility loss without lower risk bound,7
+completed_W20,completed_W10,Ireland,HistGBM,trade-off or risk-only change,2
+completed_W20,completed_W10,Ireland,HistGBM,unchanged,10
+completed_W20,completed_W10,Ireland,HistGBM,utility loss without lower risk bound,2
+completed_W20,completed_W10,Ireland,Persistence,utility loss without lower risk bound,14
+completed_W20,completed_W10,T-Mobile,HistGBM,trade-off or risk-only change,1
+completed_W20,completed_W10,T-Mobile,HistGBM,unchanged,4
+completed_W20,completed_W10,T-Mobile,HistGBM,utility gain without higher risk bound,8
+completed_W20,completed_W10,T-Mobile,HistGBM,utility loss without lower risk bound,1
+completed_W20,completed_W10,T-Mobile,Persistence,trade-off or risk-only change,6
+completed_W20,completed_W10,T-Mobile,Persistence,utility gain without higher risk bound,8
+completed_W20,completed_W10,Verizon,HistGBM,trade-off or risk-only change,13
+completed_W20,completed_W10,Verizon,HistGBM,unchanged,1
+completed_W20,completed_W10,Verizon,Persistence,trade-off or risk-only change,5
+completed_W20,completed_W10,Verizon,Persistence,utility loss without lower risk bound,9
+completed_W40,completed_W10,AT&T,HistGBM,trade-off or risk-only change,6
+completed_W40,completed_W10,AT&T,HistGBM,unchanged,2
+completed_W40,completed_W10,AT&T,HistGBM,utility gain without higher risk bound,2
+completed_W40,completed_W10,AT&T,HistGBM,utility loss without lower risk bound,4
+completed_W40,completed_W10,AT&T,Persistence,trade-off or risk-only change,10
+completed_W40,completed_W10,AT&T,Persistence,utility gain without higher risk bound,4
+completed_W40,completed_W10,E1,HistGBM,trade-off or risk-only change,7
+completed_W40,completed_W10,E1,HistGBM,utility gain without higher risk bound,7
+completed_W40,completed_W10,E1,Persistence,trade-off or risk-only change,7
+completed_W40,completed_W10,E1,Persistence,utility loss without lower risk bound,7
+completed_W40,completed_W10,E3,HistGBM,trade-off or risk-only change,6
+completed_W40,completed_W10,E3,HistGBM,utility loss without lower risk bound,8
+completed_W40,completed_W10,E3,Persistence,trade-off or risk-only change,14
+completed_W40,completed_W10,Ireland,HistGBM,trade-off or risk-only change,2
+completed_W40,completed_W10,Ireland,HistGBM,unchanged,10
+completed_W40,completed_W10,Ireland,HistGBM,utility gain without higher risk bound,1
+completed_W40,completed_W10,Ireland,HistGBM,utility loss without lower risk bound,1
+completed_W40,completed_W10,Ireland,Persistence,trade-off or risk-only change,7
+completed_W40,completed_W10,Ireland,Persistence,utility loss without lower risk bound,7
+completed_W40,completed_W10,T-Mobile,HistGBM,trade-off or risk-only change,5
+completed_W40,completed_W10,T-Mobile,HistGBM,unchanged,4
+completed_W40,completed_W10,T-Mobile,HistGBM,utility gain without higher risk bound,3
+completed_W40,completed_W10,T-Mobile,HistGBM,utility loss without lower risk bound,2
+completed_W40,completed_W10,T-Mobile,Persistence,trade-off or risk-only change,7
+completed_W40,completed_W10,T-Mobile,Persistence,utility gain without higher risk bound,7
+completed_W40,completed_W10,Verizon,HistGBM,trade-off or risk-only change,13
+completed_W40,completed_W10,Verizon,HistGBM,unchanged,1
+completed_W40,completed_W10,Verizon,Persistence,trade-off or risk-only change,6
+completed_W40,completed_W10,Verizon,Persistence,utility loss without lower risk bound,8
+observed_W10,ACI,AT&T,HistGBM,unmatched cost,7
+observed_W10,ACI,AT&T,HistGBM,utility gain without higher risk bound,7
+observed_W10,ACI,AT&T,Persistence,trade-off or risk-only change,7
+observed_W10,ACI,AT&T,Persistence,unmatched cost,7
+observed_W10,ACI,E1,HistGBM,unmatched cost,7
+observed_W10,ACI,E1,HistGBM,utility gain without higher risk bound,7
+observed_W10,ACI,E1,Persistence,unmatched cost,7
+observed_W10,ACI,E1,Persistence,utility gain without higher risk bound,7
+observed_W10,ACI,E3,HistGBM,trade-off or risk-only change,1
+observed_W10,ACI,E3,HistGBM,unmatched cost,7
+observed_W10,ACI,E3,HistGBM,utility loss without lower risk bound,6
+observed_W10,ACI,E3,Persistence,trade-off or risk-only change,5
+observed_W10,ACI,E3,Persistence,unmatched cost,7
+observed_W10,ACI,E3,Persistence,utility loss without lower risk bound,2
+observed_W10,ACI,Ireland,HistGBM,trade-off or risk-only change,4
+observed_W10,ACI,Ireland,HistGBM,unmatched cost,7
+observed_W10,ACI,Ireland,HistGBM,utility gain without higher risk bound,2
+observed_W10,ACI,Ireland,HistGBM,utility loss without lower risk bound,1
+observed_W10,ACI,Ireland,Persistence,unmatched cost,7
+observed_W10,ACI,Ireland,Persistence,utility gain without higher risk bound,7
+observed_W10,ACI,T-Mobile,HistGBM,trade-off or risk-only change,1
+observed_W10,ACI,T-Mobile,HistGBM,unmatched cost,7
+observed_W10,ACI,T-Mobile,HistGBM,utility gain without higher risk bound,5
+observed_W10,ACI,T-Mobile,HistGBM,utility loss without lower risk bound,1
+observed_W10,ACI,T-Mobile,Persistence,trade-off or risk-only change,2
+observed_W10,ACI,T-Mobile,Persistence,unmatched cost,7
+observed_W10,ACI,T-Mobile,Persistence,utility loss without lower risk bound,5
+observed_W10,ACI,Verizon,HistGBM,trade-off or risk-only change,7
+observed_W10,ACI,Verizon,HistGBM,unmatched cost,7
+observed_W10,ACI,Verizon,Persistence,trade-off or risk-only change,7
+observed_W10,ACI,Verizon,Persistence,unmatched cost,7
+observed_W10,Early,AT&T,HistGBM,trade-off or risk-only change,7
+observed_W10,Early,AT&T,HistGBM,unchanged,2
+observed_W10,Early,AT&T,HistGBM,utility loss without lower risk bound,5
+observed_W10,Early,AT&T,Persistence,trade-off or risk-only change,14
+observed_W10,Early,E1,HistGBM,trade-off or risk-only change,1
+observed_W10,Early,E1,HistGBM,unmatched cost,5
+observed_W10,Early,E1,HistGBM,utility gain without higher risk bound,8
+observed_W10,Early,E1,Persistence,unmatched cost,5
+observed_W10,Early,E1,Persistence,utility gain without higher risk bound,9
+observed_W10,Early,E3,HistGBM,trade-off or risk-only change,2
+observed_W10,Early,E3,HistGBM,unmatched cost,7
+observed_W10,Early,E3,HistGBM,utility gain without higher risk bound,5
+observed_W10,Early,E3,Persistence,trade-off or risk-only change,7
+observed_W10,Early,E3,Persistence,unmatched cost,7
+observed_W10,Early,Ireland,HistGBM,trade-off or risk-only change,1
+observed_W10,Early,Ireland,HistGBM,unchanged,2
+observed_W10,Early,Ireland,HistGBM,unmatched cost,7
+observed_W10,Early,Ireland,HistGBM,utility gain without higher risk bound,4
+observed_W10,Early,Ireland,Persistence,trade-off or risk-only change,2
+observed_W10,Early,Ireland,Persistence,unmatched cost,7
+observed_W10,Early,Ireland,Persistence,utility gain without higher risk bound,5
+observed_W10,Early,T-Mobile,HistGBM,trade-off or risk-only change,10
+observed_W10,Early,T-Mobile,HistGBM,unchanged,2
+observed_W10,Early,T-Mobile,HistGBM,utility gain without higher risk bound,1
+observed_W10,Early,T-Mobile,HistGBM,utility loss without lower risk bound,1
+observed_W10,Early,T-Mobile,Persistence,trade-off or risk-only change,7
+observed_W10,Early,T-Mobile,Persistence,utility loss without lower risk bound,7
+observed_W10,Early,Verizon,HistGBM,trade-off or risk-only change,9
+observed_W10,Early,Verizon,HistGBM,unchanged,1
+observed_W10,Early,Verizon,HistGBM,utility gain without higher risk bound,3
+observed_W10,Early,Verizon,HistGBM,utility loss without lower risk bound,1
+observed_W10,Early,Verizon,Persistence,trade-off or risk-only change,6
+observed_W10,Early,Verizon,Persistence,utility gain without higher risk bound,8
+observed_W10,Frozen,AT&T,HistGBM,unmatched cost,14
+observed_W10,Frozen,AT&T,Persistence,unmatched cost,14
+observed_W10,Frozen,E1,HistGBM,unmatched cost,14
+observed_W10,Frozen,E1,Persistence,unmatched cost,14
+observed_W10,Frozen,E3,HistGBM,unmatched cost,14
+observed_W10,Frozen,E3,Persistence,unmatched cost,14
+observed_W10,Frozen,Ireland,HistGBM,unmatched cost,14
+observed_W10,Frozen,Ireland,Persistence,unmatched cost,14
+observed_W10,Frozen,T-Mobile,HistGBM,unmatched cost,14
+observed_W10,Frozen,T-Mobile,Persistence,unmatched cost,14
+observed_W10,Frozen,Verizon,HistGBM,unmatched cost,14
+observed_W10,Frozen,Verizon,Persistence,unmatched cost,14
+observed_W10,MARUR,AT&T,HistGBM,trade-off or risk-only change,6
+observed_W10,MARUR,AT&T,HistGBM,unchanged,2
+observed_W10,MARUR,AT&T,HistGBM,utility loss without lower risk bound,6
+observed_W10,MARUR,AT&T,Persistence,trade-off or risk-only change,3
+observed_W10,MARUR,AT&T,Persistence,unchanged,7
+observed_W10,MARUR,AT&T,Persistence,utility loss without lower risk bound,4
+observed_W10,MARUR,E1,HistGBM,trade-off or risk-only change,9
+observed_W10,MARUR,E1,HistGBM,unmatched cost,5
+observed_W10,MARUR,E1,Persistence,trade-off or risk-only change,2
+observed_W10,MARUR,E1,Persistence,unchanged,7
+observed_W10,MARUR,E1,Persistence,unmatched cost,5
+observed_W10,MARUR,E3,HistGBM,trade-off or risk-only change,2
+observed_W10,MARUR,E3,HistGBM,unmatched cost,7
+observed_W10,MARUR,E3,HistGBM,utility loss without lower risk bound,5
+observed_W10,MARUR,E3,Persistence,trade-off or risk-only change,5
+observed_W10,MARUR,E3,Persistence,unmatched cost,7
+observed_W10,MARUR,E3,Persistence,utility loss without lower risk bound,2
+observed_W10,MARUR,Ireland,HistGBM,unchanged,4
+observed_W10,MARUR,Ireland,HistGBM,unmatched cost,7
+observed_W10,MARUR,Ireland,HistGBM,utility gain without higher risk bound,2
+observed_W10,MARUR,Ireland,HistGBM,utility loss without lower risk bound,1
+observed_W10,MARUR,Ireland,Persistence,trade-off or risk-only change,1
+observed_W10,MARUR,Ireland,Persistence,unchanged,4
+observed_W10,MARUR,Ireland,Persistence,unmatched cost,7
+observed_W10,MARUR,Ireland,Persistence,utility loss without lower risk bound,2
+observed_W10,MARUR,T-Mobile,HistGBM,trade-off or risk-only change,8
+observed_W10,MARUR,T-Mobile,HistGBM,unchanged,2
+observed_W10,MARUR,T-Mobile,HistGBM,utility gain without higher risk bound,4
+observed_W10,MARUR,T-Mobile,Persistence,trade-off or risk-only change,1
+observed_W10,MARUR,T-Mobile,Persistence,unchanged,4
+observed_W10,MARUR,T-Mobile,Persistence,utility gain without higher risk bound,9
+observed_W10,MARUR,Verizon,HistGBM,trade-off or risk-only change,8
+observed_W10,MARUR,Verizon,HistGBM,utility gain without higher risk bound,5
+observed_W10,MARUR,Verizon,HistGBM,utility loss without lower risk bound,1
+observed_W10,MARUR,Verizon,Persistence,trade-off or risk-only change,12
+observed_W10,MARUR,Verizon,Persistence,utility gain without higher risk bound,2
+observed_W10,Periodic,AT&T,HistGBM,unchanged,2
+observed_W10,Periodic,AT&T,HistGBM,unmatched cost,7
+observed_W10,Periodic,AT&T,HistGBM,utility gain without higher risk bound,5
+observed_W10,Periodic,AT&T,Persistence,trade-off or risk-only change,7
+observed_W10,Periodic,AT&T,Persistence,unmatched cost,7
+observed_W10,Periodic,E1,HistGBM,unmatched cost,7
+observed_W10,Periodic,E1,HistGBM,utility gain without higher risk bound,7
+observed_W10,Periodic,E1,Persistence,unmatched cost,7
+observed_W10,Periodic,E1,Persistence,utility gain without higher risk bound,7
+observed_W10,Periodic,E3,HistGBM,trade-off or risk-only change,1
+observed_W10,Periodic,E3,HistGBM,unmatched cost,7
+observed_W10,Periodic,E3,HistGBM,utility loss without lower risk bound,6
+observed_W10,Periodic,E3,Persistence,trade-off or risk-only change,5
+observed_W10,Periodic,E3,Persistence,unmatched cost,7
+observed_W10,Periodic,E3,Persistence,utility loss without lower risk bound,2
+observed_W10,Periodic,Ireland,HistGBM,trade-off or risk-only change,3
+observed_W10,Periodic,Ireland,HistGBM,unchanged,2
+observed_W10,Periodic,Ireland,HistGBM,unmatched cost,7
+observed_W10,Periodic,Ireland,HistGBM,utility loss without lower risk bound,2
+observed_W10,Periodic,Ireland,Persistence,unmatched cost,7
+observed_W10,Periodic,Ireland,Persistence,utility gain without higher risk bound,7
+observed_W10,Periodic,T-Mobile,HistGBM,trade-off or risk-only change,3
+observed_W10,Periodic,T-Mobile,HistGBM,unchanged,2
+observed_W10,Periodic,T-Mobile,HistGBM,unmatched cost,7
+observed_W10,Periodic,T-Mobile,HistGBM,utility loss without lower risk bound,2
+observed_W10,Periodic,T-Mobile,Persistence,unmatched cost,7
+observed_W10,Periodic,T-Mobile,Persistence,utility loss without lower risk bound,7
+observed_W10,Periodic,Verizon,HistGBM,trade-off or risk-only change,7
+observed_W10,Periodic,Verizon,HistGBM,unmatched cost,7
+observed_W10,Periodic,Verizon,Persistence,trade-off or risk-only change,7
+observed_W10,Periodic,Verizon,Persistence,unmatched cost,7
+observed_W10,completed_W10,AT&T,HistGBM,unchanged,14
+observed_W10,completed_W10,AT&T,Persistence,unchanged,14
+observed_W10,completed_W10,E1,HistGBM,trade-off or risk-only change,3
+observed_W10,completed_W10,E1,HistGBM,unchanged,9
+observed_W10,completed_W10,E1,HistGBM,unmatched cost,2
+observed_W10,completed_W10,E1,Persistence,trade-off or risk-only change,1
+observed_W10,completed_W10,E1,Persistence,unchanged,10
+observed_W10,completed_W10,E1,Persistence,unmatched cost,2
+observed_W10,completed_W10,E1,Persistence,utility gain without higher risk bound,1
+observed_W10,completed_W10,E3,HistGBM,trade-off or risk-only change,2
+observed_W10,completed_W10,E3,HistGBM,unchanged,10
+observed_W10,completed_W10,E3,HistGBM,unmatched cost,2
+observed_W10,completed_W10,E3,Persistence,unchanged,10
+observed_W10,completed_W10,E3,Persistence,unmatched cost,2
+observed_W10,completed_W10,E3,Persistence,utility loss without lower risk bound,2
+observed_W10,completed_W10,Ireland,HistGBM,unchanged,9
+observed_W10,completed_W10,Ireland,HistGBM,unmatched cost,5
+observed_W10,completed_W10,Ireland,Persistence,trade-off or risk-only change,1
+observed_W10,completed_W10,Ireland,Persistence,unchanged,7
+observed_W10,completed_W10,Ireland,Persistence,unmatched cost,5
+observed_W10,completed_W10,Ireland,Persistence,utility gain without higher risk bound,1
+observed_W10,completed_W10,T-Mobile,HistGBM,unchanged,14
+observed_W10,completed_W10,T-Mobile,Persistence,unchanged,13
+observed_W10,completed_W10,T-Mobile,Persistence,utility gain without higher risk bound,1
+observed_W10,completed_W10,Verizon,HistGBM,trade-off or risk-only change,1
+observed_W10,completed_W10,Verizon,HistGBM,unchanged,9
+observed_W10,completed_W10,Verizon,HistGBM,utility gain without higher risk bound,2
+observed_W10,completed_W10,Verizon,HistGBM,utility loss without lower risk bound,2
+observed_W10,completed_W10,Verizon,Persistence,unchanged,10
+observed_W10,completed_W10,Verizon,Persistence,utility gain without higher risk bound,1
+observed_W10,completed_W10,Verizon,Persistence,utility loss without lower risk bound,3
+observed_W20,observed_W10,AT&T,HistGBM,trade-off or risk-only change,9
+observed_W20,observed_W10,AT&T,HistGBM,unchanged,2
+observed_W20,observed_W10,AT&T,HistGBM,utility loss without lower risk bound,3
+observed_W20,observed_W10,AT&T,Persistence,trade-off or risk-only change,14
+observed_W20,observed_W10,E1,HistGBM,trade-off or risk-only change,9
+observed_W20,observed_W10,E1,HistGBM,utility gain without higher risk bound,5
+observed_W20,observed_W10,E1,Persistence,trade-off or risk-only change,7
+observed_W20,observed_W10,E1,Persistence,utility loss without lower risk bound,7
+observed_W20,observed_W10,E3,HistGBM,trade-off or risk-only change,6
+observed_W20,observed_W10,E3,HistGBM,utility loss without lower risk bound,8
+observed_W20,observed_W10,E3,Persistence,trade-off or risk-only change,5
+observed_W20,observed_W10,E3,Persistence,utility loss without lower risk bound,9
+observed_W20,observed_W10,Ireland,HistGBM,trade-off or risk-only change,3
+observed_W20,observed_W10,Ireland,HistGBM,unchanged,9
+observed_W20,observed_W10,Ireland,HistGBM,utility loss without lower risk bound,2
+observed_W20,observed_W10,Ireland,Persistence,utility loss without lower risk bound,14
+observed_W20,observed_W10,T-Mobile,HistGBM,trade-off or risk-only change,1
+observed_W20,observed_W10,T-Mobile,HistGBM,unchanged,4
+observed_W20,observed_W10,T-Mobile,HistGBM,utility gain without higher risk bound,8
+observed_W20,observed_W10,T-Mobile,HistGBM,utility loss without lower risk bound,1
+observed_W20,observed_W10,T-Mobile,Persistence,trade-off or risk-only change,6
+observed_W20,observed_W10,T-Mobile,Persistence,utility gain without higher risk bound,8
+observed_W20,observed_W10,Verizon,HistGBM,trade-off or risk-only change,12
+observed_W20,observed_W10,Verizon,HistGBM,unchanged,1
+observed_W20,observed_W10,Verizon,HistGBM,utility loss without lower risk bound,1
+observed_W20,observed_W10,Verizon,Persistence,trade-off or risk-only change,6
+observed_W20,observed_W10,Verizon,Persistence,utility loss without lower risk bound,8
+observed_W40,observed_W10,AT&T,HistGBM,trade-off or risk-only change,6
+observed_W40,observed_W10,AT&T,HistGBM,unchanged,2
+observed_W40,observed_W10,AT&T,HistGBM,utility gain without higher risk bound,2
+observed_W40,observed_W10,AT&T,HistGBM,utility loss without lower risk bound,4
+observed_W40,observed_W10,AT&T,Persistence,trade-off or risk-only change,10
+observed_W40,observed_W10,AT&T,Persistence,utility gain without higher risk bound,4
+observed_W40,observed_W10,E1,HistGBM,trade-off or risk-only change,6
+observed_W40,observed_W10,E1,HistGBM,utility gain without higher risk bound,8
+observed_W40,observed_W10,E1,Persistence,trade-off or risk-only change,7
+observed_W40,observed_W10,E1,Persistence,utility loss without lower risk bound,7
+observed_W40,observed_W10,E3,HistGBM,trade-off or risk-only change,6
+observed_W40,observed_W10,E3,HistGBM,utility loss without lower risk bound,8
+observed_W40,observed_W10,E3,Persistence,trade-off or risk-only change,10
+observed_W40,observed_W10,E3,Persistence,utility loss without lower risk bound,4
+observed_W40,observed_W10,Ireland,HistGBM,trade-off or risk-only change,4
+observed_W40,observed_W10,Ireland,HistGBM,unchanged,9
+observed_W40,observed_W10,Ireland,HistGBM,utility loss without lower risk bound,1
+observed_W40,observed_W10,Ireland,Persistence,trade-off or risk-only change,7
+observed_W40,observed_W10,Ireland,Persistence,utility loss without lower risk bound,7
+observed_W40,observed_W10,T-Mobile,HistGBM,trade-off or risk-only change,5
+observed_W40,observed_W10,T-Mobile,HistGBM,unchanged,4
+observed_W40,observed_W10,T-Mobile,HistGBM,utility gain without higher risk bound,3
+observed_W40,observed_W10,T-Mobile,HistGBM,utility loss without lower risk bound,2
+observed_W40,observed_W10,T-Mobile,Persistence,trade-off or risk-only change,7
+observed_W40,observed_W10,T-Mobile,Persistence,utility gain without higher risk bound,7
+observed_W40,observed_W10,Verizon,HistGBM,trade-off or risk-only change,12
+observed_W40,observed_W10,Verizon,HistGBM,unchanged,1
+observed_W40,observed_W10,Verizon,HistGBM,utility loss without lower risk bound,1
+observed_W40,observed_W10,Verizon,Persistence,trade-off or risk-only change,4
+observed_W40,observed_W10,Verizon,Persistence,utility gain without higher risk bound,3
+observed_W40,observed_W10,Verizon,Persistence,utility loss without lower risk bound,7

@@ -1,0 +1,46 @@
+{
+  "start_utc": "2026-11-23T10:37:17.275303+00:00",
+  "end_utc": "2026-11-23T10:43:10.196110+00:00",
+  "configurations": 1848,
+  "spec": {
+    "status": "Exploratory on previously inspected cohorts; fixed before this run",
+    "new_query_caps": [
+      10,
+      40
+    ],
+    "mask_seeds": [
+      42,
+      123,
+      2026
+    ],
+    "mask_probability": 0.2,
+    "burst_bin_minutes": 10,
+    "minimum_attempt_spacing_minutes": 5,
+    "windows": [
+      10,
+      20,
+      40
+    ],
+    "freshness_sources": [
+      "completed",
+      "observed"
+    ],
+    "models": [
+      "HistGBM",
+      "Persistence"
+    ]
+  },
+  "input_sha256": "6fc1c490106539f2c2c3f27bd141d391909cbe021f358dd9f2fdb1cadc6ce852",
+  "status": "exploratory; no policy promotion",
+  "sha256": {
+    "src\\evaluation\\marur.py": "db8ff0044bf7480e998f2efa920c4f35e66bb3fb374d74e3ce54a2e423613245",
+    "configs\\marur_information_experiment.json": "2be3838905b1c0fad947ae8a89d36075eec7e6dd862d4e45b5ca181e19c81ac3",
+    "scripts\\run_marur_information_experiment.py": "abfa5113a35ca3fa2bc9e6c6394d0250111a3e14522f9adb351499cc81179aad",
+    "results\\exploratory\\marur_information\\actions.csv.gz": "c5382874f195c58bbd9da066d2db3814f67f25c4093d4e667e5e5179fa008acd",
+    "results\\exploratory\\marur_information\\contrasts.csv": "f99cd97e0409429c093beee46abeb3ddcaccf4bc719b19a265cb69be07663a84",
+    "results\\exploratory\\marur_information\\dates.csv": "564ad93bd7c463ecb4746b178fff355d44af92ecd3169adb514375430715841c",
+    "results\\exploratory\\marur_information\\feedback_masks.csv.gz": "b30ccfeb32dd8b1cad0b5bb87c1737a0cd968182216168a0dc79588e41e53c90",
+    "results\\exploratory\\marur_information\\responses.csv.gz": "93fadc6861b747f1f0e0d7ee3776d2e0dce9f003bf5658620795cec9d3aefaab",
+    "results\\exploratory\\marur_information\\summary.csv": "31d4629e5b9709fdaee652bcd720b3348219433ed4a841052e2fd36d315fecec"
+  }
+}

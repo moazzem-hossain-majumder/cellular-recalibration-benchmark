@@ -1,0 +1,8 @@
+{
+  "status": "Fixed before replay; exploratory on inspected archives",
+  "new_query_caps": [10, 40],
+  "feedback_conditions": ["Recorded", "IID20_seed42", "Burst20_seed42"],
+  "random_schedule_seeds": [42, 123, 2026],
+  "decaying_ogd_exponent": 0.6,
+  "models": ["HistGBM", "Persistence"]
+}

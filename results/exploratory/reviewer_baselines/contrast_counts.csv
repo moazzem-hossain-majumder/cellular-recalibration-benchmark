@@ -1,0 +1,203 @@
+candidate,reference,cohort,model,outcome,configuration_contrasts
+DecayingOGD,ACI,AT&T,HistGBM,trade-off or risk-only change,6
+DecayingOGD,ACI,AT&T,Persistence,utility gain without higher risk bound,6
+DecayingOGD,ACI,E1,HistGBM,utility loss without lower risk bound,6
+DecayingOGD,ACI,E1,Persistence,trade-off or risk-only change,3
+DecayingOGD,ACI,E1,Persistence,utility loss without lower risk bound,3
+DecayingOGD,ACI,E3,HistGBM,trade-off or risk-only change,4
+DecayingOGD,ACI,E3,HistGBM,utility gain without higher risk bound,2
+DecayingOGD,ACI,E3,Persistence,trade-off or risk-only change,2
+DecayingOGD,ACI,E3,Persistence,utility loss without lower risk bound,4
+DecayingOGD,ACI,Ireland,HistGBM,trade-off or risk-only change,2
+DecayingOGD,ACI,Ireland,HistGBM,utility gain without higher risk bound,4
+DecayingOGD,ACI,Ireland,Persistence,trade-off or risk-only change,3
+DecayingOGD,ACI,Ireland,Persistence,utility gain without higher risk bound,1
+DecayingOGD,ACI,Ireland,Persistence,utility loss without lower risk bound,2
+DecayingOGD,ACI,T-Mobile,HistGBM,utility gain without higher risk bound,6
+DecayingOGD,ACI,T-Mobile,Persistence,trade-off or risk-only change,6
+DecayingOGD,ACI,Verizon,HistGBM,trade-off or risk-only change,6
+DecayingOGD,ACI,Verizon,Persistence,trade-off or risk-only change,6
+DecayingOGD,Periodic,AT&T,HistGBM,trade-off or risk-only change,6
+DecayingOGD,Periodic,AT&T,Persistence,utility gain without higher risk bound,6
+DecayingOGD,Periodic,E1,HistGBM,utility loss without lower risk bound,6
+DecayingOGD,Periodic,E1,Persistence,trade-off or risk-only change,3
+DecayingOGD,Periodic,E1,Persistence,utility loss without lower risk bound,3
+DecayingOGD,Periodic,E3,HistGBM,trade-off or risk-only change,4
+DecayingOGD,Periodic,E3,HistGBM,utility gain without higher risk bound,2
+DecayingOGD,Periodic,E3,Persistence,utility loss without lower risk bound,6
+DecayingOGD,Periodic,Ireland,HistGBM,trade-off or risk-only change,5
+DecayingOGD,Periodic,Ireland,HistGBM,utility loss without lower risk bound,1
+DecayingOGD,Periodic,Ireland,Persistence,trade-off or risk-only change,3
+DecayingOGD,Periodic,Ireland,Persistence,utility gain without higher risk bound,1
+DecayingOGD,Periodic,Ireland,Persistence,utility loss without lower risk bound,2
+DecayingOGD,Periodic,T-Mobile,HistGBM,trade-off or risk-only change,6
+DecayingOGD,Periodic,T-Mobile,Persistence,trade-off or risk-only change,6
+DecayingOGD,Periodic,Verizon,HistGBM,trade-off or risk-only change,6
+DecayingOGD,Periodic,Verizon,Persistence,trade-off or risk-only change,6
+MARUR,ACI,AT&T,HistGBM,unmatched cost,3
+MARUR,ACI,AT&T,HistGBM,utility gain without higher risk bound,3
+MARUR,ACI,AT&T,Persistence,trade-off or risk-only change,3
+MARUR,ACI,AT&T,Persistence,unmatched cost,3
+MARUR,ACI,E1,HistGBM,unmatched cost,3
+MARUR,ACI,E1,HistGBM,utility gain without higher risk bound,3
+MARUR,ACI,E1,Persistence,unmatched cost,3
+MARUR,ACI,E1,Persistence,utility gain without higher risk bound,3
+MARUR,ACI,E3,HistGBM,trade-off or risk-only change,1
+MARUR,ACI,E3,HistGBM,unmatched cost,3
+MARUR,ACI,E3,HistGBM,utility gain without higher risk bound,1
+MARUR,ACI,E3,HistGBM,utility loss without lower risk bound,1
+MARUR,ACI,E3,Persistence,trade-off or risk-only change,3
+MARUR,ACI,E3,Persistence,unmatched cost,3
+MARUR,ACI,Ireland,HistGBM,trade-off or risk-only change,3
+MARUR,ACI,Ireland,HistGBM,unmatched cost,3
+MARUR,ACI,Ireland,Persistence,unmatched cost,3
+MARUR,ACI,Ireland,Persistence,utility gain without higher risk bound,3
+MARUR,ACI,T-Mobile,HistGBM,trade-off or risk-only change,3
+MARUR,ACI,T-Mobile,HistGBM,unmatched cost,3
+MARUR,ACI,T-Mobile,Persistence,unmatched cost,3
+MARUR,ACI,T-Mobile,Persistence,utility loss without lower risk bound,3
+MARUR,ACI,Verizon,HistGBM,trade-off or risk-only change,3
+MARUR,ACI,Verizon,HistGBM,unmatched cost,3
+MARUR,ACI,Verizon,Persistence,unmatched cost,3
+MARUR,ACI,Verizon,Persistence,utility loss without lower risk bound,3
+MARUR,Early,AT&T,HistGBM,trade-off or risk-only change,5
+MARUR,Early,AT&T,HistGBM,utility loss without lower risk bound,1
+MARUR,Early,AT&T,Persistence,trade-off or risk-only change,6
+MARUR,Early,E1,HistGBM,utility gain without higher risk bound,6
+MARUR,Early,E1,Persistence,utility gain without higher risk bound,6
+MARUR,Early,E3,HistGBM,trade-off or risk-only change,2
+MARUR,Early,E3,HistGBM,unmatched cost,3
+MARUR,Early,E3,HistGBM,utility gain without higher risk bound,1
+MARUR,Early,E3,Persistence,trade-off or risk-only change,3
+MARUR,Early,E3,Persistence,unmatched cost,3
+MARUR,Early,Ireland,HistGBM,unmatched cost,3
+MARUR,Early,Ireland,HistGBM,utility gain without higher risk bound,3
+MARUR,Early,Ireland,Persistence,unmatched cost,3
+MARUR,Early,Ireland,Persistence,utility gain without higher risk bound,3
+MARUR,Early,T-Mobile,HistGBM,trade-off or risk-only change,5
+MARUR,Early,T-Mobile,HistGBM,utility loss without lower risk bound,1
+MARUR,Early,T-Mobile,Persistence,trade-off or risk-only change,3
+MARUR,Early,T-Mobile,Persistence,utility loss without lower risk bound,3
+MARUR,Early,Verizon,HistGBM,trade-off or risk-only change,6
+MARUR,Early,Verizon,Persistence,trade-off or risk-only change,4
+MARUR,Early,Verizon,Persistence,utility gain without higher risk bound,2
+MARUR,Periodic,AT&T,HistGBM,unmatched cost,3
+MARUR,Periodic,AT&T,HistGBM,utility gain without higher risk bound,3
+MARUR,Periodic,AT&T,Persistence,trade-off or risk-only change,3
+MARUR,Periodic,AT&T,Persistence,unmatched cost,3
+MARUR,Periodic,E1,HistGBM,unmatched cost,3
+MARUR,Periodic,E1,HistGBM,utility gain without higher risk bound,3
+MARUR,Periodic,E1,Persistence,unmatched cost,3
+MARUR,Periodic,E1,Persistence,utility gain without higher risk bound,3
+MARUR,Periodic,E3,HistGBM,trade-off or risk-only change,1
+MARUR,Periodic,E3,HistGBM,unmatched cost,3
+MARUR,Periodic,E3,HistGBM,utility gain without higher risk bound,1
+MARUR,Periodic,E3,HistGBM,utility loss without lower risk bound,1
+MARUR,Periodic,E3,Persistence,trade-off or risk-only change,3
+MARUR,Periodic,E3,Persistence,unmatched cost,3
+MARUR,Periodic,Ireland,HistGBM,trade-off or risk-only change,3
+MARUR,Periodic,Ireland,HistGBM,unmatched cost,3
+MARUR,Periodic,Ireland,Persistence,unmatched cost,3
+MARUR,Periodic,Ireland,Persistence,utility gain without higher risk bound,3
+MARUR,Periodic,T-Mobile,HistGBM,unmatched cost,3
+MARUR,Periodic,T-Mobile,HistGBM,utility loss without lower risk bound,3
+MARUR,Periodic,T-Mobile,Persistence,unmatched cost,3
+MARUR,Periodic,T-Mobile,Persistence,utility loss without lower risk bound,3
+MARUR,Periodic,Verizon,HistGBM,trade-off or risk-only change,3
+MARUR,Periodic,Verizon,HistGBM,unmatched cost,3
+MARUR,Periodic,Verizon,Persistence,unmatched cost,3
+MARUR,Periodic,Verizon,Persistence,utility loss without lower risk bound,3
+MARUR,Random123,AT&T,HistGBM,utility gain without higher risk bound,6
+MARUR,Random123,AT&T,Persistence,trade-off or risk-only change,6
+MARUR,Random123,E1,HistGBM,trade-off or risk-only change,3
+MARUR,Random123,E1,HistGBM,utility gain without higher risk bound,3
+MARUR,Random123,E1,Persistence,trade-off or risk-only change,3
+MARUR,Random123,E1,Persistence,utility gain without higher risk bound,3
+MARUR,Random123,E3,HistGBM,trade-off or risk-only change,1
+MARUR,Random123,E3,HistGBM,unmatched cost,3
+MARUR,Random123,E3,HistGBM,utility gain without higher risk bound,2
+MARUR,Random123,E3,Persistence,trade-off or risk-only change,3
+MARUR,Random123,E3,Persistence,unmatched cost,3
+MARUR,Random123,Ireland,HistGBM,trade-off or risk-only change,3
+MARUR,Random123,Ireland,HistGBM,unmatched cost,3
+MARUR,Random123,Ireland,Persistence,trade-off or risk-only change,1
+MARUR,Random123,Ireland,Persistence,unmatched cost,3
+MARUR,Random123,Ireland,Persistence,utility gain without higher risk bound,2
+MARUR,Random123,T-Mobile,HistGBM,trade-off or risk-only change,3
+MARUR,Random123,T-Mobile,HistGBM,utility loss without lower risk bound,3
+MARUR,Random123,T-Mobile,Persistence,utility loss without lower risk bound,6
+MARUR,Random123,Verizon,HistGBM,trade-off or risk-only change,6
+MARUR,Random123,Verizon,Persistence,utility gain without higher risk bound,3
+MARUR,Random123,Verizon,Persistence,utility loss without lower risk bound,3
+MARUR,Random2026,AT&T,HistGBM,trade-off or risk-only change,4
+MARUR,Random2026,AT&T,HistGBM,utility gain without higher risk bound,2
+MARUR,Random2026,AT&T,Persistence,trade-off or risk-only change,3
+MARUR,Random2026,AT&T,Persistence,utility gain without higher risk bound,3
+MARUR,Random2026,E1,HistGBM,trade-off or risk-only change,6
+MARUR,Random2026,E1,Persistence,trade-off or risk-only change,5
+MARUR,Random2026,E1,Persistence,utility loss without lower risk bound,1
+MARUR,Random2026,E3,HistGBM,unmatched cost,3
+MARUR,Random2026,E3,HistGBM,utility gain without higher risk bound,3
+MARUR,Random2026,E3,Persistence,trade-off or risk-only change,3
+MARUR,Random2026,E3,Persistence,unmatched cost,3
+MARUR,Random2026,Ireland,HistGBM,trade-off or risk-only change,3
+MARUR,Random2026,Ireland,HistGBM,unmatched cost,3
+MARUR,Random2026,Ireland,Persistence,unmatched cost,3
+MARUR,Random2026,Ireland,Persistence,utility gain without higher risk bound,3
+MARUR,Random2026,T-Mobile,HistGBM,trade-off or risk-only change,2
+MARUR,Random2026,T-Mobile,HistGBM,utility gain without higher risk bound,2
+MARUR,Random2026,T-Mobile,HistGBM,utility loss without lower risk bound,2
+MARUR,Random2026,T-Mobile,Persistence,trade-off or risk-only change,3
+MARUR,Random2026,T-Mobile,Persistence,utility loss without lower risk bound,3
+MARUR,Random2026,Verizon,HistGBM,trade-off or risk-only change,6
+MARUR,Random2026,Verizon,Persistence,trade-off or risk-only change,2
+MARUR,Random2026,Verizon,Persistence,utility gain without higher risk bound,3
+MARUR,Random2026,Verizon,Persistence,utility loss without lower risk bound,1
+MARUR,Random42,AT&T,HistGBM,trade-off or risk-only change,3
+MARUR,Random42,AT&T,HistGBM,utility gain without higher risk bound,3
+MARUR,Random42,AT&T,Persistence,trade-off or risk-only change,6
+MARUR,Random42,E1,HistGBM,utility gain without higher risk bound,6
+MARUR,Random42,E1,Persistence,trade-off or risk-only change,6
+MARUR,Random42,E3,HistGBM,unmatched cost,3
+MARUR,Random42,E3,HistGBM,utility gain without higher risk bound,3
+MARUR,Random42,E3,Persistence,trade-off or risk-only change,3
+MARUR,Random42,E3,Persistence,unmatched cost,3
+MARUR,Random42,Ireland,HistGBM,trade-off or risk-only change,3
+MARUR,Random42,Ireland,HistGBM,unmatched cost,3
+MARUR,Random42,Ireland,Persistence,unmatched cost,3
+MARUR,Random42,Ireland,Persistence,utility gain without higher risk bound,3
+MARUR,Random42,T-Mobile,HistGBM,trade-off or risk-only change,3
+MARUR,Random42,T-Mobile,HistGBM,utility loss without lower risk bound,3
+MARUR,Random42,T-Mobile,Persistence,trade-off or risk-only change,3
+MARUR,Random42,T-Mobile,Persistence,utility loss without lower risk bound,3
+MARUR,Random42,Verizon,HistGBM,trade-off or risk-only change,6
+MARUR,Random42,Verizon,Persistence,utility gain without higher risk bound,3
+MARUR,Random42,Verizon,Persistence,utility loss without lower risk bound,3
+MARUR_Pooled,MARUR,AT&T,HistGBM,unchanged,6
+MARUR_Pooled,MARUR,AT&T,Persistence,unchanged,6
+MARUR_Pooled,MARUR,E1,HistGBM,unchanged,6
+MARUR_Pooled,MARUR,E1,Persistence,unchanged,6
+MARUR_Pooled,MARUR,E3,HistGBM,unchanged,6
+MARUR_Pooled,MARUR,E3,Persistence,unchanged,6
+MARUR_Pooled,MARUR,Ireland,HistGBM,unchanged,6
+MARUR_Pooled,MARUR,Ireland,Persistence,unchanged,6
+MARUR_Pooled,MARUR,T-Mobile,HistGBM,unchanged,6
+MARUR_Pooled,MARUR,T-Mobile,Persistence,unchanged,6
+MARUR_Pooled,MARUR,Verizon,HistGBM,unchanged,6
+MARUR_Pooled,MARUR,Verizon,Persistence,unchanged,6
+MARUR_PooledNoGate,MARUR_Pooled,AT&T,HistGBM,unchanged,6
+MARUR_PooledNoGate,MARUR_Pooled,AT&T,Persistence,unchanged,6
+MARUR_PooledNoGate,MARUR_Pooled,E1,HistGBM,trade-off or risk-only change,6
+MARUR_PooledNoGate,MARUR_Pooled,E1,Persistence,unchanged,6
+MARUR_PooledNoGate,MARUR_Pooled,E3,HistGBM,unchanged,6
+MARUR_PooledNoGate,MARUR_Pooled,E3,Persistence,utility gain without higher risk bound,6
+MARUR_PooledNoGate,MARUR_Pooled,Ireland,HistGBM,unchanged,6
+MARUR_PooledNoGate,MARUR_Pooled,Ireland,Persistence,unchanged,6
+MARUR_PooledNoGate,MARUR_Pooled,T-Mobile,HistGBM,trade-off or risk-only change,1
+MARUR_PooledNoGate,MARUR_Pooled,T-Mobile,HistGBM,unchanged,3
+MARUR_PooledNoGate,MARUR_Pooled,T-Mobile,HistGBM,utility gain without higher risk bound,2
+MARUR_PooledNoGate,MARUR_Pooled,T-Mobile,Persistence,trade-off or risk-only change,3
+MARUR_PooledNoGate,MARUR_Pooled,T-Mobile,Persistence,utility gain without higher risk bound,3
+MARUR_PooledNoGate,MARUR_Pooled,Verizon,HistGBM,unchanged,6
+MARUR_PooledNoGate,MARUR_Pooled,Verizon,Persistence,unchanged,1
+MARUR_PooledNoGate,MARUR_Pooled,Verizon,Persistence,utility gain without higher risk bound,5

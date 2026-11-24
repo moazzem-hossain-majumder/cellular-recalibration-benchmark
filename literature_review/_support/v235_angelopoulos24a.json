@@ -1,0 +1,96 @@
+{
+  "url": "https://proceedings.mlr.press/v235/angelopoulos24a.html",
+  "data": {
+    "meta": [
+      [
+        "viewport",
+        "width=device-width, initial-scale=1"
+      ],
+      [
+        "description",
+        "Online conformal prediction with decaying step sizesAnastasios Nikolas Angelopoulos, Rina Barber, Stephen BatesWe introduce a method for online con..."
+      ],
+      [
+        "citation_publisher",
+        "PMLR"
+      ],
+      [
+        "citation_title",
+        "Online conformal prediction with decaying step sizes"
+      ],
+      [
+        "citation_language",
+        "en"
+      ],
+      [
+        "citation_abstract_html_url",
+        "https://proceedings.mlr.press/v235/angelopoulos24a.html"
+      ],
+      [
+        "citation_pdf_url",
+        "https://raw.githubusercontent.com/mlresearch/v235/main/assets/angelopoulos24a/angelopoulos24a.pdf"
+      ],
+      [
+        "citation_firstpage",
+        "1616"
+      ],
+      [
+        "citation_lastpage",
+        "1630"
+      ],
+      [
+        "citation_author",
+        "Anastasios Nikolas Angelopoulos"
+      ],
+      [
+        "citation_author",
+        "Rina Barber"
+      ],
+      [
+        "citation_author",
+        "Stephen Bates"
+      ],
+      [
+        "citation_publication_date",
+        "2024/07/08"
+      ],
+      [
+        "citation_inbook_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_conference_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_issn",
+        "2640-3498"
+      ],
+      [
+        "twitter:card",
+        "summary"
+      ],
+      [
+        "twitter:title",
+        "Online conformal prediction with decaying step sizes"
+      ],
+      [
+        "twitter:site",
+        "@MLResearchPress"
+      ],
+      [
+        "twitter:description",
+        "We introduce a method for online conformal prediction with decaying step sizes. Like previous methods, ours possesses a retrospective guarantee of coverage f..."
+      ],
+      [
+        "twitter:image",
+        "https://proceedings.mlr.press/v235/assets/images/logo-pmlr.png"
+      ],
+      [
+        "twitter:image:alt",
+        "PMLR Logo"
+      ]
+    ],
+    "text": "Online conformal prediction with decaying step sizes Proceedings of Machine Learning Research Volume 235 JMLR DMLR TMLR MLOSS FAQ Submission Format [ edit ] Online conformal prediction with decaying step sizes Anastasios Nikolas Angelopoulos, Rina Barber, Stephen Bates Proceedings of the 41st International Conference on Machine Learning , PMLR 235:1616-1630, 2024. Abstract We introduce a method for online conformal prediction with decaying step sizes. Like previous methods, ours possesses a retrospective guarantee of coverage for arbitrary sequences. However, unlike previous methods, we can simultaneously estimate a population quantile when it exists. Our theory and experiments indicate substantially improved practical properties: in particular, when the distribution is stable, the coverage is close to the desired level for every time point , not just on average over the observed sequence. Cite this Paper BibTeX @InProceedings{pmlr-v235-angelopoulos24a,\n  title = \t {Online conformal prediction with decaying step sizes},\n  author =       {Angelopoulos, Anastasios Nikolas and Barber, Rina and Bates, Stephen},\n  booktitle = \t {Proceedings of the 41st International Conference on Machine Learning},\n  pages = \t {1616--1630},\n  year = \t {2024},\n  editor = \t {Salakhutdinov, Ruslan and Kolter, Zico and Heller, Katherine and Weller, Adrian and Oliver, Nuria and Scarlett, Jonathan and Berkenkamp, Felix},\n  volume = \t {235},\n  series = \t {Proceedings of Machine Learning Research},\n  month = \t {21--27 Jul},\n  publisher =    {PMLR},\n  pdf = \t {https://raw.githubusercontent.com/mlresearch/v235/main/assets/angelopoulos24a/angelopoulos24a.pdf},\n  url = \t {https://proceedings.mlr.press/v235/angelopoulos24a.html},\n  abstract = \t {We introduce a method for online conformal prediction with decaying step sizes. Like previous methods, ours possesses a retrospective guarantee of coverage for arbitrary sequences. However, unlike previous methods, we can simultaneously estimate a population quantile when it exists. Our theory and experiments indicate substantially improved practical properties: in particular, when the distribution is stable, the coverage is close to the desired level for every time point , not just on average over the observed sequence.}\n} Copy to Clipboard Download Endnote %0 Conference Paper\n%T Online conformal prediction with decaying step sizes\n%A Anastasios Nikolas Angelopoulos\n%A Rina Barber\n%A Stephen Bates\n%B Proceedings of the 41st International Conference on Machine Learning\n%C Proceedings of Machine Learning Research\n%D 2024\n%E Ruslan Salakhutdinov\n%E Zico Kolter\n%E Katherine Heller\n%E Adrian Weller\n%E Nuria Oliver\n%E Jonathan Scarlett\n%E Felix Berkenkamp\t\n%F pmlr-v235-angelopoulos24a\n%I PMLR\n%P 1616--1630\n%U https://proceedings.mlr.press/v235/angelopoulos24a.html\n%V 235\n%X We introduce a method for online conformal prediction with decaying step sizes. Like previous methods, ours possesses a retrospective guarantee of coverage for arbitrary sequences. However, unlike previous methods, we can simultaneously estimate a population quantile when it exists. Our theory and experiments indicate substantially improved practical properties: in particular, when the distribution is stable, the coverage is close to the desired level for every time point , not just on average over the observed sequence. Copy to Clipboard Download APA Angelopoulos, A.N., Barber, R. & Bates, S.. (2024). Online conformal prediction with decaying step sizes. Proceedings of the 41st International Conference on Machine Learning , in Proceedings of Machine Learning Research 235:1616-1630 Available from https://proceedings.mlr.press/v235/angelopoulos24a.html. Copy to Clipboard Download Related Material Download PDF OpenReview This site last compiled Wed, 07 Oct 2026 11:41:07 +0000 Github Account Copyright © The authors and PMLR 2026. MLResearchPress"
+  }
+}

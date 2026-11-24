@@ -1,3 +1,5 @@
+> Superseded historical assessment: the acceptance verdict and scores below are withdrawn as current claims. The current decision is Major Revision; see FINAL_REPOSITORY_SCIENTIFIC_AUDIT.md. This is not an external IEEE review.
+
 > Historical project record from before the pooled-calibration correction. For current estimates, validation status and publication assessment see [the final research audit](FINAL_RESEARCH_AUDIT.md). Interpret numerical claims below as superseded.
 
 # Independent IEEE Publication Readiness & Research Integrity Audit Report

@@ -1,0 +1,636 @@
+{
+  "url": "https://api.crossref.org/works/10.1093/jrsssb/qkaf008",
+  "data": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          23
+        ]
+      ],
+      "date-time": "2026-11-23T00:33:33Z",
+      "timestamp": 1795394013260,
+      "version": "4.10.3"
+    },
+    "reference-count": 37,
+    "publisher": "Oxford University Press (OUP)",
+    "issue": "4",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2025,
+              3,
+              6
+            ]
+          ],
+          "date-time": "2025-03-06T00:00:00Z",
+          "timestamp": 1741219200000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "https://academic.oup.com/pages/standard-publication-reuse-rights"
+      }
+    ],
+    "funder": [
+      {
+        "DOI": "10.13039/100000006",
+        "name": "Office of Naval Research",
+        "doi-asserted-by": "publisher",
+        "award": [
+          "2N00014-20-1-2157"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "2N00014-20-1-2157"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/100000006",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      },
+      {
+        "DOI": "10.13039/100000001",
+        "name": "National Science Foundation",
+        "doi-asserted-by": "publisher",
+        "award": [
+          "DMS-2032014"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "DMS-2032014"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/100000001",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      },
+      {
+        "DOI": "10.13039/100000893",
+        "name": "Simons Foundation",
+        "doi-asserted-by": "publisher",
+        "award": [
+          "814641"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "814641"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/100000893",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      },
+      {
+        "DOI": "10.13039/100000183",
+        "name": "ARO",
+        "doi-asserted-by": "publisher",
+        "award": [
+          "2003514594"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "2003514594"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/100000183",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      }
+    ],
+    "content-domain": {
+      "domain": [],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [],
+    "published-print": {
+      "date-parts": [
+        [
+          2025,
+          9,
+          15
+        ]
+      ]
+    },
+    "abstract": "<jats:title>Abstract</jats:title>\n                  <jats:p>We consider the problem of constructing distribution-free prediction sets with finite-sample conditional guarantees. Prior work has shown that it is impossible to provide exact conditional coverage universally in finite samples. Thus, most popular methods only guarantee marginal coverage over the covariates or are restricted to a limited set of conditional targets, e.g. coverage over a finite set of prespecified subgroups. This paper bridges this gap by defining a spectrum of problems that interpolate between marginal and conditional validity. We motivate these problems by reformulating conditional coverage as coverage over a class of covariate shifts. When the target class of shifts is finite-dimensional, we show how to simultaneously obtain exact finite-sample coverage over all possible shifts. For example, given a collection of subgroups, our prediction sets guarantee coverage over each group. For more flexible, infinite-dimensional classes where exact coverage is impossible, we provide a procedure for quantifying the coverage errors of our algorithm. Moreover, by tuning interpretable hyperparameters, we allow the practitioner to control the size of these errors across shifts of interest. Our methods can be incorporated into existing split conformal inference pipelines, and thus can be used to quantify the uncertainty of modern black-box algorithms without distributional assumptions.</jats:p>",
+    "DOI": "10.1093/jrsssb/qkaf008",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2025,
+          2,
+          6
+        ]
+      ],
+      "date-time": "2025-02-06T23:21:39Z",
+      "timestamp": 1738884099000
+    },
+    "page": "1100-1126",
+    "source": "Crossref",
+    "is-referenced-by-count": 57,
+    "title": [
+      "Conformal prediction with conditional guarantees"
+    ],
+    "prefix": "10.1093",
+    "volume": "87",
+    "author": [
+      {
+        "given": "Isaac",
+        "family": "Gibbs",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Department of Statistics, Sequoia Hall, Stanford University , 390 Serra Mall, Stanford, CA 94305 ,",
+            "place": [
+              "USA"
+            ]
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "John J",
+        "family": "Cherian",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Statistics, Sequoia Hall, Stanford University , 390 Serra Mall, Stanford, CA 94305 ,",
+            "place": [
+              "USA"
+            ]
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Emmanuel J",
+        "family": "Candès",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Departments of Mathematics and Statistics, Stanford University, Stanford, CA 94305 ,",
+            "place": [
+              "USA"
+            ]
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "286",
+    "published-online": {
+      "date-parts": [
+        [
+          2025,
+          3,
+          6
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "issue": "2",
+        "key": "2026030520014572100_qkaf008-B1",
+        "doi-asserted-by": "publisher",
+        "first-page": "609",
+        "DOI": "10.3982/ECTA9370",
+        "article-title": "Inference based on conditional moment inequalities",
+        "volume": "81",
+        "author": "Andrews",
+        "year": "2013",
+        "journal-title": "Econometrica: Journal of the Econometric Society"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B2",
+        "author": "Angelopoulos",
+        "year": "2021"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B3",
+        "author": "Bai",
+        "year": "2021"
+      },
+      {
+        "issue": "3",
+        "key": "2026030520014572100_qkaf008-B4",
+        "doi-asserted-by": "publisher",
+        "first-page": "727",
+        "DOI": "10.1093/biomet/asae010",
+        "article-title": "Selective conformal inference with false coverage-statement rate control",
+        "volume": "111",
+        "author": "Bao",
+        "year": "2024",
+        "journal-title": "Biometrika"
+      },
+      {
+        "issue": "2",
+        "key": "2026030520014572100_qkaf008-B5",
+        "doi-asserted-by": "publisher",
+        "first-page": "455",
+        "DOI": "10.1093/imaiai/iaaa017",
+        "article-title": "The limits of distribution-free conditional predictive inference",
+        "volume": "10",
+        "author": "Barber",
+        "year": "2020",
+        "journal-title": "Information and Inference: A Journal of the IMA"
+      },
+      {
+        "issue": "2",
+        "key": "2026030520014572100_qkaf008-B6",
+        "doi-asserted-by": "publisher",
+        "first-page": "816",
+        "DOI": "10.1214/23-AOS2276",
+        "article-title": "Conformal prediction beyond exchangeability",
+        "volume": "51",
+        "author": "Barber",
+        "year": "2023",
+        "journal-title": "Annals of Statistics"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B7",
+        "doi-asserted-by": "publisher",
+        "first-page": "499",
+        "DOI": "10.1162/153244302760200704",
+        "article-title": "Stability and generalization",
+        "volume": "2",
+        "author": "Bousquet",
+        "year": "2002",
+        "journal-title": "Journal of Machine Learning Research"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B8",
+        "doi-asserted-by": "publisher",
+        "first-page": "e2107794118",
+        "DOI": "10.1073/pnas.2107794118",
+        "article-title": "Distributional conformal prediction",
+        "volume": "118",
+        "author": "Chernozhukov",
+        "year": "2021",
+        "journal-title": "Proceedings of the National Academy of Sciences"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B9",
+        "author": "Deng",
+        "year": "2023"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B10",
+        "author": "Ding",
+        "year": "2023"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B11",
+        "author": "Dua",
+        "year": "2017"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B12",
+        "doi-asserted-by": "publisher",
+        "author": "Guan",
+        "year": "2020",
+        "DOI": "10.48550/arXiv.1908.08558"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B13",
+        "doi-asserted-by": "publisher",
+        "first-page": "33",
+        "DOI": "10.1093/biomet/asac040",
+        "article-title": "Localized conformal prediction: A generalized inference framework for conformal prediction",
+        "volume": "110",
+        "author": "Guan",
+        "year": "2022",
+        "journal-title": "Biometrika"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B14",
+        "author": "Guo",
+        "year": "2017"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B15",
+        "doi-asserted-by": "publisher",
+        "first-page": "305",
+        "DOI": "10.1214/aos/1176348524",
+        "article-title": "Regression rank scores and regression quantiles",
+        "volume": "20",
+        "author": "Gutenbrunner",
+        "year": "1992",
+        "journal-title": "Annals of Statistics"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B16",
+        "author": "Hébert-Johnson",
+        "year": "2018"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B17",
+        "doi-asserted-by": "publisher",
+        "author": "Jin",
+        "year": "2024",
+        "DOI": "10.48550/arXiv.2403.03868"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B18",
+        "author": "Jung",
+        "year": "2023"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B19",
+        "author": "Kim",
+        "year": "2019"
+      },
+      {
+        "issue": "1",
+        "key": "2026030520014572100_qkaf008-B20",
+        "doi-asserted-by": "publisher",
+        "first-page": "33",
+        "DOI": "10.2307/1913643",
+        "article-title": "Regression quantiles",
+        "volume": "46",
+        "author": "Koenker",
+        "year": "1978",
+        "journal-title": "Econometrica: Journal of the Econometric Society"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B21",
+        "author": "Koh",
+        "year": "2021"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B22",
+        "doi-asserted-by": "publisher",
+        "first-page": "71",
+        "DOI": "10.1111/rssb.12021",
+        "article-title": "Distribution-free prediction bands for non-parametric regression",
+        "volume": "76",
+        "author": "Lei",
+        "year": "2014",
+        "journal-title": "Journal of the Royal Statistical Society: Series B (Statistical Methodology)"
+      },
+      {
+        "issue": "5",
+        "key": "2026030520014572100_qkaf008-B23",
+        "doi-asserted-by": "publisher",
+        "first-page": "911",
+        "DOI": "10.1111/rssb.12445",
+        "article-title": "Conformal inference of counterfactuals and individual treatment effects",
+        "volume": "83",
+        "author": "Lei",
+        "year": "2021",
+        "journal-title": "Journal of the Royal Statistical Society Series B: Statistical Methodology"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B24",
+        "doi-asserted-by": "crossref",
+        "DOI": "10.1017/CBO9781316219232",
+        "volume-title": "An introduction to the theory of reproducing kernel Hilbert spaces",
+        "author": "Paulsen",
+        "year": "2016"
+      },
+      {
+        "issue": "5",
+        "key": "2026030520014572100_qkaf008-B25",
+        "doi-asserted-by": "publisher",
+        "first-page": "1680",
+        "DOI": "10.1093/jrsssb/qkad069",
+        "article-title": "Prediction sets adaptive to unknown covariate shift",
+        "volume": "85",
+        "author": "Qiu",
+        "year": "2023",
+        "journal-title": "Journal of the Royal Statistical Society Series B: Statistical Methodology"
+      },
+      {
+        "issue": "3",
+        "key": "2026030520014572100_qkaf008-B26",
+        "doi-asserted-by": "publisher",
+        "first-page": "660",
+        "DOI": "10.1016/S0377-2217(01)00264-8",
+        "article-title": "A data-driven software tool for enabling cooperative information sharing among police departments",
+        "volume": "141",
+        "author": "Redmond",
+        "year": "2002",
+        "journal-title": "European Journal of Operational Research"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B27",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1162/99608f92.03f00592",
+        "article-title": "With malice toward none: Assessing uncertainty via equalized coverage",
+        "volume": "2",
+        "author": "Romano",
+        "year": "2020",
+        "journal-title": "Harvard Data Science Review"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B28",
+        "author": "Romano",
+        "year": "2019"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B29",
+        "author": "Romano",
+        "year": "2020"
+      },
+      {
+        "issue": "1",
+        "key": "2026030520014572100_qkaf008-B30",
+        "doi-asserted-by": "publisher",
+        "first-page": "e261",
+        "DOI": "10.1002/sta4.261",
+        "article-title": "A comparison of some conformal quantile regression methods",
+        "volume": "9",
+        "author": "Sesia",
+        "year": "2020",
+        "journal-title": "Stat"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B31",
+        "author": "Sesia",
+        "year": "2021"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B32",
+        "author": "Taylor",
+        "year": "2019"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B33",
+        "author": "Tibshirani",
+        "year": "2019"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B34",
+        "author": "Vovk",
+        "year": "2012"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B35",
+        "volume-title": "Algorithmic learning in a random world",
+        "author": "Vovk",
+        "year": "2005"
+      },
+      {
+        "key": "2026030520014572100_qkaf008-B36",
+        "author": "Vovk",
+        "year": "2003"
+      },
+      {
+        "issue": "4",
+        "key": "2026030520014572100_qkaf008-B37",
+        "doi-asserted-by": "publisher",
+        "first-page": "943",
+        "DOI": "10.1093/jrsssb/qkae009",
+        "article-title": "Doubly robust calibration of prediction sets under covariate shift",
+        "volume": "86",
+        "author": "Yang",
+        "year": "2024",
+        "journal-title": "Journal of the Royal Statistical Society Series B: Statistical Methodology"
+      }
+    ],
+    "container-title": [
+      "Journal of the Royal Statistical Society Series B: Statistical Methodology"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://academic.oup.com/jrsssb/article-pdf/87/4/1100/62307967/qkaf008.pdf",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "syndication"
+      },
+      {
+        "URL": "https://academic.oup.com/jrsssb/article-pdf/87/4/1100/62307967/qkaf008.pdf",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2026,
+          3,
+          6
+        ]
+      ],
+      "date-time": "2026-03-06T01:01:56Z",
+      "timestamp": 1772758916000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://academic.oup.com/jrsssb/article/87/4/1100/8058684"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2025,
+          3,
+          6
+        ]
+      ]
+    },
+    "references-count": 37,
+    "journal-issue": {
+      "issue": "4",
+      "published-online": {
+        "date-parts": [
+          [
+            2025,
+            3,
+            6
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2025,
+            9,
+            15
+          ]
+        ]
+      }
+    },
+    "URL": "https://doi.org/10.1093/jrsssb/qkaf008",
+    "relation": {},
+    "ISSN": [
+      "1369-7412",
+      "1467-9868"
+    ],
+    "issn-type": [
+      {
+        "value": "1369-7412",
+        "type": "print"
+      },
+      {
+        "value": "1467-9868",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published-other": {
+      "date-parts": [
+        [
+          2025,
+          9
+        ]
+      ]
+    },
+    "published": {
+      "date-parts": [
+        [
+          2025,
+          3,
+          6
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,788 @@
+{
+  "url": "https://api.crossref.org/works/10.1145/3419394.3423629",
+  "data": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          19
+        ]
+      ],
+      "date-time": "2026-11-19T04:28:45Z",
+      "timestamp": 1795062525986,
+      "version": "4.10.2"
+    },
+    "publisher-location": "New York, NY, USA",
+    "reference-count": 70,
+    "publisher": "ACM",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2020,
+              10,
+              27
+            ]
+          ],
+          "date-time": "2020-10-27T00:00:00Z",
+          "timestamp": 1603756800000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "https://www.acm.org/publications/policies/copyright_policy#Background"
+      }
+    ],
+    "funder": [
+      {
+        "DOI": "10.13039/501100004801",
+        "name": "National Science Foundation",
+        "doi-asserted-by": "publisher",
+        "award": [
+          "CNS-1903880,CNS-1915122,CNS-1618339,CNS-1617729,CNS-1814322,CNS-1831140,CNS-1836772,CNS-1901103"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "CNS-1903880,CNS-1915122,CNS-1618339,CNS-1617729,CNS-1814322,CNS-1831140,CNS-1836772,CNS-1901103"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/501100004801",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "dl.acm.org"
+      ],
+      "crossmark-restriction": true
+    },
+    "short-container-title": [],
+    "published-print": {
+      "date-parts": [
+        [
+          2020,
+          10,
+          27
+        ]
+      ]
+    },
+    "DOI": "10.1145/3419394.3423629",
+    "type": "proceedings-article",
+    "created": {
+      "date-parts": [
+        [
+          2020,
+          10,
+          22
+        ]
+      ],
+      "date-time": "2020-10-22T20:30:22Z",
+      "timestamp": 1603398622000
+    },
+    "page": "176-193",
+    "update-policy": "https://doi.org/10.1145/crossmark-policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 213,
+    "title": [
+      "Lumos5G"
+    ],
+    "prefix": "10.1145",
+    "author": [
+      {
+        "given": "Arvind",
+        "family": "Narayanan",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Eman",
+        "family": "Ramadan",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Rishabh",
+        "family": "Mehta",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Xinyue",
+        "family": "Hu",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Qingxu",
+        "family": "Liu",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Rostand A. K.",
+        "family": "Fezeu",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Udhaya Kumar",
+        "family": "Dayalan",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Saurabh",
+        "family": "Verma",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Peiqi",
+        "family": "Ji",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Tao",
+        "family": "Li",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Feng",
+        "family": "Qian",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Zhi-Li",
+        "family": "Zhang",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computer Science &amp; Engineering, University of Minnesota -- Twin Cities, U.S.A."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "320",
+    "published-online": {
+      "date-parts": [
+        [
+          2020,
+          10,
+          27
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "key": "e_1_3_2_2_1_1",
+        "volume-title": "Mobile Throughput Guidance Inband Signaling Protocol. (2017). Retrieved",
+        "year": "2020",
+        "unstructured": "2017. Mobile Throughput Guidance Inband Signaling Protocol. (2017). Retrieved June 2020 from https://tools.ietf.org/html/draft-flinck-mobile-throughput-guidance-04"
+      },
+      {
+        "key": "e_1_3_2_2_2_1",
+        "volume-title": "Retrieved",
+        "author": "Android Developers IdentityNr",
+        "year": "2019",
+        "unstructured": "2019. CellIdentityNr | Android Developers. (2019). Retrieved June 2020 from https://developer.android.com/reference/kotlin/android/telephony/CellIdentityNr"
+      },
+      {
+        "key": "e_1_3_2_2_3_1",
+        "volume-title": "Retrieved",
+        "author": "Android Developers InfoNr",
+        "year": "2019",
+        "unstructured": "2019. CellInfoNr | Android Developers. (2019). Retrieved June 2020 from https://developer.android.com/reference/kotlin/android/telephony/CellInfoNr"
+      },
+      {
+        "key": "e_1_3_2_2_4_1",
+        "volume-title": "Retrieved",
+        "author": "Android Developers StrengthNr",
+        "year": "2019",
+        "unstructured": "2019. CellSignalStrengthNr | Android Developers. (2019). Retrieved June 2020 from https://developer.android.com/reference/kotlin/android/telephony/CellSignalStrengthNr"
+      },
+      {
+        "key": "e_1_3_2_2_5_1",
+        "volume-title": "Developers: It's your 5G wake-up call - time to start designing it into your apps. (2019). Retrieved",
+        "year": "2020",
+        "unstructured": "2019. Developers: It's your 5G wake-up call - time to start designing it into your apps. (2019). Retrieved June 2020 from https://www.qualcomm.com/news/onq/2019/05/10/developers-its-your-5g-wake-call-time-start-designing-it-your-apps"
+      },
+      {
+        "key": "e_1_3_2_2_6_1",
+        "volume-title": "Retrieved",
+        "author": "2019. Google Employee | Google Groups",
+        "year": "2019",
+        "unstructured": "2019. Google Employee | Google Groups. (2019). Retrieved June 2020 from https://groups.google.com/d/msg/google-maps-js-api-v3/hDRO4oHVSeM/osOYQYXg2oUJ"
+      },
+      {
+        "key": "e_1_3_2_2_7_1",
+        "volume-title": "Huawei Launches 5G Multi-mode Chipset and 5G CPE Pro. (2019). Retrieved",
+        "year": "2020",
+        "unstructured": "2019. Huawei Launches 5G Multi-mode Chipset and 5G CPE Pro. (2019). Retrieved June 2020 from https://www.huawei.com/en/press-events/news/2019/1/huawei-5g-multi-mode-chipset-5g-cpe-pro"
+      },
+      {
+        "key": "e_1_3_2_2_8_1",
+        "volume-title": "iperf3 -- iperf3 3.7 documentation. (2019). Retrieved",
+        "year": "2020",
+        "unstructured": "2019. iperf3 -- iperf3 3.7 documentation. (2019). Retrieved June 2020 from https://software.es.net/iperf/"
+      },
+      {
+        "key": "e_1_3_2_2_9_1",
+        "volume-title": "Map and Tile Coordinates | Maps JavaScript API | Google Developers. (2019). Retrieved",
+        "year": "2020",
+        "unstructured": "2019. Map and Tile Coordinates | Maps JavaScript API | Google Developers. (2019). Retrieved June 2020 from https://developers.google.com/maps/documentation/javascript/coordinates"
+      },
+      {
+        "key": "e_1_3_2_2_10_1",
+        "volume-title": "Snapdragon X50 5G modem-RF system. (2019). Retrieved",
+        "year": "2020",
+        "unstructured": "2019. Snapdragon X50 5G modem-RF system. (2019). Retrieved June 2020 from https://www.qualcomm.com/products/snapdragon-x50-5g-modem"
+      },
+      {
+        "key": "e_1_3_2_2_11_1",
+        "volume-title": "Speedtest by Ookla. (2019). Retrieved",
+        "year": "2020",
+        "unstructured": "2019. Speedtest by Ookla. (2019). Retrieved June 2020 from https://www.speedtest.net/"
+      },
+      {
+        "key": "e_1_3_2_2_12_1",
+        "volume-title": "Tiles - Google Maps: Coordinates, Tile Bounds and Projection - conversion to EPSG:3785 and EPSG:4326 (WGS84) - Map-Tiler. (2019). Retrieved",
+        "year": "2020",
+        "unstructured": "2019. Tiles - Google Maps: Coordinates, Tile Bounds and Projection - conversion to EPSG:3785 and EPSG:4326 (WGS84) - Map-Tiler. (2019). Retrieved June 2020 from https://www.maptiler.com/google-maps-coordinates-tile-bounds-projection/"
+      },
+      {
+        "key": "e_1_3_2_2_13_1",
+        "volume-title": "5G Coverage Map: This is 5G Built Right | Verizon. (2020). Retrieved",
+        "year": "2020",
+        "unstructured": "2020. 5G Coverage Map: This is 5G Built Right | Verizon. (2020). Retrieved June 2020 from https://www.verizon.com/5g/coverage-map/"
+      },
+      {
+        "key": "e_1_3_2_2_14_1",
+        "volume-title": "5G Low Latency Requirements. (2020). Retrieved",
+        "year": "2020",
+        "unstructured": "2020. 5G Low Latency Requirements. (2020). Retrieved June 2020 from https://broadbandlibrary.com/5g-low-latency-requirements/"
+      },
+      {
+        "key": "e_1_3_2_2_15_1",
+        "volume-title": "5G spectrum: strategies to maximize all bands. (2020). Retrieved",
+        "year": "2020",
+        "unstructured": "2020. 5G spectrum: strategies to maximize all bands. (2020). Retrieved June 2020 from https://www.ericsson.com/en/networks/trending/hot-topics/5g-spectrum-strategies-to-maximize-all-bands"
+      },
+      {
+        "key": "e_1_3_2_2_16_1",
+        "volume-title": "getSpeed() | Location | Android Developers. (2020). Retrieved",
+        "year": "2020",
+        "unstructured": "2020. getSpeed() | Location | Android Developers. (2020). Retrieved June 2020 from https://developer.android.com/reference/android/location/Location#getSpeed()"
+      },
+      {
+        "key": "e_1_3_2_2_17_1",
+        "volume-title": "Keysight Technologies | Engineering the 5G World Just Got Easier. (2020). Retrieved",
+        "year": "2020",
+        "unstructured": "2020. Keysight Technologies | Engineering the 5G World Just Got Easier. (2020). Retrieved June 2020 from https://www.keysight.com/us/en/assets/7119-1223/ebooks/Engineering-the-5G-World.pdf"
+      },
+      {
+        "key": "e_1_3_2_2_18_1",
+        "volume-title": "Snapdragon X55 5G modem-RF system. (2020). Retrieved",
+        "year": "2020",
+        "unstructured": "2020. Snapdragon X55 5G modem-RF system. (2020). Retrieved June 2020 from https://www.qualcomm.com/products/snapdragon-x55-5g-modem"
+      },
+      {
+        "key": "e_1_3_2_2_19_1",
+        "first-page": "15",
+        "volume-title": "Retrieved",
+        "author": "Project Generation Partnership",
+        "year": "2020",
+        "unstructured": "3rd Generation Partnership Project. 2019. Release 15. (April 2019). Retrieved June 2020 from https://www.3gpp.org/release-15"
+      },
+      {
+        "key": "e_1_3_2_2_20_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3308558.3313726"
+      },
+      {
+        "key": "e_1_3_2_2_21_1",
+        "volume-title": "Asymptotic theory of certain\" goodness of fit\" criteria based on stochastic processes. The annals of mathematical statistics",
+        "author": "Anderson Theodore W",
+        "year": "1952",
+        "unstructured": "Theodore W Anderson and Donald A Darling. 1952. Asymptotic theory of certain\" goodness of fit\" criteria based on stochastic processes. The annals of mathematical statistics (1952), 193--212."
+      },
+      {
+        "key": "e_1_3_2_2_22_1",
+        "volume-title": "Proceedings of 15th International Conference on Distributed Computing Systems.136--143",
+        "author": "Bakre A.",
+        "unstructured": "A. Bakre and B. R. Badrinath. 1995. I-TCP: indirect TCP for mobile hosts. In Proceedings of 15th International Conference on Distributed Computing Systems.136--143."
+      },
+      {
+        "key": "e_1_3_2_2_23_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/215530.215544"
+      },
+      {
+        "key": "e_1_3_2_2_24_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/269790.269794"
+      },
+      {
+        "key": "e_1_3_2_2_25_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/COMST.2017.2694140"
+      },
+      {
+        "key": "e_1_3_2_2_26_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/INFOCOM.2017.8057113"
+      },
+      {
+        "key": "e_1_3_2_2_27_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/2500423.2500433"
+      },
+      {
+        "key": "e_1_3_2_2_28_1",
+        "first-page": "613",
+        "article-title": "Tests for departure from normality. Empirical results for the distributions of b2 and b",
+        "volume": "60",
+        "author": "Pearson RALPH",
+        "year": "1973",
+        "unstructured": "RALPH D'AGOSTINO and Egon S Pearson. 1973. Tests for departure from normality. Empirical results for the distributions of b2 and b. Biometrika 60, 3 (1973), 613--622.",
+        "journal-title": "Biometrika"
+      },
+      {
+        "key": "e_1_3_2_2_29_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1093/biomet/58.2.341"
+      },
+      {
+        "key": "e_1_3_2_2_30_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1214/aos/1013203451"
+      },
+      {
+        "key": "e_1_3_2_2_31_1",
+        "volume-title": "A Global Perspective of 5G Network Performance. (2019). Retrieved",
+        "author": "Signals Research Group",
+        "year": "2020",
+        "unstructured": "Signals Research Group. 2019. A Global Perspective of 5G Network Performance. (2019). Retrieved June 2020 from https://www.qualcomm.com/media/documents/files/signals-research-group-s-5g-benchmark-study.pdf"
+      },
+      {
+        "key": "e_1_3_2_2_32_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/1090191.1080110"
+      },
+      {
+        "key": "e_1_3_2_2_33_1",
+        "doi-asserted-by": "publisher",
+        "unstructured": "K. Heimann J. Tiemann D. Yolchyan and C. Wietfeld. 2019. Experimental 5G mmWave Beam Tracking Testbed for Evaluation of Vehicular Communications. In 2019 IEEE 2nd 5G World Forum (5GWF).382--387. https://doi.org/10.1109/5GWF.2019.8911692",
+        "DOI": "10.1109/5GWF.2019.8911692"
+      },
+      {
+        "key": "e_1_3_2_2_34_1",
+        "volume-title": "ICC 2019 - 2019 IEEE International Conference on Communications (ICC).1--6.",
+        "author": "Herath J. D.",
+        "unstructured": "J. D. Herath, A. Seetharam, and A. Ramesh. 2019. A Deep Learning Model for Wireless Channel Quality Prediction. In ICC 2019 - 2019 IEEE International Conference on Communications (ICC).1--6."
+      },
+      {
+        "key": "e_1_3_2_2_35_1",
+        "volume-title": "Long short-term memory. Neural computation 9, 8",
+        "author": "Hochreiter Sepp",
+        "year": "1997",
+        "unstructured": "Sepp Hochreiter and Jürgen Schmidhuber. 1997. Long short-term memory. Neural computation 9, 8 (1997), 1735--1780."
+      },
+      {
+        "key": "e_1_3_2_2_36_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/MCOM.2014.6894454"
+      },
+      {
+        "key": "e_1_3_2_2_37_1",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Kurt Hornik Maxwell Stinchcombe Halbert White et al. 1989. Multilayer feedforward networks are universal approximators. Neural networks 2 5 (1989) 359--366.",
+        "DOI": "10.1016/0893-6080(89)90020-8"
+      },
+      {
+        "key": "e_1_3_2_2_38_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/2413176.2413189"
+      },
+      {
+        "key": "e_1_3_2_2_39_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.3390/s19092057"
+      },
+      {
+        "key": "e_1_3_2_2_40_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/VTCFall.2017.8288043"
+      },
+      {
+        "key": "e_1_3_2_2_41_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/MWC.001.1900241"
+      },
+      {
+        "key": "e_1_3_2_2_42_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/2699343.2699345"
+      },
+      {
+        "key": "e_1_3_2_2_43_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/TNET.2014.2362928"
+      },
+      {
+        "key": "e_1_3_2_2_44_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/TNET.2014.2362928"
+      },
+      {
+        "key": "e_1_3_2_2_45_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1007/978-3-030-15986-3_3"
+      },
+      {
+        "key": "e_1_3_2_2_46_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/1254882.1254894"
+      },
+      {
+        "key": "e_1_3_2_2_47_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3366423.3380169"
+      },
+      {
+        "key": "e_1_3_2_2_48_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3405837.3411394"
+      },
+      {
+        "key": "e_1_3_2_2_49_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3310165.3310174"
+      },
+      {
+        "key": "e_1_3_2_2_50_1",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Rohit Prabhavalkar Kanishka Rao Tara Sainath Bo Li Leif Johnson and Navdeep Jaitly. 2017. A Comparison of Sequence-to-Sequence Models for Speech Recognition. http://www.isca-speech.org/archive/Interspeech_2017/pdfs/0233.PDF",
+        "DOI": "10.21437/Interspeech.2017-233"
+      },
+      {
+        "key": "e_1_3_2_2_51_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/TCOMM.2015.2434384"
+      },
+      {
+        "key": "e_1_3_2_2_52_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3032970.3032974"
+      },
+      {
+        "key": "e_1_3_2_2_53_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/2240136.2240137"
+      },
+      {
+        "key": "e_1_3_2_2_54_1",
+        "volume-title": "2017 IFIP/IEEE Symposium on Integrated Network and Service Management (IM).624--627",
+        "author": "Samba A.",
+        "unstructured": "A. Samba, Y. Busnel, A. Blanc, P. Dooze, and G. Simon. 2017. Instantaneous throughput prediction in cellular networks: Which information is needed?. In 2017 IFIP/IEEE Symposium on Integrated Network and Service Management (IM).624--627."
+      },
+      {
+        "key": "e_1_3_2_2_55_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/TMTT.2016.2574851"
+      },
+      {
+        "key": "e_1_3_2_2_56_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/1859995.1860006"
+      },
+      {
+        "key": "e_1_3_2_2_57_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/JSAC.2009.091010"
+      },
+      {
+        "key": "e_1_3_2_2_58_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/2934872.2934898"
+      },
+      {
+        "key": "e_1_3_2_2_59_1",
+        "unstructured": "Ilya Sutskever Oriol Vinyals and Quoc V Le. 2014. Sequence to sequence learning with neural networks. In Advances in neural information processing systems.3104--3112."
+      },
+      {
+        "key": "e_1_3_2_2_60_1",
+        "volume-title": "2016 IEEE 35th Symposium on Reliable Distributed Systems (SRDS).297--306",
+        "author": "Theera-Ampornpunt N.",
+        "unstructured": "N. Theera-Ampornpunt, T. Mangla, S. Bagchi, R. Panta, K. Joshi, M. Ammar, and E. Zegura. 2016. TANGO: Toward a More Reliable Mobile Streaming through Cooperation between Cellular Network and Mobile Devices. In 2016 IEEE 35th Symposium on Reliable Distributed Systems (SRDS).297--306."
+      },
+      {
+        "key": "e_1_3_2_2_61_1",
+        "volume-title": "2015 IEEE International Conference on Computer Vision (ICCV).4534--4542",
+        "author": "Venugopalan S.",
+        "unstructured": "S. Venugopalan, M. Rohrbach, J. Donahue, R. Mooney, T. Darrell, and K. Saenko. 2015. Sequence to Sequence -- Video to Text. In 2015 IEEE International Conference on Computer Vision (ICCV).4534--4542."
+      },
+      {
+        "key": "e_1_3_2_2_62_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3009808.3009819"
+      },
+      {
+        "key": "e_1_3_2_2_63_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/2462456.2464453"
+      },
+      {
+        "key": "e_1_3_2_2_64_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/2785956.2787486"
+      },
+      {
+        "key": "e_1_3_2_2_65_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3405672.3409489"
+      },
+      {
+        "key": "e_1_3_2_2_66_1",
+        "volume-title": "Felix Gutierrez Jr, and Theodore S Rappaport",
+        "author": "Zhao Hang",
+        "year": "2013",
+        "unstructured": "Hang Zhao, Rimma Mayzus, Shu Sun, Mathew Samimi, Jocelyn K Schulz, Yaniv Azar, Kevin Wang, George N Wong, Felix Gutierrez Jr, and Theodore S Rappaport. 2013. 28 GHz millimeter wave cellular communication measurements for reflection and penetration loss in and around buildings in New York city.. In ICC.5163--5167."
+      },
+      {
+        "key": "e_1_3_2_2_67_1",
+        "volume-title": "User body effect on phased array in user equipment for the 5G mmWave communication system",
+        "author": "Zhao Kun",
+        "year": "2016",
+        "unstructured": "Kun Zhao, Jakob Helander, Daniel Sjöberg, Sailing He, Thomas Bolin, and Zhinong Ying. 2016. User body effect on phased array in user equipment for the 5G mmWave communication system. IEEE antennas and wireless propagation letters 16 (2016), 864--867."
+      },
+      {
+        "key": "e_1_3_2_2_68_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/LAWP.2016.2611674"
+      },
+      {
+        "key": "e_1_3_2_2_69_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/2639108.2639121"
+      },
+      {
+        "key": "e_1_3_2_2_70_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/2699343.2699359"
+      }
+    ],
+    "event": {
+      "name": "IMC '20: ACM Internet Measurement Conference",
+      "location": "Virtual Event USA",
+      "acronym": "IMC '20",
+      "sponsor": [
+        "SIGCOMM ACM Special Interest Group on Data Communication",
+        "SIGMETRICS ACM Special Interest Group on Measurement and Evaluation"
+      ]
+    },
+    "container-title": [
+      "Proceedings of the ACM Internet Measurement Conference"
+    ],
+    "original-title": [],
+    "link": [
+      {
+        "URL": "https://dl.acm.org/doi/10.1145/3419394.3423629",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://dl.acm.org/doi/pdf/10.1145/3419394.3423629",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2025,
+          12,
+          15
+        ]
+      ],
+      "date-time": "2025-12-15T23:37:29Z",
+      "timestamp": 1765841849000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://dl.acm.org/doi/10.1145/3419394.3423629"
+      }
+    },
+    "subtitle": [
+      "Mapping and Predicting Commercial mmWave 5G Throughput"
+    ],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2020,
+          10,
+          27
+        ]
+      ]
+    },
+    "references-count": 70,
+    "alternative-id": [
+      "10.1145/3419394.3423629",
+      "10.1145/3419394"
+    ],
+    "URL": "https://doi.org/10.1145/3419394.3423629",
+    "relation": {},
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2020,
+          10,
+          27
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "2020-10-27",
+        "order": 3,
+        "name": "published",
+        "label": "Published",
+        "group": {
+          "name": "publication_history",
+          "label": "Publication History"
+        }
+      }
+    ]
+  }
+}

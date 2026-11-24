@@ -1,0 +1,100 @@
+{
+  "url": "https://proceedings.mlr.press/v202/bhatnagar23a.html",
+  "data": {
+    "meta": [
+      [
+        "viewport",
+        "width=device-width, initial-scale=1"
+      ],
+      [
+        "description",
+        "Improved Online Conformal Prediction via Strongly Adaptive Online LearningAadyot Bhatnagar, Huan Wang, Caiming Xiong, Yu BaiWe study the probl..."
+      ],
+      [
+        "citation_publisher",
+        "PMLR"
+      ],
+      [
+        "citation_title",
+        "Improved Online Conformal Prediction via Strongly Adaptive Online Learning"
+      ],
+      [
+        "citation_language",
+        "en"
+      ],
+      [
+        "citation_abstract_html_url",
+        "https://proceedings.mlr.press/v202/bhatnagar23a.html"
+      ],
+      [
+        "citation_pdf_url",
+        "https://proceedings.mlr.press/v202/bhatnagar23a/bhatnagar23a.pdf"
+      ],
+      [
+        "citation_firstpage",
+        "2337"
+      ],
+      [
+        "citation_lastpage",
+        "2363"
+      ],
+      [
+        "citation_author",
+        "Aadyot Bhatnagar"
+      ],
+      [
+        "citation_author",
+        "Huan Wang"
+      ],
+      [
+        "citation_author",
+        "Caiming Xiong"
+      ],
+      [
+        "citation_author",
+        "Yu Bai"
+      ],
+      [
+        "citation_publication_date",
+        "2023/07/03"
+      ],
+      [
+        "citation_inbook_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_conference_title",
+        "International Conference on Machine Learning"
+      ],
+      [
+        "citation_issn",
+        "2640-3498"
+      ],
+      [
+        "twitter:card",
+        "summary"
+      ],
+      [
+        "twitter:title",
+        "Improved Online Conformal Prediction via Strongly Adaptive Online Learning"
+      ],
+      [
+        "twitter:site",
+        "@MLResearchPress"
+      ],
+      [
+        "twitter:description",
+        "We study the problem of uncertainty quantification via prediction sets, in an online setting where the data distribution may vary arbitrarily over time. Rece..."
+      ],
+      [
+        "twitter:image",
+        "https://proceedings.mlr.press/v202/assets/images/logo-pmlr.png"
+      ],
+      [
+        "twitter:image:alt",
+        "PMLR Logo"
+      ]
+    ],
+    "text": "Improved Online Conformal Prediction via Strongly Adaptive Online Learning Proceedings of Machine Learning Research Volume 202 JMLR DMLR TMLR MLOSS FAQ Submission Format [ edit ] Improved Online Conformal Prediction via Strongly Adaptive Online Learning Aadyot Bhatnagar, Huan Wang, Caiming Xiong, Yu Bai Proceedings of the 40th International Conference on Machine Learning , PMLR 202:2337-2363, 2023. Abstract We study the problem of uncertainty quantification via prediction sets, in an online setting where the data distribution may vary arbitrarily over time. Recent work develops online conformal prediction techniques that leverage regret minimization algorithms from the online learning literature to learn prediction sets with approximately valid coverage and small regret. However, standard regret minimization is insufficient for handling changing environments, where performance guarantees may be desired not only over the full time horizon but also in all (sub-)intervals of time. We develop new online conformal prediction methods that minimize the strongly adaptive regret , which measures the worst-case regret over all intervals of a fixed length. We prove that our methods achieve near-optimal strongly adaptive regret for all interval lengths simultaneously, and approximately valid coverage. Experiments show that our methods consistently obtain better coverage and smaller prediction sets than existing methods on real-world tasks such as time series forecasting and image classification under distribution shift. Cite this Paper BibTeX @InProceedings{pmlr-v202-bhatnagar23a,\n  title = \t {Improved Online Conformal Prediction via Strongly Adaptive Online Learning},\n  author =       {Bhatnagar, Aadyot and Wang, Huan and Xiong, Caiming and Bai, Yu},\n  booktitle = \t {Proceedings of the 40th International Conference on Machine Learning},\n  pages = \t {2337--2363},\n  year = \t {2023},\n  editor = \t {Krause, Andreas and Brunskill, Emma and Cho, Kyunghyun and Engelhardt, Barbara and Sabato, Sivan and Scarlett, Jonathan},\n  volume = \t {202},\n  series = \t {Proceedings of Machine Learning Research},\n  month = \t {23--29 Jul},\n  publisher =    {PMLR},\n  pdf = \t {https://proceedings.mlr.press/v202/bhatnagar23a/bhatnagar23a.pdf},\n  url = \t {https://proceedings.mlr.press/v202/bhatnagar23a.html},\n  abstract = \t {We study the problem of uncertainty quantification via prediction sets, in an online setting where the data distribution may vary arbitrarily over time. Recent work develops online conformal prediction techniques that leverage regret minimization algorithms from the online learning literature to learn prediction sets with approximately valid coverage and small regret. However, standard regret minimization is insufficient for handling changing environments, where performance guarantees may be desired not only over the full time horizon but also in all (sub-)intervals of time. We develop new online conformal prediction methods that minimize the strongly adaptive regret , which measures the worst-case regret over all intervals of a fixed length. We prove that our methods achieve near-optimal strongly adaptive regret for all interval lengths simultaneously, and approximately valid coverage. Experiments show that our methods consistently obtain better coverage and smaller prediction sets than existing methods on real-world tasks such as time series forecasting and image classification under distribution shift.}\n} Copy to Clipboard Download Endnote %0 Conference Paper\n%T Improved Online Conformal Prediction via Strongly Adaptive Online Learning\n%A Aadyot Bhatnagar\n%A Huan Wang\n%A Caiming Xiong\n%A Yu Bai\n%B Proceedings of the 40th International Conference on Machine Learning\n%C Proceedings of Machine Learning Research\n%D 2023\n%E Andreas Krause\n%E Emma Brunskill\n%E Kyunghyun Cho\n%E Barbara Engelhardt\n%E Sivan Sabato\n%E Jonathan Scarlett\t\n%F pmlr-v202-bhatnagar23a\n%I PMLR\n%P 2337--2363\n%U https://proceedings.mlr.press/v202/bhatnagar23a.html\n%V 202\n%X We study the problem of uncertainty quantification via prediction sets, in an online setting where the data distribution may vary arbitrarily over time. Recent work develops online conformal prediction techniques that leverage regret minimization algorithms from the online learning literature to learn prediction sets with approximately valid coverage and small regret. However, standard regret minimization is insufficient for handling changing environments, where performance guarantees may be desired not only over the full time horizon but also in all (sub-)intervals of time. We develop new online conformal prediction methods that minimize the strongly adaptive regret , which measures the worst-case regret over all intervals of a fixed length. We prove that our methods achieve near-optimal strongly adaptive regret for all interval lengths simultaneously, and approximately valid coverage. Experiments show that our methods consistently obtain better coverage and smaller prediction sets than existing methods on real-world tasks such as time series forecasting and image classification under distribution shift. Copy to Clipboard Download APA Bhatnagar, A., Wang, H., Xiong, C. & Bai, Y.. (2023). Improved Online Conformal Prediction via Strongly Adaptive Online Learning. Proceedings of the 40th International Conference on Machine Learning , in Proceedings of Machine Learning Research 202:2337-2363 Available from https://proceedings.mlr.press/v202/bhatnagar23a.html. Copy to Clipboard Download Related Material Download PDF OpenReview This site last compiled Sun, 04 Oct 2026 21:55:21 +0000 Github Account Copyright © The authors and PMLR 2026. MLResearchPress"
+  }
+}

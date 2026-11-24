@@ -1,0 +1,9 @@
+{
+  "baseline_configurations": 792,
+  "baseline_actions": 220044,
+  "baseline_responses": 15120,
+  "baseline_contrasts": 720,
+  "reconstructed_window_configurations": 1008,
+  "old_offer_decompositions": 1848,
+  "status": "passed"
+}

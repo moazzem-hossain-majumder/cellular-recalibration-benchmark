@@ -1,0 +1,666 @@
+{
+  "url": "https://api.crossref.org/works/10.1145/3478535",
+  "data": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          20
+        ]
+      ],
+      "date-time": "2026-11-20T23:35:05Z",
+      "timestamp": 1795217705104,
+      "version": "4.10.3"
+    },
+    "reference-count": 62,
+    "publisher": "Association for Computing Machinery (ACM)",
+    "issue": "6",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2021,
+              9,
+              30
+            ]
+          ],
+          "date-time": "2021-09-30T00:00:00Z",
+          "timestamp": 1632960000000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "funder": [
+      {
+        "name": "National Science Foundation Graduate Research Fellowship Program and a Berkeley Fellowship"
+      },
+      {
+        "DOI": "10.13039/100000183",
+        "name": "Army Research Office",
+        "doi-asserted-by": "crossref",
+        "award": [
+          "W911NF-16-1-0368"
+        ],
+        "award-info": [
+          {
+            "award-number": [
+              "W911NF-16-1-0368"
+            ]
+          }
+        ],
+        "id": [
+          {
+            "id": "10.13039/100000183",
+            "id-type": "DOI",
+            "asserted-by": "crossref"
+          }
+        ]
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "dl.acm.org"
+      ],
+      "crossmark-restriction": true
+    },
+    "short-container-title": [
+      "J. ACM"
+    ],
+    "published-print": {
+      "date-parts": [
+        [
+          2021,
+          12,
+          31
+        ]
+      ]
+    },
+    "abstract": "<jats:p>While improving prediction accuracy has been the focus of machine learning in recent years, this alone does not suffice for reliable decision-making. Deploying learning systems in consequential settings also requires calibrating and communicating the uncertainty of predictions. To convey instance-wise uncertainty for prediction tasks, we show how to generate set-valued predictions from a black-box predictor that controls the expected loss on future test points at a user-specified level. Our approach provides explicit finite-sample guarantees for any dataset by using a holdout set to calibrate the size of the prediction sets. This framework enables simple, distribution-free, rigorous error control for many tasks, and we demonstrate it in five large-scale machine learning problems: (1) classification problems where some mistakes are more costly than others; (2) multi-label classification, where each observation has multiple associated labels; (3) classification problems where the labels have a hierarchical structure; (4) image segmentation, where we wish to predict a set of pixels containing an object of interest; and (5) protein structure prediction. Last, we discuss extensions to uncertainty quantification for ranking, metric learning, and distributionally robust learning.</jats:p>",
+    "DOI": "10.1145/3478535",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2021,
+          9,
+          30
+        ]
+      ],
+      "date-time": "2021-09-30T16:03:15Z",
+      "timestamp": 1633017795000
+    },
+    "page": "1-34",
+    "update-policy": "https://doi.org/10.1145/crossmark-policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 155,
+    "title": [
+      "Distribution-free, Risk-controlling Prediction Sets"
+    ],
+    "prefix": "10.1145",
+    "volume": "68",
+    "author": [
+      {
+        "given": "Stephen",
+        "family": "Bates",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "UC Berkeley, Berkeley, CA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Anastasios",
+        "family": "Angelopoulos",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "UC Berkeley, Berkeley, CA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Lihua",
+        "family": "Lei",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Stanford University, Stanford, CA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Jitendra",
+        "family": "Malik",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "UC Berkeley, Berkeley, CA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Michael",
+        "family": "Jordan",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "UC Berkeley, Berkeley, CA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "320",
+    "published-online": {
+      "date-parts": [
+        [
+          2021,
+          9,
+          30
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "key": "e_1_2_1_1_1",
+        "volume-title": "International Conference on Learning Representations (ICLR).",
+        "author": "Angelopoulos Anastasios Nikolas"
+      },
+      {
+        "key": "e_1_2_1_2_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1214/aoms/1177728077"
+      },
+      {
+        "key": "e_1_2_1_3_1",
+        "volume-title": "The limits of distribution-free conditional predictive inference. Inf. Infer. 10 (08",
+        "author": "Barber Rina",
+        "year": "2020"
+      },
+      {
+        "key": "e_1_2_1_4_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1214/20-AOS1965"
+      },
+      {
+        "key": "e_1_2_1_5_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1214/009117904000000360"
+      },
+      {
+        "key": "e_1_2_1_6_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/j.patcog.2012.03.002"
+      },
+      {
+        "key": "e_1_2_1_7_1",
+        "volume-title": "The Theory of Probabilities",
+        "author": "Bernstein Sergei"
+      },
+      {
+        "key": "e_1_2_1_8_1",
+        "first-page": "1",
+        "article-title": "HyperKvasir, a comprehensive multi-class image and video dataset for gastrointestinal endoscopy. Sci",
+        "volume": "7",
+        "author": "Borgli Hanna",
+        "year": "2020",
+        "journal-title": "Data"
+      },
+      {
+        "key": "e_1_2_1_9_1",
+        "doi-asserted-by": "crossref",
+        "unstructured": "Lawrence D. Brown Tony Cai and Anirban DasGupta. 2001. Interval estimation for a binomial proportion. Statist. Sci. (2001) 101–117. DOI:DOI:https://doi.org/10.1214/ss/1009213286  Lawrence D. Brown Tony Cai and Anirban DasGupta. 2001. Interval estimation for a binomial proportion. Statist. Sci. (2001) 101–117. DOI:DOI:https://doi.org/10.1214/ss/1009213286",
+        "DOI": "10.1214/ss/1009213286"
+      },
+      {
+        "key": "e_1_2_1_10_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.5555/3454287.3455291"
+      },
+      {
+        "key": "e_1_2_1_11_1",
+        "volume-title": "Duchi",
+        "author": "Cauchois Maxime",
+        "year": "2020"
+      },
+      {
+        "key": "e_1_2_1_12_1",
+        "first-page": "1",
+        "article-title": "Knowing what you know: Valid and validated confidence sets in multiclass and multilabel prediction",
+        "volume": "22",
+        "author": "Cauchois Maxime",
+        "year": "2021",
+        "journal-title": "J. Mach. Learn. Res."
+      },
+      {
+        "key": "e_1_2_1_13_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1214/009052607000000910"
+      },
+      {
+        "key": "e_1_2_1_14_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.5555/1577069.1755862"
+      },
+      {
+        "key": "e_1_2_1_15_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/CVPR.2009.5206848"
+      },
+      {
+        "key": "e_1_2_1_16_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.5555/2354409.2355033"
+      },
+      {
+        "key": "e_1_2_1_17_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1007/978-3-030-59725-2_26"
+      },
+      {
+        "key": "e_1_2_1_18_1",
+        "volume-title": "DOI:DOI:https://doi.org/10.1002/9781405198431.wbeal1285",
+        "author": "Fellbaum Christiane",
+        "year": "2012"
+      },
+      {
+        "key": "e_1_2_1_19_1",
+        "volume-title": "Information and Classification",
+        "author": "Grycko Eugen"
+      },
+      {
+        "key": "e_1_2_1_20_1",
+        "unstructured": "Leying Guan. 2020. Conformal prediction with localization. (2020). arXiv:1908.08558.  Leying Guan. 2020. Conformal prediction with localization. (2020). arXiv:1908.08558."
+      },
+      {
+        "key": "e_1_2_1_21_1",
+        "unstructured": "Leying Guan and Rob Tibshirani. 2019. Prediction and outlier detection in classification problems. (2019). arXiv:1905.04396.  Leying Guan and Rob Tibshirani. 2019. Prediction and outlier detection in classification problems. (2019). arXiv:1905.04396."
+      },
+      {
+        "key": "e_1_2_1_22_1",
+        "volume-title": "Ramdas",
+        "author": "Gupta Chirag",
+        "year": "2020"
+      },
+      {
+        "key": "e_1_2_1_23_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1109/CVPR.2016.90"
+      },
+      {
+        "key": "e_1_2_1_24_1",
+        "unstructured": "Yotam Hechtlinger Barnabas Poczos and Larry Wasserman. 2018. Cautious deep learning. (2018). arXiv:1805.09460.  Yotam Hechtlinger Barnabas Poczos and Larry Wasserman. 2018. Cautious deep learning. (2018). arXiv:1805.09460."
+      },
+      {
+        "key": "e_1_2_1_25_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/359138.359141"
+      },
+      {
+        "key": "e_1_2_1_26_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1080/01621459.1963.10500830"
+      },
+      {
+        "key": "e_1_2_1_27_1",
+        "unstructured": "Xiaoyu Hu and Jing Lei. 2020. A distribution-free test of covariate shift using conformal prediction. (2020). arXiv:2010.07147.  Xiaoyu Hu and Jing Lei. 2020. A distribution-free test of covariate shift using conformal prediction. (2020). arXiv:2010.07147."
+      },
+      {
+        "key": "e_1_2_1_28_1",
+        "volume-title": "Stern",
+        "author": "Izbicki Rafael",
+        "year": "2019"
+      },
+      {
+        "key": "e_1_2_1_29_1",
+        "doi-asserted-by": "crossref",
+        "unstructured": "K. Krishnamoorthy and T. Mathew. 2009. Statistical Tolerance Regions: Theory Applications and Computation. Wiley.   K. Krishnamoorthy and T. Mathew. 2009. Statistical Tolerance Regions: Theory Applications and Computation. Wiley.",
+        "DOI": "10.1002/9780470473900"
+      },
+      {
+        "key": "e_1_2_1_30_1",
+        "volume-title": "Classification with confidence. Biometrika 101, 4 (10",
+        "author": "Lei Jing",
+        "year": "2014"
+      },
+      {
+        "key": "e_1_2_1_31_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1007/s10472-013-9366-6"
+      },
+      {
+        "key": "e_1_2_1_32_1",
+        "volume-title": "Candès",
+        "author": "Lei Lihua",
+        "year": "2020"
+      },
+      {
+        "key": "e_1_2_1_33_1",
+        "volume-title": "European Conference on Computer Vision. Springer, 740–755",
+        "author": "Lin Tsung-Yi"
+      },
+      {
+        "key": "e_1_2_1_34_1",
+        "volume-title": "International Conference on Learning Representations (ICLR).",
+        "author": "Madry Aleksander",
+        "year": "2018"
+      },
+      {
+        "key": "e_1_2_1_35_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/1873951.1874254"
+      },
+      {
+        "key": "e_1_2_1_36_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.5555/1148466.1148472"
+      },
+      {
+        "key": "e_1_2_1_37_1",
+        "volume-title": "Conference on Learning Theory (COLT).",
+        "author": "Maurer Andreas",
+        "year": "2009"
+      },
+      {
+        "key": "e_1_2_1_38_1",
+        "unstructured": "Thomas Mortier Marek Wydmuch Krzysztof Dembczyński Eyke Hüllermeier and Willem Waegeman. 2020. Efficient set-valued prediction in multi-class classification. (2020). arXiv:1906.08129.  Thomas Mortier Marek Wydmuch Krzysztof Dembczyński Eyke Hüllermeier and Willem Waegeman. 2020. Efficient set-valued prediction in multi-class classification. (2020). arXiv:1906.08129."
+      },
+      {
+        "key": "e_1_2_1_39_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1007/3-540-36755-1_29"
+      },
+      {
+        "key": "e_1_2_1_40_1",
+        "volume-title": "International Conference on Learning Representations (ICLR).",
+        "author": "Park Sangdon",
+        "year": "2020"
+      },
+      {
+        "key": "e_1_2_1_41_1",
+        "volume-title": "International Conference on Learning Representations (ICLR).",
+        "author": "Park Sangdon",
+        "year": "2021"
+      },
+      {
+        "key": "e_1_2_1_42_1",
+        "first-page": "384",
+        "article-title": "Exact exponential bounds for sums of independent random variables",
+        "volume": "34",
+        "author": "Pinelis Iosif",
+        "year": "1989",
+        "journal-title": "Theor. Probab. Applic."
+      },
+      {
+        "key": "e_1_2_1_43_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1145/3083187.3083212"
+      },
+      {
+        "key": "e_1_2_1_44_1",
+        "volume-title": "TResNet: High performance GPU-dedicated architecture. arXiv:2003.13630",
+        "author": "Ridnik Tal",
+        "year": "2020"
+      },
+      {
+        "key": "e_1_2_1_45_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/j.patrec.2004.07.002"
+      },
+      {
+        "key": "e_1_2_1_46_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.5555/3454287.3454605"
+      },
+      {
+        "key": "e_1_2_1_47_1",
+        "volume-title": "International Conference on Advances in Neural Information Processing Systems, H. Larochelle, M. Ranzato, R. Hadsell, M. F. Balcan, and H. Lin (Eds.)",
+        "volume": "33",
+        "author": "Romano Yaniv",
+        "year": "2020"
+      },
+      {
+        "key": "e_1_2_1_48_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1080/01621459.2017.1395341"
+      },
+      {
+        "key": "e_1_2_1_49_1",
+        "volume-title": "et al",
+        "author": "Senior Andrew W.",
+        "year": "2020"
+      },
+      {
+        "key": "e_1_2_1_50_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1007/s11548-013-0926-3"
+      },
+      {
+        "key": "e_1_2_1_51_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.5555/3454287.3454514"
+      },
+      {
+        "key": "e_1_2_1_52_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1214/aoms/1177730343"
+      },
+      {
+        "key": "e_1_2_1_53_1",
+        "volume-title": "Asian Conference on Machine Learning",
+        "volume": "25",
+        "author": "Vovk Vladimir",
+        "year": "2012"
+      },
+      {
+        "key": "e_1_2_1_54_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1007/s10472-013-9368-4"
+      },
+      {
+        "key": "e_1_2_1_55_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.5555/645528.657641"
+      },
+      {
+        "key": "e_1_2_1_56_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.5555/1062391"
+      },
+      {
+        "key": "e_1_2_1_57_1",
+        "volume-title": "Ninth Symposium on Conformal and Probabilistic Prediction and Applications, Alexander Gammerman, Vladimir Vovk, Zhiyuan Luo, Evgueni Smirnov, and Giovanni Cherubin (Eds.)",
+        "volume": "128",
+        "author": "Vovk Vladimir",
+        "year": "2020"
+      },
+      {
+        "key": "e_1_2_1_58_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1214/aoms/1177731491"
+      },
+      {
+        "key": "e_1_2_1_59_1",
+        "volume-title": "Variance-adaptive confidence sequences by betting. arXiv preprint arXiv:2010.09686",
+        "author": "Waudby-Smith Ian",
+        "year": "2020"
+      },
+      {
+        "key": "e_1_2_1_60_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1214/aoms/1177731788"
+      },
+      {
+        "key": "e_1_2_1_61_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1214/aoms/1177731537"
+      },
+      {
+        "key": "e_1_2_1_62_1",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/j.jsb.2014.10.003"
+      }
+    ],
+    "container-title": [
+      "Journal of the ACM"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://dl.acm.org/doi/10.1145/3478535",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://dl.acm.org/doi/pdf/10.1145/3478535",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "syndication"
+      },
+      {
+        "URL": "https://dl.acm.org/doi/pdf/10.1145/3478535",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2025,
+          6,
+          17
+        ]
+      ],
+      "date-time": "2025-06-17T16:11:40Z",
+      "timestamp": 1750176700000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://dl.acm.org/doi/10.1145/3478535"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2021,
+          9,
+          30
+        ]
+      ]
+    },
+    "references-count": 62,
+    "journal-issue": {
+      "issue": "6",
+      "published-print": {
+        "date-parts": [
+          [
+            2021,
+            12,
+            31
+          ]
+        ]
+      }
+    },
+    "alternative-id": [
+      "10.1145/3478535"
+    ],
+    "URL": "https://doi.org/10.1145/3478535",
+    "relation": {},
+    "ISSN": [
+      "0004-5411",
+      "1557-735X"
+    ],
+    "issn-type": [
+      {
+        "value": "0004-5411",
+        "type": "print"
+      },
+      {
+        "value": "1557-735X",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2021,
+          9,
+          30
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "2021-01-01",
+        "order": 0,
+        "name": "received",
+        "label": "Received",
+        "group": {
+          "name": "publication_history",
+          "label": "Publication History"
+        }
+      },
+      {
+        "value": "2021-07-01",
+        "order": 1,
+        "name": "accepted",
+        "label": "Accepted",
+        "group": {
+          "name": "publication_history",
+          "label": "Publication History"
+        }
+      },
+      {
+        "value": "2021-09-30",
+        "order": 2,
+        "name": "published",
+        "label": "Published",
+        "group": {
+          "name": "publication_history",
+          "label": "Publication History"
+        }
+      }
+    ]
+  }
+}

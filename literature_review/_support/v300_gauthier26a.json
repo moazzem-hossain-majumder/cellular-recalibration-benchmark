@@ -1,0 +1,96 @@
+{
+  "url": "https://proceedings.mlr.press/v300/gauthier26a.html",
+  "data": {
+    "meta": [
+      [
+        "viewport",
+        "width=device-width, initial-scale=1"
+      ],
+      [
+        "description",
+        " Adaptive Coverage Policies in Conformal Prediction Etienne Gauthier, Francis Bach, Michael I. JordanTraditional conformal prediction methods const..."
+      ],
+      [
+        "citation_publisher",
+        "PMLR"
+      ],
+      [
+        "citation_title",
+        " Adaptive Coverage Policies in Conformal Prediction "
+      ],
+      [
+        "citation_language",
+        "en"
+      ],
+      [
+        "citation_abstract_html_url",
+        "https://proceedings.mlr.press/v300/gauthier26a.html"
+      ],
+      [
+        "citation_pdf_url",
+        "https://raw.githubusercontent.com/mlresearch/v300/main/assets/gauthier26a/gauthier26a.pdf"
+      ],
+      [
+        "citation_firstpage",
+        "3196"
+      ],
+      [
+        "citation_lastpage",
+        "3204"
+      ],
+      [
+        "citation_author",
+        "Etienne Gauthier"
+      ],
+      [
+        "citation_author",
+        "Francis Bach"
+      ],
+      [
+        "citation_author",
+        "Michael I. Jordan"
+      ],
+      [
+        "citation_publication_date",
+        "2026/08/30"
+      ],
+      [
+        "citation_inbook_title",
+        "International Conference on Artificial Intelligence and Statistics"
+      ],
+      [
+        "citation_conference_title",
+        "International Conference on Artificial Intelligence and Statistics"
+      ],
+      [
+        "citation_issn",
+        "2640-3498"
+      ],
+      [
+        "twitter:card",
+        "summary"
+      ],
+      [
+        "twitter:title",
+        " Adaptive Coverage Policies in Conformal Prediction "
+      ],
+      [
+        "twitter:site",
+        "@MLResearchPress"
+      ],
+      [
+        "twitter:description",
+        "Traditional conformal prediction methods construct prediction sets such that the true label falls within the set with a user-specified coverage level. Howeve..."
+      ],
+      [
+        "twitter:image",
+        "https://proceedings.mlr.press/v300/assets/images/logo-pmlr.png"
+      ],
+      [
+        "twitter:image:alt",
+        "PMLR Logo"
+      ]
+    ],
+    "text": "Adaptive Coverage Policies in Conformal Prediction Proceedings of Machine Learning Research Volume 300 JMLR DMLR TMLR MLOSS FAQ Submission Format [ edit ] Adaptive Coverage Policies in Conformal Prediction Etienne Gauthier, Francis Bach, Michael I. Jordan Proceedings of The 29th International Conference on Artificial Intelligence and Statistics , PMLR 300:3196-3204, 2026. Abstract Traditional conformal prediction methods construct prediction sets such that the true label falls within the set with a user-specified coverage level. However, poorly chosen coverage levels can result in uninformative predictions, either producing overly conservative sets when the coverage level is too high, or empty sets when it is too low. Moreover, the fixed coverage level cannot adapt to the specific characteristics of each individual example, limiting the flexibility and efficiency of these methods. In this work, we leverage recent advances in e-values and post-hoc conformal inference, which allow the use of data-dependent coverage levels while maintaining valid statistical guarantees. We propose to optimize an adaptive coverage policy by training a neural network using a leave-one-out procedure on the calibration set, allowing the coverage level and the resulting prediction set size to vary with the difficulty of each individual example. We support our approach with theoretical coverage guarantees and demonstrate its practical benefits through a series of experiments. Cite this Paper BibTeX @InProceedings{pmlr-v300-gauthier26a,\n  title = \t { Adaptive Coverage Policies in Conformal Prediction },\n  author =       {Gauthier, Etienne and Bach, Francis and Jordan, Michael I.},\n  booktitle = \t {Proceedings of The 29th International Conference on Artificial Intelligence and Statistics},\n  pages = \t {3196--3204},\n  year = \t {2026},\n  editor = \t {Khan, Emtiyaz and Li, Yingzhen and Solin, Arno and Ramdas, Aaditya},\n  volume = \t {300},\n  series = \t {Proceedings of Machine Learning Research},\n  month = \t {02--05 May},\n  publisher =    {PMLR},\n  pdf = \t {https://raw.githubusercontent.com/mlresearch/v300/main/assets/gauthier26a/gauthier26a.pdf},\n  url = \t {https://proceedings.mlr.press/v300/gauthier26a.html},\n  abstract = \t { Traditional conformal prediction methods construct prediction sets such that the true label falls within the set with a user-specified coverage level. However, poorly chosen coverage levels can result in uninformative predictions, either producing overly conservative sets when the coverage level is too high, or empty sets when it is too low. Moreover, the fixed coverage level cannot adapt to the specific characteristics of each individual example, limiting the flexibility and efficiency of these methods. In this work, we leverage recent advances in e-values and post-hoc conformal inference, which allow the use of data-dependent coverage levels while maintaining valid statistical guarantees. We propose to optimize an adaptive coverage policy by training a neural network using a leave-one-out procedure on the calibration set, allowing the coverage level and the resulting prediction set size to vary with the difficulty of each individual example. We support our approach with theoretical coverage guarantees and demonstrate its practical benefits through a series of experiments. }\n} Copy to Clipboard Download Endnote %0 Conference Paper\n%T  Adaptive Coverage Policies in Conformal Prediction \n%A Etienne Gauthier\n%A Francis Bach\n%A Michael I. Jordan\n%B Proceedings of The 29th International Conference on Artificial Intelligence and Statistics\n%C Proceedings of Machine Learning Research\n%D 2026\n%E Emtiyaz Khan\n%E Yingzhen Li\n%E Arno Solin\n%E Aaditya Ramdas\t\n%F pmlr-v300-gauthier26a\n%I PMLR\n%P 3196--3204\n%U https://proceedings.mlr.press/v300/gauthier26a.html\n%V 300\n%X  Traditional conformal prediction methods construct prediction sets such that the true label falls within the set with a user-specified coverage level. However, poorly chosen coverage levels can result in uninformative predictions, either producing overly conservative sets when the coverage level is too high, or empty sets when it is too low. Moreover, the fixed coverage level cannot adapt to the specific characteristics of each individual example, limiting the flexibility and efficiency of these methods. In this work, we leverage recent advances in e-values and post-hoc conformal inference, which allow the use of data-dependent coverage levels while maintaining valid statistical guarantees. We propose to optimize an adaptive coverage policy by training a neural network using a leave-one-out procedure on the calibration set, allowing the coverage level and the resulting prediction set size to vary with the difficulty of each individual example. We support our approach with theoretical coverage guarantees and demonstrate its practical benefits through a series of experiments. Copy to Clipboard Download APA Gauthier, E., Bach, F. & Jordan, M.I.. (2026).  Adaptive Coverage Policies in Conformal Prediction . Proceedings of The 29th International Conference on Artificial Intelligence and Statistics , in Proceedings of Machine Learning Research 300:3196-3204 Available from https://proceedings.mlr.press/v300/gauthier26a.html. Copy to Clipboard Download Related Material Download PDF OpenReview This site last compiled Fri, 13 Nov 2026 06:53:14 +0000 Github Account Copyright © The authors and PMLR 2026. MLResearchPress"
+  }
+}
