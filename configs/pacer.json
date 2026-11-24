@@ -1,0 +1,14 @@
+{
+  "protocol_version": "path_a_v1_frozen_pre_audit",
+  "alpha": 0.10,
+  "initial_labels": 10,
+  "pacer_gamma": 0.05,
+  "pacer_veto": 0.15,
+  "pacer_ext_scale": 2.0,
+  "pacer_obs_window": 20,
+  "primary_seed": 42,
+  "sensitivity_seeds": [42, 123, 2026],
+  "new_query_caps": [0, 10, 40],
+  "oslo_cutoff_utc": "2011-01-30T00:00:00Z",
+  "tuning_allowed_after_unseal": false
+}

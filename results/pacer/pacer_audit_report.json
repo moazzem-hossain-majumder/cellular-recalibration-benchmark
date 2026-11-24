@@ -1,0 +1,29 @@
+{
+  "generated_utc": "2026-11-24T18:36:07.037364+00:00",
+  "preregistration_lock_verified": true,
+  "untouched_cohorts": [
+    "Ireland_Static",
+    "Oslo_Commute",
+    "Rome_Capacity_Op1",
+    "Rome_Capacity_Op2"
+  ],
+  "retrospective_cohorts": [
+    "AT&T",
+    "E1",
+    "E3",
+    "Ireland",
+    "T-Mobile",
+    "Verizon"
+  ],
+  "physical_clusters": {
+    "untouched_heldout": 26,
+    "retrospective": 16
+  },
+  "prospective_trips_collected": 0,
+  "theorem1_mean_excess_checks": {
+    "total_cells": 40,
+    "all_within_bound": true,
+    "max_mean_excess": 0.19546485260770977,
+    "min_theorem1_bound": 0.17771664374140303
+  }
+}

@@ -10,7 +10,7 @@ jobs:
           python-version: "3.11"
       - run: pip install -c constraints-research.txt pandas numpy pypdf pymupdf beautifulsoup4 pytest matplotlib
       - run: test -f LICENSE
-      - run: python -m pytest tests/unit/test_marur_audit_validator.py tests/unit/test_publication_validator.py tests/unit/test_trip_inference.py -q
+      - run: python -m pytest tests/unit/test_marur_audit_validator.py tests/unit/test_publication_validator.py tests/unit/test_trip_inference.py tests/unit/test_pacer.py tests/unit/test_pacer_audit.py -q
       - run: python scripts/validate_marur_audit.py
       - run: python scripts/audit_trip_level_inference.py
       - run: python scripts/validate_manuscript_consistency.py

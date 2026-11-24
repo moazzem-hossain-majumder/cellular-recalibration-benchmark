@@ -1,0 +1,32 @@
+{
+  "created_utc": "2026-11-24T18:23:19.192281+00:00",
+  "status": "LOCKED_BEFORE_UNSEALING_UNTOUCHED_COHORTS",
+  "sha256_lf": {
+    "src/evaluation/pacer.py": "ddd71bdfc787506f38933cefab2fcbc6f3ea640fcbc9d4cd9b6dc2a1864ea1c6",
+    "configs/pacer.json": "39a2437e3a821d6c95d6fa173f213fc817454b1b246206ba67d43dc01289def2",
+    "docs/PACER_THEORY_AND_PREREGISTRATION.md": "82708f78231ddad7efd72c94328e27956bc9eaed3595dc51903c932c5c026d97",
+    "tests/unit/test_pacer.py": "45a15d113e4f89e76d324533beacc58732db07c8a767c8ea98f892efafc22560"
+  },
+  "config": {
+    "protocol_version": "path_a_v1_frozen_pre_audit",
+    "alpha": 0.1,
+    "initial_labels": 10,
+    "pacer_gamma": 0.05,
+    "pacer_veto": 0.15,
+    "pacer_ext_scale": 2.0,
+    "pacer_obs_window": 20,
+    "primary_seed": 42,
+    "sensitivity_seeds": [
+      42,
+      123,
+      2026
+    ],
+    "new_query_caps": [
+      0,
+      10,
+      40
+    ],
+    "oslo_cutoff_utc": "2011-01-30T00:00:00Z",
+    "tuning_allowed_after_unseal": false
+  }
+}

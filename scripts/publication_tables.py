@@ -127,6 +127,54 @@ def tables(root=ROOT):
             f'{100*r.t_du_hi:+.2f}',
             f'{100*r.pool_dhi:+.2f}',
         ])
+    pacer_rows = []
+    psumm_path = root / 'results/pacer/pacer_summary.csv'
+    pseed_path = root / 'results/pacer/pacer_seed_sensitivity.csv'
+    if psumm_path.is_file() and pseed_path.is_file():
+        ps = pd.read_csv(psumm_path)
+        psd = pd.read_csv(pseed_path)
+        psm = (
+            psd.groupby(['domain', 'cohort', 'model', 'cap_new'], as_index=False)['selective_excess_upper']
+            .mean()
+            .rename(columns={'selective_excess_upper': 'mean_excess'})
+        )
+        psub = ps[(ps['model'] == 'HistGBM') & (ps['scenario'] == 'Recorded') & (ps['cap_new'].isin([10, 40])) & (ps['policy'].isin(['Periodic', 'MARUR', 'PACER']))]
+        for cohort, label in [
+            ('Ireland_Static', 'Ireland Static (4d)'),
+            ('Oslo_Commute', 'Oslo Commute (7d)'),
+            ('Rome_Capacity_Op1', 'Rome Cap Op1 (15d)'),
+            ('Rome_Capacity_Op2', 'Rome Cap Op2 (15d)'),
+        ]:
+            for cap in (10, 40):
+                blk = psub[(psub['cohort'] == cohort) & (psub['cap_new'] == cap)].set_index('policy')
+                mx = float(psm[(psm['cohort'] == cohort) & (psm['model'] == 'HistGBM') & (psm['cap_new'] == cap)]['mean_excess'].iloc[0])
+                pacer_rows.append([
+                    label, str(cap),
+                    f"{100 * blk.loc['Periodic', 'positive_high']:.2f}",
+                    f"{100 * blk.loc['MARUR', 'positive_high']:.2f}",
+                    f"{100 * blk.loc['PACER', 'positive_high']:.2f}",
+                    f"{100 * blk.loc['Periodic', 'u']:.2f}",
+                    f"{100 * blk.loc['MARUR', 'u']:.2f}",
+                    f"{100 * blk.loc['PACER', 'u']:.2f}",
+                    f"{100 * blk.loc['PACER', 'positive_rate']:.1f}",
+                    f"{mx:.3f}",
+                    f"{blk.loc['PACER', 'theorem1_bound']:.3f}",
+                ])
+        for cap in (10, 40):
+            blk = psub[(psub['domain'] == 'retrospective') & (psub['cap_new'] == cap)].groupby('policy')[['positive_high', 'u', 'positive_rate', 'theorem1_bound']].mean()
+            mx = float(psm[(psm['domain'] == 'retrospective') & (psm['model'] == 'HistGBM') & (psm['cap_new'] == cap)]['mean_excess'].mean())
+            pacer_rows.append([
+                'Retro Mean (6 coh.)', str(cap),
+                f"{100 * blk.loc['Periodic', 'positive_high']:.2f}",
+                f"{100 * blk.loc['MARUR', 'positive_high']:.2f}",
+                f"{100 * blk.loc['PACER', 'positive_high']:.2f}",
+                f"{100 * blk.loc['Periodic', 'u']:.2f}",
+                f"{100 * blk.loc['MARUR', 'u']:.2f}",
+                f"{100 * blk.loc['PACER', 'u']:.2f}",
+                f"{100 * blk.loc['PACER', 'positive_rate']:.1f}",
+                f"{mx:.3f}",
+                f"{blk.loc['PACER', 'theorem1_bound']:.3f}",
+            ])
     return {
         'table1_point_predictors': ('Source validation errors in Mbps and measured fit time in seconds.', ['Model','MAE','RMSE','Seconds'],profiles),
         'table2_main_benchmark': ('Test sessions and lower-bound performance by regime and target prefix. P denotes point, G global, R radio access and M missingness groups. V denotes violations and U supported fraction.', ['Regime/K','N','PV','PU','GV','GU','RV','RU','MV','MU'],rows),
@@ -142,7 +190,8 @@ def tables(root=ROOT):
         'table12_issued': ('Ten-label Rome clock forecasts. Positive gives measured positive commitments divided by issued positive commitments as counts. Errors counts measured violations. Low and High bound the all-issued violation percentage. U is supported throughput on measured outcomes in percent.', ['Regime','Predictor','Issued','Scored','Positive','Errors','Low','High','U'],issued_rows),
         'table13_drive3': ('US Drive 3 with ten earlier labels per carrier. Pos counts issued positive commitments. Fail counts observed violations. Risk bounds and supported throughput are percentages.', ['Carrier','Model','Issued','Scored','Pos','Fail','Low','High','U'],drive_rows),
         'table14_marur': ('Frozen-tree controllers under a new-query cap of 40, with ten initial successful labels. Queries counts new attempts; historical acquisition cost is unknown. Offers counts positive commitments. PosLow and PosHigh bound violation among positive commitments, in percent. U is supported measured throughput in percent. Every model, budget, ablation and scenario is in the public ledger.', ['Cohort','Policy','Queries','Offers','PosLow','PosHigh','U'],controller_rows),
-        'table15_cluster_inference': ('Independent-unit accounting and paired MARUR minus Periodic contrasts at matched ten new queries (HistGBM, recorded feedback). G counts collection dates (or 11 Irish driving traces; All pools co-located carriers onto 16 physical campaign-dates across 3 drives). QDays and PosDays give days with queries and positive offers (MARUR/Periodic). Utility differences are in percentage points: pooled dU with 2,000-draw cluster bootstrap 95 percent interval (BootLo, BootHi), equal-cluster mean (Eq dU) with two-sided t interval (tLo, tHi), and pooled all-issued upper risk difference (dRhi).', ['Scope','G','QDays','PosDays','Pool dU','BootLo','BootHi','Eq dU','tLo','tHi','dRhi'],cluster_rows)}
+        'table15_cluster_inference': ('Independent-unit accounting and paired MARUR minus Periodic contrasts at matched ten new queries (HistGBM, recorded feedback). G counts collection dates (or 11 Irish driving traces; All pools co-located carriers onto 16 physical campaign-dates across 3 drives). QDays and PosDays give days with queries and positive offers (MARUR/Periodic). Utility differences are in percentage points: pooled dU with 2,000-draw cluster bootstrap 95 percent interval (BootLo, BootHi), equal-cluster mean (Eq dU) with two-sided t interval (tLo, tHi), and pooled all-issued upper risk difference (dRhi).', ['Scope','G','QDays','PosDays','Pool dU','BootLo','BootHi','Eq dU','tLo','tHi','dRhi'],cluster_rows),
+        'table16_pacer': ('Locked Path A validation across four untouched held-out archives (26 campaign-dates) and six-cohort retrospective mean (16 campaign-dates), using frozen HistGBM and recorded feedback at new-query caps 10 and 40. Per, MAR, and PAC denote Periodic, MARUR, and PACER. Hi reports positive-offer upper risk and U reports useful delivered throughput in percent; A gives PACER offer frequency in percent; Exc is mean selective excess across seeds 42, 123, and 2026 versus Theorem 1 bound Bnd.', ['Cohort','Cap','PerHi','MARHi','PACHi','PerU','MARU','PACU','PACA','Exc','Bnd'],pacer_rows)}
 
 def latex(spec):
     caption, header, rows = spec

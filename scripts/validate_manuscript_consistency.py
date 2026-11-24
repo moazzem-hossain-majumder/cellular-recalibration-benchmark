@@ -110,9 +110,26 @@ def validate_marur_claims(root):
         raise ValueError('Missing repository LICENSE file')
 
 
+def validate_pacer_claims(root):
+    """Bind Path A Theorem 1 and untouched-cohort claims to locked PACER artifacts."""
+    source=(root/'paper/manuscript.tex').read_text(encoding='utf8')
+    report=read_json(root/'results/pacer/pacer_audit_report.json')
+    if not report['preregistration_lock_verified'] or report['prospective_trips_collected']!=0:
+        raise ValueError('PACER pre-registration lock or zero-prospective check failed')
+    if not report['theorem1_mean_excess_checks']['all_within_bound'] or report['theorem1_mean_excess_checks']['total_cells']!=40:
+        raise ValueError('Theorem 1 verification count mismatch')
+    if report['physical_clusters']['untouched_heldout']!=26 or report['physical_clusters']['retrospective']!=16:
+        raise ValueError('Physical cluster count mismatch for Path A')
+    con=pd.read_csv(root/'results/pacer/pacer_paired_contrasts.csv')
+    c_unt=con[(con.scope=='UntouchedHeldOut')&(con.model=='HistGBM')&(con.scenario=='Recorded')&(con.cap_new==10)&(con.reference=='Periodic')].iloc[0]
+    if f'{100*c_unt.pool_dpos_hi:+.2f}' not in source or '40/40' not in source or '26' not in source or '42' not in source:
+        raise ValueError('PACER numerical claims missing or mismatched in manuscript')
+
+
 def validate(root=ROOT):
     validate_marur_claims(root)
     validate_reviewer_claims(root)
+    validate_pacer_claims(root)
     verify_clock_frontier(root)
     verify_revision_ledgers(root)
     verify_drive3(root)
@@ -181,7 +198,7 @@ def validate(root=ROOT):
     supplement=(root/'paper/supplementary.tex').read_text(encoding='utf8')
     combined=manuscript+'\n'+supplement
     referenced = re.findall(r'\\includegraphics(?:\[[^\]]+\])?\{(figures/[^}]+\.pdf)\}',combined)
-    if len(set(referenced))!=8:
+    if len(set(referenced))!=9:
         raise ValueError('Incomplete manuscript figure set')
     for fig in referenced:
         for suffix in ['.pdf','.png']:
