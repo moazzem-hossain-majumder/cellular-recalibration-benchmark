@@ -104,6 +104,29 @@ def tables(root=ROOT):
         label='ATT' if r.cohort=='AT&T' else r.cohort
         controller_rows.append([label,r.policy,str(r.new_query_attempts),str(r.positive),
             f'{100*r.positive_low:.2f}',f'{100*r.positive_high:.2f}',f'{100*r.u:.3f}'])
+    cluster_rows=[]
+    cluster_df=pd.read_csv(diagnostics/'trip_level_inference.csv')
+    c_slice=cluster_df[(cluster_df.model=='HistGBM')&(cluster_df.scenario=='Recorded')&
+                       (cluster_df.new_query_cap==10)&(cluster_df.baseline=='Periodic')]
+    order=['E1','E3','AT&T','T-Mobile','Verizon','Ireland','Combined_CampaignDates','Ireland_Traces']
+    c_map={r.scope:r for r in c_slice.itertuples()}
+    labels={'AT&T':'ATT','Combined_CampaignDates':'All (16 Dates)','Ireland_Traces':'Ireland (Traces)'}
+    for key in order:
+        r=c_map[key]
+        label=labels.get(key,key)
+        cluster_rows.append([
+            label,
+            str(int(r.clusters)),
+            f'{int(r.cand_query_days)}/{int(r.base_query_days)}',
+            f'{int(r.cand_pos_days)}/{int(r.base_pos_days)}',
+            f'{100*r.pool_du:+.2f}',
+            f'{100*r.boot_du_lo:+.2f}',
+            f'{100*r.boot_du_hi:+.2f}',
+            f'{100*r.eq_du_mean:+.2f}',
+            f'{100*r.t_du_lo:+.2f}',
+            f'{100*r.t_du_hi:+.2f}',
+            f'{100*r.pool_dhi:+.2f}',
+        ])
     return {
         'table1_point_predictors': ('Source validation errors in Mbps and measured fit time in seconds.', ['Model','MAE','RMSE','Seconds'],profiles),
         'table2_main_benchmark': ('Test sessions and lower-bound performance by regime and target prefix. P denotes point, G global, R radio access and M missingness groups. V denotes violations and U supported fraction.', ['Regime/K','N','PV','PU','GV','GU','RV','RU','MV','MU'],rows),
@@ -118,7 +141,8 @@ def tables(root=ROOT):
         'table11_irish_groups': ('Chronological Irish persistence forecasts on 108519 rows from sixteen suffix dates. Local counts forecasts using a group-specific offset. Performance measures are percentages.', ['Labels','Rule','Local','Coverage','Violation','Supported'],group_rows),
         'table12_issued': ('Ten-label Rome clock forecasts. Positive gives measured positive commitments divided by issued positive commitments as counts. Errors counts measured violations. Low and High bound the all-issued violation percentage. U is supported throughput on measured outcomes in percent.', ['Regime','Predictor','Issued','Scored','Positive','Errors','Low','High','U'],issued_rows),
         'table13_drive3': ('US Drive 3 with ten earlier labels per carrier. Pos counts issued positive commitments. Fail counts observed violations. Risk bounds and supported throughput are percentages.', ['Carrier','Model','Issued','Scored','Pos','Fail','Low','High','U'],drive_rows),
-        'table14_marur': ('Frozen-tree controllers under a new-query cap of 40, with ten initial successful labels. Queries counts new attempts; historical acquisition cost is unknown. Offers counts positive commitments. PosLow and PosHigh bound violation among positive commitments, in percent. U is supported measured throughput in percent. Every model, budget, ablation and scenario is in the public ledger.', ['Cohort','Policy','Queries','Offers','PosLow','PosHigh','U'],controller_rows)}
+        'table14_marur': ('Frozen-tree controllers under a new-query cap of 40, with ten initial successful labels. Queries counts new attempts; historical acquisition cost is unknown. Offers counts positive commitments. PosLow and PosHigh bound violation among positive commitments, in percent. U is supported measured throughput in percent. Every model, budget, ablation and scenario is in the public ledger.', ['Cohort','Policy','Queries','Offers','PosLow','PosHigh','U'],controller_rows),
+        'table15_cluster_inference': ('Independent-unit accounting and paired MARUR minus Periodic contrasts at matched ten new queries (HistGBM, recorded feedback). G counts collection dates (or 11 Irish driving traces; All pools co-located carriers onto 16 physical campaign-dates across 3 drives). QDays and PosDays give days with queries and positive offers (MARUR/Periodic). Utility differences are in percentage points: pooled dU with 2,000-draw cluster bootstrap 95 percent interval (BootLo, BootHi), equal-cluster mean (Eq dU) with two-sided t interval (tLo, tHi), and pooled all-issued upper risk difference (dRhi).', ['Scope','G','QDays','PosDays','Pool dU','BootLo','BootHi','Eq dU','tLo','tHi','dRhi'],cluster_rows)}
 
 def latex(spec):
     caption, header, rows = spec

@@ -207,16 +207,16 @@
 <p class="author">Md. Moazzem Hossain Majumder</p>
 <div class="abstract">
 <div class="abstract-title">Abstract</div>
-<p>Cellular throughput commitments depend on both the forecast and the feedback available to recalibrate it. Comparing calibration policies at the same nominal budget can conceal unequal acquisition cost, failed responses and abstention. We present an empirical acquisition-and-decision framework with frozen predictors, delayed query receipts and finite-record bounds for missing outcomes. Its provisional MARUR controller uses age and telemetry-pattern heuristics; it does not optimize utility or guarantee conditional risk. Six archived cohorts support 576 original configurations and 720 additional full-suffix replays, yielding 384 exact-cost contrasts. At ten new queries on Rome E1, MARUR supports 2.907 percent of measured throughput versus Periodic’s 0.523 percent, while all-issued upper risk rises from 6.303 to 10.924 percent. On Ireland, both policies issue 159 positive commitments; MARUR removes fourteen observed violations by reducing commitment sizes, with supported throughput falling from 4.117 to 1.129 percent. Other cohorts and baselines show different trade-offs and no consistent superiority. The framework separates service selection, commitment size and acquisition cost, and exposes schedule aliasing in a deterministic missing-feedback stress test. All findings are retrospective and exploratory. Limited independent campaigns, selective feedback and unresolved outcomes prevent claims of deployment risk control or live application benefit.</p>
+<p>Cellular throughput commitments depend on both the forecast and the feedback available to recalibrate it. Comparing calibration policies at the same nominal budget can conceal unequal acquisition cost, failed responses and abstention. We present an empirical acquisition-and-decision framework with frozen predictors, delayed query receipts and finite-record bounds for missing outcomes. Its provisional MARUR controller uses age and telemetry-pattern heuristics; it does not optimize utility or guarantee conditional risk. Six archived cohorts support 576 original configurations and 720 additional full-suffix replays, yielding 384 exact-cost contrasts. At ten new queries on Rome E1, MARUR supports 2.907 percent of measured throughput versus Periodic’s 0.523 percent, while all-issued upper risk rises from 6.303 to 10.924 percent. On Ireland, both policies issue 159 positive commitments; MARUR removes fourteen observed violations by reducing commitment sizes, with supported throughput falling from 4.117 to 1.129 percent. Across only 16 distinct physical campaign-dates spanning three geographic drives, matched ten-query equal-campaign-date utility differences average -0.09 percentage points (95 percent interval -1.27 to +1.08), and MARUR exhausts its budget on Day 1 in four of six cohorts. Other cohorts and baselines show mixed trade-offs and no consistent superiority. The framework separates service selection, commitment size, cluster counts and acquisition cost, keeping all findings retrospective, exploratory and strictly within cellular throughput measurement rather than live application QoE.</p>
 </div>
 </header>
 <div class="IEEEkeywords">
-<p>Cellular throughput, calibration feedback, selective prediction, measurement methodology.</p>
+<p>Cellular throughput, calibration feedback, selective prediction, cluster inference, measurement methodology.</p>
 </div>
 <h1 id="introduction">Introduction</h1>
-<p>An application that commits to a rate needs useful service and a tolerable frequency of broken commitments. Accurate point forecasts, low average violations and small nominal calibration budgets do not independently establish those properties. A controller can make fewer positive offers, avoid expensive feedback, or encounter unobserved outcomes. Each changes the meaning of a favorable reported number.</p>
-<p>We ask: when does limited recalibration provide useful cellular throughput commitments, and when do missing feedback and abstention make apparent reliability misleading? We study frozen predictors on outcome-independent scheduled opportunities. MARUR is an implemented age-and-pattern heuristic used to expose these effects. It is neither an optimal acquisition rule nor a method with guaranteed positive-conditional risk.</p>
-<p>The contribution comprises three empirical findings: attempted measurements differ from information available to later forecasts; low overall risk can conceal poor reliability among positive commitments; and calibration choices produce cohort-dependent utility–risk trade-offs. The accompanying event ledgers, exact-cost comparisons and offer decompositions make these findings auditable. The archives were already inspected during method development, so subsequent experiments are exploratory. We retain negative findings and do not select a deployment policy from test performance.</p>
+<p>An application that commits to a rate needs useful service and a tolerable frequency of broken commitments. Accurate point forecasts, low average violations and small nominal calibration budgets do not independently establish those properties. A controller can make fewer positive offers, avoid expensive feedback, exhaust its query cap early, or encounter unobserved outcomes. Each changes the meaning of a favorable reported number.</p>
+<p>We focus on a concrete empirical question: when does calibration feedback acquisition improve cellular throughput commitments, and when do missing feedback, abstention and unequal measurement costs make the apparent improvement misleading? We study frozen predictors on outcome-independent scheduled opportunities. MARUR combines established concepts—online quantile adjustment, selective prediction, cost-constrained probing and partial-feedback updating—as an implemented heuristic to expose these mechanisms. It is neither a novel general conformal prediction algorithm nor a method with guaranteed positive-conditional risk.</p>
+<p>The contribution comprises three empirical findings: attempted measurements differ from information available to later forecasts; low overall risk can conceal poor reliability among positive commitments or single-date concentration; and calibration choices produce cohort-dependent utility–risk trade-offs that vanish across independent physical campaign-dates. The accompanying event ledgers, exact-cost comparisons, cluster-level decompositions and MIT-licensed software make these findings auditable. All archives were inspected during method development, zero prospective trips have been collected, and negative results are retained without post-hoc deployment selection.</p>
 <h1 id="sec:related_work">Related Work</h1>
 <h2 id="cellular-measurement-prediction-and-rate-decisions">Cellular Measurement, Prediction, and Rate Decisions</h2>
 <p>Operational measurements establish that cellular throughput depends on radio conditions, mobility, and the collection regime. The channel/context dataset of Raca et al. <span class="citation" data-cites="raca2020">(Raca et al. 2020)</span> and the commercial mmWave measurements underlying Lumos5G <span class="citation" data-cites="narayanan2020">(Narayanan et al. 2020)</span> support context-aware prediction. More recent multi-technology measurements, longitudinal service analysis, and machine-learning modeling extend this evidence to evolving non-standalone networks <span class="citation" data-cites="kousias2024data caso2024 kousias2024model">(Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; Kousias, Rajiullah, Caso, Alay, et al. 2024)</span>. These resources support evaluation across conditions, but forecast counts within a shared route or campaign do not constitute independent replications. Moreover, prediction-error metrics do not directly measure the risk of promising an unsustainable rate.</p>
@@ -556,12 +556,138 @@
 <p>Three seeded nonadaptive random query schedules test whether adaptive timing adds value beyond acquiring labels. A decaying-step quantile tracker, motivated by online conformal prediction <span class="citation" data-cites="angelopoulos2024online">(Anastasios Nikolas Angelopoulos et al. 2024)</span>, uses the Periodic feedback schedule. Its signed scores, delayed responses and conservative missing-feedback substitution differ from the published setting, so no theorem is transferred. Separate ablations compare pattern and pooled quantiles with the gate fixed, then remove only the gate with the query schedule fixed. Every cohort, cap and feedback condition is retained. Complete operating points and offer decompositions are provided in the reviewer-baseline supplement; no best test schedule is promoted.</p>
 <p>The targeted grid contains 792 configurations. Pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed. Removing the gate yields sixteen utility gains without higher conditional upper risk, ten trade-offs or risk-only changes and 46 unchanged cases. Against Periodic, the decaying-step adaptation yields nine utility gains without higher conditional upper risk, eighteen losses without lower risk, and 45 trade-offs or risk-only changes. Random-schedule comparisons also vary by seed and cohort. These configuration counts share observations and do not constitute statistical replication.</p>
 <p>Reconstructing the retained scores identifies specific failure mechanisms. In recorded HistGBM Verizon at cap forty and window twenty, a conservative missing-response score is tied at the quantile on 159 of 287 eligible ticks; all 159 have a zero raw bound. Yet window forty has no such binding missing score and still loses substantial utility. E3 has neither binding missing scores nor gate vetoes in this recorded window comparison. Thus neither missing-score completion nor abstention alone explains all losses. The complete shared/added/removed-offer decomposition is descriptive; it does not identify the physical cause of temporal residual changes.</p>
-<h1 id="limitations-and-prospective-validation">Limitations and Prospective Validation</h1>
-<p>The random-priority comparator knows the full eligible-opportunity roster. It is an offline nonadaptive control, not a deployable policy with unknown future eligibility. A prospective random comparator must fix its tick schedule before departure and explicitly retain skipped and unsuccessful requests in its accounting. All reported optimization and added comparisons use previously inspected archives. The clocks are outcome-independent, but requested observations remain selectively acquired. Finite-record missingness bounds do not quantify uncertainty over future independent trips. Synthetic feedback failures test specified mechanisms rather than estimating physical outage processes. In addition, a prospective full-minute service definition will not perfectly reproduce every archive’s transfer-truncated endpoint.</p>
-<p>The next study must freeze predictor hashes, feature mappings, initialization, policies, schedules, application requirements and analysis before collection. We propose an adaptive-video-streaming application, first using a synchronized shadow measurement study and subsequently a separate randomized live application trial. These are unexecuted designs. Practical thresholds are planning assumptions requiring application validation, not values inferred from favorable archive results.</p>
-<p>Eighteen usable paired trips provide roughly five-percentage-point utility precision only under an assumed paired standard deviation of 0.10. This does not justify rare-violation precision or a ten-percent conditional-risk certification. The protocol retains all started trips, clusters simultaneous carriers, records zero-positive and wholly missing trips, and requires a new precision calculation using outcome-blinded pilot variability before registration. Live QoE claims require application outcomes and measurement-overhead accounting, not replay alone.</p>
+<h2 id="independent-collection-units-and-empirical-synthesis">Independent collection units and empirical synthesis</h2>
+<p>Configuration counts (576, 720, 1,848, 792) are deterministic sweeps over the same archives, not independent statistical replications. Pooling across cohorts reveals only three geographic campaigns and sixteen unique calendar-date clusters: eight dates in Rome (E1 and E3 share six), three shared US Drive 3 dates across AT&amp;T, T-Mobile and Verizon, and five Irish driving dates spanning eleven traces. Table III reports paired MARUR minus Periodic contrasts clustered strictly at these collection units under matched ten-query cost.</p>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">Scope</td>
+<td style="text-align: right;">G</td>
+<td style="text-align: right;">QDays</td>
+<td style="text-align: right;">PosDays</td>
+<td style="text-align: right;">Pool dU</td>
+<td style="text-align: right;">BootLo</td>
+<td style="text-align: right;">BootHi</td>
+<td style="text-align: right;">Eq dU</td>
+<td style="text-align: right;">tLo</td>
+<td style="text-align: right;">tHi</td>
+<td style="text-align: right;">dRhi</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1/3</td>
+<td style="text-align: right;">6/6</td>
+<td style="text-align: right;">+2.38</td>
+<td style="text-align: right;">+0.76</td>
+<td style="text-align: right;">+3.70</td>
+<td style="text-align: right;">+1.45</td>
+<td style="text-align: right;">-0.01</td>
+<td style="text-align: right;">+2.90</td>
+<td style="text-align: right;">+4.62</td>
+</tr>
+<tr>
+<td style="text-align: left;">E3</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">3/7</td>
+<td style="text-align: right;">5/2</td>
+<td style="text-align: right;">+0.66</td>
+<td style="text-align: right;">+0.03</td>
+<td style="text-align: right;">+1.80</td>
+<td style="text-align: right;">+0.78</td>
+<td style="text-align: right;">-0.45</td>
+<td style="text-align: right;">+2.02</td>
+<td style="text-align: right;">+9.94</td>
+</tr>
+<tr>
+<td style="text-align: left;">ATT</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1/2</td>
+<td style="text-align: right;">2/2</td>
+<td style="text-align: right;">+2.58</td>
+<td style="text-align: right;">+0.00</td>
+<td style="text-align: right;">+2.90</td>
+<td style="text-align: right;">+1.65</td>
+<td style="text-align: right;">-2.05</td>
+<td style="text-align: right;">+5.36</td>
+<td style="text-align: right;">+11.15</td>
+</tr>
+<tr>
+<td style="text-align: left;">T-Mobile</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1/1</td>
+<td style="text-align: right;">1/1</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">-0.05</td>
+<td style="text-align: right;">+0.00</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">-0.08</td>
+<td style="text-align: right;">+0.05</td>
+<td style="text-align: right;">+0.00</td>
+</tr>
+<tr>
+<td style="text-align: left;">Verizon</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1/2</td>
+<td style="text-align: right;">1/1</td>
+<td style="text-align: right;">+0.54</td>
+<td style="text-align: right;">+0.00</td>
+<td style="text-align: right;">+1.96</td>
+<td style="text-align: right;">+0.65</td>
+<td style="text-align: right;">-2.16</td>
+<td style="text-align: right;">+3.46</td>
+<td style="text-align: right;">+6.62</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2/3</td>
+<td style="text-align: right;">5/5</td>
+<td style="text-align: right;">-2.99</td>
+<td style="text-align: right;">-4.00</td>
+<td style="text-align: right;">-1.40</td>
+<td style="text-align: right;">-2.46</td>
+<td style="text-align: right;">-4.76</td>
+<td style="text-align: right;">-0.15</td>
+<td style="text-align: right;">-4.19</td>
+</tr>
+<tr>
+<td style="text-align: left;">All (16 Dates)</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">7/13</td>
+<td style="text-align: right;">14/13</td>
+<td style="text-align: right;">+0.21</td>
+<td style="text-align: right;">-1.26</td>
+<td style="text-align: right;">+0.79</td>
+<td style="text-align: right;">-0.09</td>
+<td style="text-align: right;">-1.27</td>
+<td style="text-align: right;">+1.08</td>
+<td style="text-align: right;">+4.07</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ireland (Traces)</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">4/4</td>
+<td style="text-align: right;">10/10</td>
+<td style="text-align: right;">-2.99</td>
+<td style="text-align: right;">-4.83</td>
+<td style="text-align: right;">-1.88</td>
+<td style="text-align: right;">-4.20</td>
+<td style="text-align: right;">-7.31</td>
+<td style="text-align: right;">-1.10</td>
+<td style="text-align: right;">-4.19</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Across all sixteen combined physical campaign-dates, MARUR yields a pooled <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>U</mi></mrow><annotation encoding="application/x-tex">\Delta U</annotation></semantics></math> of +0.21 percentage points (95 percent cluster bootstrap -1.26 to +0.79) and equal-campaign-date mean -0.09 percentage points (95 percent <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> interval -1.27 to +1.08), while all-issued upper risk changes by +4.07 percentage points (-0.11 to +6.38). Five of six within-cohort equal-date <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> intervals cross zero, and conditional risk improvements are absent on AT&amp;T, T-Mobile and Verizon. Moreover, MARUR spends all ten new queries on Day 1 in E1, AT&amp;T, T-Mobile and Verizon (1/7 to 1/3 query days versus Periodic’s 13/16 combined dates), and restricts positive commitments to a single test date in T-Mobile and Verizon. On Ireland, evaluating the eleven individual driving traces shows negative paired utility on all nine active later traces (-2.99 percentage points pooled, bootstrap -4.83 to -1.88) alongside reduced conditional upper risk (-8.81 percentage points), reflecting conservative offer shrinkage rather than improved timing. Together, these contrasts establish that apparent multi-day gains can stem from Day-1 budget exhaustion, unequal query spending or offer shrinkage rather than uniform calibration superiority.</p>
+<h1 id="limitations-and-prospective-scope">Limitations and Prospective Scope</h1>
+<p>The random-priority comparator knows the full eligible-opportunity roster. It is an offline nonadaptive control, not a deployable policy with unknown future eligibility. A prospective random comparator must fix its tick schedule before departure and explicitly retain skipped and unsuccessful requests in its accounting. All empirical results use previously inspected archives; zero independent prospective field trips have been collected. Clocks are outcome-independent, but queried observations remain selectively acquired. Finite-record missingness bounds do not quantify uncertainty over future campaigns, synthetic feedback masks do not estimate physical outages, and a 60-second clock horizon differs from transfer-truncated session endpoints.</p>
+<p>This paper remains strictly focused on physical cellular throughput measurement and commitment reliability. Prior screening thresholds (such as 1.0 or 1.5 Mbps targets, 80 percent offer frequency, or 5 percent conditional risk) are unvalidated engineering assumptions, not application-owner criteria. Supported throughput is a physical capacity metric and does not establish end-to-end adaptive video quality of experience (QoE), buffering probability, startup latency, playback interruptions, or bitrate switching; live application QoE validation is deferred to a separate follow-up study.</p>
+<p>To support future external validation without retroactive tuning, we provide the serialized frozen Rome model artifact (SHA-256 verified), fixed preprocessing, initial residual IDs, and an executable verification harness that rejects incomplete registration metadata. As a precision planning point, 18 independent paired trips yield roughly five percentage points of utility precision under an assumed SD of 0.10, whereas certifying a 5 percent conditional-risk bound under realistic intra-trip correlation requires at least 62 independent trips. True prospective field collection on new operators, hardware and routes remains an open requirement.</p>
 <h1 id="conclusion">Conclusion</h1>
-<p>Limited recalibration does not consistently produce useful, reliable positive throughput commitments across the examined cellular cohorts. An auditable decision ledger distinguishes acquisition attempts, usable information, selective offers and unresolved outcomes. Matched-cost and controlled ablation results expose both benefits and substantial failures. The defensible contribution is empirical measurement and evaluation methodology; claims of optimal control, guaranteed conditional risk or deployment superiority remain unestablished.</p>
+<p>Limited recalibration does not consistently improve cellular throughput commitments across existing commercial networks. Separating initial labels, new attempts, unsuccessful responses, abstention gates and physical collection-unit clusters exposes when apparent gains reflect unequal cost, Day-1 budget depletion, or commitment shrinkage rather than reliable online adaptation. Across sixteen unique campaign-dates spanning three geographic drives, matched ten-query paired utility spans zero while all-issued upper risk increases. The contribution is an auditable empirical evaluation methodology and matched-cost failure analysis; optimal conformal control, live QoE benefit and deployment risk guarantees remain unestablished without new prospective trials.</p>
 <h1 class="unnumbered" id="acknowledgment">Acknowledgment</h1>
 <p>OpenAI Codex assisted with code development, experimental checks, and manuscript drafting and revision.</p>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">

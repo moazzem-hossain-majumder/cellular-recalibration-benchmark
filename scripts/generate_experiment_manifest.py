@@ -30,7 +30,7 @@ PATTERNS = [
     'src/**/*.py','scripts/*.py','tests/**/*.py','results/diagnostics/*',
     'results/metrics/*','results/tables/*','results/figures/*','paper/**/*','app/*',
     'data/metadata/*.json','docs/*AUDIT.md','docs/MANUSCRIPT_CONSISTENCY_VALIDATION.md',
-    'docs/FINAL_RESEARCH_READINESS_MATRIX.md','README.md','requirements.txt','pyproject.toml',
+    'docs/FINAL_RESEARCH_READINESS_MATRIX.md','README.md','LICENSE','docs/DATA_AND_SOFTWARE_LICENSING.md','requirements.txt','pyproject.toml',
     '.github/workflows/*','results/runs/final_tests.xml','results/runs/execution.json',
     'results/runs/ancillary_execution.json','results/exploratory/sirhan_external/*',
     'results/exploratory/published_global_comparison.csv','docs/EXTERNAL_SIRHAN_COMPARISON.md',

@@ -102,6 +102,12 @@ def validate_marur_claims(root):
         (decomposition.scenario=='Recorded')&(decomposition.new_query_cap==10)&(decomposition.baseline=='Periodic')]
     if len(row)!=1 or row.iloc[0].shared_offers!=159 or row.iloc[0].shared_failure_delta!=-14:
         raise ValueError('Abstract Ireland fourteen-failure attribution changed')
+    trip=pd.read_csv(root/'results/diagnostics/trip_level_inference.csv')
+    comb=trip[(trip.scope=='Combined_CampaignDates')&(trip.model=='HistGBM')&(trip.scenario=='Recorded')&(trip.new_query_cap==10)&(trip.baseline=='Periodic')].iloc[0]
+    if int(comb.clusters)!=16 or f'{100*comb.eq_du_mean:+.2f}' not in abstract:
+        raise ValueError('Abstract campaign-date cluster inference mismatch')
+    if not (root/'LICENSE').is_file():
+        raise ValueError('Missing repository LICENSE file')
 
 
 def validate(root=ROOT):

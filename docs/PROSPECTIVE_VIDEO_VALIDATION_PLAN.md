@@ -1,3 +1,5 @@
+> **Scope Note (Nov 24):** This plan is designated strictly as a separate follow-up application QoE study. The primary manuscript (`paper/manuscript.pdf`) restricts its empirical scope to physical cellular throughput measurement and rate commitments, because supported throughput does not equate to player stall probability, startup delay, or bitrate-switching QoE. Zero prospective trips have been collected (`prospective_trips_collected = 0`).
+
 # Independent validation: executable preparation, collection not performed
 
 This is a proposed study, not a registration or a completed experiment. No new trip, device, network endpoint or live-video measurement has been fabricated. It refines the earlier generic protocol; contradictions must be resolved before registration. The original 18-pair calculation is retained as a utility-only sensitivity point, not a universal minimum.

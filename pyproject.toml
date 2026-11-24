@@ -7,9 +7,15 @@ name = "telecom-throughput-benchmark"
 version = "1.0.0"
 description = "Reliability of Cellular Throughput Forecasts Across Networks with Missing Radio Telemetry"
 readme = "README.md"
+license = {file = "LICENSE"}
 requires-python = ">=3.11"
 authors = [
   {name = "Md. Moazzem Hossain Majumder", email = "moazzemhossain1510@gmail.com"}
+]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.11",
+  "Intended Audience :: Science/Research"
 ]
 dependencies = [
   "torch>=2.5.0",
