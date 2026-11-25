@@ -1,5 +1,5 @@
 {
-  "base_commit": "d0296271eb3a9e3e2ff54b16dc345cb3d22c7643",
+  "base_commit": "1115f16961c4dc9ce13bf9fbe29a17d8496da8e0",
   "working_tree": "Local corrections identified by individual SHA-256 hashes",
   "digest_scheme": {
     "algorithm": "SHA-256",
@@ -19,7 +19,7 @@
     ],
     "other_files": "exact bytes; raw dataset pins in acquisition manifests use exact bytes"
   },
-  "generated_utc": "2026-11-24T18:52:29.643670+00:00",
+  "generated_utc": "2026-11-24T18:57:30.863200+00:00",
   "environment": {
     "platform": "Windows-10-10.0.26200-SP0",
     "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
@@ -470,7 +470,7 @@
     "docs/STATISTICAL_VALIDITY_AUDIT.md": "d134f08c013ee117fe7ef0c1ab462d1392d05810e6c2c5af76ce384d81cfe752",
     "docs/TRIP_AND_APPLICATION_RESULTS.md": "bfab0fcf3e5a36178fba3c637d3b81f0aa9fc6dab7144dd68720602b1b756e1c",
     "docs/UPDATED_LITERATURE_AND_NOVELTY_REVIEW.md": "f94f129d26b11dbec64927821a6ed2333d0ed0ca034b58b4c6087597b5aa89f1",
-    "LICENSE": "d5efd2d02de02af61a0bd67f7c875a3090c11b2d3541a39c23740b1c940235bd",
+    "LICENSE": "96701e64968ec2d5e7debc75df34255c8d676b1b88e9646c8100a3e065b8c162",
     "literature_review/_support/validation.json": "d7709e153ef4cb50fde60921fd7e521b745ac57099d8c9b406f35ab8b036ce1b",
     "literature_review/_support/verification_sources.json": "feff46e20161d74bc8fdae070af6b9d5c2bc098c71d6852bc7dc8d608889dcc3",
     "literature_review/NOVELTY_AND_EXPERIMENT_OPPORTUNITIES.md": "10d92f845b0819a2da570daae72dd82dbf119bdcf1e162ff6a7caae6b110f69b",
@@ -736,7 +736,7 @@
     "scripts/fetch_nuwins_drive3.py": "5cc6710fe2e912ad32041dd2225073fe9dd0253737668f93a204ff6b176078a8",
     "scripts/freeze_prospective_model.py": "69c7e48e0bd765b771b2876aa37282a4cda0efcaf5316c2f7eee75a1a5232137",
     "scripts/generate_data_quality_report.py": "07f5bfa7d27563cd6562b46a461d2d7285460e365612a71f94c8922bb0a9a608",
-    "scripts/generate_experiment_manifest.py": "b0b10d844830c470ebcec723c15bf12eaa7fca7dcbcc8e0521f089e72af70842",
+    "scripts/generate_experiment_manifest.py": "25cca3f160d2abb5be37d90fb429fe0c44ecf7f5646e9349422ab1800aa0efd1",
     "scripts/ireland_drive_transfer.py": "6b5338bae539638ba395aa53db1544d8600abff46fb8f321eb9e0b76fe8eeafe",
     "scripts/metro_transfer.py": "ba474dcc742dfa4b70ebf7fa3dba6b316dcdc6bb1a096a6b7c991fe2b34f4c4c",
     "scripts/plot_pacer_figure.py": "0e96d81af813135a156ca4d99b5155ae08ddcbb47a3dda299cafa577dee18fbc",

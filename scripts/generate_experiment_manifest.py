@@ -46,7 +46,7 @@ TEXT_FORMATS = {'.py','.md','.json','.csv','.tex','.bib','.yaml','.yml','.toml',
 
 def digest(path):
     payload = path.read_bytes()
-    if path.suffix.lower() in TEXT_FORMATS:
+    if path.suffix.lower() in TEXT_FORMATS or path.name == 'LICENSE':
         payload = payload.replace(b'\r\n',b'\n')
     return hashlib.sha256(payload).hexdigest()
 
