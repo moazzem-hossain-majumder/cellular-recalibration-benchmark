@@ -2,11 +2,31 @@
   {
     "command": [
       "python",
+      "scripts/download_data.py"
+    ],
+    "start_utc": "2026-11-25T06:39:12.413714+00:00",
+    "end_utc": "2026-11-25T06:39:13.119670+00:00",
+    "seconds": 0.7,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/prepare_external_inputs.py"
+    ],
+    "start_utc": "2026-11-25T06:39:13.119670+00:00",
+    "end_utc": "2026-11-25T06:39:14.800386+00:00",
+    "seconds": 1.69,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
       "scripts/prepare_ookla_traces.py"
     ],
-    "start_utc": "2026-11-12T07:23:13.166001+00:00",
-    "end_utc": "2026-11-12T07:23:14.303054+00:00",
-    "seconds": 1.14,
+    "start_utc": "2026-11-25T06:39:14.800386+00:00",
+    "end_utc": "2026-11-25T06:39:17.124048+00:00",
+    "seconds": 2.31,
     "exit_code": 0
   },
   {
@@ -14,9 +34,9 @@
       "python",
       "scripts/reproduce_experiments.py"
     ],
-    "start_utc": "2026-11-12T07:23:14.303054+00:00",
-    "end_utc": "2026-11-12T07:30:12.320628+00:00",
-    "seconds": 418.01,
+    "start_utc": "2026-11-25T06:39:17.124572+00:00",
+    "end_utc": "2026-11-25T06:45:24.488720+00:00",
+    "seconds": 367.38,
     "exit_code": 0
   },
   {
@@ -24,9 +44,9 @@
       "python",
       "scripts/audit_data_quality.py"
     ],
-    "start_utc": "2026-11-12T07:30:12.322132+00:00",
-    "end_utc": "2026-11-12T07:30:54.055279+00:00",
-    "seconds": 41.74,
+    "start_utc": "2026-11-25T06:45:24.488720+00:00",
+    "end_utc": "2026-11-25T06:46:00.747036+00:00",
+    "seconds": 36.25,
     "exit_code": 0
   },
   {
@@ -34,9 +54,9 @@
       "python",
       "scripts/audit_trace_filters.py"
     ],
-    "start_utc": "2026-11-12T07:30:54.055279+00:00",
-    "end_utc": "2026-11-12T07:31:16.248452+00:00",
-    "seconds": 22.2,
+    "start_utc": "2026-11-25T06:46:00.748039+00:00",
+    "end_utc": "2026-11-25T06:46:18.970965+00:00",
+    "seconds": 18.23,
     "exit_code": 0
   },
   {
@@ -44,9 +64,9 @@
       "python",
       "scripts/audit_session_segmentation.py"
     ],
-    "start_utc": "2026-11-12T07:31:16.249451+00:00",
-    "end_utc": "2026-11-12T07:31:36.644395+00:00",
-    "seconds": 20.39,
+    "start_utc": "2026-11-25T06:46:18.971488+00:00",
+    "end_utc": "2026-11-25T06:46:36.371860+00:00",
+    "seconds": 17.39,
     "exit_code": 0
   },
   {
@@ -54,9 +74,9 @@
       "python",
       "scripts/validate_session_boundaries.py"
     ],
-    "start_utc": "2026-11-12T07:31:36.644395+00:00",
-    "end_utc": "2026-11-12T07:33:48.684608+00:00",
-    "seconds": 132.05,
+    "start_utc": "2026-11-25T06:46:36.371860+00:00",
+    "end_utc": "2026-11-25T06:48:22.217555+00:00",
+    "seconds": 105.84,
     "exit_code": 0
   },
   {
@@ -64,9 +84,9 @@
       "python",
       "scripts/audit_cluster_inference.py"
     ],
-    "start_utc": "2026-11-12T07:33:48.685613+00:00",
-    "end_utc": "2026-11-12T07:33:49.558721+00:00",
-    "seconds": 0.88,
+    "start_utc": "2026-11-25T06:48:22.218555+00:00",
+    "end_utc": "2026-11-25T06:48:22.858441+00:00",
+    "seconds": 0.64,
     "exit_code": 0
   },
   {
@@ -74,9 +94,9 @@
       "python",
       "scripts/audit_group_support.py"
     ],
-    "start_utc": "2026-11-12T07:33:49.559721+00:00",
-    "end_utc": "2026-11-12T07:34:34.799895+00:00",
-    "seconds": 45.24,
+    "start_utc": "2026-11-25T06:48:22.859442+00:00",
+    "end_utc": "2026-11-25T06:49:00.039367+00:00",
+    "seconds": 37.19,
     "exit_code": 0
   },
   {
@@ -84,9 +104,9 @@
       "python",
       "scripts/validate_clock_and_network.py"
     ],
-    "start_utc": "2026-11-12T07:34:34.800896+00:00",
-    "end_utc": "2026-11-12T07:34:56.830060+00:00",
-    "seconds": 22.03,
+    "start_utc": "2026-11-25T06:49:00.040365+00:00",
+    "end_utc": "2026-11-25T06:49:18.897864+00:00",
+    "seconds": 18.86,
     "exit_code": 0
   },
   {
@@ -94,9 +114,59 @@
       "python",
       "scripts/clock_frontier.py"
     ],
-    "start_utc": "2026-11-12T07:34:56.831060+00:00",
-    "end_utc": "2026-11-12T07:35:32.911481+00:00",
-    "seconds": 36.09,
+    "start_utc": "2026-11-25T06:49:18.897864+00:00",
+    "end_utc": "2026-11-25T06:49:50.058432+00:00",
+    "seconds": 31.16,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/select_clock_policy.py"
+    ],
+    "start_utc": "2026-11-25T06:49:50.059430+00:00",
+    "end_utc": "2026-11-25T06:49:52.681377+00:00",
+    "seconds": 2.62,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/select_positive_offers.py"
+    ],
+    "start_utc": "2026-11-25T06:49:52.682376+00:00",
+    "end_utc": "2026-11-25T06:49:55.951914+00:00",
+    "seconds": 3.27,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/stress_clock_radio.py"
+    ],
+    "start_utc": "2026-11-25T06:49:55.951914+00:00",
+    "end_utc": "2026-11-25T06:50:06.957101+00:00",
+    "seconds": 11.02,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/validate_nuwins_drive2.py"
+    ],
+    "start_utc": "2026-11-25T06:50:06.957101+00:00",
+    "end_utc": "2026-11-25T06:50:07.672066+00:00",
+    "seconds": 0.7,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/replicate_nuwins_drive3.py"
+    ],
+    "start_utc": "2026-11-25T06:50:07.672066+00:00",
+    "end_utc": "2026-11-25T06:50:46.570298+00:00",
+    "seconds": 38.91,
     "exit_code": 0
   },
   {
@@ -104,9 +174,9 @@
       "python",
       "scripts/metro_transfer.py"
     ],
-    "start_utc": "2026-11-12T07:35:32.912482+00:00",
-    "end_utc": "2026-11-12T07:35:36.106868+00:00",
-    "seconds": 3.19,
+    "start_utc": "2026-11-25T06:50:46.571297+00:00",
+    "end_utc": "2026-11-25T06:50:50.180435+00:00",
+    "seconds": 3.61,
     "exit_code": 0
   },
   {
@@ -115,9 +185,9 @@
       "scripts/compare_sirhan_external.py",
       "data/raw/sirhan-v1.zip"
     ],
-    "start_utc": "2026-11-12T07:35:36.106868+00:00",
-    "end_utc": "2026-11-12T07:39:03.719638+00:00",
-    "seconds": 207.62,
+    "start_utc": "2026-11-25T06:50:50.181435+00:00",
+    "end_utc": "2026-11-25T06:53:34.984575+00:00",
+    "seconds": 164.8,
     "exit_code": 0
   },
   {
@@ -125,9 +195,9 @@
       "python",
       "scripts/audit_external_traces.py"
     ],
-    "start_utc": "2026-11-12T07:39:03.719638+00:00",
-    "end_utc": "2026-11-12T07:39:46.918028+00:00",
-    "seconds": 43.19,
+    "start_utc": "2026-11-25T06:53:34.987575+00:00",
+    "end_utc": "2026-11-25T06:54:13.517315+00:00",
+    "seconds": 38.53,
     "exit_code": 0
   },
   {
@@ -135,9 +205,9 @@
       "python",
       "scripts/report_sirhan_external.py"
     ],
-    "start_utc": "2026-11-12T07:39:46.919028+00:00",
-    "end_utc": "2026-11-12T07:39:47.671599+00:00",
-    "seconds": 0.75,
+    "start_utc": "2026-11-25T06:54:13.517315+00:00",
+    "end_utc": "2026-11-25T06:54:14.140529+00:00",
+    "seconds": 0.61,
     "exit_code": 0
   },
   {
@@ -145,9 +215,150 @@
       "python",
       "scripts/validate_irish_groups.py"
     ],
-    "start_utc": "2026-11-12T07:39:47.671599+00:00",
-    "end_utc": "2026-11-12T07:39:53.015752+00:00",
-    "seconds": 5.34,
+    "start_utc": "2026-11-25T06:54:14.141527+00:00",
+    "end_utc": "2026-11-25T06:54:19.644441+00:00",
+    "seconds": 5.52,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/ireland_drive_transfer.py"
+    ],
+    "start_utc": "2026-11-25T06:54:19.644441+00:00",
+    "end_utc": "2026-11-25T06:54:31.673131+00:00",
+    "seconds": 12.02,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/replay_oslo_playback.py"
+    ],
+    "start_utc": "2026-11-25T06:54:31.674129+00:00",
+    "end_utc": "2026-11-25T06:54:40.128636+00:00",
+    "seconds": 8.45,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/replay_oslo_playback.py",
+      "--sensitivity"
+    ],
+    "start_utc": "2026-11-25T06:54:40.129632+00:00",
+    "end_utc": "2026-11-25T06:55:06.298050+00:00",
+    "seconds": 26.16,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/check_campaign_robustness.py"
+    ],
+    "start_utc": "2026-11-25T06:55:06.299048+00:00",
+    "end_utc": "2026-11-25T06:55:07.185189+00:00",
+    "seconds": 0.88,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/run_marur.py"
+    ],
+    "start_utc": "2026-11-25T06:55:07.186189+00:00",
+    "end_utc": "2026-11-25T06:56:33.401645+00:00",
+    "seconds": 86.22,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/validate_marur.py"
+    ],
+    "start_utc": "2026-11-25T06:56:33.403645+00:00",
+    "end_utc": "2026-11-25T06:56:41.554482+00:00",
+    "seconds": 8.16,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/audit_marur.py"
+    ],
+    "start_utc": "2026-11-25T06:56:41.555484+00:00",
+    "end_utc": "2026-11-25T06:58:48.873714+00:00",
+    "seconds": 127.31,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/validate_marur_audit.py"
+    ],
+    "start_utc": "2026-11-25T06:58:48.874714+00:00",
+    "end_utc": "2026-11-25T06:58:59.643242+00:00",
+    "seconds": 10.78,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/write_matched_cost_report.py"
+    ],
+    "start_utc": "2026-11-25T06:58:59.644240+00:00",
+    "end_utc": "2026-11-25T06:59:00.295864+00:00",
+    "seconds": 0.64,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/audit_trip_level_inference.py"
+    ],
+    "start_utc": "2026-11-25T06:59:00.296868+00:00",
+    "end_utc": "2026-11-25T06:59:05.058791+00:00",
+    "seconds": 4.77,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/build_untouched_cohorts.py"
+    ],
+    "start_utc": "2026-11-25T06:59:05.059791+00:00",
+    "end_utc": "2026-11-25T06:59:28.888672+00:00",
+    "seconds": 23.83,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/run_pacer_study.py"
+    ],
+    "start_utc": "2026-11-25T06:59:28.889671+00:00",
+    "end_utc": "2026-11-25T07:00:48.508974+00:00",
+    "seconds": 79.62,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/plot_pacer_figure.py"
+    ],
+    "start_utc": "2026-11-25T07:00:48.508974+00:00",
+    "end_utc": "2026-11-25T07:00:50.258130+00:00",
+    "seconds": 1.75,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/validate_pacer.py"
+    ],
+    "start_utc": "2026-11-25T07:00:50.259129+00:00",
+    "end_utc": "2026-11-25T07:00:51.602894+00:00",
+    "seconds": 1.34,
     "exit_code": 0
   },
   {
@@ -155,9 +366,9 @@
       "python",
       "scripts/build_paper_html.py"
     ],
-    "start_utc": "2026-11-12T07:39:53.015752+00:00",
-    "end_utc": "2026-11-12T07:39:58.200366+00:00",
-    "seconds": 5.19,
+    "start_utc": "2026-11-25T07:00:51.603898+00:00",
+    "end_utc": "2026-11-25T07:00:59.585754+00:00",
+    "seconds": 7.98,
     "exit_code": 0
   },
   {
@@ -165,9 +376,9 @@
       "python",
       "scripts/validate_manuscript_consistency.py"
     ],
-    "start_utc": "2026-11-12T07:39:58.201366+00:00",
-    "end_utc": "2026-11-12T07:40:01.878980+00:00",
-    "seconds": 3.67,
+    "start_utc": "2026-11-25T07:00:59.586274+00:00",
+    "end_utc": "2026-11-25T07:01:11.184279+00:00",
+    "seconds": 11.59,
     "exit_code": 0
   },
   {
@@ -178,9 +389,9 @@
       "-ra",
       "--junitxml=results/runs/final_tests.xml"
     ],
-    "start_utc": "2026-11-12T07:40:01.879981+00:00",
-    "end_utc": "2026-11-12T07:41:18.590266+00:00",
-    "seconds": 76.72,
+    "start_utc": "2026-11-25T07:01:11.184279+00:00",
+    "end_utc": "2026-11-25T07:02:44.901249+00:00",
+    "seconds": 93.72,
     "exit_code": 0
   }
 ]

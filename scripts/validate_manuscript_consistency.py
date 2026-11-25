@@ -122,7 +122,8 @@ def validate_pacer_claims(root):
         raise ValueError('Physical cluster count mismatch for Path A')
     con=pd.read_csv(root/'results/pacer/pacer_paired_contrasts.csv')
     c_unt=con[(con.scope=='UntouchedHeldOut')&(con.model=='HistGBM')&(con.scenario=='Recorded')&(con.cap_new==10)&(con.reference=='Periodic')].iloc[0]
-    if f'{100*c_unt.pool_dpos_hi:+.2f}' not in source or '40/40' not in source or '26' not in source or '42' not in source:
+    p_per=con[(con.scope=='AllCohortsPooled')&(con.model=='Persistence')&(con.scenario=='Recorded')&(con.cap_new==40)&(con.reference=='Frozen')].iloc[0]
+    if f'{100*c_unt.pool_dpos_hi:+.2f}' not in source or f'{100*p_per.pool_du:+.2f}' not in source or '40/40' not in source or '26' not in source or '42' not in source:
         raise ValueError('PACER numerical claims missing or mismatched in manuscript')
 
 

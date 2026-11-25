@@ -215,8 +215,8 @@
 </div>
 <h1 id="introduction">Introduction</h1>
 <p>An application that commits to a rate needs useful service and a tolerable frequency of broken commitments. Accurate point forecasts, low average violations and small nominal calibration budgets do not independently establish those properties. A controller can make fewer positive offers, avoid expensive feedback, exhaust its query cap early, or encounter unobserved outcomes. Each changes the meaning of a favorable reported number.</p>
-<p>We focus on a concrete empirical question: when does calibration feedback acquisition improve cellular throughput commitments, and when do missing feedback, abstention and unequal measurement costs make the apparent improvement misleading? We study frozen predictors on outcome-independent scheduled opportunities. MARUR combines established concepts—online quantile adjustment, selective prediction, cost-constrained probing and partial-feedback updating—as an implemented heuristic to expose these mechanisms. It is neither a novel general conformal prediction algorithm nor a method with guaranteed positive-conditional risk.</p>
-<p>The contribution comprises three empirical findings: attempted measurements differ from information available to later forecasts; low overall risk can conceal poor reliability among positive commitments or single-date concentration; and calibration choices produce cohort-dependent utility–risk trade-offs that vanish across independent physical campaign-dates. The accompanying event ledgers, exact-cost comparisons, cluster-level decompositions and MIT-licensed software make these findings auditable. All archives were inspected during method development, zero prospective trips have been collected, and negative results are retained without post-hoc deployment selection.</p>
+<p>We focus on a concrete question: when does calibration feedback acquisition improve cellular throughput commitments, and when do missing feedback, abstention and unequal measurement costs make the apparent improvement misleading? We study frozen predictors on outcome-independent scheduled opportunities using both a reactive event-triggered heuristic (MARUR, combining window adaptation, selective prediction, cost-constrained probing and partial-feedback updating to expose failure modes) and a theorem-backed selective-offer controller (PACER, Section V) that closes zero-offer dilution and blind-suffix exhaustion under an <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mi>/</mi><mi>K</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(1/K)</annotation></semantics></math> weighted selective-excess bound while clarifying where low offer frequencies still limit conditional reliability.</p>
+<p>The contribution comprises four connected elements: (i) an auditable event ledger separating attempts, missing responses and admitted updates; (ii) an offer-frequency and cluster-level synthesis establishing how low overall risk conceals high conditional risk or single-date concentration across 16 retrospective campaign-dates; (iii) PACER’s finite-sample selective-excess and blind-suffix theorems (Theorems 1–2) verified under a frozen SHA-256 lock across 40/40 cohort–model–cap cells spanning 42 physical campaign-dates in 10 cohorts (including 26 newly unsealed public dates); and (iv) explicit deployment ceilings and non-deployment criteria. Zero prospective live field trips have been collected, and negative results are preserved cleanly in MIT-licensed code.</p>
 <h1 id="sec:related_work">Related Work</h1>
 <h2 id="cellular-measurement-prediction-and-rate-decisions">Cellular Measurement, Prediction, and Rate Decisions</h2>
 <p>Operational measurements establish that cellular throughput depends on radio conditions, mobility, and the collection regime. The channel/context dataset of Raca et al. <span class="citation" data-cites="raca2020">(Raca et al. 2020)</span> and the commercial mmWave measurements underlying Lumos5G <span class="citation" data-cites="narayanan2020">(Narayanan et al. 2020)</span> support context-aware prediction. More recent multi-technology measurements, longitudinal service analysis, and machine-learning modeling extend this evidence to evolving non-standalone networks <span class="citation" data-cites="kousias2024data caso2024 kousias2024model">(Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; Kousias, Rajiullah, Caso, Alay, et al. 2024)</span>. These resources support evaluation across conditions, but forecast counts within a shared route or campaign do not constitute independent replications. Moreover, prediction-error metrics do not directly measure the risk of promising an unsustainable rate.</p>
@@ -227,7 +227,7 @@
 <p>Time-series methods exploit temporal structure in different ways. Adaptive conformal aggregation <span class="citation" data-cites="zaffran2022">(Zaffran et al. 2022)</span>, sequential prediction of residual quantiles <span class="citation" data-cites="xu2023">(Xu and Xie 2023)</span>, and temporal quantile adjustments <span class="citation" data-cites="lin2022">(Lin et al. 2022)</span> evaluate coverage together with interval efficiency. Online conformal inference also studies arbitrary distribution shifts and long-run calibration <span class="citation" data-cites="gibbs2024">(Gibbs and Candès 2024)</span>. Their guarantees concern different sampling models and coverage targets: asymptotic conditional validity, longitudinal or cross-sectional behavior, and time-averaged coverage are not interchangeable. For cellular commitments, the relevant distinction is between missing input telemetry, a requested label that never becomes usable, and a label unavailable until its measurement horizon closes. Evaluation must retain these distinctions instead of removing unresolved outcomes from the denominator.</p>
 <h2 id="online-adaptation-and-limited-feedback">Online Adaptation and Limited Feedback</h2>
 <p>Adaptive conformal inference adjusts the nominal error level using observed mistakes <span class="citation" data-cites="gibbs2021">(Gibbs and Candes 2021)</span>. Strongly adaptive online learning emphasizes performance over local time intervals <span class="citation" data-cites="bhatnagar2023">(Bhatnagar et al. 2023)</span>; conformal PID control uses feedback and score forecasting <span class="citation" data-cites="pid2023">(Angelopoulos et al. 2023)</span>; decaying step sizes connect retrospective coverage with stable-distribution quantile estimation <span class="citation" data-cites="angelopoulos2024online">(Anastasios Nikolas Angelopoulos et al. 2024)</span>; and betting-based adaptation reduces manual learning-rate selection <span class="citation" data-cites="podkopaev2024">(Podkopaev et al. 2024)</span>. These developments provide substantive methodological baselines. However, replacing their feedback stream with selectively requested, delayed, or imputed scores changes the assumptions and does not preserve their guarantees automatically.</p>
-<p>Label efficiency and partial feedback have also been studied directly. Ilyas et al. <span class="citation" data-cites="ilyas2026">(Ilyas et al. 2026)</span> balance upfront calibration-label cost against prediction-set efficiency using a stopping rule for independently and identically distributed arrivals. Ge et al. <span class="citation" data-cites="ge2025">(Ge et al. 2025)</span> analyze stochastic online conformal prediction when the label is revealed through inclusion in the selected prediction set. Hou et al. <span class="citation" data-cites="hou2025">(Hou et al. 2025)</span> calibrate probabilistic linear-system solvers using sporadic cloud feedback and examine coverage, set size, and cloud usage. Therefore, adaptive querying, sparse feedback, and calibration-cost trade-offs are established research directions. The cellular setting considered here differs in its physical measurement attempts, unsuccessful responses, delayed admission of scores, and one-sided throughput commitments. These differences motivate an explicit event ledger and matched realized-cost evaluation; they do not by themselves establish algorithmic novelty or a new theoretical guarantee.</p>
+<p>Label efficiency and partial feedback have also been studied directly. Ilyas et al. <span class="citation" data-cites="ilyas2026">(Ilyas et al. 2026)</span> balance upfront calibration-label cost against prediction-set efficiency using a stopping rule for independently and identically distributed arrivals. Ge et al. <span class="citation" data-cites="ge2025">(Ge et al. 2025)</span> analyze stochastic online conformal prediction when the label is revealed through inclusion in the selected prediction set. Hou et al. <span class="citation" data-cites="hou2025">(Hou et al. 2025)</span> calibrate probabilistic linear-system solvers using sporadic cloud feedback and examine coverage, set size, and cloud usage. Therefore, adaptive querying, sparse feedback, and calibration-cost trade-offs are established research directions. The cellular setting considered here couples charged physical measurement attempts, unsuccessful responses, delayed admission of scores, and selective one-sided throughput commitments. Beyond MARUR’s causal event ledger and matched-cost evaluation, Section V introduces PACER to close zero-offer dilution and blind-suffix exhaustion with finite-sample weighted selective-excess control (Theorem 1), while proving explicitly why unweighted conditional risk still hinges on positive-offer frequency <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>.</p>
 <h2 id="selective-risk-and-decision-oriented-evaluation">Selective Risk and Decision-Oriented Evaluation</h2>
 <p>Selective classification formalizes the trade-off between accepting predictions and reducing conditional error <span class="citation" data-cites="geifman2017">(Geifman and El-Yaniv 2017)</span>. Risk-controlling prediction sets <span class="citation" data-cites="bates2021">(Bates et al. 2021)</span> and conformal risk control <span class="citation" data-cites="angelopoulos2024risk">(Anastasios N. Angelopoulos et al. 2024)</span> extend calibration beyond a single coverage event, subject to their respective risk definitions and assumptions. Conditional conformal guarantees can target specified classes of shifts or subgroups <span class="citation" data-cites="gibbs2025">(Gibbs et al. 2025)</span>, while adaptive coverage policies use a dedicated statistical construction to choose example-dependent coverage levels <span class="citation" data-cites="gauthier2026">(Gauthier et al. 2026)</span>. A heuristic abstention gate is not equivalent to any of these constructions.</p>
 <p>Metric choice is consequential. Min et al. <span class="citation" data-cites="min2026">(Min et al. 2026)</span> demonstrate that coverage and average interval length can conceal undesirable prediction behavior. For nonnegative throughput and zero-rate abstention, an analogous accounting distinction is elementary but essential: with a common eligible-opportunity denominator, all-issued violation risk equals the positive-offer frequency multiplied by violation risk conditional on a positive offer. Lower all-issued risk can therefore accompany unchanged or worse reliability among actual commitments. Missing outcomes additionally require finite-record risk bounds, which are not confidence intervals or prospective coverage guarantees. Supported throughput, positive-offer frequency, abstention, unresolved outcomes, and dates with positive commitments must consequently be reported alongside risk and realized query cost.</p>
@@ -343,16 +343,16 @@
 <tr>
 <td style="text-align: left;"><strong>Present study</strong></td>
 <td style="text-align: left;"><strong>Rate and missing telemetry</strong></td>
-<td style="text-align: left;"><strong>Six retrospective cohorts</strong></td>
-<td style="text-align: left;"><strong>MARUR query/commit/abstain heuristic</strong></td>
-<td style="text-align: left;"><strong>Correlated trips; no formal conditional guarantee</strong></td>
-<td style="text-align: left;"><strong>Auditable events, matched costs, and risk–utility decomposition</strong></td>
+<td style="text-align: left;"><strong>Ten cohorts (42 campaign-dates)</strong></td>
+<td style="text-align: left;"><strong>MARUR heuristic and PACER control</strong></td>
+<td style="text-align: left;"><strong>T1 bounds weighted excess; 0 live trips</strong></td>
+<td style="text-align: left;"><strong>Charged attempts, censored hygiene, T1–T2 selective bounds</strong></td>
 </tr>
 </tbody>
 </table>
 </div>
 <h4 id="research-gap-and-contribution">Research Gap and Contribution</h4>
-<p>The reviewed literature already establishes missingness-aware prediction, adaptive calibration, selective risk, and label-cost optimization. The defensible contribution of the present study is their operational evaluation under explicitly accounted cellular feedback constraints, rather than their combination under a new name. We examine whether a fixed, missingness-aware query/commit/abstain controller improves useful throughput at matched realized attempts without concealing risk through abstention or unresolved outcomes. The evaluation uses outcome-independent scheduled opportunities and distinguishes initial successful calibration observations, new attempts, successful responses, admitted scores, and updates used by later forecasts. Comparisons are reported separately by cohort and include adverse results. This supports an empirical systems contribution; a claim of optimal recalibration, guaranteed conditional risk, or consistent superiority requires additional theory or independent prospective evidence.</p>
+<p>Against three established lines of work, our contribution isolates a distinct three-way intersection: <em>charged physical probe acquisition</em>, <em>censored-response quantile hygiene</em>, and <em>positive-offer selective risk accounting</em>. First, relative to budgeted label-efficient conformal work—such as upfront IID stopping rules <span class="citation" data-cites="ilyas2026">(Ilyas et al. 2026)</span>, semi-bandit feedback triggered by set inclusion <span class="citation" data-cites="ge2025">(Ge et al. 2025)</span>, and sporadic cloud solver calibration <span class="citation" data-cites="hou2025">(Hou et al. 2025)</span>—wireless throughput calibration decouples probe expenditure from service selection under maturation delays, unsuccessful probes, and nonstationary shift. Second, relative to selective classification <span class="citation" data-cites="geifman2017">(Geifman and El-Yaniv 2017)</span>, conformal risk control <span class="citation" data-cites="angelopoulos2024risk">(Anastasios N. Angelopoulos et al. 2024)</span>, and adaptive or conditional coverage methods <span class="citation" data-cites="gibbs2025 gauthier2026">(Gibbs et al. 2025; Gauthier et al. 2026)</span>, we prove that all-tick adaptive conformal updates suffer zero-offer gradient dilution under abstention (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mo>+</mo></msub><mo>≈</mo><mi>α</mi><mi>/</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">R_+ \approx \alpha/A</annotation></semantics></math>) and resolve it via PACER’s <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mi>/</mi><mi>K</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(1/K)</annotation></semantics></math> weighted selective-excess bound (Theorem 1), without claiming an unconditional <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mo>+</mo></msub><annotation encoding="application/x-tex">R_+</annotation></semantics></math> guarantee when <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math> collapses. Third, relative to cellular throughput modeling and conformal intervals <span class="citation" data-cites="raca2024 jacobson2025 sirhan2026">(Raca et al. 2024; Jacobson et al. 2025; Sirhan 2026)</span>, we separate heuristic reactive forgetting (<em>MARUR</em>) from pre-registered horizon-paced control (<em>PACER</em>) across 42 physical campaign-dates (with prospective field trips remaining zero) and report negative deployment boundaries explicitly alongside gains.</p>
 <h1 id="decision-process-and-evaluation">Decision Process and Evaluation</h1>
 <h2 id="scheduled-opportunities-and-acquisition-accounting">Scheduled opportunities and acquisition accounting</h2>
 <p>At issue time <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>, a frozen predictor outputs <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>t</mi></msub><annotation encoding="application/x-tex">p_t</annotation></semantics></math> using only information available before issue. The controller returns a nonnegative commitment <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mi>t</mi></msub><annotation encoding="application/x-tex">L_t</annotation></semantics></math> and may request the future outcome. Its response is revealed only after the measurement horizon closes. All scheduled opportunities remain in the ledger; those without a usable predictor are marked ineligible. The eligible denominator includes zero commitments.</p>
@@ -363,7 +363,93 @@
 <p>Supported-throughput utility is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><msub><mo>∑</mo><mrow><mi>t</mi><mo>:</mo><msub><mi>y</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> observed</mtext></mrow></mrow></msub><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>L</mi><mi>t</mi></msub><mo>,</mo><msub><mi>y</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><msub><mo>∑</mo><mrow><mi>t</mi><mo>:</mo><msub><mi>y</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> observed</mtext></mrow></mrow></msub><msub><mi>y</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">U=\sum_{t:y_t\text{ observed}}\min(L_t,y_t)/\sum_{t:y_t\text{ observed}}y_t</annotation></semantics></math>. It is conditional on measured service. We also report observed supported Mbps per eligible opportunity, with no credited service for missing outcomes. Neither metric measures live application benefit. We report offer frequency, abstention, positive dates, unknown outcomes and feedback costs beside risk and utility. No operational superiority is asserted without independently specified utility, offer-frequency and risk requirements.</p>
 <h2 id="implemented-policies">Implemented policies</h2>
 <p>MARUR maintains ten recent admitted scores <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mi>p</mi><mo>−</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">s=p-y</annotation></semantics></math>. A missing requested outcome contributes the conservative upper score <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>, since <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y\geq0</annotation></semantics></math>. At nominal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.1</mn></mrow><annotation encoding="application/x-tex">\alpha=0.1</annotation></semantics></math>, the corrected quantile uses rank <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⌈</mo><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⌉</mo></mrow><annotation encoding="application/x-tex">\lceil(n+1)(1-\alpha)\rceil</annotation></semantics></math>; with ten scores this is the maximum. The commitment is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">max</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>p</mi><mo>−</mo><mi>q</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\max(0,p-q)</annotation></semantics></math>. Matching-pattern scores are used only with at least nine entries; fewer than three matching entries causes abstention. Query triggers use a sixty-minute completed-response age or a telemetry-pattern change, subject to the remaining cap and at most one pending request. Failed completed responses reset the original trigger state even when an ablation discards their scores.</p>
-<p>This is a heuristic with a stated design objective, not a solution to constrained utility maximization. Conservative completion bounds an individual missing score but does not establish a sequential calibration theorem under selective feedback and drift. Periodic, Early and modified ACI share the same feedback interface; ACI here is an explicitly modified sparse-feedback comparator.</p>
+<p>This is a heuristic with a stated design objective, not a solution to constrained utility maximization. Conservative completion bounds an individual missing score but does not establish a sequential calibration theorem under selective feedback and drift. Periodic, Early, DecayingOGD, Random, and modified ACI share the same feedback interface; ACI and DecayingOGD here are explicitly modified sparse-feedback comparators. Table II summarizes the exact update rules, frozen hyperparameters, and cellular rationale across all evaluated controller families (detailed parameter grids match the released JSON specifications).</p>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">Policy</td>
+<td style="text-align: left;">Trigger</td>
+<td style="text-align: left;">Calibration</td>
+<td style="text-align: left;">KeyParams</td>
+<td style="text-align: left;">MissingRule</td>
+<td style="text-align: left;">Rationale</td>
+</tr>
+<tr>
+<td style="text-align: left;">Frozen</td>
+<td style="text-align: left;">None (C=0)</td>
+<td style="text-align: left;">Static Init10</td>
+<td style="text-align: left;">init=10</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">Zero-cost lower anchor</td>
+</tr>
+<tr>
+<td style="text-align: left;">Early</td>
+<td style="text-align: left;">Every elig tick</td>
+<td style="text-align: left;">FIFO W=10</td>
+<td style="text-align: left;">C=10/40</td>
+<td style="text-align: left;">Insert score=p</td>
+<td style="text-align: left;">Day-1 exhaust stress</td>
+</tr>
+<tr>
+<td style="text-align: left;">Random</td>
+<td style="text-align: left;">Uniform seed</td>
+<td style="text-align: left;">FIFO W=10</td>
+<td style="text-align: left;">seeds=42,123,2026</td>
+<td style="text-align: left;">Insert score=p</td>
+<td style="text-align: left;">Nonadaptive baseline</td>
+</tr>
+<tr>
+<td style="text-align: left;">Periodic</td>
+<td style="text-align: left;">Every P=15 ticks</td>
+<td style="text-align: left;">FIFO W=10</td>
+<td style="text-align: left;">P=15, W=10</td>
+<td style="text-align: left;">Insert score=p</td>
+<td style="text-align: left;">Fixed cadence</td>
+</tr>
+<tr>
+<td style="text-align: left;">ACI</td>
+<td style="text-align: left;">Every P=15 ticks</td>
+<td style="text-align: left;">Online level a</td>
+<td style="text-align: left;">eta=0.05, W=10</td>
+<td style="text-align: left;">err=1 on pos</td>
+<td style="text-align: left;">Sparse ACI comparator</td>
+</tr>
+<tr>
+<td style="text-align: left;">DecayingOGD</td>
+<td style="text-align: left;">Every P=15 ticks</td>
+<td style="text-align: left;">Decaying step</td>
+<td style="text-align: left;">exp=0.6</td>
+<td style="text-align: left;">score=p on miss</td>
+<td style="text-align: left;">Decaying-step OGD</td>
+</tr>
+<tr>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">Age 60m or RAT</td>
+<td style="text-align: left;">Pat/Pool W=10</td>
+<td style="text-align: left;">age=60m, min=3</td>
+<td style="text-align: left;">Insert p and gate</td>
+<td style="text-align: left;">Event-driven heuristic</td>
+</tr>
+<tr>
+<td style="text-align: left;">MARUR ablations</td>
+<td style="text-align: left;">Age or Periodic</td>
+<td style="text-align: left;">Pool/DropMiss</td>
+<td style="text-align: left;">NoPat/NoGate/Drop</td>
+<td style="text-align: left;">Drop or Periodic</td>
+<td style="text-align: left;">Isolate miss/gate/trig</td>
+</tr>
+<tr>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">Uniform K blk</td>
+<td style="text-align: left;">Smooth sel W=20</td>
+<td style="text-align: left;">g=0.05, v=0.15</td>
+<td style="text-align: left;">Exclude W; e=1</td>
+<td style="text-align: left;">Theorem 1 sel-excess</td>
+</tr>
+</tbody>
+</table>
+</div>
 <h1 id="experimental-evidence">Experimental Evidence</h1>
 <h2 id="cohorts-and-dependence">Cohorts and dependence</h2>
 <p>The main replay uses Rome E1 and E3, three carriers from one US drive, and an Irish cohort. Both the archived histogram-gradient-boosted predictor and persistence are evaluated. Rome has seven test dates per cohort with six shared dates; the US carriers share one campaign with two substantial driving days and a short third calendar date; the Irish cohort has five test dates. Multiple carriers, forecast ticks and repeated masks do not increase independent-trip replication.</p>
@@ -549,15 +635,9 @@
 </table>
 </div>
 <p>The table reports all six cohorts at a common cap but displays realized costs explicitly; its rows are not automatically matched-cost comparisons. Positive-conditional risk is frequently high even when overall risk appears low. At ten new queries in the completed-clock, five-minute-spacing experiment, recorded HistGBM conditional upper-risk bounds range from approximately 8.8 percent in Ireland to 62.5 percent in E3. A blanket claim of reliable positive commitments is therefore unsupported.</p>
-<h2 id="controlled-freshness-and-window-sensitivity">Controlled freshness and window sensitivity</h2>
-<p>An additional 1,848-configuration experiment uses fixed timestamp-based independent and burst feedback masks. It separates latest attempt, completed response, successful observed label and admitted-score times. The primary contrast changes only the age clock, with identical five-minute attempt spacing and pattern logic. All 24 recorded-feedback comparisons are unchanged. Across recorded and stressed conditions there are six matched utility gains without higher conditional upper risk, seven losses without lower risk, eight trade-offs or risk-only changes, 129 unchanged cases and eighteen unmatched-cost cases. These dependent configuration counts are descriptive, not replication counts.</p>
-<p>Increasing the window to twenty or forty adds no free initial labels. Some cohorts gain utility with nonincreasing conditional upper risk, while E3 and Verizon lose substantial useful throughput. Retaining more scores changes both their ages and pattern support; improvement cannot be attributed solely to quantile stabilization. The main conclusion is heterogeneity, not an optimal window selected from these results.</p>
-<h2 id="targeted-baselines-and-mechanism-checks">Targeted baselines and mechanism checks</h2>
-<p>Three seeded nonadaptive random query schedules test whether adaptive timing adds value beyond acquiring labels. A decaying-step quantile tracker, motivated by online conformal prediction <span class="citation" data-cites="angelopoulos2024online">(Anastasios Nikolas Angelopoulos et al. 2024)</span>, uses the Periodic feedback schedule. Its signed scores, delayed responses and conservative missing-feedback substitution differ from the published setting, so no theorem is transferred. Separate ablations compare pattern and pooled quantiles with the gate fixed, then remove only the gate with the query schedule fixed. Every cohort, cap and feedback condition is retained. Complete operating points and offer decompositions are provided in the reviewer-baseline supplement; no best test schedule is promoted.</p>
-<p>The targeted grid contains 792 configurations. Pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed. Removing the gate yields sixteen utility gains without higher conditional upper risk, ten trade-offs or risk-only changes and 46 unchanged cases. Against Periodic, the decaying-step adaptation yields nine utility gains without higher conditional upper risk, eighteen losses without lower risk, and 45 trade-offs or risk-only changes. Random-schedule comparisons also vary by seed and cohort. These configuration counts share observations and do not constitute statistical replication.</p>
-<p>Reconstructing the retained scores identifies specific failure mechanisms. In recorded HistGBM Verizon at cap forty and window twenty, a conservative missing-response score is tied at the quantile on 159 of 287 eligible ticks; all 159 have a zero raw bound. Yet window forty has no such binding missing score and still loses substantial utility. E3 has neither binding missing scores nor gate vetoes in this recorded window comparison. Thus neither missing-score completion nor abstention alone explains all losses. The complete shared/added/removed-offer decomposition is descriptive; it does not identify the physical cause of temporal residual changes.</p>
-<h2 id="independent-collection-units-and-empirical-synthesis">Independent collection units and empirical synthesis</h2>
-<p>Configuration counts (576, 720, 1,848, 792) are deterministic sweeps over the same archives, not independent statistical replications. Pooling across cohorts reveals only three geographic campaigns and sixteen unique calendar-date clusters: eight dates in Rome (E1 and E3 share six), three shared US Drive 3 dates across AT&amp;T, T-Mobile and Verizon, and five Irish driving dates spanning eleven traces. Table XV reports paired MARUR minus Periodic contrasts clustered strictly at these collection units under matched ten-query cost.</p>
+<h2 id="controlled-freshness-targeted-baselines-and-cluster-inference">Controlled freshness, targeted baselines, and cluster inference</h2>
+<p>Controlled-clock and window sweeps (detailed in the supplement) show heterogeneity rather than universal gain: enlarging windows from 10 to 20 or 40 trades stabilization against slow initial-score decay, while across the targeted 792 configurations evaluating nonadaptive seeded random schedules, a decaying-step quantile comparator <span class="citation" data-cites="angelopoulos2024online">(Anastasios Nikolas Angelopoulos et al. 2024)</span>, and gate/quantile ablations, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks (complete micro-tallies and score reconstructions appear in the supplementary document).</p>
+<p>Configuration counts (576, 720, 1,848, 792) are deterministic sweeps over the same archives, not independent statistical replications. Pooling across cohorts reveals only three geographic campaigns and sixteen unique calendar-date clusters: eight dates in Rome (E1 and E3 share six), three shared US Drive 3 dates across AT&amp;T, T-Mobile and Verizon, and five Irish driving dates spanning eleven traces. Table IV reports paired MARUR minus Periodic contrasts clustered strictly at these collection units under matched ten-query cost.</p>
 <div class="table*">
 <table>
 <tbody>
@@ -843,11 +923,123 @@
 <embed src="figures/fig9_pacer.png" style="width:92.0%" />
 <figcaption>Path A verification across all 40 cohort-model-cap cells (left, averaging seeds 42, 123, and 2026) and untouched held-out conditional risk comparisons under frozen HistGBM and 10 new queries (right).</figcaption>
 </figure>
-<p>Table IV and Fig. 1 summarize the locked results. Three findings emerge cleanly with zero post-hoc tuning. First, Theorem 1 holds across all 40/40 cells (maximum seed-averaged selective excess 0.195 across all 40 cells versus 0.683–0.714 bounds at cap 10, and 0.084 versus 0.178–0.192 at cap 40; Table IV displays HistGBM where cap-10 excess is at most 0.112). Second, across all 26 untouched physical clusters under frozen HistGBM and ten new queries, PACER reduces pooled positive-offer upper risk by -23.41 percentage points relative to Periodic (bootstrap 95 percent interval -37.04 to -5.91, utility change +0.47 points), driven largely by preventing Periodic’s Day-1 budget depletion in Oslo Commute (17.69 versus 48.70 percent risk) and maintaining 5.12–6.98 percent conditional risk at 86.7 percent offer frequency on Ireland Static. Third, adverse cases clarify Theorem 1’s exact boundary: dividing the selective-excess bound by small positive-offer rates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>0.06</mn><mo>,</mo><mn>0.25</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">A \in [0.06, 0.25]</annotation></semantics></math> yields high conditional risk (47.62–62.96 percent on Rome Capacity Op1/Op2 across all methods), PACER’s 20-sample residual window forgets initial pre-shift scores slower than Periodic’s ten-sample window on retrospective suffixes (47.81 versus 35.67 percent at cap 40), and under Persistence conservative abstention trades away throughput (-28.79 percentage points utility across all 42 clusters at cap 40). Although newly extracted from previously uninspected public archives, these tests remain historical archive evaluations; zero live prospective field trips have been collected.</p>
-<h1 id="limitations-and-prospective-scope">Limitations and Prospective Scope</h1>
-<p>The random-priority comparator knows the full eligible-opportunity roster. It is an offline nonadaptive control, not a deployable policy with unknown future eligibility. A prospective random comparator must fix its tick schedule before departure and explicitly retain skipped and unsuccessful requests in its accounting. All empirical results use previously inspected archives; zero independent prospective field trips have been collected. Clocks are outcome-independent, but queried observations remain selectively acquired. Finite-record missingness bounds do not quantify uncertainty over future campaigns, synthetic feedback masks do not estimate physical outages, and a 60-second clock horizon differs from transfer-truncated session endpoints.</p>
-<p>This paper remains strictly focused on physical cellular throughput measurement and commitment reliability. Prior screening thresholds (such as 1.0 or 1.5 Mbps targets, 80 percent offer frequency, or 5 percent conditional risk) are unvalidated engineering assumptions, not application-owner criteria. Supported throughput is a physical capacity metric and does not establish end-to-end adaptive video quality of experience (QoE), buffering probability, startup latency, playback interruptions, or bitrate switching; live application QoE validation is deferred to a separate follow-up study.</p>
-<p>To support future external validation without retroactive tuning, we provide a frozen model artifact (<em>frozen_rome_histgbm.joblib</em>), fixed preprocessing, initial residual IDs, and an executable verification harness that rejects incomplete registration metadata. As a precision planning point, 18 independent paired trips yield roughly five percentage points of utility precision under an assumed SD of 0.10, whereas certifying a 5 percent conditional-risk bound under realistic intra-trip correlation requires at least 62 independent trips. True prospective field collection on new operators, hardware and routes remains an open requirement.</p>
+<p>Table V and Fig. 1 summarize the locked results. Three findings emerge cleanly with zero post-hoc tuning. First, Theorem 1 holds across all 40/40 cells (maximum seed-averaged selective excess 0.195 across all 40 cells versus 0.683–0.714 bounds at cap 10, and 0.084 versus 0.178–0.192 at cap 40; Table V displays HistGBM where cap-10 excess is at most 0.112). Second, across all 26 untouched physical clusters under frozen HistGBM and ten new queries, PACER reduces pooled positive-offer upper risk by -23.41 percentage points relative to Periodic (bootstrap 95 percent interval -37.04 to -5.91, utility change +0.47 points), driven largely by preventing Periodic’s Day-1 budget depletion in Oslo Commute (17.69 versus 48.70 percent risk) and maintaining 5.12–6.98 percent conditional risk at 86.7 percent offer frequency on Ireland Static. Third, adverse cases clarify Theorem 1’s exact boundary: dividing the selective-excess bound by small positive-offer rates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>0.06</mn><mo>,</mo><mn>0.25</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">A \in [0.06, 0.25]</annotation></semantics></math> yields high conditional risk (47.62–62.96 percent on Rome Capacity Op1/Op2 across all methods), PACER’s 20-sample residual window forgets initial pre-shift scores slower than Periodic’s ten-sample window on retrospective suffixes (47.81 versus 35.67 percent at cap 40), and under Persistence conservative abstention trades away throughput (-29.95 percentage points utility across all 42 clusters at cap 40 versus Frozen). Although newly extracted from previously uninspected public archives, these tests remain historical archive evaluations; zero live prospective field trips have been collected.</p>
+<h2 id="marur-vs.-pacer-taxonomy-and-conditional-risk-ceilings">MARUR vs. PACER taxonomy and conditional-risk ceilings</h2>
+<p>PACER complements rather than uniformly dominates MARUR. PACER strictly requires a fixed finite horizon <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math> to pace <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K = \min(C_{\text{new}}, T)</annotation></semantics></math> uniform probes and uses <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mtext mathvariant="normal">obs</mtext></msub><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">W_{\text{obs}} = 20</annotation></semantics></math> to stabilize smooth quantiles against missingness poisoning, whereas MARUR requires no prior knowledge of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>, triggers immediately on telemetry-pattern switches, and flushes ten stale initial residuals twice as fast (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">W=10</annotation></semantics></math>) at high query budgets (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C=40</annotation></semantics></math>)—at the cost of Day-1 cap exhaustion and missing-score freezing under sustained censoring. Table VI formalizes the resulting operational choice.</p>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">Regime</td>
+<td style="text-align: left;">Method</td>
+<td style="text-align: left;">Guarantee</td>
+<td style="text-align: left;">ObservedMetric</td>
+<td style="text-align: left;">PrimaryFailure</td>
+</tr>
+<tr>
+<td style="text-align: left;">Static high offer (A at least 0.50)</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">T1 O(1/K)</td>
+<td style="text-align: left;">5.12-6.98 PosHi IrelandSt</td>
+<td style="text-align: left;">Needs horizon length T</td>
+</tr>
+<tr>
+<td style="text-align: left;">Budget-starved multi-day (C=10)</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">T2 Wmax blk</td>
+<td style="text-align: left;">-23.41pp PosHi vs Per G=26</td>
+<td style="text-align: left;">R+ high if A below 0.25</td>
+</tr>
+<tr>
+<td style="text-align: left;">Short rapid shift (C=40, T 300)</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">Heuristic W=10</td>
+<td style="text-align: left;">Forgets init faster on Op1</td>
+<td style="text-align: left;">Day-1 churn; miss freeze</td>
+</tr>
+<tr>
+<td style="text-align: left;">Stationary / Retro C=40</td>
+<td style="text-align: left;">Periodic</td>
+<td style="text-align: left;">Fixed cadence</td>
+<td style="text-align: left;">35.67 vs PAC 47.81 PosHi</td>
+<td style="text-align: left;">Day-1 blind when P x C low</td>
+</tr>
+<tr>
+<td style="text-align: left;">Low A or uncalibrated Persist</td>
+<td style="text-align: left;">Halt/Refuse</td>
+<td style="text-align: left;">Fail safe</td>
+<td style="text-align: left;">Avoids -29.95pp U drop</td>
+<td style="text-align: left;">No SLA rate valid</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Operationally, Theorem 1 implies that positive-offer conditional risk is bounded by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>≤</mo><mi>α</mi><mo>+</mo><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">R_+^{\text{upper}} \le \alpha + B_1(K) / A</annotation></semantics></math> in expectation, exposing a strict floor governed by positive-offer frequency <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>. Because theoretical cap-40 selective excess bounds sit near <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo>≈</mo><mn>0.18</mn></mrow><annotation encoding="application/x-tex">B_1 \approx 0.18</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.19</mn><annotation encoding="application/x-tex">0.19</annotation></semantics></math> (and empirical excess near <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.04</mn><annotation encoding="application/x-tex">0.04</annotation></semantics></math>), keeping worst-case conditional risk within tolerance demands sustained service acceptance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>. As quantified in Table VII, controllers should <strong>not be deployed</strong> for SLA-backed rate commitments whenever positive-offer frequency drops below 0.25–0.30 under active regime shift (observed across E1, E3, AT&amp;T, Verizon, Rome Capacity Op1/Op2, T-Mobile, and Ireland) or under uncalibrated Persistence lag predictors where conservative abstention collapses useful delivery (-29.95 percentage points pooled at cap 40).</p>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">OfferStratum</td>
+<td style="text-align: left;">RefA</td>
+<td style="text-align: left;">CeilC10</td>
+<td style="text-align: left;">CeilC40</td>
+<td style="text-align: left;">EmpPosHiC40</td>
+<td style="text-align: left;">EmpCohortsC40</td>
+<td style="text-align: left;">PolicyRule</td>
+</tr>
+<tr>
+<td style="text-align: left;">A below 0.15</td>
+<td style="text-align: left;">0.10</td>
+<td style="text-align: left;">100.0</td>
+<td style="text-align: left;">100.0</td>
+<td style="text-align: left;">47.62-62.96</td>
+<td style="text-align: left;">E1,E3,ATT,Ver,Rome1/2</td>
+<td style="text-align: left;">DO NOT DEPLOY</td>
+</tr>
+<tr>
+<td style="text-align: left;">A 0.15 to 0.30</td>
+<td style="text-align: left;">0.22</td>
+<td style="text-align: left;">100.0</td>
+<td style="text-align: left;">93.5</td>
+<td style="text-align: left;">36.84-44.26</td>
+<td style="text-align: left;">T-Mobile, Ireland</td>
+<td style="text-align: left;">DO NOT DEPLOY (SLA)</td>
+</tr>
+<tr>
+<td style="text-align: left;">A 0.30 to 0.70</td>
+<td style="text-align: left;">0.50</td>
+<td style="text-align: left;">100.0</td>
+<td style="text-align: left;">46.7</td>
+<td style="text-align: left;">32.40</td>
+<td style="text-align: left;">Oslo Commute</td>
+<td style="text-align: left;">Advisory Only</td>
+</tr>
+<tr>
+<td style="text-align: left;">A 0.70 or more</td>
+<td style="text-align: left;">0.85</td>
+<td style="text-align: left;">91.7</td>
+<td style="text-align: left;">31.6</td>
+<td style="text-align: left;">6.98</td>
+<td style="text-align: left;">Ireland Static</td>
+<td style="text-align: left;">Feasible Target</td>
+</tr>
+<tr>
+<td style="text-align: left;">Persistence Lag</td>
+<td style="text-align: left;">All</td>
+<td style="text-align: left;">T1 0.714</td>
+<td style="text-align: left;">T1 0.192</td>
+<td style="text-align: left;">-29.95pp U vs Frz</td>
+<td style="text-align: left;">All 10 cohorts (42u)</td>
+<td style="text-align: left;">DO NOT DEPLOY</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="limitations-threats-to-validity-and-reproducibility">Limitations, Threats to Validity, and Reproducibility</h1>
+<h2 id="limitations-and-threats-to-validity">Limitations and Threats to Validity</h2>
+<p><em>Internal and measurement validity:</em> Random-priority baselines require full-horizon eligibility counts offline; prospective random probing must pre-commit schedules before departure and retain aborted attempts. Sixty-second clock intervals also differ from transfer-truncated session endpoints, and synthetic Position/QueryCensor20 masks do not model correlated physical radio outages. <em>External and statistical validity:</em> All ten evaluated cohorts (16 retrospective plus 26 untouched physical campaign-dates across three original and three unsealed archives) derive from pre-existing historical traces; zero prospective live trips have been collected (prospective trips collected = 0 in audit metadata). To support future live collection without retroactive tuning, we provide frozen artifact <em>frozen_rome_histgbm.joblib</em> and executable registration harness <em>run_prospective_validation.py</em>. Precision planning indicates 18 paired trips yield roughly five percentage points of utility precision (assuming SD 0.10), whereas certifying a 5 percent conditional-risk target under realistic intra-trip correlation requires at least 62 independent trips. <em>Construct validity and application scope:</em> This paper focuses strictly on physical cellular throughput commitments rather than video playback quality; unvalidated targets (such as 1.0–1.5 Mbps representations, 80 percent offer frequency, or 5 percent risk) and end-to-end adaptive bitrate QoE metrics are explicitly deferred to follow-up live playback trials.</p>
+<h2 id="reproducibility-and-hardware-environment">Reproducibility and Hardware Environment</h2>
+<p>All scripts, locked JSON hyperparameters (<em>pacer.json</em>, <em>marur.json</em>, <em>marur_reviewer_baselines.json</em>), SHA-256 pre-registration checksums, and frozen predictor hashes are version-controlled under the MIT License (<em>LICENSE</em>). Core conformal experiments, tree predictors (frozen 57-row HistGBM), cluster bootstraps, PACER evaluation, and consistency validation run cleanly on standard x86-64 CPUs in Python 3.11 (verified end-to-end in a fresh isolated virtual environment via <em>scripts/reproduce_all.py</em> with recorded execution receipt). Only the optional exploratory neural comparator in the primary benchmark runner supports GPU acceleration (NVIDIA GeForce RTX 4060, CUDA 12.1), with full CPU fallback verified in the fresh environment; Tectonic LaTeX and Pandoc compile all tables, figures, and submission archives reproducibly with every artifact LF-normalized and SHA-256 verified in the experiment manifest.</p>
 <h1 id="conclusion">Conclusion</h1>
 <p>Selective cellular throughput commitments cannot be certified solely by all-issued violation bounds or unpaced query budgets. Separating attempts, usable responses, selective offer frequency, and physical campaign-date clusters reveals when adaptation helps and when missingness or abstention conceals risk. Under a pre-registered SHA-256 lock spanning 42 physical clusters across 10 cohorts (including 26 newly evaluated public campaign-dates), PACER satisfies Theorem 1’s weighted selective-excess guarantee across 40/40 cells and reduces conditional risk by 23.41 percentage points on untouched held-out archives at ten queries relative to Periodic. However, Theorem 1 bounds weighted excess <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A(R_+^{\text{upper}}-\alpha)</annotation></semantics></math> rather than unweighted conditional risk when <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math> shrinks under nonstationary mobile shifts, leaving universal 10 percent conditional reliability unachieved on Rome Capacity and retrospective traces. Live QoE trials and truly prospective field campaigns remain essential open work.</p>
 <h1 class="unnumbered" id="acknowledgment">Acknowledgment</h1>

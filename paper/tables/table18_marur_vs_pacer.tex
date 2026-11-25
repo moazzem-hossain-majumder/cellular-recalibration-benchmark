@@ -1,0 +1,14 @@
+\begin{table*}[!ht]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Operational decision taxonomy specifying when PACER, MARUR, Periodic, or Halting applies across network regimes, alongside formal properties and primary failure modes (rates and differences in percent / percentage points).}
+\begin{tabular}{lllll}
+\hline
+Regime & Method & Guarantee & ObservedMetric & PrimaryFailure \\
+Static high offer (A at least 0.50) & PACER & T1 O(1/K) & 5.12-6.98 PosHi IrelandSt & Needs horizon length T \\
+Budget-starved multi-day (C=10) & PACER & T2 Wmax blk & -23.41pp PosHi vs Per G=26 & R+ high if A below 0.25 \\
+Short rapid shift (C=40, T 300) & MARUR & Heuristic W=10 & Forgets init faster on Op1 & Day-1 churn; miss freeze \\
+Stationary / Retro C=40 & Periodic & Fixed cadence & 35.67 vs PAC 47.81 PosHi & Day-1 blind when P x C low \\
+Low A or uncalibrated Persist & Halt/Refuse & Fail safe & Avoids -29.95pp U drop & No SLA rate valid \\
+\hline
+\end{tabular}
+\end{table*}

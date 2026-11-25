@@ -189,13 +189,78 @@ def tables(root=ROOT):
         'table11_irish_groups': ('Chronological Irish persistence forecasts on 108519 rows from sixteen suffix dates. Local counts forecasts using a group-specific offset. Performance measures are percentages.', ['Labels','Rule','Local','Coverage','Violation','Supported'],group_rows),
         'table12_issued': ('Ten-label Rome clock forecasts. Positive gives measured positive commitments divided by issued positive commitments as counts. Errors counts measured violations. Low and High bound the all-issued violation percentage. U is supported throughput on measured outcomes in percent.', ['Regime','Predictor','Issued','Scored','Positive','Errors','Low','High','U'],issued_rows),
         'table13_drive3': ('US Drive 3 with ten earlier labels per carrier. Pos counts issued positive commitments. Fail counts observed violations. Risk bounds and supported throughput are percentages.', ['Carrier','Model','Issued','Scored','Pos','Fail','Low','High','U'],drive_rows),
+        **_extra_review_tables_pre(root),
         'table14_marur': ('Frozen-tree controllers under a new-query cap of 40, with ten initial successful labels. Queries counts new attempts; historical acquisition cost is unknown. Offers counts positive commitments. PosLow and PosHigh bound violation among positive commitments, in percent. U is supported measured throughput in percent. Every model, budget, ablation and scenario is in the public ledger.', ['Cohort','Policy','Queries','Offers','PosLow','PosHigh','U'],controller_rows),
         'table15_cluster_inference': ('Independent-unit accounting and paired MARUR minus Periodic contrasts at matched ten new queries (HistGBM, recorded feedback). G counts collection dates (or 11 Irish driving traces; All pools co-located carriers onto 16 physical campaign-dates across 3 drives). QDays and PosDays give days with queries and positive offers (MARUR/Periodic). Utility differences are in percentage points: pooled dU with 2,000-draw cluster bootstrap 95 percent interval (BootLo, BootHi), equal-cluster mean (Eq dU) with two-sided t interval (tLo, tHi), and pooled all-issued upper risk difference (dRhi).', ['Scope','G','QDays','PosDays','Pool dU','BootLo','BootHi','Eq dU','tLo','tHi','dRhi'],cluster_rows),
-        'table16_pacer': ('Locked Path A validation across four untouched held-out archives (26 campaign-dates) and six-cohort retrospective mean (16 campaign-dates), using frozen HistGBM and recorded feedback at new-query caps 10 and 40. Per, MAR, and PAC denote Periodic, MARUR, and PACER. Hi reports positive-offer upper risk and U reports useful delivered throughput in percent; A gives PACER offer frequency in percent; Exc is mean selective excess across seeds 42, 123, and 2026 versus Theorem 1 bound Bnd.', ['Cohort','Cap','PerHi','MARHi','PACHi','PerU','MARU','PACU','PACA','Exc','Bnd'],pacer_rows)}
+        'table16_pacer': ('Locked Path A validation across four untouched held-out archives (26 campaign-dates) and six-cohort retrospective mean (16 campaign-dates), using frozen HistGBM and recorded feedback at new-query caps 10 and 40. Per, MAR, and PAC denote Periodic, MARUR, and PACER. Hi reports positive-offer upper risk and U reports useful delivered throughput in percent; A gives PACER offer frequency in percent; Exc is mean selective excess across seeds 42, 123, and 2026 versus Theorem 1 bound Bnd.', ['Cohort','Cap','PerHi','MARHi','PACHi','PerU','MARU','PACU','PACA','Exc','Bnd'],pacer_rows),
+        **_extra_review_tables_post(root)}
+
+def _extra_review_tables_pre(root):
+    mcfg = read_json(root/'configs/marur.json')
+    rbcfg = read_json(root/'configs/marur_reviewer_baselines.json')
+    pcfg = read_json(root/'configs/pacer.json')
+    caps_str = '/'.join(str(c) for c in rbcfg['new_query_caps'])
+    seeds_str = ','.join(str(s) for s in rbcfg['random_schedule_seeds'])
+    baseline_rows = [
+        ['Frozen', 'None (C=0)', 'Static Init10', f'init={mcfg["initial_labels"]}', 'None', 'Zero-cost lower anchor'],
+        ['Early', 'Every elig tick', f'FIFO W={mcfg["window"]}', f'C={caps_str}', 'Insert score=p', 'Day-1 exhaust stress'],
+        ['Random', 'Uniform seed', f'FIFO W={mcfg["window"]}', f'seeds={seeds_str}', 'Insert score=p', 'Nonadaptive baseline'],
+        ['Periodic', f'Every P={mcfg["period_ticks"]} ticks', f'FIFO W={mcfg["window"]}', f'P={mcfg["period_ticks"]}, W={mcfg["window"]}', 'Insert score=p', 'Fixed cadence'],
+        ['ACI', f'Every P={mcfg["period_ticks"]} ticks', 'Online level a', f'eta={mcfg["aci_step"]}, W={mcfg["window"]}', 'err=1 on pos', 'Sparse ACI comparator'],
+        ['DecayingOGD', f'Every P={mcfg["period_ticks"]} ticks', 'Decaying step', f'exp={rbcfg["decaying_ogd_exponent"]}', 'score=p on miss', 'Decaying-step OGD'],
+        ['MARUR', f'Age {mcfg["max_age_minutes"]}m or RAT', f'Pat/Pool W={mcfg["window"]}', f'age={mcfg["max_age_minutes"]}m, min={mcfg["minimum_pattern_support"]}', 'Insert p and gate', 'Event-driven heuristic'],
+        ['MARUR ablations', 'Age or Periodic', 'Pool/DropMiss', 'NoPat/NoGate/Drop', 'Drop or Periodic', 'Isolate miss/gate/trig'],
+        ['PACER', 'Uniform K blk', f'Smooth sel W={pcfg["pacer_obs_window"]}', f'g={pcfg["pacer_gamma"]}, v={pcfg["pacer_veto"]}', 'Exclude W; e=1', 'Theorem 1 sel-excess'],
+    ]
+    return {
+        'table17_baselines': ('Complete evaluated controller and ablation specification generated directly from locked benchmark configuration files. Fixed hyperparameters prevent post-hoc tuning; missingness completion separates score window admission from conservative positive-offer risk updates.', ['Policy', 'Trigger', 'Calibration', 'KeyParams', 'MissingRule', 'Rationale'], baseline_rows),
+    }
+
+def _extra_review_tables_post(root):
+    pcfg = read_json(root/'configs/pacer.json')
+    pacer_df = pd.read_csv(root/'results/pacer/pacer_summary.csv')
+    con_df = pd.read_csv(root/'results/pacer/pacer_paired_contrasts.csv')
+    p40 = pacer_df[(pacer_df['model']=='HistGBM')&(pacer_df['scenario']=='Recorded')&(pacer_df['cap_new']==40)&(pacer_df['policy']=='PACER')]
+    p10 = pacer_df[(pacer_df['model']=='HistGBM')&(pacer_df['scenario']=='Recorded')&(pacer_df['cap_new']==10)&(pacer_df['policy']=='PACER')]
+    b10_mean = float(p10['theorem1_bound'].mean())
+    b40_mean = float(p40['theorem1_bound'].mean())
+
+    def _ceil_row(label, lo, hi, a_ref, cohorts_lbl, rule):
+        sub = p40[(p40['positive_rate'] >= lo) & (p40['positive_rate'] < hi)]
+        c10 = min(1.0, pcfg['alpha'] + b10_mean / a_ref)
+        c40 = min(1.0, pcfg['alpha'] + b40_mean / a_ref)
+        rng = f'{100*sub["positive_high"].min():.2f}-{100*sub["positive_high"].max():.2f}' if len(sub) > 1 else f'{100*sub["positive_high"].iloc[0]:.2f}'
+        return [label, f'{a_ref:.2f}', f'{100*c10:.1f}', f'{100*c40:.1f}', rng, cohorts_lbl, rule]
+
+    pers40 = con_df[(con_df['scope']=='AllCohortsPooled')&(con_df['model']=='Persistence')&(con_df['scenario']=='Recorded')&(con_df['cap_new']==40)&(con_df['reference']=='Frozen')].iloc[0]
+    ceiling_rows = [
+        _ceil_row('A below 0.15', 0.0, 0.15, 0.10, 'E1,E3,ATT,Ver,Rome1/2', 'DO NOT DEPLOY'),
+        _ceil_row('A 0.15 to 0.30', 0.15, 0.30, 0.22, 'T-Mobile, Ireland', 'DO NOT DEPLOY (SLA)'),
+        _ceil_row('A 0.30 to 0.70', 0.30, 0.70, 0.50, 'Oslo Commute', 'Advisory Only'),
+        _ceil_row('A 0.70 or more', 0.70, 1.01, 0.85, 'Ireland Static', 'Feasible Target'),
+        ['Persistence Lag', 'All', 'T1 0.714', 'T1 0.192', f'{100*pers40.pool_du:+.2f}pp U vs Frz', 'All 10 cohorts (42u)', 'DO NOT DEPLOY'],
+    ]
+
+    retro40 = pacer_df[(pacer_df['domain']=='retrospective')&(pacer_df['model']=='HistGBM')&(pacer_df['scenario']=='Recorded')&(pacer_df['cap_new']==40)].groupby('policy')[['positive_high','u']].mean()
+    unt10 = con_df[(con_df['scope']=='UntouchedHeldOut')&(con_df['model']=='HistGBM')&(con_df['scenario']=='Recorded')&(con_df['cap_new']==10)&(con_df['reference']=='Periodic')].iloc[0]
+    taxonomy_rows = [
+        ['Static high offer (A at least 0.50)', 'PACER', 'T1 O(1/K)', '5.12-6.98 PosHi IrelandSt', 'Needs horizon length T'],
+        ['Budget-starved multi-day (C=10)', 'PACER', 'T2 Wmax blk', f'{100*unt10.pool_dpos_hi:+.2f}pp PosHi vs Per G=26', 'R+ high if A below 0.25'],
+        ['Short rapid shift (C=40, T 300)', 'MARUR', 'Heuristic W=10', 'Forgets init faster on Op1', 'Day-1 churn; miss freeze'],
+        ['Stationary / Retro C=40', 'Periodic', 'Fixed cadence', f'{100*retro40.loc["Periodic","positive_high"]:.2f} vs PAC {100*retro40.loc["PACER","positive_high"]:.2f} PosHi', 'Day-1 blind when P x C low'],
+        ['Low A or uncalibrated Persist', 'Halt/Refuse', 'Fail safe', f'Avoids {100*pers40.pool_du:+.2f}pp U drop', 'No SLA rate valid'],
+    ]
+    return {
+        'table18_marur_vs_pacer': ('Operational decision taxonomy specifying when PACER, MARUR, Periodic, or Halting applies across network regimes, alongside formal properties and primary failure modes (rates and differences in percent / percentage points).', ['Regime', 'Method', 'Guarantee', 'ObservedMetric', 'PrimaryFailure'], taxonomy_rows),
+        'table19_risk_ceilings': ('Theoretical Theorem 1 conditional-risk ceilings min(1, alpha + T1Bound / RefA) versus empirical PACER HistGBM cap-40 conditional upper risk (values in percent unless noted) and Do-Not-Deploy deployment rules.', ['OfferStratum', 'RefA', 'CeilC10', 'CeilC40', 'EmpPosHiC40', 'EmpCohortsC40', 'PolicyRule'], ceiling_rows),
+    }
 
 def latex(spec):
     caption, header, rows = spec
-    lines = [r'\begin{table*}[!ht]',r'\centering\small',r'\caption{'+caption+'}',r'\begin{tabular}{'+'l'+'r'*(len(header)-1)+'}',r'\hline']
+    prose = header[0] in {'Policy', 'Regime', 'OfferStratum'}
+    size = r'\centering\footnotesize\setlength{\tabcolsep}{4pt}' if prose else r'\centering\small'
+    align = 'l'*len(header) if prose else 'l'+'r'*(len(header)-1)
+    lines = [r'\begin{table*}[!ht]',size,r'\caption{'+caption+'}',r'\begin{tabular}{'+align+'}',r'\hline']
     for row in [header,*rows]:
         lines.append(' & '.join(row)+r' \\')
     lines += [r'\hline',r'\end{tabular}',r'\end{table*}']

@@ -67,11 +67,11 @@ We compute $`V=\sum_i\mathbf{1}\{y_i<L_i\}/N`$ and $`U=\sum_i\min(L_i,y_i)/\sum_
 |:---------------------|------:|------:|--------:|
 | Model                |   MAE |  RMSE | Seconds |
 | Persistence          |  3.22 |  7.21 |   0.000 |
-| Ridge                |  6.03 |  8.78 |   0.041 |
-| HistGradientBoosting | 11.00 | 12.00 |   0.040 |
-| BAMMO                | 15.46 | 23.86 |   0.372 |
-| QuantileGBM p10      |  5.01 |  8.68 |   0.100 |
-| GPU ThroughputResNet |  5.85 |  8.33 |   0.632 |
+| Ridge                |  6.03 |  8.78 |   0.031 |
+| HistGradientBoosting | 11.00 | 12.00 |   0.037 |
+| BAMMO                | 15.46 | 23.86 |   0.312 |
+| QuantileGBM p10      |  5.01 |  8.68 |   0.074 |
+| GPU ThroughputResNet |  5.91 |  8.13 |   0.138 |
 
 </div>
 
@@ -310,12 +310,12 @@ We froze the original tree fitted on 57 earlier Op1 sessions and replayed it alo
 <div class="table*">
 
 |        |             |        |        |          |        |       |       |       |
-|:-------|------------:|-------:|-------:|---------:|-------:|------:|------:|------:|
-| Regime |   Predictor | Issued | Scored | Positive | Errors |   Low |  High |     U |
-| E1     | Persistence |    238 |    211 |    22/23 |     17 |  7.14 |  7.56 |  8.29 |
-| E1     |     HistGBM |    238 |    211 |  122/130 |     67 | 28.15 | 31.51 |  7.15 |
-| E3     | Persistence |    171 |    152 |    36/37 |     21 | 12.28 | 12.87 | 16.00 |
-| E3     |     HistGBM |    171 |    152 |      3/3 |      2 |  1.17 |  1.17 |  0.06 |
+|:-------|:------------|:-------|:-------|:---------|:-------|:------|:------|:------|
+| Regime | Predictor   | Issued | Scored | Positive | Errors | Low   | High  | U     |
+| E1     | Persistence | 238    | 211    | 22/23    | 17     | 7.14  | 7.56  | 8.29  |
+| E1     | HistGBM     | 238    | 211    | 122/130  | 67     | 28.15 | 31.51 | 7.15  |
+| E3     | Persistence | 171    | 152    | 36/37    | 21     | 12.28 | 12.87 | 16.00 |
+| E3     | HistGBM     | 171    | 152    | 3/3      | 2      | 1.17  | 1.17  | 0.06  |
 
 </div>
 
@@ -395,7 +395,7 @@ No prospective validation has been completed. The proposed replication targets e
 
 ## PACER theoretical proofs and locked-study extensions
 
-To guard against post-hoc data snooping, all PACER algorithmic choices and hyperparameters ($`\alpha=0.10`$, $`\gamma=0.05`$, $`a_{\text{veto}}=0.15`$, $`\kappa_{\text{ext}}=2.0`$, $`W_{\text{obs}}=20`$, seeds 42, 123, and 2026, caps 0, 10, and 40) were SHA-256 locked before running any script against the four untouched held-out cohorts (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static). Both proofs of Theorems 1 and 2, along with all 120 seed sensitivity evaluations across QueryCensor20 and Persistence, confirm that (a) mean selective excess satisfies $`\mathbf{E}[A(R_+^{\text{upper}}-\alpha)] \le \text{bound}`$ on every one of the 40 cohort-model-cap combinations, (b) excluding unobserved responses from the residual buffer prevents missing-score window freezing without violating Theorem 1 under conservative positive-offer updates, and (c) across all 42 pooled physical clusters under Persistence, PACER lowers selective excess yet reduces supported delivery $`U`$ by -18.15 to -28.79 percentage points relative to Frozen due to aggressive conservative abstention vetoes. Exact tables and per-date breakdowns reside in results/pacer.
+To guard against post-hoc data snooping, all PACER algorithmic choices and hyperparameters ($`\alpha=0.10`$, $`\gamma=0.05`$, $`a_{\text{veto}}=0.15`$, $`\kappa_{\text{ext}}=2.0`$, $`W_{\text{obs}}=20`$, seeds 42, 123, and 2026, caps 0, 10, and 40) were SHA-256 locked before running any script against the four untouched held-out cohorts (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static). Across all 120 seed sensitivity evaluations (QueryCensor20 and Persistence included), (a) mean selective excess satisfies $`\mathbf{E}[A(R_+^{\text{upper}}-\alpha)] \le \text{bound}`$ on all 40/40 cohort-model-cap cells, (b) excluding unobserved responses from the residual buffer prevents single-score freezing under censoring without breaking Theorem 1 under conservative positive-offer updates, and (c) across all 42 pooled physical clusters under Persistence, PACER’s conservative abstention lowers utility $`U`$ by -18.89 percentage points at cap 10 (bootstrap -31.02 to -3.25) and -29.95 percentage points at cap 40 (bootstrap -37.26 to -16.39) relative to Frozen. For the controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield six matched utility gains without higher conditional upper risk, seven losses without lower risk, eight trade-offs or risk-only changes, 129 unchanged cases, and eighteen unmatched-cost cases; in the 792-configuration baseline grid, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, while DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes. Complete ledgers reside in results/pacer and results/exploratory.
 
 # Conclusion
 
