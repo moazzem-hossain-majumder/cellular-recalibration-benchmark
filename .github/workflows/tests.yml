@@ -1,18 +1,20 @@
 name: Research validation
 on: [push, pull_request, workflow_dispatch]
 jobs:
-  published-artifacts:
+  cpu-unit-and-consistency:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pip install -c constraints-research.txt pandas numpy pypdf pymupdf beautifulsoup4 pytest matplotlib
+      - run: pip install -c constraints-research.txt pandas numpy scipy scikit-learn joblib pypdf pymupdf beautifulsoup4 pytest matplotlib
       - run: test -f LICENSE
-      - run: python -m pytest tests/unit/test_marur_audit_validator.py tests/unit/test_publication_validator.py tests/unit/test_trip_inference.py tests/unit/test_pacer.py tests/unit/test_pacer_audit.py -q
+      - run: python -m pytest tests/unit -ra --junitxml=cpu-unit-tests.xml
+      - run: python -c "import xml.etree.ElementTree as E; s=E.parse('cpu-unit-tests.xml').find('.//testsuite'); assert int(s.get('tests'))>0 and int(s.get('failures'))==0 and int(s.get('errors'))==0 and int(s.get('skipped'))==0"
       - run: python scripts/validate_marur_audit.py
       - run: python scripts/audit_trip_level_inference.py
+      - run: python scripts/validate_pacer.py
       - run: python scripts/validate_manuscript_consistency.py
       - run: python scripts/generate_experiment_manifest.py --verify
   full-tests-with-real-data:
@@ -33,4 +35,3 @@ jobs:
           name: full-test-report
           path: tests.xml
           if-no-files-found: error
-

@@ -16,7 +16,7 @@ An application that chooses a sending rate before a download needs to know how o
 
 Our central question is how constrained, delayed and unsuccessful calibration feedback changes selective cellular throughput commitments under chronological distribution changes. The clock replay supplies the primary evidence. On the later source operator the ten-label tree violated 67 of its 122 measurable positive commitments. On the destination operator it violated two of only three. The following questions guide the analysis. Does measured risk resolve the target across all issued commitments? Does the session-trained tree retain its operating point on a fixed clock? Do more recent or telemetry-specific calibration labels improve the risk and supported-rate tradeoff on the same forecast opportunities? We answer these questions with a decision ledger, matched predictors and chronological prefix comparisons. The external analyses distinguish transfer of a fitted predictor from transfer of its calibration offset. Narayanan et al. mapped and predicted commercial millimeter-wave throughput (Narayanan et al. 2020), while Kousias et al. modeled performance in non-standalone networks (Kousias, Rajiullah, Caso, Alay, et al. 2024). Our benchmark evaluates how much measured rate remains supportable when an existing point forecast receives only a short destination calibration prefix. The study makes three empirical contributions: an auditable acquisition-and-decision ledger separating initial labels, new attempts, failures and effective updates; a full-suffix comparison that distinguishes equal caps from equal realized query cost; and an offer-level decomposition explaining cohort-specific service–risk trade-offs. We ask how failed and delayed feedback affects the implemented decisions, how acquisition constraints change reliability and supported throughput, whether realized-cost matching changes conclusions, and when increased service sacrifices reliability. Fixed archive delays are modeled rather than experimentally randomized, so we do not isolate their causal effect.
 
-Selective prediction already connects acceptance frequency and conditional risk (Geifman and El-Yaniv 2017), adaptive conformal inference updates a nominal level online (Gibbs and Candès 2021), and conformal risk control calibrates monotone losses under explicit assumptions (Angelopoulos et al. 2024). Costly-label stopping and semi-bandit feedback have also been studied (Ilyas et al. 2026; Ge et al. 2025). Our engineering and empirical contribution does not establish a new theorem or priority for combining these components.
+Selective prediction already connects acceptance frequency and conditional risk (Geifman and El-Yaniv 2017), adaptive conformal inference updates a nominal level online (Gibbs and Candès 2021), and conformal risk control calibrates monotone losses under explicit assumptions (Angelopoulos et al. 2024). Costly-label stopping and semi-bandit feedback have also been studied (Ilyas et al. 2026; Ge et al. 2025). Our empirical accounting framework evaluates these mechanisms under real cellular traces.
 
 # Decision criteria and contribution
 
@@ -116,7 +116,7 @@ We compute $`V=\sum_i\mathbf{1}\{y_i<L_i\}/N`$ and $`U=\sum_i\min(L_i,y_i)/\sum_
 
 # Session-endpoint comparison
 
-Table I reports source model selection. Table II and Fig. 1 show the full budget curve. Fig. 2 compares observed subgroups. Persistence had a lower validation MAE than the histogram model on nine source-validation observations. We use the common histogram predictor to isolate differences between calibration rules. We examine persistence separately on the external benchmark and in the joint-shift analysis below. The point baseline exceeds the measured throughput in roughly one third to three fifths of held-out sessions. With source calibration, every regime exceeds ten percent violations at each tested budget below nine. At ten labels the global method records zero violations in E0 and E3, approximately seven percent in E1 and two percent in E2. In E3 it supports less than one percent of measured rate. At fifteen labels the grouped E1 rule exceeds the nominal target (0.1007), while grouped E2 increases supported fraction to 0.0993 with a violation rate of 0.0977. All four regimes give identical global and missingness-group results at ten labels when the pooled fallback is applied consistently. Thus this comparison provides no evidence of a grouping advantage at that budget. At ten labels the tree offsets were 27.81, 22.79, 28.70 and 30.29 Mbps, respectively. Clipping then produced zero rates on 65.85, 59.71, 75.00 and 93.20 percent of the suffixes. Group-level support existed for 54 of 539 forecasts; the remaining 485 used the pooled target. The identical bounds therefore reflect both fallback and coincident offsets.
+Table S1 reports source model selection. Table S2 and Fig. S1 show the full budget curve. Fig. S2 compares observed subgroups. Persistence had a lower validation MAE than the histogram model on nine source-validation observations. We use the common histogram predictor to isolate differences between calibration rules. We examine persistence separately on the external benchmark and in the joint-shift analysis below. The point baseline exceeds the measured throughput in roughly one third to three fifths of held-out sessions. With source calibration, every regime exceeds ten percent violations at each tested budget below nine. At ten labels the global method records zero violations in E0 and E3, approximately seven percent in E1 and two percent in E2. In E3 it supports less than one percent of measured rate. At fifteen labels the grouped E1 rule exceeds the nominal target (0.1007), while grouped E2 increases supported fraction to 0.0993 with a violation rate of 0.0977. All four regimes give identical global and missingness-group results at ten labels when the pooled fallback is applied consistently. Thus this comparison provides no evidence of a grouping advantage at that budget. At ten labels the tree offsets were 27.81, 22.79, 28.70 and 30.29 Mbps, respectively. Clipping then produced zero rates on 65.85, 59.71, 75.00 and 93.20 percent of the suffixes. Group-level support existed for 54 of 539 forecasts; the remaining 485 used the pooled target. The identical bounds therefore reflect both fallback and coincident offsets.
 
 <figure data-latex-placement="!ht">
 <embed src="figures/fig1_budget_vs_usefulness.png" />
@@ -130,7 +130,7 @@ Table I reports source model selection. Table II and Fig. 1 show the full budget
 
 # Sensitivity to the observational unit
 
-Table III compares the operational units. After numeric filtering, reset starts a segment on a drop exceeding 5 Mbps to below 5 Mbps. Relative drop starts on a drop exceeding 2 Mbps to below 1 Mbps. The active-start rule begins on an upward crossing above 1 Mbps or a gap over ten seconds. All three retain the last numeric row as the target. The active-start rule therefore frequently attaches the subsequent idle tail to the preceding burst. Its endpoint can differ even on a continuously logged trace. We use it as an alternative-endpoint stress test. There is no independent truth label for a physical download boundary. The reset rule aligns with a reinitializing mean-rate series and preserves the original benchmark definition. Its agreement with actual test starts remains unknown. The sensitivity analysis evaluates all eligible later pairs with a source-fitted model. Its denominator differs from the held-out benchmark. After excluding zero endpoints from scoring while keeping the fitted predictor, burst violations remain 0.3742 and 0.4651 on the two operators. Thus zero endpoints explain only part of the shift. Relative drop also changes the sample and the rates. None of these heuristics establishes ground-truth session boundaries.
+Table S3 compares the operational units. After numeric filtering, reset starts a segment on a drop exceeding 5 Mbps to below 5 Mbps. Relative drop starts on a drop exceeding 2 Mbps to below 1 Mbps. The active-start rule begins on an upward crossing above 1 Mbps or a gap over ten seconds. All three retain the last numeric row as the target. The active-start rule therefore frequently attaches the subsequent idle tail to the preceding burst. Its endpoint can differ even on a continuously logged trace. We use it as an alternative-endpoint stress test. There is no independent truth label for a physical download boundary. The reset rule aligns with a reinitializing mean-rate series and preserves the original benchmark definition. Its agreement with actual test starts remains unknown. The sensitivity analysis evaluates all eligible later pairs with a source-fitted model. Its denominator differs from the held-out benchmark. After excluding zero endpoints from scoring while keeping the fitted predictor, burst violations remain 0.3742 and 0.4651 on the two operators. Thus zero endpoints explain only part of the shift. Relative drop also changes the sample and the rates. None of these heuristics establishes ground-truth session boundaries.
 
 <div class="table*">
 
@@ -147,7 +147,7 @@ Median durations were 76, 72 and 53 seconds for reset, relative drop and active 
 
 # Uncertainty and secondary experiments
 
-Table IV reports the paired contrasts. We resample collection dates with replacement, retaining all sessions from each selected date and pairing methods within each draw. The percentile endpoints from 2,000 draws describe empirical between-date variability conditional on this fitted model and prefix. Two to eight observed dates per regime offer little information about the population of future dates. A zero contrast interval follows algebraically when bounds coincide. Shared routes, equipment and measurement schedules can induce dependence across dates.
+Table S4 reports the paired contrasts. We resample collection dates with replacement, retaining all sessions from each selected date and pairing methods within each draw. The percentile endpoints from 2,000 draws describe empirical between-date variability conditional on this fitted model and prefix. Two to eight observed dates per regime offer little information about the population of future dates. A zero contrast interval follows algebraically when bounds coincide. Shared routes, equipment and measurement schedules can induce dependence across dates.
 
 <div class="table*">
 
@@ -163,7 +163,7 @@ Table IV reports the paired contrasts. We resample collection dates with replace
 
 The repository includes every date’s estimates and leave-one-date-out contrasts. Single-prefix testing leaves calibration-prefix variability unmeasured. Thirty-, sixty- and 120-second sensitivity runs change the eligible cohort and covariates together. Sixty seconds is the selected primary window. The supplementary analyses also examine group-support gates and artificial removal of observed NR fields. Artificial removal tests model response to controlled masking and does not identify why telemetry was absent in the field.
 
-Table V and Figs. 3–5 report the feedback, weighting and decision analyses. The online experiment updates an offset after each observed label with a fixed step size. Its feedback requirements differ from static prefix calibration. This score-offset update is inspired by adaptive conformal inference (Gibbs and Candès 2021). The weighted experiment estimates source-to-target density ratios with a domain classifier and compares two clipping ranges. One variant uses calibration-pool covariates and the other uses unlabeled test covariates. The tight weight range is 0.1 to 10 and the wide range 0.01 to 100. Covariate-shift theory requires a stable conditional outcome law and appropriate density ratios (Tibshirani et al. 2019). Estimated, clipped weights and small effective sample sizes limit this interpretation. The alpha sweep and convex offline cost proxy show how the chosen threshold or penalty affects the displayed trade-off. The secondary sensitivity fits can use regime-specific source splits and should be compared within their own protocols.
+Table S5 and Figs. S3–S5 report the feedback, weighting and decision analyses. The online experiment updates an offset after each observed label with a fixed step size. Its feedback requirements differ from static prefix calibration. This score-offset update is inspired by adaptive conformal inference (Gibbs and Candès 2021). The weighted experiment estimates source-to-target density ratios with a domain classifier and compares two clipping ranges. One variant uses calibration-pool covariates and the other uses unlabeled test covariates. The tight weight range is 0.1 to 10 and the wide range 0.01 to 100. Covariate-shift theory requires a stable conditional outcome law and appropriate density ratios (Tibshirani et al. 2019). Estimated, clipped weights and small effective sample sizes limit this interpretation. The alpha sweep and convex offline cost proxy show how the chosen threshold or penalty affects the displayed trade-off. The secondary sensitivity fits can use regime-specific source splits and should be compared within their own protocols.
 
 <figure data-latex-placement="!ht">
 <embed src="figures/fig3_aci_adaptation.png" />
@@ -208,7 +208,7 @@ Table V and Figs. 3–5 report the feedback, weighting and decision analyses. Th
 
 We reproduced Sirhan’s global one-sided forecast on the Irish 5G traces of Raca et al. (Sirhan 2026; Raca et al. 2020). Each of 30 splits assigns whole traces to training, calibration and testing. We retained the released features, predictor training and signed-error calibration. For target row $`t+1`$, persistence uses the downlink measurement at $`t-1`$, the latest throughput feature available to the tree. A second candidate takes the smaller of that lag and the nonnegative tree estimate before calibration. The Rome experiments informed the candidate choice before its Irish evaluation.
 
-The published frontier chooses among twenty nominal levels using the realized test violations. Table VI averages the best supported fractions over feasible splits for each method. At ten percent, 29 splits were feasible for the global rule and all 30 for persistence and the minimum. The paired persistence gain was 3.58 percentage points on the 29 jointly feasible splits. The minimum lost 3.83 points on the corresponding comparison with global.
+The published frontier chooses among twenty nominal levels using the realized test violations. Table S6 averages the best supported fractions over feasible splits for each method. At ten percent, 29 splits were feasible for the global rule and all 30 for persistence and the minimum. The paired persistence gain was 3.58 percentage points on the 29 jointly feasible splits. The minimum lost 3.83 points on the corresponding comparison with global.
 
 <div class="table*">
 
@@ -247,7 +247,7 @@ We kept each fitted forecast and calibration offset fixed and omitted traces onl
 
 </div>
 
-Table IX compares recorded throughput transitions. NearZero counts endpoints at or below 0.001 Mbps. Fall and Rise count changes of at least 10 Mbps from the available lag in the indicated direction. NearZero can overlap Fall. A near-zero measurement does not identify an application stall. In Ireland the lag had a 6.59 Mbps mean absolute error. In the Rome joint shift (E3) it had a 35.44 Mbps error and 40.8 percent of endpoints fell at least 10 Mbps below the lag. On the first ten calibration sessions in E3, persistence supported 51.65 percent with 20.39 percent violations. The tree supported 0.60 percent with zero violations. With the same held-out suffix and eleven disjoint ten-label calibration blocks, persistence met the violation target zero times and the tree eleven times. The higher frequency of large downward changes is consistent with a riskier lag-based lower bound. Forecast horizon, endpoint construction, traffic mix and collection conditions differ together across the two datasets, so this comparison cannot isolate a cause.
+Table S9 compares recorded throughput transitions. NearZero counts endpoints at or below 0.001 Mbps. Fall and Rise count changes of at least 10 Mbps from the available lag in the indicated direction. NearZero can overlap Fall. A near-zero measurement does not identify an application stall. In Ireland the lag had a 6.59 Mbps mean absolute error. In the Rome joint shift (E3) it had a 35.44 Mbps error and 40.8 percent of endpoints fell at least 10 Mbps below the lag. On the first ten calibration sessions in E3, persistence supported 51.65 percent with 20.39 percent violations. The tree supported 0.60 percent with zero violations. With the same held-out suffix and eleven disjoint ten-label calibration blocks, persistence met the violation target zero times and the tree eleven times. The higher frequency of large downward changes is consistent with a riskier lag-based lower bound. Forecast horizon, endpoint construction, traffic mix and collection conditions differ together across the two datasets, so this comparison cannot isolate a cause.
 
 <div class="table*">
 
@@ -266,7 +266,7 @@ Table IX compares recorded throughput transitions. NearZero counts endpoints at 
 
 In the later Rome release, a drop in measured throughput identifies both the start of a segment and the close of its predecessor. An observer who has yet to see that reading cannot identify the same candidate starts. To evaluate a trigger available at forecast time, we used each whole minute of logger operation and required a numeric rate in the preceding minute. Persistence predicts the last available reading in the next minute. We retained the original calendar partitions and calibrated on the first ten labeled opportunities. This changes the endpoint as well as the sample. Of 238 and 171 issued forecasts in E1 and E3, respectively, 211 and 152 had a target in a fully observed window. Missing labels could be informative.
 
-Table X compares the two clock-triggered suffixes with an independent ten-label evaluation on Telenor HSDPA bus measurements released by Riiser et al. (Riiser et al. 2013). We selected all logs on the first route listed by the publisher before measuring forecast performance. At each completed interval we predict the next interval’s received bytes per elapsed second, converted to Mbps. Seven chronological dates supply three training dates, two calibration-pool dates and two test dates. The tree uses the last two rates; persistence uses the last rate. Both use the same ten target calibration labels. This evaluates the calibration procedure with a locally fitted predictor. The Irish results in Tables VI–VIII instead reproduce and extend an existing trace-level protocol. The Norwegian logs lack radio measurements needed to validate the grouped rule.
+Table S10 compares the two clock-triggered suffixes with an independent ten-label evaluation on Telenor HSDPA bus measurements released by Riiser et al. (Riiser et al. 2013). We selected all logs on the first route listed by the publisher before measuring forecast performance. At each completed interval we predict the next interval’s received bytes per elapsed second, converted to Mbps. Seven chronological dates supply three training dates, two calibration-pool dates and two test dates. The tree uses the last two rates; persistence uses the last rate. Both use the same ten target calibration labels. This evaluates the calibration procedure with a locally fitted predictor. The Irish results in Tables S6–S8 instead reproduce and extend an existing trace-level protocol. The Norwegian logs lack radio measurements needed to validate the grouped rule.
 
 <div class="table*">
 
@@ -280,14 +280,14 @@ Table X compares the two clock-triggered suffixes with an independent ten-label 
 
 </div>
 
-Figure 6 shows how often recalibration clips the commitment to zero at every available prefix length in the primary benchmark. This is the fraction of opportunities on which a lower forecast makes no positive rate commitment.
+Fig. S6 shows how often recalibration clips the commitment to zero at every available prefix length in the primary benchmark. This is the fraction of opportunities on which a lower forecast makes no positive rate commitment.
 
 <figure data-latex-placement="!ht">
 <embed src="figures/fig6_zero_bounds.png" />
 <figcaption>Fraction of zero global lower bounds by target calibration budget and Rome regime.</figcaption>
 </figure>
 
-For reset-based persistence in Rome E3, violations and supported throughput were 20.39 and 51.65 percent. With the clock they were 13.82 and 16.00 percent. On the Norwegian route both methods met the empirical violation target on the pooled suffix. Their two test dates provide little information about other days or routes. Neither experiment measures prospective application outcomes. Finally we applied the missingness rule to the Irish measurements in a separate chronological analysis (Table XI). We used the current availability of numeric primary and NR signal-power fields before any forward filling, the preceding downlink as the point forecast, and the following row as the endpoint. We required strictly ordered lag, issue and target timestamps. The first eleven of 27 collection dates supplied the calibration pool. On the remaining sixteen dates, point MAE was 9.05 Mbps. All first ten calibration rows lacked an NR reading, so both rules gave the same bound on all 108,519 test rows. Violations reached 34.81 percent. Deleting one test date at a time gave 34.03 to 36.68 percent. Even with all 64,265 calibration rows, grouped violations remained 29.86 percent. This failure on a chronological split limits the interpretation of the favorable random-trace results. Split, calibration size and timestamp eligibility differ together.
+For reset-based persistence in Rome E3, violations and supported throughput were 20.39 and 51.65 percent. With the clock they were 13.82 and 16.00 percent. On the Norwegian route both methods met the empirical violation target on the pooled suffix. Their two test dates provide little information about other days or routes. Neither experiment measures prospective application outcomes. Finally we applied the missingness rule to the Irish measurements in a separate chronological analysis (Table S11). We used the current availability of numeric primary and NR signal-power fields before any forward filling, the preceding downlink as the point forecast, and the following row as the endpoint. We required strictly ordered lag, issue and target timestamps. The first eleven of 27 collection dates supplied the calibration pool. On the remaining sixteen dates, point MAE was 9.05 Mbps. All first ten calibration rows lacked an NR reading, so both rules gave the same bound on all 108,519 test rows. Violations reached 34.81 percent. Deleting one test date at a time gave 34.03 to 36.68 percent. Even with all 64,265 calibration rows, grouped violations remained 29.86 percent. This failure on a chronological split limits the interpretation of the favorable random-trace results. Split, calibration size and timestamp eligibility differ together.
 
 <div class="table*">
 
@@ -319,7 +319,7 @@ We froze the original tree fitted on 57 earlier Op1 sessions and replayed it alo
 
 </div>
 
-Table XII shows that the ten-label tree exceeded the target on E1 even if every unmeasured outcome covered its commitment. On E3 its three positive commitments across 171 opportunities supported just 0.065 percent of measured throughput. Group offsets gave the same bounds at ten labels. Figure 7 reports every feasible chronological prefix. For example, at 95 labels the E1 grouped tree violated 21 of 211 measured forecasts (9.95 percent). Six positive commitments lacked outcomes, leaving the all-issued risk between 8.82 and 11.34 percent. This is a retrospective illustration of an unresolved decision.
+Table S12 shows that the ten-label tree exceeded the target on E1 even if every unmeasured outcome covered its commitment. On E3 its three positive commitments across 171 opportunities supported just 0.065 percent of measured throughput. Group offsets gave the same bounds at ten labels. Fig. S7 reports every feasible chronological prefix. For example, at 95 labels the E1 grouped tree violated 21 of 211 measured forecasts (9.95 percent). Six positive commitments lacked outcomes, leaving the all-issued risk between 8.82 and 11.34 percent. This is a retrospective illustration of an unresolved decision.
 
 <figure data-latex-placement="!ht">
 <embed src="figures/fig7_clock_frontier.png" />
@@ -348,7 +348,7 @@ In an independently collected US drive, we applied ten-label persistence within 
 
 </div>
 
-On a second US drive we retained every released carrier and the same ten-label rule. Table XIII compares persistence and the original Rome-trained tree on identical active-transfer ticks. We aligned six serving-cell signal fields by device timestamp and used only measurements preceding issue. August 5–6 supplied calibration labels. August 7–9 supplied the suffix, with only two scheduled ticks per carrier after midnight on August 9. The three carriers shared the drive. The release lacked the last Verizon raw radio shard; we retained its rates and marked the signals missing.
+On a second US drive we retained every released carrier and the same ten-label rule. Table S13 compares persistence and the original Rome-trained tree on identical active-transfer ticks. We aligned six serving-cell signal fields by device timestamp and used only measurements preceding issue. August 5–6 supplied calibration labels. August 7–9 supplied the suffix, with only two scheduled ticks per carrier after midnight on August 9. The three carriers shared the drive. The release lacked the last Verizon raw radio shard; we retained its rates and marked the signals missing.
 
 On AT&T, 22 of 296 issued tree commitments violated (7.43 percent), including 22 of 57 positive commitments (38.60 percent). T-Mobile had 123 violations among 294 issued and 236 positive commitments. On Verizon the sole positive offer was honored. Masking NR inputs at issue while preserving the full-input tree offset yielded zero positive offers on every carrier. The different carrier operating points and short shared trip limit extrapolation to future deployments.
 
@@ -370,13 +370,13 @@ For playback, we varied segment duration over 1, 2 and 4 seconds and a fixed per
 
 The complete Rome roster contains 254 E1 and 181 E3 scheduled ticks; 238 and 171 respectively have a prior rate. Existing issued-forecast results are unchanged. The US cohorts contain 301, 304 and 292 scheduled ticks, and Ireland 335. A no-lag tick remains in the ledger as ineligible. Each comparison uses the same point predictions and resolved outcomes, so point MAE, RMSE and median error remain constant across policies. Costs distinguish attempted requests from returned labels and residual-buffer updates.
 
-The controller table is reproduced in the main article. Figure 8 reports the three predefined budgets for the recorded-outcome condition. On E1, MARUR supports 2.02 percent of measured throughput and has 5.46 percent all-issued risk, compared with 1.01 percent support and 5.88–7.14 percent risk for periodic updates. MARUR uses 40 new query attempts, while periodic uses 16; both start with ten successful historical labels. This is an improvement at the same cap with different realized costs. The MARUR tree breaks 13 of 29 positive offers, leaving positive-conditional risk at 44.83 percent. On E3, periodic recalibration supports more throughput with a smaller all-issued upper risk than MARUR. On AT&T and T-Mobile, increased service under MARUR accompanies greater risk. No uniform superiority is established.
+The retrospective cap-40 controller table appears in the main article. Fig. S8 reports the three predefined budgets for the recorded-outcome condition. On E1, MARUR supports 2.02 percent of measured throughput and has 5.46 percent all-issued risk, compared with 1.01 percent support and 5.88–7.14 percent risk for periodic updates. MARUR uses 40 new query attempts, while periodic uses 16; both start with ten successful historical labels. This is an improvement at the same cap with different realized costs. The MARUR tree breaks 13 of 29 positive offers, leaving positive-conditional risk at 44.83 percent. On E3, periodic recalibration supports more throughput with a smaller all-issued upper risk than MARUR. On AT&T and T-Mobile, increased service under MARUR accompanies greater risk. No uniform superiority is established.
 
 For Ireland MARUR uses 20 new query attempts and supports 1.18 percent, with 12 violations among 155 measured positive offers. Four positive offers are unresolved, so conditional risk lies between 7.55 and 10.06 percent over all 159 positive offers; the measured conditional estimate is 7.74 percent. Periodic supports 2.97 percent using 23 new query attempts, with higher risk. Missing-response suppression also produces mixed effects. On Ireland, conservative residual completion supports 1.17 percent with 3.89 percent all-issued upper risk; dropping unresolved responses supports 3.02 percent with 7.49 percent upper risk. Both incur 20 new attempts, of which only twelve return an outcome. A robust residual bound can trade away service, and it does not by itself control future positive-promise risk.
 
 <figure data-latex-placement="!ht">
 <embed src="figures/fig8_marur.png" />
-<figcaption>Frozen-tree controller comparison under new-query caps 0, 10 and 40. Each connected point is a predeclared cap, and bars span finite-record all-issued risk bounds. Actual costs differ between schedules. Horizontal axes use observed supported throughput. The nominal ten-percent line is a reference, not a guarantee. All conditional-risk, cost and ablation values are available in the action ledger.</figcaption>
+<figcaption>Frozen-tree controller comparison under new-query caps 0, 10 and 40. Each connected point is a predefined cap, and bars span finite-record all-issued risk bounds. Actual costs differ between schedules. Horizontal axes use observed supported throughput. The nominal ten-percent line is a reference, not a guarantee. All conditional-risk, cost and ablation values are available in the action ledger.</figcaption>
 </figure>
 
 ## Critical audit at matched realized query cost
@@ -393,9 +393,34 @@ These archives were inspected before the controller and cost audit were designed
 
 No prospective validation has been completed. The proposed replication targets eighteen usable independent trip pairs under an assumed standard deviation of 0.10 and a two-sided 95 percent utility-difference interval half-width of 0.05; it does not establish sufficient precision for risk certification. Missing trips, greater heterogeneity or cross-date dependence can invalidate that planning assumption. Simultaneous carriers do not increase the number of independent drives, and simulated playback does not demonstrate causal live QoE. Venue-specific scope and independent replication remain necessary before stronger submission claims.
 
-## PACER theoretical proofs and locked-study extensions
+## Comparator taxonomy, PACER protocol details, and exploratory sweep tallies
 
-To guard against post-hoc data snooping, all PACER algorithmic choices and hyperparameters ($`\alpha=0.10`$, $`\gamma=0.05`$, $`a_{\text{veto}}=0.15`$, $`\kappa_{\text{ext}}=2.0`$, $`W_{\text{obs}}=20`$, seeds 42, 123, and 2026, caps 0, 10, and 40) were SHA-256 locked before running any script against the four untouched held-out cohorts (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static). Across all 120 seed sensitivity evaluations (QueryCensor20 and Persistence included), (a) mean selective excess satisfies $`\mathbf{E}[A(R_+^{\text{upper}}-\alpha)] \le \text{bound}`$ on all 40/40 cohort-model-cap cells, (b) excluding unobserved responses from the residual buffer prevents single-score freezing under censoring without breaking Theorem 1 under conservative positive-offer updates, and (c) across all 42 pooled physical clusters under Persistence, PACER’s conservative abstention lowers utility $`U`$ by -18.89 percentage points at cap 10 (bootstrap -31.02 to -3.25) and -29.95 percentage points at cap 40 (bootstrap -37.26 to -16.39) relative to Frozen. For the controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield six matched utility gains without higher conditional upper risk, seven losses without lower risk, eight trade-offs or risk-only changes, 129 unchanged cases, and eighteen unmatched-cost cases; in the 792-configuration baseline grid, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, while DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes. Complete ledgers reside in results/pacer and results/exploratory.
+To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation), all PACER parameters ($`\alpha=0.10`$, $`\gamma=0.05`$, $`a_{\text{veto}}=0.15`$, $`\kappa_{\text{ext}}=2.0`$, $`W_{\text{obs}}=20`$, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S14 summarizes the operational taxonomy comparing MARUR and PACER across regimes. Across all 120 seed-sensitivity evaluations (QueryCensor20 and Persistence included), weighted selective excess lies within $`B_1(K) \approx 6.8/K`$ on 40/40 cells, though as established in the main manuscript this bound holds trivially on 36/40 cells whenever $`B_1(K) \ge (1-\alpha)A`$ (19/20 cells at $`C_{\text{new}}=10`$ and 17/20 at $`C_{\text{new}}=40`$). Under Persistence across all 42 pooled clusters, PACER’s conservative abstention lowers utility $`U`$ by $`-18.89`$ percentage points at cap 10 (bootstrap $`-31.02`$ to $`-3.25`$) and $`-29.95`$ percentage points at cap 40 (bootstrap $`-37.26`$ to $`-16.39`$) relative to Frozen. For the exploratory controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield 6 matched utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs or risk-only changes, 129 unchanged cases, and 18 unmatched-cost cases; across the 792 configurations of the targeted baseline grid, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks. Complete ledgers reside in `results/pacer` and `results/exploratory`.
+
+<div class="table*">
+
+|  |  |  |  |  |
+|:---|:---|:---|:---|:---|
+| Regime | Method | Property | ObservedMetric | PrimaryFailure |
+| Static high offer (A at least 0.50) | PACER | T1 O(1/K) | 5.12-6.98 PosHi IrelandSt | Needs horizon length T |
+| Budget-starved multi-day (C=10) | PACER | T2 Wmax blk | -23.41pp OfferWtd vs Per | Driven by Oslo offers |
+| Short rapid shift (C=40, T 300) | MARUR | Heuristic W=10 | Forgets init faster on Op1 | Day-1 churn; miss freeze |
+| Stationary / Retro C=40 | Periodic | Fixed cadence | 35.67 vs PAC 47.81 PosHi | Day-1 blind when P x C low |
+| Low A or uncalibrated Persist | Halt/Refuse | Fail safe | Avoids -29.95pp U drop | No SLA rate valid |
+
+</div>
+
+# Prospective Pilot Validation (Template — Pending Real Field Trips)
+
+Status as of this manuscript revision: `prospective_trips_collected = 0`. Because no newly collected live field drive logs exist yet, no simulated or replayed rows appear in Table <a href="#tab:pilot_template" data-reference-type="ref" data-reference="tab:pilot_template">[tab:pilot_template]</a>. Once real chronological drive traces containing the required lag, radio telemetry, and outcome timestamps are collected, run `python scripts/run_prospective_validation.py` with frozen model artifact `results/prospective_planning/frozen_rome_histgbm.joblib` and populate only genuinely recorded trips below.
+
+<div class="table*">
+
+| Campaign | Trips | Eligible | Queries ($`Q_{\text{new}}`$) | Offer Freq $`A`$ (%) | PosLow (%) | PosHigh (%) | Supported $`U`$ (%) |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| Pending real collection | 0 | — | — | — | — | — | — |
+
+</div>
 
 # Conclusion
 
@@ -409,115 +434,115 @@ OpenAI Codex assisted with code development, experimental checks and drafting an
 
 <div id="ref-angelopoulos2021ltt" class="csl-entry">
 
-Angelopoulos, Anastasios N., Stephen Bates, Emmanuel J. Candès, Michael I. Jordan, and Lihua Lei. 2021. *Learn Then Test: Calibrating Predictive Algorithms to Achieve Risk Control*. arXiv:2110.01052.
+Angelopoulos, Anastasios N., Stephen Bates, Emmanuel J. Candès, Michael I. Jordan, and Lihua Lei. 2021. *<span class="nocase">Learn then Test: Calibrating Predictive Algorithms to Achieve Risk Control</span>*. arXiv:2110.01052.
 
 </div>
 
-<div id="ref-angelopoulos2024crc" class="csl-entry">
+<div id="ref-angelopoulos2024risk" class="csl-entry">
 
-Angelopoulos, Anastasios N., Stephen Bates, Adam Fisch, Lihua Lei, and Tal Schuster. 2024. “Conformal Risk Control.” *International Conference on Learning Representations*.
-
-</div>
-
-<div id="ref-caso2024chronicles" class="csl-entry">
-
-Caso, Giuseppe, Mohammad Rajiullah, Konstantinos Kousias, et al. 2024. “The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution.” *IEEE Open Journal of the Communications Society* 5: 7380–99. <https://doi.org/10.1109/OJCOMS.2024.3499370>.
+Angelopoulos, Anastasios N., Stephen Bates, Adam Fisch, Lihua Lei, and Tal Schuster. 2024. “Conformal Risk Control.” *Proceedings of the International Conference on Learning Representations (ICLR)*. <https://openreview.net/forum?id=33XGfHLtZg>.
 
 </div>
 
-<div id="ref-ge2025semibandit" class="csl-entry">
+<div id="ref-caso2024" class="csl-entry">
 
-Ge, Haosen, Hamsa Bastani, and Osbert Bastani. 2025. “Stochastic Online Conformal Prediction with Semi-Bandit Feedback.” *Proceedings of the International Conference on Machine Learning*, Proceedings of machine learning research, vol. 267: 18954–65. <https://proceedings.mlr.press/v267/ge25a.html>.
-
-</div>
-
-<div id="ref-geifman2017selective" class="csl-entry">
-
-Geifman, Yonatan, and Ran El-Yaniv. 2017. “Selective Classification for Deep Neural Networks.” *Advances in Neural Information Processing Systems*.
+Caso, Giuseppe, Mohammad Rajiullah, Konstantinos Kousias, et al. 2024. “<span class="nocase">The Chronicles of 5G Non-Standalone: An Empirical Analysis of Performance and Service Evolution</span>.” *IEEE Open Journal of the Communications Society* 5: 7380–99. <https://doi.org/10.1109/OJCOMS.2024.3499370>.
 
 </div>
 
-<div id="ref-gibbs2021adaptive" class="csl-entry">
+<div id="ref-ge2025" class="csl-entry">
 
-Gibbs, Isaac, and Emmanuel Candès. 2021. “Adaptive Conformal Inference Under Distribution Shift.” *Advances in Neural Information Processing Systems (NeurIPS)* 34: 1660–72.
-
-</div>
-
-<div id="ref-ilyas2026labels" class="csl-entry">
-
-Ilyas, Andrew, Joonhyuk Ko, Jingwu Tang, Steven Wu, and Jiahao Zhang. 2026. “Provably Label-Efficient Conformal Prediction.” *Proceedings of the International Conference on Machine Learning*, Proceedings of machine learning research, vol. 306: 49578–97. <https://proceedings.mlr.press/v306/ilyas26a.html>.
+Ge, Haosen, Hamsa Bastani, and Osbert Bastani. 2025. “<span class="nocase">Stochastic Online Conformal Prediction with Semi-Bandit Feedback</span>.” *Proceedings of the 42nd International Conference on Machine Learning (ICML)*, Proceedings of machine learning research, vol. 267: 18954–65. <https://proceedings.mlr.press/v267/ge25a.html>.
 
 </div>
 
-<div id="ref-jacobson2025predicting" class="csl-entry">
+<div id="ref-geifman2017" class="csl-entry">
 
-Jacobson, Tate, Jie Ding, and Hui Zou. 2025. “Predicting 5G Throughput with BAMMO, a Boosted Additive Model for Data with Missing Observations.” *Journal of the Royal Statistical Society Series C: Applied Statistics* 74 (1): 249–73. <https://doi.org/10.1093/jrsssc/qlae054>.
-
-</div>
-
-<div id="ref-kousias2024large" class="csl-entry">
-
-Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Usman Ali, et al. 2024. “A Large-Scale Dataset of 4G, NB-IoT, and 5G Non-Standalone Network Measurements.” *IEEE Communications Magazine* 62 (5): 44–49. <https://doi.org/10.1109/MCOM.011.2200707>.
+Geifman, Yonatan, and Ran El-Yaniv. 2017. “<span class="nocase">Selective Classification for Deep Neural Networks</span>.” *Advances in Neural Information Processing Systems (NeurIPS)* 30: 4878–87. <https://proceedings.neurips.cc/paper_files/paper/2017/hash/4a8423d5e91fda00bb7e46540e2b0cf1-Abstract.html>.
 
 </div>
 
-<div id="ref-kousias2024empirical" class="csl-entry">
+<div id="ref-gibbs2021" class="csl-entry">
 
-Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Ozgu Alay, et al. 2024. “Empirical Performance Analysis and ML-Based Modeling of 5G Non-Standalone Networks.” *Computer Networks* 241: 110207. <https://doi.org/10.1016/j.comnet.2024.110207>.
+Gibbs, Isaac, and Emmanuel J. Candès. 2021. “Adaptive Conformal Inference Under Distribution Shift.” *Advances in Neural Information Processing Systems (NeurIPS)* 34: 1660–72. <https://proceedings.neurips.cc/paper_files/paper/2021/hash/0d441de75945e5acbc865406fc9a2559-Abstract.html>.
+
+</div>
+
+<div id="ref-ilyas2026" class="csl-entry">
+
+Ilyas, Andrew, Joonhyuk Ko, Jingwu Tang, Steven Wu, and Jiahao Zhang. 2026. “Provably Label-Efficient Conformal Prediction.” *Proceedings of the 43rd International Conference on Machine Learning (ICML)*, Proceedings of machine learning research, vol. 306: 49578–97. <https://proceedings.mlr.press/v306/ilyas26a.html>.
+
+</div>
+
+<div id="ref-jacobson2025" class="csl-entry">
+
+Jacobson, Tate, Jie Ding, and Hui Zou. 2025. “<span class="nocase">Predicting 5G throughput with BAMMO, a boosted additive model for data with missing observations</span>.” *Journal of the Royal Statistical Society Series C: Applied Statistics* 74 (1): 249–73. <https://doi.org/10.1093/jrsssc/qlae054>.
+
+</div>
+
+<div id="ref-kousias2024data" class="csl-entry">
+
+Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Usman Ali, et al. 2024. “<span class="nocase">A Large-Scale Dataset of 4G, NB-IoT, and 5G Non-Standalone Network Measurements</span>.” *IEEE Communications Magazine* 62 (5): 44–49. <https://doi.org/10.1109/MCOM.011.2200707>.
+
+</div>
+
+<div id="ref-kousias2024model" class="csl-entry">
+
+Kousias, Konstantinos, Mohammad Rajiullah, Giuseppe Caso, Ozgu Alay, et al. 2024. “<span class="nocase">Empirical performance analysis and ML-based modeling of 5G non-standalone networks</span>.” *Computer Networks* 241: 110207. <https://doi.org/10.1016/j.comnet.2024.110207>.
 
 </div>
 
 <div id="ref-manski1989selection" class="csl-entry">
 
-Manski, Charles F. 1989. “Anatomy of the Selection Problem.” *Journal of Human Resources* 24 (3): 343–60. <https://doi.org/10.2307/145818>.
+Manski, Charles F. 1989. “<span class="nocase">Anatomy of the Selection Problem</span>.” *Journal of Human Resources* 24 (3): 343–60. <https://doi.org/10.2307/145818>.
 
 </div>
 
-<div id="ref-narayanan2020lumos5g" class="csl-entry">
+<div id="ref-narayanan2020" class="csl-entry">
 
-Narayanan, Arvind, Eman Ramadan, Rishabh Mehta, et al. 2020. “Lumos5G: Mapping and Predicting Commercial mmWave 5G Throughput.” *Proceedings of the ACM Internet Measurement Conference (IMC)*, 176–93. <https://doi.org/10.1145/3419394.3423629>.
+Narayanan, Arvind, Eman Ramadan, Rishabh Mehta, et al. 2020. “<span class="nocase">Lumos5G: Mapping and Predicting Commercial mmWave 5G Throughput</span>.” *Proceedings of the ACM Internet Measurement Conference (IMC)*, 176–93. <https://doi.org/10.1145/3419394.3423629>.
 
 </div>
 
 <div id="ref-nuwinsarchive" class="csl-entry">
 
-NUWiNS. 2025. *PAM 2025 Multi-Carrier Dataset*. Public data and transfer intervals, release 782b712.
+NUWiNS. 2025. *PAM 2025 Multi-Carrier Dataset*. Public data and transfer intervals, commit 782b712.
 
 </div>
 
-<div id="ref-raca2020beyond" class="csl-entry">
+<div id="ref-raca2020" class="csl-entry">
 
-Raca, Darijo, Dylan Leahy, Cormac J. Sreenan, and Jason J. Quinlan. 2020. “Beyond Throughput, the Next Generation: A 5G Dataset with Channel and Context Metrics.” *Proceedings of the 11th ACM Multimedia Systems Conference (MMSys)*, 303–8. <https://doi.org/10.1145/3339825.3394938>.
+Raca, Darijo, Dylan Leahy, Cormac J. Sreenan, and Jason J. Quinlan. 2020. “<span class="nocase">Beyond throughput, the next generation: a 5G dataset with channel and context metrics</span>.” *Proceedings of the 11th ACM Multimedia Systems Conference (MMSys)*, 303–8. <https://doi.org/10.1145/3339825.3394938>.
 
 </div>
 
 <div id="ref-riiser2013commute" class="csl-entry">
 
-Riiser, Haakon, Paul Vigmostad, Carsten Griwodz, and Pål Halvorsen. 2013. “Commute Path Bandwidth Traces from 3G Networks: Analysis and Applications.” *Proceedings of the ACM Multimedia Systems Conference*, 114–18.
+Riiser, Haakon, Paul Vigmostad, Carsten Griwodz, and Pål Halvorsen. 2013. “<span class="nocase">Commute Path Bandwidth Traces from 3G Networks: Analysis and Applications</span>.” *Proceedings of the 4th ACM Multimedia Systems Conference (MMSys)*, 114–18. <https://doi.org/10.1145/2483977.2483991>.
 
 </div>
 
-<div id="ref-sirhan2026handover" class="csl-entry">
+<div id="ref-sirhan2026" class="csl-entry">
 
-Sirhan, N. N. 2026. “Handover-Aware Conformal Throughput Intervals for Risk-Sensitive Rate Selection in Mobile 5G.” *Network* 6 (4): 92. <https://doi.org/10.3390/network6040092>.
+Sirhan, Najem N. 2026. “<span class="nocase">Handover-Aware Conformal Throughput Intervals for Risk-Sensitive Rate Selection in Mobile 5G</span>.” *Network* 6 (4): 92. <https://doi.org/10.3390/network6040092>.
 
 </div>
 
-<div id="ref-tibshirani2019conformal" class="csl-entry">
+<div id="ref-tibshirani2019" class="csl-entry">
 
-Tibshirani, Ryan J., Rina Foygel Barber, Emmanuel Candès, and Aaditya Ramdas. 2019. “Conformal Prediction Under Covariate Shift.” *Advances in Neural Information Processing Systems (NeurIPS)* 32: 2530–40.
+Tibshirani, Ryan J., Rina Foygel Barber, Emmanuel J. Candès, and Aaditya Ramdas. 2019. “Conformal Prediction Under Covariate Shift.” *Advances in Neural Information Processing Systems (NeurIPS)* 32: 2530–40. <https://proceedings.neurips.cc/paper_files/paper/2019/hash/8fb21ee7a2207526da55a679f0332de2-Abstract.html>.
 
 </div>
 
 <div id="ref-vovk2005algorithmic" class="csl-entry">
 
-Vovk, Vladimir, Alex Gammerman, and Glenn Shafer. 2005. *Algorithmic Learning in a Random World*. Springer.
+Vovk, Vladimir, Alex Gammerman, and Glenn Shafer. 2005. *<span class="nocase">Algorithmic Learning in a Random World</span>*. Springer. <https://doi.org/10.1007/b106715>.
 
 </div>
 
-<div id="ref-zaffran2023conformal" class="csl-entry">
+<div id="ref-zaffran2023" class="csl-entry">
 
-Zaffran, Margaux, Aymeric Dieuleveut, Julie Josse, and Yaniv Romano. 2023. “Conformal Prediction with Missing Values.” *Proceedings of the 40th International Conference on Machine Learning (ICML)*, Proceedings of machine learning research, vol. 202: 40578–604.
+Zaffran, Margaux, Aymeric Dieuleveut, Julie Josse, and Yaniv Romano. 2023. “<span class="nocase">Conformal Prediction with Missing Values</span>.” *Proceedings of the 40th International Conference on Machine Learning (ICML)*, Proceedings of machine learning research, vol. 202: 40578–604. <https://proceedings.mlr.press/v202/zaffran23a.html>.
 
 </div>
 

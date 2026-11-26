@@ -1,0 +1,24 @@
+\begin{table*}[!ht]
+\centering\footnotesize\setlength{\tabcolsep}{3.5pt}
+\caption{Exploratory sensitivity across calibration window W, nominal alpha, and source-only predictors over 16 retrospective campaign-dates (MARUR vs Periodic, recorded feedback). PosHi and U in percent; Eq dU and tCI95 are MARUR minus Periodic supported-throughput differences in percentage points.}
+\begin{tabular}{lllllllll}
+\hline
+Axis & Setting & Cap & PosRate & MARHi & PerHi & MARU & Eq dU & tCI95 \\
+Win/Alpha & a=0.05, W=10 & 10 & 0.0 & undef & undef & 0.00 & +0.00 & all zero \\
+Win/Alpha & a=0.05, W=20 & 40 & 2.5 & 52.50 & 15.15 & 0.12 & -0.08 & -0.48 to +0.32 \\
+Win/Alpha & a=0.05, W=40 & 40 & 11.5 & 24.06 & 15.15 & 0.33 & +0.16 & -0.28 to +0.59 \\
+Win/Alpha & a=0.10, W=10 & 10 & 25.4 & 32.77 & 29.49 & 0.82 & -0.09 & -1.27 to +1.08 \\
+Win/Alpha & a=0.10, W=20 & 40 & 34.1 & 38.04 & 31.96 & 1.86 & +0.22 & -1.13 to +1.57 \\
+Win/Alpha & a=0.10, W=40 & 40 & 23.1 & 30.67 & 32.30 & 0.78 & -0.30 & -1.52 to +0.93 \\
+Win/Alpha & a=0.20, W=10 & 10 & 36.3 & 45.58 & 42.23 & 2.33 & -0.22 & -1.19 to +0.75 \\
+Win/Alpha & a=0.20, W=20 & 40 & 45.1 & 45.75 & 44.33 & 6.82 & +2.25 & +0.48 to +4.03 \\
+Win/Alpha & a=0.20, W=40 & 40 & 43.1 & 46.85 & 45.28 & 3.41 & +1.58 & +0.47 to +2.69 \\
+Predictor & HistGBM57 (E1 32.2) & 10 & 25.4 & 32.77 & 29.49 & 0.82 & -0.09 & -1.27 to +1.08 \\
+Predictor & ResNet57 (E1 29.7) & 10 & 21.5 & 37.97 & 27.10 & 0.23 & -0.47 & -1.05 to +0.11 \\
+Predictor & ResNet57 (E1 29.7) & 40 & 31.1 & 23.90 & 28.14 & 0.31 & -0.43 & -1.02 to +0.16 \\
+Predictor & QGBM10 (E1 29.7) & 10 & 17.1 & 51.99 & 50.36 & 0.63 & +1.02 & +0.06 to +1.98 \\
+Predictor & ClkGBM112 (E1 32.5) & 40 & 14.5 & 37.87 & 44.13 & 1.57 & -2.46 & -4.75 to -0.16 \\
+Predictor & Persist (E1 44.3) & 10 & 17.7 & 65.73 & 64.21 & 9.50 & -4.03 & -12.18 to +4.12 \\
+\hline
+\end{tabular}
+\end{table*}

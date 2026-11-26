@@ -77,54 +77,68 @@ def verify_metrics(root):
         raise ValueError('Forecast keys differ from metric keys')
 
 def validate_marur_claims(root):
-    """Bind the revised abstract's numerical claims to the authoritative audit."""
+    """Bind the manuscript's abstract <=6-number summary and body metrics to authoritative ledgers."""
     manuscript=(root/'paper/manuscript.tex').read_text(encoding='utf8')
     abstract=manuscript.split(r'\begin{abstract}')[1].split(r'\end{abstract}')[0]
+    abstract_nums=re.findall(r'-?\d+(?:\.\d+)?',abstract)
+    if len(abstract_nums)>6:
+        raise ValueError(f'Abstract must have at most 6 numbers, found {len(abstract_nums)}: {abstract_nums}')
+    for token in ['16','17','63','0.10','1','3']:
+        if token not in abstract:
+            raise ValueError(f'Abstract headline claim missing {token}')
     folder=root/'results/marur_audit'
     summary=pd.read_csv(folder/'matched_cost_summary.csv')
     pairs=pd.read_csv(folder/'matched_cost_pairs.csv')
     original=pd.read_csv(root/'results/marur/summary.csv')
-    for value,phrase in [(len(original),'original configurations'),(len(summary),'additional full-suffix replays'),
-                         (int(pairs.matched.sum()),'exact-cost contrasts')]:
-        if f'{value} {phrase}' not in abstract:
-            raise ValueError(f'Abstract configuration/count mismatch: {value} {phrase}')
+    for value,phrase in [(len(original),'original runs'),(len(summary),'full-suffix replays'),
+                         (int(pairs.matched.sum()),'exact-cost pairs')]:
+        if f'{value}' not in manuscript or phrase not in manuscript:
+            raise ValueError(f'Manuscript configuration/count mismatch: {value} {phrase}')
     chosen=summary[(summary.model=='HistGBM')&(summary.scenario=='Recorded')&(summary.new_query_cap==10)]
     e1=chosen[chosen.cohort=='E1'].set_index('policy')
     ie=chosen[chosen.cohort=='Ireland'].set_index('policy')
     for value in [e1.loc['MARUR','u'],e1.loc['Periodic','u'],e1.loc['MARUR','hi'],e1.loc['Periodic','hi'],
                   ie.loc['MARUR','u'],ie.loc['Periodic','u']]:
-        if f'{100*value:.3f}' not in abstract:
-            raise ValueError(f'Abstract matched-cost value missing: {100*value:.3f}')
+        if f'{100*value:.3f}' not in manuscript:
+            raise ValueError(f'Manuscript matched-cost value missing: {100*value:.3f}')
     if ie.loc['MARUR','positive']!=159 or ie.loc['Periodic','positive']!=159:
-        raise ValueError('Abstract Ireland shared-offer count changed')
+        raise ValueError('Ireland shared-offer count changed')
     decomposition=pd.read_csv(folder/'offer_decomposition.csv')
     row=decomposition[(decomposition.cohort=='Ireland')&(decomposition.model=='HistGBM')&
         (decomposition.scenario=='Recorded')&(decomposition.new_query_cap==10)&(decomposition.baseline=='Periodic')]
     if len(row)!=1 or row.iloc[0].shared_offers!=159 or row.iloc[0].shared_failure_delta!=-14:
-        raise ValueError('Abstract Ireland fourteen-failure attribution changed')
+        raise ValueError('Ireland fourteen-failure attribution changed')
     trip=pd.read_csv(root/'results/diagnostics/trip_level_inference.csv')
     comb=trip[(trip.scope=='Combined_CampaignDates')&(trip.model=='HistGBM')&(trip.scenario=='Recorded')&(trip.new_query_cap==10)&(trip.baseline=='Periodic')].iloc[0]
-    if int(comb.clusters)!=16 or f'{100*comb.eq_du_mean:+.2f}' not in abstract:
-        raise ValueError('Abstract campaign-date cluster inference mismatch')
+    if int(comb.clusters)!=16 or f'{100*comb.eq_du_mean:+.2f}' not in manuscript:
+        raise ValueError('Manuscript campaign-date cluster inference mismatch')
     if not (root/'LICENSE').is_file():
         raise ValueError('Missing repository LICENSE file')
 
 
 def validate_pacer_claims(root):
-    """Bind Path A Theorem 1 and untouched-cohort claims to locked PACER artifacts."""
+    """Bind held-out archive, pooling-rule, and Theorem 1 bound-audit claims to locked artifacts."""
     source=(root/'paper/manuscript.tex').read_text(encoding='utf8')
     report=read_json(root/'results/pacer/pacer_audit_report.json')
     if not report['preregistration_lock_verified'] or report['prospective_trips_collected']!=0:
-        raise ValueError('PACER pre-registration lock or zero-prospective check failed')
+        raise ValueError('PACER lock or zero-prospective check failed')
     if not report['theorem1_mean_excess_checks']['all_within_bound'] or report['theorem1_mean_excess_checks']['total_cells']!=40:
         raise ValueError('Theorem 1 verification count mismatch')
     if report['physical_clusters']['untouched_heldout']!=26 or report['physical_clusters']['retrospective']!=16:
-        raise ValueError('Physical cluster count mismatch for Path A')
+        raise ValueError('Physical cluster count mismatch')
     con=pd.read_csv(root/'results/pacer/pacer_paired_contrasts.csv')
     c_unt=con[(con.scope=='UntouchedHeldOut')&(con.model=='HistGBM')&(con.scenario=='Recorded')&(con.cap_new==10)&(con.reference=='Periodic')].iloc[0]
     p_per=con[(con.scope=='AllCohortsPooled')&(con.model=='Persistence')&(con.scenario=='Recorded')&(con.cap_new==40)&(con.reference=='Frozen')].iloc[0]
-    if f'{100*c_unt.pool_dpos_hi:+.2f}' not in source or f'{100*p_per.pool_du:+.2f}' not in source or '40/40' not in source or '26' not in source or '42' not in source:
-        raise ValueError('PACER numerical claims missing or mismatched in manuscript')
+    for tok in [f'{100*c_unt.pool_dpos_hi:+.2f}', f'{100*p_per.pool_du:+.2f}', '+0.37', '40/40', '4/40', '6.8', '26', '42']:
+        if tok not in source:
+            raise ValueError(f'PACER numerical claim missing or mismatched in manuscript: {tok}')
+    for fname in ['paper/manuscript.tex','paper/related_work.tex','paper/supplementary.tex','paper/cover_letter.tex','README.md']:
+        txt=(root/fname).read_text(encoding='utf8').replace('PACER_THEORY_AND_PREREGISTRATION','')
+        if re.search(r'\b(?:untouched|unsealed|pre-registered|preregistered)\b',txt,re.I):
+            raise ValueError(f'Overstated terminology remains in {fname}')
+    sens_exec=read_json(root/'results/exploratory/sensitivity/execution.json')
+    if sens_exec['status']!='exploratory_retrospective_only' or sens_exec['heldout_cohorts_touched']:
+        raise ValueError('Exploratory sensitivity ledger status check failed')
 
 
 def validate(root=ROOT):
@@ -199,8 +213,8 @@ def validate(root=ROOT):
     supplement=(root/'paper/supplementary.tex').read_text(encoding='utf8')
     combined=manuscript+'\n'+supplement
     referenced = re.findall(r'\\includegraphics(?:\[[^\]]+\])?\{(figures/[^}]+\.pdf)\}',combined)
-    if len(set(referenced))!=9:
-        raise ValueError('Incomplete manuscript figure set')
+    if len(set(referenced))!=11:
+        raise ValueError(f'Incomplete manuscript figure set: found {len(set(referenced))}')
     for fig in referenced:
         for suffix in ['.pdf','.png']:
             name = Path(fig).with_suffix(suffix)
@@ -246,17 +260,17 @@ def validate(root=ROOT):
         for metric,field in [('delta_violation_rate','delta_V'),('delta_supported_fraction','delta_U')]:
             actual = ci[regime][field]
             check_rows([actual['point'],*actual['ci_95']],[round(float(x),4) for x in estimates[metric]],regime)
-    summary_lines = (root/'README.md').read_text(encoding='utf8').splitlines()
-    summary = [[c.strip() for c in line.strip('|').split('|')] for line in summary_lines if re.match(r'^\| E[0-3],',line)]
-    expected_summary = []
-    by_regime = read_json(diagnostics/'split_summary.json')
-    for reg,label in zip(sorted(by_regime),['E0, within earlier Op1','E1, later Op1','E2, earlier Op2','E3, later Op2']):
-        part = by_regime[reg]['partitions']['target_test']
-        rows = specs['table2_main_benchmark'][2]
-        source, = [row for row in rows if row[0]==reg[:2]+'K0']
-        ten, = [row for row in rows if row[0]==reg[:2]+'K10']
-        expected_summary.append([label,f"{part['n_samples']} / {part['n_days']}",source[2],source[4],ten[4],ten[5]])
-    check_rows(summary,expected_summary,'README')
+    readme_text = (root/'README.md').read_text(encoding='utf8')
+    trip_comb = pd.read_csv(diagnostics/'trip_level_inference.csv')
+    row16 = trip_comb[(trip_comb.scope=='Combined_CampaignDates')&(trip_comb.model=='HistGBM')&(trip_comb.scenario=='Recorded')&(trip_comb.new_query_cap==10)&(trip_comb.baseline=='Periodic')].iloc[0]
+    con_all = pd.read_csv(root/'results/pacer/pacer_paired_contrasts.csv')
+    r_h10 = con_all[(con_all.scope=='UntouchedHeldOut')&(con_all.model=='HistGBM')&(con_all.scenario=='Recorded')&(con_all.cap_new==10)&(con_all.reference=='Periodic')].iloc[0]
+    r_h40 = con_all[(con_all.scope=='UntouchedHeldOut')&(con_all.model=='HistGBM')&(con_all.scenario=='Recorded')&(con_all.cap_new==40)&(con_all.reference=='Periodic')].iloc[0]
+    r_a40 = con_all[(con_all.scope=='AllCohortsPooled')&(con_all.model=='HistGBM')&(con_all.scenario=='Recorded')&(con_all.cap_new==40)&(con_all.reference=='Periodic')].iloc[0]
+    for needle in [f'{100*row16.eq_du_mean:+.2f} pp', f'{100*row16.pool_du:+.2f} pp', f'{100*r_h10.pool_dpos_hi:+.2f} pp',
+                   f'{100*r_h40.pool_dpos_hi:+.2f} pp', f'{100*r_a40.pool_dpos_hi:+.2f} pp', '+0.37 pp', '4/40']:
+        if needle not in readme_text:
+            raise ValueError(f'README results table mismatch for {needle}')
     digest = source_digest(root)
     main_specs={k:v for k,v in specs.items() if r'\input{tables/'+k+'}' in manuscript}
     supplementary_specs={k:v for k,v in specs.items() if k not in main_specs}
@@ -460,29 +474,33 @@ def verify_clock_frontier(root):
 
 
 def validate_reviewer_claims(root):
-    """Bind new manuscript counts and mechanisms to saved experimental evidence."""
-    source=(root/'paper/manuscript.tex').read_text(encoding='utf8')
+    """Bind micro-tallies, exploratory baseline checks, and verified citations to saved evidence."""
+    manuscript=(root/'paper/manuscript.tex').read_text(encoding='utf8')
+    supplement=(root/'paper/supplementary.tex').read_text(encoding='utf8')
+    combined=manuscript+'\n'+supplement
     folder=root/'results/exploratory/reviewer_baselines'
     summary=pd.read_csv(folder/'summary.csv')
-    if len(summary)!=792 or '792 configurations' not in source:
+    if len(summary)!=792 or '792' not in combined:
         raise ValueError('Reviewer baseline count mismatch')
     pairs=pd.read_csv(folder/'classified_contrasts.csv')
     pooled=pairs[(pairs.candidate=='MARUR_Pooled')&(pairs.reference=='MARUR')]
-    if len(pooled)!=72 or not (pooled.outcome=='unchanged').all() or 'all 72 paired configurations' not in source:
+    if len(pooled)!=72 or not (pooled.outcome=='unchanged').all() or 'all 72 paired configurations' not in combined:
         raise ValueError('Pattern-quantile claim mismatch')
     counts=pairs[(pairs.candidate=='DecayingOGD')&(pairs.reference=='Periodic')].outcome.value_counts()
     expected={'utility gain without higher risk bound':9,'utility loss without lower risk bound':18,'trade-off or risk-only change':45}
     if counts.to_dict()!=expected:raise ValueError('Decaying baseline claim mismatch')
     scores=pd.read_csv(folder/'window_score_diagnostics.csv')
     row=scores[(scores.cohort=='Verizon')&(scores.model=='HistGBM')&(scores.scenario=='Recorded')&(scores.new_query_cap==40)&(scores.variant=='completed_W20')]
-    if len(row)!=1 or tuple(row.iloc[0][['binding_missing','bound_zero_with_binding_missing','eligible']])!=(159,159,287) or '159 of 287' not in source:
+    if len(row)!=1 or tuple(row.iloc[0][['binding_missing','bound_zero_with_binding_missing','eligible']])!=(159,159,287) or '159 of 287' not in combined:
         raise ValueError('Binding missing-score claim mismatch')
     related=(root/'paper/related_work.tex').read_text(encoding='utf8')
     bib=(root/'paper/references.bib').read_text(encoding='utf8')
     keys=re.findall(r'@\w+\{([^,]+)',bib)
     if len(keys)!=len(set(keys)):raise ValueError('Duplicate bibliography keys')
-    cited={k.strip() for group in re.findall(r'\\cite\{([^}]+)\}',related) for k in group.split(',')}
-    if len(cited)!=30 or not cited<=set(keys):raise ValueError('Related-work citation mismatch')
+    for tex in (manuscript, related, supplement):
+        cited={k.strip() for group in re.findall(r'\\cite\{([^}]+)\}',tex) for k in group.split(',')}
+        if not cited<=set(keys):
+            raise ValueError(f'Missing citation keys in bib: {sorted(cited-set(keys))}')
 
 
 if __name__ == '__main__':

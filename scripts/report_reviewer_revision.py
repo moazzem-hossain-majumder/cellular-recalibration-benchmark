@@ -37,5 +37,5 @@ lines += ['','## Offer-level attribution','',
           'On the prior Ireland ten-query MARUR/Periodic comparison, the same 159 positive offers and fourteen fewer shared failures show a size/reliability trade-off, not extra abstention. Conversely, the prior Verizon comparison with Early removes ten offers and six failures without improving shared-offer failures. The new full decomposition files retain every contradictory case rather than only these examples.','',
           '## Reviewer recommendation','',
           'Retain the unchanged default for reproducibility, not because it is proven optimal. Drop claims that pattern-specific quantiles, information clocks, or larger windows consistently improve service. Present the work as empirical acquisition/decision methodology with controlled ablations and explicit failures. Independent prospective data and application requirements remain unfulfilled. No higher readiness score or acceptance claim follows from adding baseline rows.','']
-(ROOT/'docs/REVIEWER_BASELINE_RESULTS.md').write_text('\n'.join(lines),encoding='utf8')
+(ROOT/'docs/archive/REVIEWER_BASELINE_RESULTS.md').write_text('\n'.join(lines),encoding='utf8')
 print(d.groupby(['candidate','reference','outcome']).size().to_string())

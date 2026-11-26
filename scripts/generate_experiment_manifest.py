@@ -16,31 +16,22 @@ PACKAGES = ['torch','pandas','numpy','scipy','scikit-learn','matplotlib','seabor
             'pypdf','pymupdf','pytest','pypandoc_binary','beautifulsoup4','pyarrow']
 PATTERNS = [
     'results/runs/reviewer_revision_completion.json',
-    'results/exploratory/reviewer_baselines/*','results/prospective_planning/*','docs/REVIEWER_*md','docs/PROSPECTIVE_VIDEO_VALIDATION_PLAN.md',
+    'results/exploratory/reviewer_baselines/*','results/exploratory/sensitivity/*','results/prospective_planning/*',
     'results/exploratory/marur_information/*','docs/MARUR_INFORMATION_EXPERIMENT*.md',
     'literature_review/*.tex','literature_review/*.bib','literature_review/*.csv','literature_review/*.md','literature_review/*.pdf',
     'literature_review/_support/verification_sources.json','literature_review/_support/validation.json',
-    "docs/MARUR_IMPLEMENTATION_SPECIFICATION.md","results/runs/final_scientific_audit*.json",
+    "docs/*.md","docs/archive/*.md","results/runs/final_scientific_audit*.json",
     "results/runs/clean_controller_reproduction.json","results/runs/clean_audit_tests.xml","results/runs/dependency_licenses.json",
-    'results/marur_audit/*','docs/FINAL_MARUR_CRITICAL_AUDIT.md','docs/MATCHED_COST_ANALYSIS.md',
-    'docs/PROSPECTIVE_VALIDATION_PROTOCOL.md','docs/IEEE_SUBMISSION_DECISION.md',
-    'results/marur/*','configs/*.json','docs/RESEARCH_BASELINE_AUDIT.md','docs/NOVELTY_COMPARISON_MATRIX.md',
-    'docs/PROPOSED_METHOD_FORMULATION.md','docs/EXPERIMENTAL_DESIGN.md','docs/STATISTICAL_ANALYSIS_PLAN.md',
-    'docs/IEEE_REVIEWER_RESPONSE.md','docs/FINAL_RESEARCH_READINESS.md','results/runs/isolated_baseline_reproduction.json','results/runs/isolated_marur_reproduction.json',
-    'src/**/*.py','scripts/*.py','tests/**/*.py','configs/*.json','results/diagnostics/*',
+    'results/marur_audit/*','results/marur/*','configs/*.json',
+    'results/runs/isolated_baseline_reproduction.json','results/runs/isolated_marur_reproduction.json',
+    'src/**/*.py','scripts/*.py','tests/**/*.py','results/diagnostics/*',
     'results/metrics/*','results/tables/*','results/figures/*','results/pacer/*','paper/**/*','app/*',
-    'data/metadata/*.json','docs/*AUDIT.md','docs/MANUSCRIPT_CONSISTENCY_VALIDATION.md',
-    'docs/PACER_THEORY_AND_PREREGISTRATION.md',
-    'docs/FINAL_RESEARCH_READINESS_MATRIX.md','README.md','LICENSE','docs/DATA_AND_SOFTWARE_LICENSING.md','requirements.txt','pyproject.toml',
+    'data/metadata/*.json','README.md','LICENSE','requirements.txt','pyproject.toml',
     '.github/workflows/*','results/runs/final_tests.xml','results/runs/execution.json',
     'results/runs/ancillary_execution.json','results/exploratory/sirhan_external/*',
-    'results/exploratory/published_global_comparison.csv','docs/EXTERNAL_SIRHAN_COMPARISON.md',
-    'results/runs/external_validation.json','antigravity.md','results/external_validation/*',
-    'docs/EXTERNAL*md','docs/RELIABILITY_USEFULNESS_ANALYSIS.md','docs/FINAL_REVIEW.md',
-    'results/clock_histgbm/*','docs/RESEARCH_GAP_AND_NOVELTY_REVIEW.md','docs/PRIMARY_CONTRIBUTION_DECISION.md',
-    'docs/STATISTICAL_DESIGN_IMPROVEMENT.md','docs/CROSS_NETWORK_GENERALIZATION.md',
-    'docs/UPDATED_LITERATURE_AND_NOVELTY_REVIEW.md','docs/FINAL_ADVERSARIAL_PEER_REVIEW.md',
-    'docs/REJECTION_RISK_REVISIONS.md','docs/POSITIVE_OFFER_SELECTION.md','docs/PLAYBACK_REPLAY_PROTOCOL.md','docs/TRIP_AND_APPLICATION_RESULTS.md','docs/DRIVE3_PROTOCOL.md','docs/DRIVE3_REPLICATION.md','docs/FINAL_SCORECARD.md','docs/FINAL_EXECUTION_REPORT.md','constraints-research.txt'
+    'results/exploratory/published_global_comparison.csv',
+    'results/runs/external_validation.json','results/external_validation/*',
+    'results/clock_histgbm/*','constraints-research.txt'
 ]
 TEXT_FORMATS = {'.py','.md','.json','.csv','.tex','.bib','.yaml','.yml','.toml','.txt','.html','.xml'}
 

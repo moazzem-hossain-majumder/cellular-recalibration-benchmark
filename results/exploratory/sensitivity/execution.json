@@ -1,0 +1,15 @@
+{
+  "start_utc": "2026-11-26T05:24:56.650636+00:00",
+  "end_utc": "2026-11-26T05:28:27.692215+00:00",
+  "status": "exploratory_retrospective_only",
+  "heldout_cohorts_touched": false,
+  "window_alpha_rows": 1080,
+  "predictor_rows": 300,
+  "sha256": {
+    "results/exploratory/sensitivity/predictor_point_accuracy.csv": "25656a91139784c5787a9f2d4d8f9cd90eed1c6e0127092dca84ce257a543cb9",
+    "results/exploratory/sensitivity/predictor_sensitivity.csv": "99646565a021817d362015a8ad68c8a9078d4457cb189157dce6e1631dd94209",
+    "results/exploratory/sensitivity/predictor_sensitivity_clusters.csv": "f41e7b87ebc1ec38c1c5818a60893483124b98296b6bb2be36ac37b0d295a82d",
+    "results/exploratory/sensitivity/window_alpha_clusters.csv": "2773264543dcffe73b29bfe46980acba4e2533b6bb97fc12b7c0ead606666ec0",
+    "results/exploratory/sensitivity/window_alpha_sensitivity.csv": "fa25b926117a72dd01c4daa3d1e5e7fa8760b0bc8a9a341c2125199f83e9f35e"
+  }
+}

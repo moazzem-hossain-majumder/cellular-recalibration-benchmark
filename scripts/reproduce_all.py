@@ -27,6 +27,7 @@ def main():
         ['scripts/audit_trip_level_inference.py'],
         ['scripts/build_untouched_cohorts.py'],
         ['scripts/run_pacer_study.py'],
+        ['scripts/run_sensitivity_exploratory.py'],
         ['scripts/plot_pacer_figure.py'],
         ['scripts/validate_pacer.py'],
         ['scripts/build_paper_html.py'],

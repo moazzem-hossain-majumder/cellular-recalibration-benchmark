@@ -48,6 +48,6 @@ def main():
     pd.DataFrame(days).to_csv(OUT/'dates.csv',index=False);pd.DataFrame(plans).to_csv(OUT/'random_schedules.csv',index=False)
     for name,parts in [('actions',actions),('responses',feedback)]:pd.concat(parts).to_csv(OUT/(name+'.csv.gz'),index=False,compression={'method':'gzip','mtime':0})
     receipt={'start_utc':start,'end_utc':datetime.now(timezone.utc).isoformat(),'configurations':len(rows),'spec':spec,'status':'exploratory',
-        'sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [sourcepath,Path(__file__),ROOT/'src/evaluation/marur.py',ROOT/'configs/marur_reviewer_baselines.json',ROOT/'docs/REVIEWER_BASELINE_PROTOCOL.md',*OUT.glob('*.csv*')]}}
+        'sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [sourcepath,Path(__file__),ROOT/'src/evaluation/marur.py',ROOT/'configs/marur_reviewer_baselines.json',ROOT/'docs/archive/REVIEWER_BASELINE_PROTOCOL.md',*OUT.glob('*.csv*')]}}
     (OUT/'execution.json').write_text(json.dumps(receipt,indent=2)+'\n');print('Saved',len(rows),'configurations')
 if __name__=='__main__':main()

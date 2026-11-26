@@ -1,0 +1,14 @@
+\begin{table*}[!ht]
+\centering\footnotesize\setlength{\tabcolsep}{3.5pt}
+\caption{Theoretical Theorem 1 conditional-risk ceilings min(1, alpha + Bnd / RefA) versus empirical PACER HistGBM cap-40 upper risk (percent unless noted) and operational deployment rules.}
+\begin{tabular}{lllllll}
+\hline
+OfferStratum & RefA & CeilC10 & CeilC40 & EmpPosHiC40 & EmpCohortsC40 & PolicyRule \\
+A below 0.15 & 0.10 & 100.0 & 100.0 & 47.62-62.96 & E1,E3,ATT,Ver,Rome1/2 & DO NOT DEPLOY \\
+A 0.15 to 0.30 & 0.22 & 100.0 & 93.5 & 36.84-44.26 & T-Mobile, Ireland & DO NOT DEPLOY (SLA) \\
+A 0.30 to 0.70 & 0.50 & 100.0 & 46.7 & 32.40 & Oslo Commute & Advisory Only \\
+A 0.70 or more & 0.85 & 91.7 & 31.6 & 6.98 & Ireland Static & Usable Target \\
+Persistence Lag & All & T1 0.714 & T1 0.192 & -29.95pp U vs Frz & All 10 cohorts (42u) & DO NOT DEPLOY \\
+\hline
+\end{tabular}
+\end{table*}
