@@ -1,0 +1,102 @@
+{
+  "protocol": "exploratory_predictor_robustness_v1",
+  "status": "Fixed before predictor_robustness evaluation; exploratory on previously inspected archives",
+  "evidence_tier": "exploratory",
+  "frozen_configs_modified": false,
+  "primary_seed": 42,
+  "bootstrap_draws": 2000,
+  "alpha": 0.10,
+  "initial_labels": 10,
+  "new_query_caps": [10, 40],
+  "scenarios": ["Recorded", "QueryCensor20"],
+  "reference_policy": "Periodic",
+  "policies": [
+    "Frozen",
+    "Periodic",
+    "MARUR",
+    "PACER",
+    "ACI_g0.005",
+    "ACI_g0.01",
+    "ACI_g0.05",
+    "DecayingOGD",
+    "Early"
+  ],
+  "active_ablation_candidates": [
+    "MARUR",
+    "PACER",
+    "ACI_g0.005",
+    "ACI_g0.01",
+    "ACI_g0.05",
+    "DecayingOGD",
+    "Early"
+  ],
+  "aci_gammas": [0.005, 0.01, 0.05],
+  "fairness_sieve": {
+    "primary_scenario": "Recorded",
+    "q_match_tol": 1e-6,
+    "offer_rate_diff_max_pp": 5.0,
+    "win_dpos_hi_max_pp": -1.0,
+    "win_du_min_pp": -0.05,
+    "win_strict_ineq": true
+  },
+  "locampo": {
+    "strict_earlier_only": true,
+    "exclude_overlapping_city_pair": true,
+    "validation_fraction_by_date": 0.20,
+    "cqr_calib_fraction_by_date": 0.20
+  },
+  "predictor_grids": {
+    "histgbm_reg": {
+      "max_depth": [3, 4],
+      "min_samples_leaf": [10, 20, 30],
+      "l2_regularization": [0.0, 1.0, 10.0],
+      "learning_rate": 0.05,
+      "max_iter_max": 200,
+      "iter_step": 10,
+      "patience": 3
+    },
+    "histgbm_mono": {
+      "monotone_increasing_features": ["rsrp", "sinr", "ss_rsrp", "ss_sinr"],
+      "max_depth": [3, 4],
+      "min_samples_leaf": [10, 20, 30],
+      "l2_regularization": [0.0, 1.0, 10.0],
+      "learning_rate": 0.05,
+      "max_iter_max": 200,
+      "iter_step": 10,
+      "patience": 3
+    },
+    "ridge": {
+      "alpha": [0.1, 1.0, 10.0, 100.0]
+    },
+    "elasticnet": {
+      "alpha": [0.01, 0.1, 1.0, 10.0],
+      "l1_ratio": [0.1, 0.5, 0.9],
+      "max_iter": 5000
+    },
+    "quantile_histgbm": {
+      "quantiles": [0.10, 0.90],
+      "max_depth": [3, 4],
+      "min_samples_leaf": [10, 20, 30],
+      "l2_regularization": [0.0, 1.0, 10.0],
+      "learning_rate": 0.05,
+      "max_iter_max": 200,
+      "iter_step": 10,
+      "patience": 3
+    },
+    "cqr": {
+      "lower_quantile": 0.10,
+      "upper_quantile": 0.90,
+      "alpha": 0.10,
+      "min_interval_width_mbps": 0.5,
+      "calib_split": "campaign_date_chronological_tail"
+    }
+  },
+  "equiv_margins": {
+    "rel_pct": [50.0, 25.0],
+    "abs_pp": [1.0, 2.0]
+  },
+  "multiplicity": {
+    "methods": ["holm", "fdr_bh"],
+    "alpha": 0.05
+  }
+}
