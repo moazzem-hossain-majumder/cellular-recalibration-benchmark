@@ -1,6 +1,6 @@
 \begin{table*}[!ht]
 \centering\footnotesize\setlength{\tabcolsep}{3.5pt}
-\caption{Extended exploratory sensitivity (MARUR and PACER vs Periodic) across window/alpha, source-only predictors on retrospective (16 dates) and held-out Rome/Ireland Static (19u) archives, plus leave-one-cohort-out (LOCO) median range.}
+\caption{Extended exploratory sensitivity (MARUR and PACER vs Periodic) across window/alpha, source-only predictors on retrospective (16 dates) and held-out Rome/Ireland Static (19u) archives, plus leave-one-cohort-out (LOCO) and 6-campaign leave-one-campaign-out (LOCampO) median ranges.}
 \begin{tabular}{lllllllll}
 \hline
 Axis & Policy & Setting & Cap & CandHi & PerHi & CandU & Eq dU & tCI95 \\
@@ -31,6 +31,7 @@ HeldOut Pred & PACER & QGBM10 & 10 & 52.23 & 58.62 & 0.94 & +0.14 & -0.23 to +0.
 HeldOut Pred & MARUR & Persist & 10 & 57.21 & 53.71 & 33.69 & +4.04 & -0.56 to +8.64 \\
 HeldOut Pred & PACER & Persist & 10 & 59.82 & 53.71 & 39.21 & +0.80 & -12.71 to +14.32 \\
 LOCO (10 cohorts) & MAR/PAC & Drop any 1/10 & 10 & 47.1-49.3 & 47.1 full & 0.67-1.17 & -2.38 to +0.12 & p95 G=35..42 \\
+LOCampO (6 camp) & MAR/PAC & Drop any 1/6 & 10 & 45.8-49.3 & 47.6 full & 0.61-1.28 & -3.38 to +0.12 & p95 G=27..39 \\
 \hline
 \end{tabular}
 \end{table*}

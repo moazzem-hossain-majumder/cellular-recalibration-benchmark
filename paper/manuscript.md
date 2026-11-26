@@ -14,7 +14,7 @@ Cellular throughput, calibration feedback, selective prediction, cluster equival
 
 Across archived mobile cellular traces evaluated with frozen tree predictors and sparse recalibration, conditional upper violation risk spans $`9\%`$–$`68\%`$ above nominal $`\alpha=0.10`$ while supported measured throughput remains around $`1\%`$–$`3\%`$. Point error, low all-issued violations, and equal nominal query caps obscure this operational reality because a controller can appear safer merely by abstaining more often, exhausting probes early, spending unequal realized queries, or omitting missing horizon outcomes.
 
-We ask when sparse recalibration feedback helps cellular throughput commitments and how empirical accounting exposes false improvements. In these public archives, with these frozen predictors and policies, sparse recalibration did not reliably improve commitments, and utility differences remain largely inconclusive with only a handful of physical campaigns; equivalence tests therefore bound precision rather than establish parity. Our primary practical contribution is an open-source accounting library and CLI tool (`src/audit/recalibration_audit.py`, `scripts/audit_policy.py`) verified across six retrospective cohorts and four held-out archives:
+We ask: *do nominally matched cellular throughput recalibration policies remain comparable once evaluated over realized measurement opportunities, finite-record missing-outcome bounds, and campaign-level dependence?* Complementary to trace-replay emulation tools that isolate workload drift (Sentosa et al. 2025), our audit shows that fixed-trace conclusions reverse when accounting layers activate ($`-23.41`$ vs. $`+0.37`$ pp pooling shift and reversed campaign-adjusted equivalence), while few campaigns limit statistical utility equivalence to a precision bound. Our primary contribution is an open-source accounting library and CLI tool (`src/audit/recalibration_audit.py`, `scripts/audit_policy.py`) verified across six retrospective cohorts and four held-out archives:
 
 1.  **Causal ledger and reporting CLI:** Event-level separation of probe requests, horizon missingness, and finite-record bounds $`[e/M,(e+m)/M]`$ satisfying $`R=(M/N)R_+`$, paired with an automated warning CLI and practitioner checklist.
 
@@ -30,7 +30,7 @@ All evidence is retrospective from public archives, with no live field validatio
 
 Operational measurements establish that cellular throughput depends on radio conditions, mobility, and collection protocol. Earlier channel/context traces (Raca et al. 2020) and commercial millimeter-wave (mmWave) fifth-generation (5G) campaigns (Narayanan et al. 2020) enabled context-aware rate prediction, while newer multi-technology datasets and machine-learning evaluations extend these insights to non-standalone 5G deployments (Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; Kousias, Rajiullah, Caso, Alay, et al. 2024). However, forecast errors sampled within a single route or shared drive are temporally correlated rather than independent replications, and low point error does not bound rate-commitment violations.
 
-Missing inputs and deployment realism motivate complementary lines of work. The Boosted Additive Model for data with Missing Observations (BAMMO) handles missing covariates during commercial 5G throughput modeling (Jacobson et al. 2025), addressing unobserved inputs rather than unsuccessful acquisition of future calibration outcomes. Smartphone video streaming studies highlight real-time sampling shift (Raca et al. 2024), multi-carrier experiments document conflicting rate histories across links (Basit et al. 2024), and Sirhan (Sirhan 2026) compares global, regime-conditioned, and adaptive conformal intervals for mobile 5G rate selection. None of these studies audits how unequal probe spending, failed outcome horizon completions, and heavy abstention jointly distort controller comparisons.
+Missing inputs and deployment realism motivate complementary lines of work. The Boosted Additive Model for data with Missing Observations (BAMMO) handles missing covariates during commercial 5G throughput modeling (Jacobson et al. 2025), addressing unobserved inputs rather than unsuccessful acquisition of future calibration outcomes. Smartphone video streaming studies highlight real-time sampling shift (Raca et al. 2024), multi-carrier experiments document conflicting rate histories across links (Basit et al. 2024), and *CellReplay* (Sentosa et al. 2025) solves trace-replay emulation bias caused by workload-dependent cellular adaptation across multiple recorded workloads. Even on fixed recorded traces without replay-workload distortion, however, Sirhan (Sirhan 2026) and conformal baselines do not audit how unequal probe spending, missing horizon completions, offer-weighted pooling, and campaign clustering jointly flip controller evaluations.
 
 ## Missingness, Adaptation, and Budgeted Feedback
 
@@ -44,6 +44,7 @@ Recent work examines partial or costly feedback directly: upfront stopping rules
 |:---|:---|:---|:---|:---|:---|
 | BAMMO (Jacobson et al. 2025) | Radio/context | Commercial mmWave 5G | Missing-covariate additive boosting | Missing inputs differ from missing future outcomes | Separates input vs. outcome missingness |
 | Raca et al. (Raca et al. 2024) | Smartphone | Live video streaming | On-device throughput prediction | No selective commitment audit across caps | Causal trace ledger without live-QoE claim |
+| CellReplay (Sentosa et al. 2025) | Emulated traces | Live cellular workloads | Multi-workload replay interpolation | Addresses replay workload drift rather than probe accounting | Audits fixed-trace probe cost, missingness, and clustering |
 | Basit et al. (Basit et al. 2024) | Rate histories | Multi-carrier driving | Fine-grained ML predictability | Conflicting histories limit point accuracy | Audits conditional risk and supported rate |
 | Sirhan (Sirhan 2026) | Rate, RAT, handover | Commercial mobile 5G | Global/grouped/adaptive conformal bounds | Full-outcome split; no attempt-budget ledger | Separates probe attempts and missing outcomes |
 | Zaffran et al. (Zaffran et al. 2023) | Incomplete inputs | Regression missingness | Missing-pattern conformal sets | Input missingness differs from failed requests | Tracks probe failures vs. buffer admissions |
@@ -129,7 +130,7 @@ Across mobile-cohort *HistGBM* evaluations (*Periodic*, *MARUR*, *PACER*), condi
 
 Equal-cluster and pooled summaries answer different weighting questions and can point in opposite directions (Table IV). Equal-cluster weighting weights each date identically (Periodic mean $`U`$ is $`1.52\%`$ retrospective and $`6.32\%`$ held-out), whereas pooled totals weight by observed throughput sums (Periodic pooled $`U`$ is $`0.60\%`$ and $`1.01\%`$): because heavy-traffic days exhibit low baseline $`U`$ and occasional positive gains, they lift pooled ratios while light-traffic days drive negative equal-cluster means ($`-0.09`$ pp on retrospective MARUR).
 
-To avoid mixing estimands, we evaluate two matched relative TOST formulations at a primary $`\pm 50\%`$ margin relative to each estimand’s own Periodic baseline (alongside $`\pm 25\%`$ sensitivity and preserved $`\pm 1 / \pm 2`$ pp absolute columns). Clusters with undefined $`U`$ are excluded (none across our cohorts), whereas zero-baseline clusters (four retrospective; four low-cap held-out) remain in linear equal-cluster differences rather than unstable per-cluster ratios.
+To avoid mixing estimands, we evaluate two matched relative TOST formulations relative to each estimand’s own Periodic baseline. Because baseline supported throughput sits near $`1\%`$–$`3\%`$, $`\pm 50\%`$ is a coarse pragmatic screening margin (accepting halving or doubling baseline throughput, paired with $`\pm 25\%`$ sensitivity and preserved one- and two-point absolute checks). Clusters with undefined $`U`$ are excluded (none across our cohorts), whereas zero-baseline clusters remain in linear equal-cluster differences rather than unstable per-cluster ratios.
 
 On naive campaign-date inference without campaign clustering (Table IV), equal-cluster $`\pm 50\%`$ TOST is inconclusive for retrospective MARUR ($`p=0.1228`$) and low-cap held-out PACER ($`p=0.5369`$), while passing for retrospective PACER ($`p=0.0430`$) and high-cap held-out PACER ($`p=0.0071`$). Conversely, pooled-ratio equivalence fails in every scope because ninety-percent bootstrap intervals extend past fifty percent.
 
@@ -242,7 +243,7 @@ where $`W_{\max}=\lceil T/K \rceil`$ and inter-block delay $`D \le 1`$ (verified
 
 # Extended Exploratory Sensitivity and Scope
 
-Under an explicitly *exploratory* label (`results/exploratory/sensitivity/`) preserving all frozen results, we extended window/$`\alpha`$ and source-only predictor evaluations to both *MARUR* and *PACER* across retrospective and held-out archives, plus a Leave-One-Cohort-Out (LOCO) check over all $`42`$ clusters (Table VIII; full LOCO in Supplement Table S17).
+Under an explicitly *exploratory* label (`results/exploratory/sensitivity/`) preserving all frozen results, we extended window/$`\alpha`$ and source-only predictor evaluations to both *MARUR* and *PACER* across retrospective and held-out archives, plus Leave-One-Cohort-Out (LOCO) and Leave-One-Campaign-Out (LOCampO) checks over all $`42`$ clusters and $`6`$ campaigns (Table VIII; full tables in Supplement Tables S17–S19).
 
 <div class="table*">
 
@@ -276,10 +277,15 @@ Under an explicitly *exploratory* label (`results/exploratory/sensitivity/`) pre
 | HeldOut Pred | MARUR | Persist | 10 | 57.21 | 53.71 | 33.69 | +4.04 | -0.56 to +8.64 |
 | HeldOut Pred | PACER | Persist | 10 | 59.82 | 53.71 | 39.21 | +0.80 | -12.71 to +14.32 |
 | LOCO (10 cohorts) | MAR/PAC | Drop any 1/10 | 10 | 47.1-49.3 | 47.1 full | 0.67-1.17 | -2.38 to +0.12 | p95 G=35..42 |
+| LOCampO (6 camp) | MAR/PAC | Drop any 1/6 | 10 | 45.8-49.3 | 47.6 full | 0.61-1.28 | -3.38 to +0.12 | p95 G=27..39 |
 
 </div>
 
-**Window, Nominal $`\alpha`$, Source Predictors, and LOCO:** Enlarging windows or varying nominal levels leaves PACER and MARUR conditional risks elevated without consistent equal-cluster utility gains (Table VIII). Similarly, replaying lower-error source-only predictors (`ThroughputResNet`, `QuantileGBM`, `ClockGBM`, Oslo bus quantile regressor, and lag Persistence) either retains high conditional risk or suppresses throughput below 1%. Dropping any single cohort preserves mobile median conditional risk near $`47\%`$–$`49\%`$ while omitting Oslo removes the low-cap utility drop without revealing gains elsewhere.
+**Window, Nominal $`\alpha`$, and Source Predictors:** Enlarging windows or varying nominal levels leaves PACER and MARUR conditional risks elevated without consistent equal-cluster utility gains (Table VIII). Similarly, replaying lower-error source-only predictors (`ThroughputResNet`, `QuantileGBM`, `ClockGBM`, Oslo bus quantile regressor, and lag Persistence) either retains high conditional risk or suppresses throughput below 1%.
+
+**Per-Campaign Distribution:** High-risk cohorts coincide with low-throughput mobile drives (Supplement Table S19): early Rome, capacity Rome, and US driving traces yield $`47.5\%`$–$`54.2\%`$ median conditional risk alongside $`0.35\%`$–$`1.35\%`$ median utility, whereas Norwegian bus traces reach higher throughput.
+
+**Cohort and Campaign Leave-One-Out:** Dropping any single cohort keeps mobile median risk at $`47.1\%`$–$`49.3\%`$, and dropping any entire physical campaign preserves $`45.8\%`$–$`49.3\%`$; removing Oslo eliminates the low-cap utility drop without revealing gains elsewhere.
 
 **What Evidence Does Not Cover:** These archived traces do not cover other user devices, cellular operators absent from the logs, alternative active-probing measurement tools, closed-loop network deployment where commitments alter transport congestion, larger query budgets, or non-60s horizons.
 
@@ -468,6 +474,12 @@ Raca, Darijo, Ahmed H. Zahran, Cormac J. Sreenan, Rakesh K. Sinha, Emir Halepovi
 <div id="ref-riiser2013commute" class="csl-entry">
 
 Riiser, Haakon, Paul Vigmostad, Carsten Griwodz, and Pål Halvorsen. 2013. “<span class="nocase">Commute Path Bandwidth Traces from 3G Networks: Analysis and Applications</span>.” *Proceedings of the 4th ACM Multimedia Systems Conference (MMSys)*, 114–18. <https://doi.org/10.1145/2483977.2483991>.
+
+</div>
+
+<div id="ref-sentosa2025cellreplay" class="csl-entry">
+
+Sentosa, William, Balakrishnan Chandrasekaran, P. Brighten Godfrey, and Haitham Hassanieh. 2025. “CellReplay: Towards Accurate Record-and-Replay for Cellular Networks.” *Proceedings of the 22nd USENIX Symposium on Networked Systems Design and Implementation (NSDI 25)*, 1169–86. <https://www.usenix.org/conference/nsdi25/presentation/sentosa>.
 
 </div>
 

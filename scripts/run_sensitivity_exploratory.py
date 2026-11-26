@@ -421,6 +421,68 @@ def run_leave_one_cohort_out() -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def _camp_from_cohort(cohort: str) -> str:
+    if cohort in ('E1', 'E3'):
+        return 'Rome_2023'
+    if cohort in ('AT&T', 'T-Mobile', 'Verizon'):
+        return 'US_Drive3'
+    if cohort == 'Ireland':
+        return 'Ireland_Drive'
+    if cohort in ('Rome_Capacity_Op1', 'Rome_Capacity_Op2'):
+        return 'Rome_Capacity'
+    if cohort == 'Oslo_Commute':
+        return 'Oslo_Commute'
+    return 'Ireland_Static'
+
+
+def run_leave_one_campaign_out() -> pd.DataFrame:
+    """Major Concern 2: Leave-one-campaign-out robustness and per-campaign risk/utility distributions."""
+    s = pd.read_csv(ROOT / 'results/pacer/pacer_summary.csv')
+    cl = pd.read_csv(ROOT / 'results/pacer/pacer_cluster_dates.csv')
+    sub_s_all = s[(s['model'] == 'HistGBM') & (s['scenario'] == 'Recorded') & (s['cap_new'].isin([10, 40])) & (s['policy'].isin(['Periodic', 'MARUR', 'PACER']))].copy()
+    sub_cl_all = cl[(cl['model'] == 'HistGBM') & (cl['scenario'] == 'Recorded') & (cl['cap_new'].isin([10, 40]))].copy()
+    sub_s_all['campaign'] = sub_s_all['cohort'].map(_camp_from_cohort)
+    sub_cl_all['campaign'] = sub_cl_all['cohort'].map(_camp_from_cohort)
+    campaigns = sorted(sub_s_all['campaign'].unique())
+    rows = []
+    for drop_camp in ['None'] + campaigns:
+        sub_s = sub_s_all if drop_camp == 'None' else sub_s_all[sub_s_all['campaign'] != drop_camp]
+        sub_cl = sub_cl_all if drop_camp == 'None' else sub_cl_all[sub_cl_all['campaign'] != drop_camp]
+        mob_s = sub_s[sub_s['campaign'] != 'Ireland_Static']
+        mob_r = 100.0 * mob_s['positive_high'].dropna()
+        u_vals = 100.0 * sub_s['u'].dropna()
+        if drop_camp == 'None':
+            c_r_med = float((100.0 * sub_s_all['positive_high']).median())
+            c_u_med = float((100.0 * sub_s_all['u']).median())
+        else:
+            dropped_s = sub_s_all[sub_s_all['campaign'] == drop_camp]
+            c_r_med = float((100.0 * dropped_s['positive_high']).median())
+            c_u_med = float((100.0 * dropped_s['u']).median())
+
+        c10 = sub_cl[sub_cl['cap_new'] == 10].groupby(['unit', 'policy'], as_index=False)[['delivered_sum', 'observed_sum']].sum().pivot(index='unit', columns='policy')
+        c40 = sub_cl[sub_cl['cap_new'] == 40].groupby(['unit', 'policy'], as_index=False)[['delivered_sum', 'observed_sum']].sum().pivot(index='unit', columns='policy')
+        du_m10 = 100.0 * (c10['delivered_sum']['MARUR'] / c10['observed_sum']['MARUR'] - c10['delivered_sum']['Periodic'] / c10['observed_sum']['Periodic']).dropna()
+        du_p10 = 100.0 * (c10['delivered_sum']['PACER'] / c10['observed_sum']['PACER'] - c10['delivered_sum']['Periodic'] / c10['observed_sum']['Periodic']).dropna()
+        du_p40 = 100.0 * (c40['delivered_sum']['PACER'] / c40['observed_sum']['PACER'] - c40['delivered_sum']['Periodic'] / c40['observed_sum']['Periodic']).dropna()
+        rows.append(
+            {
+                'dropped_campaign': drop_camp,
+                'remaining_campaigns': 6 if drop_camp == 'None' else 5,
+                'clusters_g': int(len(du_m10)),
+                'camp_r_pos_hi_med_pp': c_r_med,
+                'camp_u_med_pp': c_u_med,
+                'mobile_r_pos_hi_min_pp': float(mob_r.min()),
+                'mobile_r_pos_hi_med_pp': float(mob_r.median()),
+                'mobile_r_pos_hi_max_pp': float(mob_r.max()),
+                'u_med_pp': float(u_vals.median()),
+                'eq_du_marur_c10_pp': float(du_m10.mean()),
+                'eq_du_pacer_c10_pp': float(du_p10.mean()),
+                'eq_du_pacer_c40_pp': float(du_p40.mean()),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def run_window_alpha_sensitivity(
     opp: pd.DataFrame, heldout: pd.DataFrame, mcfg: dict, pcfg: dict
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -671,9 +733,11 @@ def main(stats_only: bool = False) -> None:
     df_pow = run_power_and_equivalence()
     df_camp = run_campaign_dependence()
     df_loco = run_leave_one_cohort_out()
+    df_locampo = run_leave_one_campaign_out()
     df_pow.to_csv(OUT_DIR / 'power_equivalence.csv', index=False)
     df_camp.to_csv(OUT_DIR / 'campaign_dependence.csv', index=False)
     df_loco.to_csv(OUT_DIR / 'leave_one_cohort_out.csv', index=False)
+    df_locampo.to_csv(OUT_DIR / 'leave_one_campaign_out.csv', index=False)
 
     if stats_only:
         df_wa = pd.read_csv(OUT_DIR / 'window_alpha_sensitivity.csv')
@@ -699,6 +763,7 @@ def main(stats_only: bool = False) -> None:
         'power_equivalence_rows': int(len(df_pow)),
         'campaign_dependence_rows': int(len(df_camp)),
         'loco_rows': int(len(df_loco)),
+        'locampo_rows': int(len(df_locampo)),
         'window_alpha_rows': int(len(df_wa)),
         'predictor_rows': int(len(df_pr)),
         'sha256': {

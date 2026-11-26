@@ -299,7 +299,7 @@ def _main_tables(root: Path) -> dict:
                     f'{100 * r.cand_u:.2f}', f'{100 * r.eq_du_mean:+.2f}',
                     f'{100 * r.t_du_lo:+.2f} to {100 * r.t_du_hi:+.2f}',
                 ])
-    # Add compact 1-row Leave-One-Cohort-Out invariant summary (excluding full row)
+    # Add compact 1-row Leave-One-Cohort-Out & 1-row Leave-One-Campaign-Out invariant summaries (excluding full row)
     loco_drops = loco_df[loco_df['dropped_cohort'] != 'None']
     sens_rows.append([
         'LOCO (10 cohorts)', 'MAR/PAC', 'Drop any 1/10', '10',
@@ -308,6 +308,16 @@ def _main_tables(root: Path) -> dict:
         f'{loco_drops["u_med_pp"].min():.2f}-{loco_drops["u_med_pp"].max():.2f}',
         f'{loco_drops["eq_du_pacer_c10_pp"].min():+.2f} to {loco_drops["eq_du_pacer_c10_pp"].max():+.2f}',
         'p95 G=35..42',
+    ])
+    locampo_df = pd.read_csv(root / 'results/exploratory/sensitivity/leave_one_campaign_out.csv', keep_default_na=False)
+    locampo_drops = locampo_df[locampo_df['dropped_campaign'] != 'None']
+    sens_rows.append([
+        'LOCampO (6 camp)', 'MAR/PAC', 'Drop any 1/6', '10',
+        f'{locampo_drops["mobile_r_pos_hi_med_pp"].min():.1f}-{locampo_drops["mobile_r_pos_hi_med_pp"].max():.1f}',
+        '47.6 full',
+        f'{locampo_drops["u_med_pp"].min():.2f}-{locampo_drops["u_med_pp"].max():.2f}',
+        f'{locampo_drops["eq_du_pacer_c10_pp"].min():+.2f} to {locampo_drops["eq_du_pacer_c10_pp"].max():+.2f}',
+        'p95 G=27..39',
     ])
 
     return {
@@ -322,7 +332,7 @@ def _main_tables(root: Path) -> dict:
             cluster_rows,
         ),
         'table_m4_power_equivalence': (
-            'Estimand-matched exploratory relative (+-50 percent primary, +-25 percent sensitivity) and absolute (+-1.0 / +-2.0 pp) TOST checks (HistGBM, recorded). EqualCl tests equal-cluster mean dU against +-50/25 percent of equal-cluster Periodic U (zero-U clusters Z0 retained; 0 undefined excluded); PoolRat tests pooled ratio against +-50/25 percent via 90 percent cluster bootstrap CIs.',
+            'Estimand-matched exploratory relative (+-50 percent coarse screening primary, +-25 percent sensitivity) and absolute (+-1.0 / +-2.0 pp) TOST checks (HistGBM, recorded; three physical campaigns in Retro and HeldOut, six total). EqualCl tests equal-cluster mean dU against +-50/25 percent of equal-cluster Periodic U (zero-U clusters Z0 retained; 0 undefined excluded); PoolRat tests pooled ratio against +-50/25 percent via 90 percent cluster bootstrap CIs.',
             ['Scope', 'Cand', 'Cap', 'Estimand', 'G', 'Z0', 'RefU', 'Delta', 'RelPct', 'SpreadOrMDE', 'pRel50', 'pRel25', 'pAbs1', 'pAbs2'],
             pow_rows,
         ),
@@ -342,7 +352,7 @@ def _main_tables(root: Path) -> dict:
             ceiling_rows,
         ),
         'table_m8_sensitivity': (
-            'Extended exploratory sensitivity (MARUR and PACER vs Periodic) across window/alpha, source-only predictors on retrospective (16 dates) and held-out Rome/Ireland Static (19u) archives, plus leave-one-cohort-out (LOCO) median range.',
+            'Extended exploratory sensitivity (MARUR and PACER vs Periodic) across window/alpha, source-only predictors on retrospective (16 dates) and held-out Rome/Ireland Static (19u) archives, plus leave-one-cohort-out (LOCO) and 6-campaign leave-one-campaign-out (LOCampO) median ranges.',
             ['Axis', 'Policy', 'Setting', 'Cap', 'CandHi', 'PerHi', 'CandU', 'Eq dU', 'tCI95'],
             sens_rows,
         ),
@@ -442,6 +452,22 @@ def _supp_extra_tables(root: Path) -> dict:
             f'{r.hier_boot90_eq_rel_lo_pct:+.1f} to {r.hier_boot90_eq_rel_hi_pct:+.1f}',
         ])
 
+    # S19: Full 7-row Leave-One-Campaign-Out Audit + Per-Campaign Medians (6 physical campaigns)
+    locampo_df = pd.read_csv(root / 'results/exploratory/sensitivity/leave_one_campaign_out.csv', keep_default_na=False)
+    locampo_rows = []
+    for r in locampo_df.itertuples():
+        locampo_rows.append([
+            str(r.dropped_campaign).replace('_', ' '),
+            str(int(r.remaining_campaigns)),
+            str(int(r.clusters_g)),
+            f'{r.camp_r_pos_hi_med_pp:.1f}',
+            f'{r.camp_u_med_pp:.2f}',
+            f'{r.mobile_r_pos_hi_med_pp:.1f}',
+            f'{r.u_med_pp:.2f}',
+            f'{r.eq_du_pacer_c10_pp:+.2f}',
+            f'{r.eq_du_pacer_c40_pp:+.2f}',
+        ])
+
     return {
         'table_s14_marur_audit': (
             'Retrospective six-cohort controllers at new-query cap 40 under frozen HistGBM and recorded feedback (with ten initial successful labels).',
@@ -467,6 +493,11 @@ def _supp_extra_tables(root: Path) -> dict:
             'Exploratory campaign-level dependence sensitivity across physical geographic campaigns (Camp=3 Retrospective, 3 HeldOut, 6 AllCohorts; HistGBM, recorded). Compares naive equal-cluster +-50 percent relative TOST p (Naive50) with Donner-adjusted relative TOST p (Adj50, Adj25), adjusted +-2 pp p (Adjp2), effective date count (Geff), adjusted MDE80 (pp), and two-stage hierarchical bootstrap 90 percent equal-cluster relative intervals (percent).',
             ['Scope', 'Cand', 'Cap', 'G', 'Camp', 'ICC', 'DEFF', 'Geff', 'Naive50', 'Adj50', 'Adj25', 'Adjp2', 'AdjMDE', 'HierBoot90Rel'],
             camp_rows,
+        ),
+        'table_s19_locampo': (
+            'Leave-one-campaign-out (LOCampO) robustness and per-campaign medians across all 6 physical field campaigns (HistGBM, recorded; percentages and percentage points). None denotes full 6-campaign pool; CampRhiMed and CampUMed report the omitted campaign median across cap in {10, 40}.',
+            ['DroppedCamp', 'RemC', 'G', 'CampRhiMed', 'CampUMed', 'RemMobRhiMed', 'RemUMed', 'EqdU PAC10', 'EqdU PAC40'],
+            locampo_rows,
         ),
     }
 
@@ -579,7 +610,7 @@ def tables(root=ROOT):
 
 def latex(spec):
     caption, header, rows = spec
-    prose = header[0] in {'Policy', 'Regime', 'OfferStratum', 'Scope', 'Axis', 'Dropped'}
+    prose = header[0] in {'Policy', 'Regime', 'OfferStratum', 'Scope', 'Axis', 'Dropped', 'DroppedCamp'}
     wide_pow = len(header) >= 12
     size = r'\centering\footnotesize\setlength{\tabcolsep}{' + ('2.2pt' if wide_pow else '3.5pt') + '}' if prose else r'\centering\small'
     align = (('llll' + 'r' * (len(header) - 4)) if len(header) > 3 and header[3] == 'Estimand' else ('ll' + 'r' * (len(header) - 2))) if wide_pow else ('l' * len(header) if prose else 'l' + 'r' * (len(header) - 1))

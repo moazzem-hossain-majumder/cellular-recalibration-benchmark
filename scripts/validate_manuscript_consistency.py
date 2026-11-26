@@ -180,6 +180,14 @@ def validate_pacer_claims(root):
     for tok in [f'{c_rm.g_eff:.2f}', f'{c_rm.adj_eq_tost_p_rel50:.4f}', f'{c_rp.g_eff:.2f}', f'{c_rp.adj_eq_tost_p_rel50:.4f}', f'{c_hp.g_eff:.2f}', f'{c_hp.adj_eq_tost_p_rel50:.4f}']:
         if tok not in source or tok not in camp_tex:
             raise ValueError(f'Campaign-dependence claim missing: {tok}')
+    locampo=pd.read_csv(sens_dir/'leave_one_campaign_out.csv', keep_default_na=False)
+    locampo_drops=locampo[locampo.dropped_campaign!='None']
+    locampo_tex=(root/'paper/tables/table_s19_locampo.tex').read_text(encoding='utf8')
+    if len(locampo)!=7 or '45.8' not in source or '49.3' not in source or '45.8' not in locampo_tex:
+        raise ValueError('Leave-one-campaign-out claim mismatch')
+    related=(root/'paper/related_work.tex').read_text(encoding='utf8')
+    if 'sentosa2025cellreplay' not in related:
+        raise ValueError('CellReplay citation missing from related_work.tex')
 
 
 def validate(root=ROOT):
@@ -311,7 +319,7 @@ def validate(root=ROOT):
     for needle in [f'{100*row16.eq_du_mean:+.2f} pp', f'{100*row16.pool_du:+.2f} pp', f'{100*r_h10.pool_dpos_hi:+.2f} pp',
                    f'{100*r_h40.pool_dpos_hi:+.2f} pp', f'{100*r_a40.pool_dpos_hi:+.2f} pp', '+0.37 pp', '4/40',
                    '+35.3%', '1.52%', '0.60%', 'p=0.1228', '0.2988', '0.0498', '0.1153', '6.73/26', 'worked_heldout_c10_ledger.csv',
-                   '1.65 pp', '2.46 pp', '47.1', '9--68%', '1--3%']:
+                   '1.65 pp', '2.46 pp', '47.1', '45.8--49.3%', '9--68%', '1--3%']:
         if needle not in readme_text:
             raise ValueError(f'README results table mismatch for {needle}')
     digest = source_digest(root)

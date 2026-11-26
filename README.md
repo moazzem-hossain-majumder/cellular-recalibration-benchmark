@@ -2,9 +2,26 @@
 
 [![Research validation](https://github.com/moazzem-hossain-majumder/cellular-recalibration-benchmark/actions/workflows/tests.yml/badge.svg)](https://github.com/moazzem-hossain-majumder/cellular-recalibration-benchmark/actions/workflows/tests.yml)
 
-Across six retrospective cellular cohorts (`16` physical campaign-dates spanning Rome 2023, US Drive 3, and Ireland driving logs) and four held-out public archives (`26` additional physical dates spanning Rome Capacity Op1/Op2, Oslo Multi-Route Commute, and Ireland Static) evaluated under frozen tree predictors and fixed policies, conditional upper violation risk `R_+^hi` spans **`9--68%`** across mobile cohorts (far above nominal `alpha = 0.10`) while supported measured throughput `U` generally remains **`1--3%`**. Comparing policies at identical nominal query caps can mislead through unequal realized probes, missing horizon responses, and heavy abstention. This repository provides an open-source measurement-accounting library (`src/audit/recalibration_audit.py`), practitioner checklist, and CLI tool (`scripts/audit_policy.py`) separating query attempts, finite-record missing-outcome bounds `[e/M, (e+m)/M]`, selective decomposition `R = (M/N) R_+`, offer-count pooling weights, and estimand-matched relative TOST equivalence (`Equal-cluster` vs. `Pooled-ratio`). Separating those estimands and adjusting for campaign clustering (`3` campaigns per scope) leaves utility differences largely inconclusive.
+**Central Research Question:** *Do nominally matched cellular throughput recalibration policies remain comparable once evaluated over realized measurement opportunities, finite-record missing-outcome bounds, and campaign-level dependence?*
+
+Across six retrospective cellular cohorts (`16` physical campaign-dates across `3` campaigns: Rome 2023, US Drive 3, and Ireland driving logs) and four held-out public archives (`26` additional dates across `3` campaigns: Rome Capacity Op1/Op2, Oslo Multi-Route Commute, and Ireland Static) evaluated under frozen tree predictors and fixed policies, conditional upper violation risk `R_+^hi` spans **`9--68%`** across mobile cohorts (far above nominal `alpha = 0.10`) while supported measured throughput `U` generally remains **`1--3%`**. High-risk mobile campaigns (`Rome_2023`, `Rome_Capacity`, `US_Drive3`) are simultaneously the low-throughput campaigns (`47.5--54.2%` median `R_+^hi` vs. `0.35--1.35%` median `U`), and leaving out any single physical campaign keeps mobile median conditional risk tightly at **`45.8--49.3%`**. This repository provides an open-source measurement-accounting library (`src/audit/recalibration_audit.py`), practitioner checklist, and CLI tool (`scripts/audit_policy.py`) separating realized queries, finite-record bounds `[e/M, (e+m)/M]`, selective decomposition `R = (M/N) R_+`, offer-weighted vs. equal-cluster pooling, and estimand-matched relative TOST equivalence (`Equal-cluster` vs. `Pooled-ratio`). Even against a coarse `+-50%` screening margin (paired with `+-25%` sensitivity), `3` campaigns per scope cannot reliably establish utility equivalence.
 
 All evidence is retrospective from public archives and no live field validation was performed; it does not cover other devices, operators, measurement tools, or closed-loop deployment.
+
+## How Measurement Accounting Flips Conclusions
+
+| Evaluation Regime | Naive / Conventional Appearance | Audited Accounting Reality |
+|---|---|---|
+| **Shared-offer rate shrinkage (`Ireland C=10`)** | `MARUR` cuts all-issued risk (`R_all`) and removes `14` failures across `159` shared offers vs. `Periodic` | Cuts supported throughput (`4.117% -> 1.129%`) by shrinking offered rates rather than better tail calibration |
+| **Nominal cap vs. realized queries (`Rome E1 C=40`)** | Equal nominal `C_new=40` cap suggests fair comparison (`2.02%` vs. `1.01% U`) | `MARUR` spends `40` new queries vs. `Periodic` spending only `16`; `MARUR` positive risk stays `44.83%` |
+| **Offer-weighted vs. equal-cluster (`HeldOut PACER C=10`)** | Offer-weighted pooling claims **`-23.41 pp`** conditional upper-risk reduction over `Periodic` | Equal-cluster mean gives **`+0.37 pp`** risk change and **`-3.29 pp`** equal-cluster `U` (`pEq50 = 0.5369`) |
+| **Naive date-level vs. campaign clustering (`HeldOut PACER C=40`)** | Naive `G=26` date TOST passes `+-50%` equal-cluster equivalence (`p=0.0071`) and `+-2 pp` (`p=0.0132`) | Adjusting for `k=3` campaigns (`G_eff = 6.73/26`) reverses both to inconclusive (`p=0.1153` / `p=0.1388`), and `PoolRat` fails (`p=0.4155`) |
+
+## Protocol Separation: Frozen vs. Exploratory
+
+- **Source training:** The primary `HistGBM` predictor was trained solely on `57` earliest `Rome Op1` (`2021`) source rows without future target leakage.
+- **Non-blind SHA-256 frozen held-out protocol:** `PACER` hyperparameters were checksum-locked ([`configs/pacer.json`](configs/pacer.json), [`docs/PACER_FROZEN_PROTOCOL.md`](docs/PACER_FROZEN_PROTOCOL.md)) prior to scoring the four held-out public archives, explicitly disclosed as designed after inspecting retrospective `MARUR` failures (not blind discovery).
+- **Post-hoc exploratory robustness suite:** All `W in {10, 20, 40}`, `alpha in {0.05, 0.10, 0.20}`, source-only alternative predictors, `10`-cohort `LOCO`, `6`-campaign `LOCampO`, and campaign-dependence adjustments run in [`results/exploratory/sensitivity/`](results/exploratory/sensitivity/) without changing any frozen configuration or benchmark metric.
 
 ## Quick Start: Auditing Any Policy Ledger
 
@@ -36,22 +53,21 @@ python scripts/audit_policy.py examples/worked_heldout_c10_ledger.csv --referenc
 
 ## Results at a Glance
 
-| Scope | Comparison (HistGBM, Recorded) | Physical Units | Key Empirical Metric | Observed Value |
+| Scope | Comparison (HistGBM, Recorded) | Physical Units (`k` Camp) | Key Empirical Metric | Observed Value |
 |---|---|---|---|---|
-| All mobile (`54` cells) | `Periodic`, `MARUR`, `PACER` (`C=10, 40`) | 42 dates (9 mobile) | Conditional upper risk `R+^hi` & supported `U` | `9--68%` (`8.8--68.2%`, med `47.6%`) / `1--3%` |
-| Retrospective (`G=16`) | MARUR vs. Periodic (`C=10`, EqualCl) | 16 dates (`Z0=4`) | `EqRefU`, `EqdU` (`%` of eq ref), `MDE80` & `+-50%` TOST | `1.52%`, `-0.09 pp (-6.2%)`, `1.65 pp` (`p=0.1228`) |
-| Retrospective (`G=16`) | MARUR vs. Periodic (`C=10`, PoolRat) | 16 dates (`Z0=4`) | `PlRefU`, `PoolRel` (`90%` boot CI) & pooled `dU` | `0.60%`, `+35.3%` (`-44.3 to +207.3%`, `p=0.4145`) / `+0.21 pp` |
-| Campaign adj. (Retro) | PACER vs. Periodic (`C=10`, EqualCl) | 3 campaigns (`G_eff=14.77/16`) | Naive `p` -> Donner `Adjp50` / Hier `90%` eq-rel CI | `p=0.0430` -> `0.0498` / `[-45.3, +268.9%]` |
-| Campaign adj. (Retro) | MARUR vs. Periodic (`C=10`, EqualCl) | 3 campaigns (`G_eff=3.84/16`) | Naive `p` -> Donner `Adjp50` / Abs `+-1 / +-2 pp` TOST | `p=0.1228` -> `0.2988` / naive `p=0.0609 / 0.0018` |
-| Held-out public (`G=26`) | PACER vs. Periodic (`C=10`, OfferWtd / PoolRat) | 26 dates (`Z0=4`) | Offer-wtd `dPosHi` / `PlRefU` & `PoolRel` (`90%` boot) | `-23.41 pp` (`-37.04 to -5.91`) / `1.01%`, `+46.9%` (`-1.5 to +114.7%`) |
-| Held-out public (`G=26`) | PACER vs. Periodic (`C=10`, EqualUnit / EqualCl) | 22/26 active | `EqdPosHi` / `EqRefU`, `EqdU` (`MDE80`, `pEq50`) | `+0.37 pp` / `6.32%`, `-3.29 pp` (`4.01 pp`, `p=0.5369`) |
-| Held-out public (`G=26`) | PACER vs. Periodic (`C=40`, EqualCl / CampAdj) | 26 dates (`G_eff=6.73/26`) | Naive `pEq50` -> `Adjp50` / Abs `MDE80` (`p=+-2 pp`) | `p=0.0071` -> `0.1153` / `2.46 pp` (`0.0132 -> 0.1388`) |
-| Held-out public (`G=26`) | PACER vs. Periodic (`C=40`, OfferWtd) | 26 dates | Offer-weighted `dPosHi` (95% boot CI) | `-0.83 pp` (-16.13 to +11.46) |
-| All cohorts (`G=42`) | PACER vs. Periodic (`C=40`, OfferWtd / EqualCl) | 42 dates (`6` camp) | Offer-wtd `dPosHi` / `Adjp50` & Hier `90%` rel CI | `+3.29 pp` (`-7.49 to +12.49`) / `p=0.0341`, `[-50.6, +93.9%]` |
-| Theory bound audit | PACER Theorem 1 vs. trivial `0.9A` | 40 cells | Informative cells (`B_1 < 0.9A`) | `4/40` (1/20 C=10; 3/20 C=40) |
-| Leave-One-Cohort-Out | Drop any 1 of 10 cohorts (`C=10`) | 35–42 dates | Mobile median `R+^hi` (IQR) | `47.1–49.3%` |
-
-Extended exploratory sweeps over windows `W in {10, 20, 40}`, nominal levels `alpha in {0.05, 0.10, 0.20}`, source-only predictors (`ThroughputResNet`, `QuantileGBM_p10`, `HistGBM_Clock112`, Oslo pre-2010 `QuantileGBM_p10`, `Persistence`), campaign-level dependence (`results/exploratory/sensitivity/campaign_dependence.csv`), and Leave-One-Cohort-Out reside strictly under [`results/exploratory/sensitivity/`](results/exploratory/sensitivity/).
+| All mobile (`54` cells) | `Periodic`, `MARUR`, `PACER` (`C=10, 40`) | 42 dates (`5` mob / `6` tot) | Conditional upper risk `R+^hi` & supported `U` | `9--68%` (`8.8--68.2%`, med `47.6%`) / `1--3%` |
+| Retrospective (`G=16`, `k=3`) | MARUR vs. Periodic (`C=10`, EqualCl) | 16 dates (`3` camp, `Z0=4`) | `EqRefU`, `EqdU` (`%` of eq ref), `MDE80` & `+-50%` TOST | `1.52%`, `-0.09 pp (-6.2%)`, `1.65 pp` (`p=0.1228`) |
+| Retrospective (`G=16`, `k=3`) | MARUR vs. Periodic (`C=10`, PoolRat) | 16 dates (`3` camp, `Z0=4`) | `PlRefU`, `PoolRel` (`90%` boot CI) & pooled `dU` | `0.60%`, `+35.3%` (`-44.3 to +207.3%`, `p=0.4145`) / `+0.21 pp` |
+| Campaign adj. (Retro `k=3`) | PACER vs. Periodic (`C=10`, EqualCl) | 3 camp (`G_eff=14.77/16`) | Naive `p` -> Donner `Adjp50` / Hier `90%` eq-rel CI | `p=0.0430` -> `0.0498` / `[-45.3, +268.9%]` |
+| Campaign adj. (Retro `k=3`) | MARUR vs. Periodic (`C=10`, EqualCl) | 3 camp (`G_eff=3.84/16`) | Naive `p` -> Donner `Adjp50` / Abs `+-1 / +-2 pp` TOST | `p=0.1228` -> `0.2988` / naive `p=0.0609 / 0.0018` |
+| Held-out public (`G=26`, `k=3`) | PACER vs. Periodic (`C=10`, OfferWtd / PoolRat) | 26 dates (`3` camp, `Z0=4`) | Offer-wtd `dPosHi` / `PlRefU` & `PoolRel` (`90%` boot) | `-23.41 pp` (`-37.04 to -5.91`) / `1.01%`, `+46.9%` (`-1.5 to +114.7%`) |
+| Held-out public (`G=26`, `k=3`) | PACER vs. Periodic (`C=10`, EqualUnit / EqualCl) | 22/26 active (`3` camp) | `EqdPosHi` / `EqRefU`, `EqdU` (`MDE80`, `pEq50`) | `+0.37 pp` / `6.32%`, `-3.29 pp` (`4.01 pp`, `p=0.5369`) |
+| Held-out public (`G=26`, `k=3`) | PACER vs. Periodic (`C=40`, EqualCl / CampAdj) | 26 dates (`G_eff=6.73/26`) | Naive `pEq50` -> `Adjp50` / Abs `MDE80` (`p=+-2 pp`) | `p=0.0071` -> `0.1153` / `2.46 pp` (`0.0132 -> 0.1388`) |
+| Held-out public (`G=26`, `k=3`) | PACER vs. Periodic (`C=40`, OfferWtd) | 26 dates (`3` camp) | Offer-weighted `dPosHi` (95% boot CI) | `-0.83 pp` (-16.13 to +11.46) |
+| All cohorts (`G=42`, `k=6`) | PACER vs. Periodic (`C=40`, OfferWtd / EqualCl) | 42 dates (`6` camp) | Offer-wtd `dPosHi` / `Adjp50` & Hier `90%` rel CI | `+3.29 pp` (`-7.49 to +12.49`) / `p=0.0341`, `[-50.6, +93.9%]` |
+| Theory bound audit | PACER Theorem 1 vs. trivial `0.9A` | 40 cells (`6` camp) | Informative cells (`B_1 < 0.9A`) | `4/40` (1/20 C=10; 3/20 C=40) |
+| Leave-One-Cohort-Out | Drop any 1 of 10 cohorts (`C=10`) | 35–42 dates | Mobile median `R+^hi` (range) | `47.1–49.3%` |
+| Leave-One-Campaign-Out | Drop any 1 of 6 campaigns (`C=10`) | 27–39 dates (`5` rem camp) | Mobile median `R+^hi` & all-`U` median | `45.8–49.3%` / `0.61–1.28%` |
 
 ## Full Reproduction and CI
 

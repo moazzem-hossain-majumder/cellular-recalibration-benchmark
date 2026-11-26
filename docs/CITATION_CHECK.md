@@ -1,6 +1,6 @@
 # Bibliography Verification Report (`paper/references.bib`)
 
-All `35` BibTeX entries in [`paper/references.bib`](../paper/references.bib) were verified directly against upstream Crossref DOI metadata, PMLR HTML metadata, NeurIPS proceedings pages, JMLR HTML metadata, OpenReview/arXiv metadata, and the NUWiNS GitHub commit record. Every `\cite{...}` key across [`paper/manuscript.tex`](../paper/manuscript.tex), [`paper/related_work.tex`](../paper/related_work.tex), and [`paper/supplementary.tex`](../paper/supplementary.tex) resolves in `paper/references.bib` with `0` unused entries and `0` missing keys.
+All `36` BibTeX entries in [`paper/references.bib`](../paper/references.bib) were verified directly against upstream Crossref DOI metadata, PMLR HTML metadata, NeurIPS proceedings pages, USENIX NSDI proceedings metadata, JMLR HTML metadata, OpenReview/arXiv metadata, and the NUWiNS GitHub commit record. Every `\cite{...}` key across [`paper/manuscript.tex`](../paper/manuscript.tex), [`paper/related_work.tex`](../paper/related_work.tex), and [`paper/supplementary.tex`](../paper/supplementary.tex) resolves in `paper/references.bib` with `0` unused entries and `0` missing keys.
 
 | Key | First Author & Year | Venue, Volume, Pages / DOI or URL | Source Checked | Verified | Corrections Made / Notes |
 |---|---|---|---|---|---|
@@ -39,10 +39,11 @@ All `35` BibTeX entries in [`paper/references.bib`](../paper/references.bib) wer
 | `gauthier2026` | Gauthier et al., 2026 | *AISTATS (PMLR 300)*, 3196--3204, `gauthier26a` | PMLR HTML (HTTP 200) | yes | Verified AISTATS `300`, pp. `3196--3204`, year `2026`. |
 | `angelopoulos2024risk` | Angelopoulos et al., 2024 | *ICLR 2024*, OpenReview `33XGfHLtZg` | arXiv API (`2208.02814`, HTTP 200) | yes | Direct OpenReview HTML returned Cloudflare browser gate (API2 403); verified authors & exact title via arXiv `2208.02814`. |
 | `angelopoulos2021ltt` | Angelopoulos et al., 2025 | *Ann. Appl. Stat.*, 19(2), 1641--1662, `10.1214/24-AOAS1998` | Crossref API (HTTP 200) | yes | Verified journal publication (*AOAS* 2025) alongside `arXiv:2110.01052` note. |
+| `sentosa2025cellreplay` | Sentosa et al., 2025 | *USENIX NSDI 25*, 1169--1186, `978-1-939133-46-5` | USENIX NSDI HTML + GitHub (`HTTP 200`) | yes | Added and verified `CellReplay` meta tags (`William Sentosa`, `Balakrishnan Chandrasekaran`, `P. Brighten Godfrey`, `Haitham Hassanieh`, pp. `1169--1186`). |
 
 ## Cross-Reference Audit Summary
 
-- **Total entries in `paper/references.bib`:** `35`
-- **Verified entries:** `35 / 35`
+- **Total entries in `paper/references.bib`:** `36`
+- **Verified entries:** `36 / 36`
 - **Unused entries across `manuscript.tex`, `related_work.tex`, `supplementary.tex`:** `0`
 - **Unresolved `\cite` keys:** `0`
