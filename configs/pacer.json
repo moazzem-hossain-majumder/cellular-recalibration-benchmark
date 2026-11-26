@@ -10,5 +10,5 @@
   "sensitivity_seeds": [42, 123, 2026],
   "new_query_caps": [0, 10, 40],
   "oslo_cutoff_utc": "2011-01-30T00:00:00Z",
-  "tuning_allowed_after_unseal": false
+  "tuning_after_freeze_allowed": false
 }

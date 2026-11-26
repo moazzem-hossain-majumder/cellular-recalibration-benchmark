@@ -31,9 +31,9 @@ def verify_lock_and_artifacts() -> dict:
 
     cfg = json.loads((ROOT / 'configs/pacer.json').read_text(encoding='utf8'))
     _require(cfg == lock['config'], 'configs/pacer.json does not match frozen configuration checksums')
-    _require(not cfg['tuning_allowed_after_unseal'], 'post-freeze tuning flag must remain false')
+    _require(not cfg['tuning_after_freeze_allowed'], 'post-freeze tuning flag must remain false')
 
-    heldout = pd.read_csv(PACER_DIR / 'untouched_opportunities.csv.gz')
+    heldout = pd.read_csv(PACER_DIR / 'heldout_opportunities.csv.gz')
     expected_heldout = {'Rome_Capacity_Op1', 'Rome_Capacity_Op2', 'Oslo_Commute', 'Ireland_Static'}
     _require(set(heldout['cohort'].unique()) == expected_heldout, 'Unexpected held-out cohort set')
 
@@ -51,7 +51,7 @@ def verify_lock_and_artifacts() -> dict:
     seeds = pd.read_csv(PACER_DIR / 'pacer_seed_sensitivity.csv')
     report = json.loads((PACER_DIR / 'pacer_audit_report.json').read_text(encoding='utf8'))
 
-    _require(report['prospective_trips_collected'] == 0, 'prospective_trips_collected must stay 0')
+    _require(report['evaluation_scope'] == 'retrospective_public_archives_only', 'evaluation_scope must remain retrospective')
     _require(report['frozen_config_checksums_verified'] is True, 'frozen_config_checksums_verified must be true')
 
     # Recompute cluster-level metrics and match summary row-for-row

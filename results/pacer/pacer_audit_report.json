@@ -1,6 +1,7 @@
 {
-  "generated_utc": "2026-11-25T07:00:48.221949+00:00",
+  "generated_utc": "2026-11-26T07:11:57.216739+00:00",
   "frozen_config_checksums_verified": true,
+  "evaluation_scope": "retrospective_public_archives_only",
   "heldout_cohorts": [
     "Ireland_Static",
     "Oslo_Commute",
@@ -19,7 +20,6 @@
     "heldout_public": 26,
     "retrospective": 16
   },
-  "prospective_trips_collected": 0,
   "theorem1_mean_excess_checks": {
     "total_cells": 40,
     "all_within_bound": true,

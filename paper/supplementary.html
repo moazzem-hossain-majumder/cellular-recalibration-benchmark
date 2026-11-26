@@ -1131,7 +1131,7 @@
 <embed src="figures/fig6_zero_bounds.png" />
 <figcaption>Fraction of zero global lower bounds by target calibration budget and Rome regime.</figcaption>
 </figure>
-<p>For reset-based persistence in Rome E3, violations and supported throughput were 20.39 and 51.65 percent. With the clock they were 13.82 and 16.00 percent. On the Norwegian route both methods met the empirical violation target on the pooled suffix. Their two test dates provide little information about other days or routes. Neither experiment measures prospective application outcomes. Finally we applied the missingness rule to the Irish measurements in a separate chronological analysis (Table S11). We used the current availability of numeric primary and NR signal-power fields before any forward filling, the preceding downlink as the point forecast, and the following row as the endpoint. We required strictly ordered lag, issue and target timestamps. The first eleven of 27 collection dates supplied the calibration pool. On the remaining sixteen dates, point MAE was 9.05 Mbps. All first ten calibration rows lacked an NR reading, so both rules gave the same bound on all 108,519 test rows. Violations reached 34.81 percent. Deleting one test date at a time gave 34.03 to 36.68 percent. Even with all 64,265 calibration rows, grouped violations remained 29.86 percent. This failure on a chronological split limits the interpretation of the favorable random-trace results. Split, calibration size and timestamp eligibility differ together.</p>
+<p>For reset-based persistence in Rome E3, violations and supported throughput were 20.39 and 51.65 percent. With the clock they were 13.82 and 16.00 percent. On the Norwegian route both methods met the empirical violation target on the pooled suffix. Their two test dates provide little information about other days or routes. Neither experiment measures live field application outcomes. Finally we applied the missingness rule to the Irish measurements in a separate chronological analysis (Table S11). We used the current availability of numeric primary and NR signal-power fields before any forward filling, the preceding downlink as the point forecast, and the following row as the endpoint. We required strictly ordered lag, issue and target timestamps. The first eleven of 27 collection dates supplied the calibration pool. On the remaining sixteen dates, point MAE was 9.05 Mbps. All first ten calibration rows lacked an NR reading, so both rules gave the same bound on all 108,519 test rows. Violations reached 34.81 percent. Deleting one test date at a time gave 34.03 to 36.68 percent. Even with all 64,265 calibration rows, grouped violations remained 29.86 percent. This failure on a chronological split limits the interpretation of the favorable random-trace results. Split, calibration size and timestamp eligibility differ together.</p>
 <div class="table*">
 <table>
 <tbody>
@@ -1535,7 +1535,7 @@
 <h1 id="limitations-comparator-taxonomy-and-extended-exploratory-checks">Limitations, comparator taxonomy, and extended exploratory checks</h1>
 <p>These archives were inspected before the controller and cost audit were designed. The 384 exact-cost contrasts are descriptive comparisons of shared observations, not independent trials or confirmatory tests. Missing-outcome intervals are finite-record partial-identification bounds, not sampling confidence intervals. A low all-issued risk can result from abstention; positive-conditional risk and useful service must be reported jointly. The modified ACI comparator, bundled pattern ablation and position-based feedback suppression limit method-specific conclusions. All evidence is retrospective from public archives and no live field validation was performed; simultaneous carriers do not increase independent campaign-dates, and simulated playback does not establish causal live QoE.</p>
 <h2 id="comparator-taxonomy-pacer-protocol-details-and-extended-exploratory-sweeps">Comparator taxonomy, PACER protocol details, and extended exploratory sweeps</h2>
-<p>To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation), all PACER parameters (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\gamma=0.05</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mtext mathvariant="normal">veto</mtext></msub><mo>=</mo><mn>0.15</mn></mrow><annotation encoding="application/x-tex">a_{\text{veto}}=0.15</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>κ</mi><mtext mathvariant="normal">ext</mtext></msub><mo>=</mo><mn>2.0</mn></mrow><annotation encoding="application/x-tex">\kappa_{\text{ext}}=2.0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mtext mathvariant="normal">obs</mtext></msub><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">W_{\text{obs}}=20</annotation></semantics></math>, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S15 summarizes the operational taxonomy comparing MARUR and PACER across regimes, Table S16 reports the complete 18-row pooling-rule sensitivity matrix across HeldOut, Retrospective, and AllCohorts scopes, and Table S17 reports the complete 11-row Leave-One-Cohort-Out check across all 10 cohorts (42 total clusters). Across all 120 seed-sensitivity evaluations (QueryCensor20 and Persistence included), weighted selective excess lies within <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">B_1(K) \approx 6.8/K</annotation></semantics></math> on 40/40 cells, though as established in the main manuscript this bound holds trivially on 36/40 cells whenever <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">B_1(K) \ge (1-\alpha)A</annotation></semantics></math> (19/20 cells at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=10</annotation></semantics></math> and 17/20 at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=40</annotation></semantics></math>). Under Persistence across all 42 pooled clusters, PACER’s conservative abstention lowers utility <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>18.89</mn></mrow><annotation encoding="application/x-tex">-18.89</annotation></semantics></math> percentage points at cap 10 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>31.02</mn></mrow><annotation encoding="application/x-tex">-31.02</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>3.25</mn></mrow><annotation encoding="application/x-tex">-3.25</annotation></semantics></math>) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>29.95</mn></mrow><annotation encoding="application/x-tex">-29.95</annotation></semantics></math> percentage points at cap 40 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>37.26</mn></mrow><annotation encoding="application/x-tex">-37.26</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>16.39</mn></mrow><annotation encoding="application/x-tex">-16.39</annotation></semantics></math>) relative to Frozen. For the exploratory controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield 6 matched utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs or risk-only changes, 129 unchanged cases, and 18 unmatched-cost cases; across the 792 configurations of the targeted baseline grid, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks. Complete ledgers (including the extended 1,800-run retrospective/held-out window and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> sweep and 480-run source-only predictor sweep for both MARUR and PACER, as well as the Oslo Commute pre-2010 bus quantile regressor check) reside in <code>results/pacer</code> and <code>results/exploratory/sensitivity</code>.</p>
+<p>To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation), all PACER parameters (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\gamma=0.05</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mtext mathvariant="normal">veto</mtext></msub><mo>=</mo><mn>0.15</mn></mrow><annotation encoding="application/x-tex">a_{\text{veto}}=0.15</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>κ</mi><mtext mathvariant="normal">ext</mtext></msub><mo>=</mo><mn>2.0</mn></mrow><annotation encoding="application/x-tex">\kappa_{\text{ext}}=2.0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mtext mathvariant="normal">obs</mtext></msub><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">W_{\text{obs}}=20</annotation></semantics></math>, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S15 summarizes the operational taxonomy comparing MARUR and PACER across regimes, Table S16 reports the complete 18-row pooling-rule sensitivity matrix across HeldOut, Retrospective, and AllCohorts scopes, Table S17 reports the complete 11-row Leave-One-Cohort-Out check across all 10 cohorts (42 total clusters), and Table S18 reports the exploratory campaign-level dependence sensitivity (two-stage hierarchical bootstrap over the 3 retrospective and 3 held-out geographic campaigns alongside ANOVA intraclass correlation ICC and Donner design effect DEFF, showing how effective cluster counts <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>G</mi><mtext mathvariant="normal">eff</mtext></msub><annotation encoding="application/x-tex">G_{\text{eff}}</annotation></semantics></math> contract relative to nominal campaign-date counts <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>). Across all 120 seed-sensitivity evaluations (QueryCensor20 and Persistence included), weighted selective excess lies within <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">B_1(K) \approx 6.8/K</annotation></semantics></math> on 40/40 cells, though as established in the main manuscript this bound holds trivially on 36/40 cells whenever <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">B_1(K) \ge (1-\alpha)A</annotation></semantics></math> (19/20 cells at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=10</annotation></semantics></math> and 17/20 at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=40</annotation></semantics></math>). Under Persistence across all 42 pooled clusters, PACER’s conservative abstention lowers utility <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>18.89</mn></mrow><annotation encoding="application/x-tex">-18.89</annotation></semantics></math> percentage points at cap 10 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>31.02</mn></mrow><annotation encoding="application/x-tex">-31.02</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>3.25</mn></mrow><annotation encoding="application/x-tex">-3.25</annotation></semantics></math>) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>29.95</mn></mrow><annotation encoding="application/x-tex">-29.95</annotation></semantics></math> percentage points at cap 40 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>37.26</mn></mrow><annotation encoding="application/x-tex">-37.26</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>16.39</mn></mrow><annotation encoding="application/x-tex">-16.39</annotation></semantics></math>) relative to Frozen. For the exploratory controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield 6 matched utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs or risk-only changes, 129 unchanged cases, and 18 unmatched-cost cases; across the 792 configurations of the targeted baseline grid, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks. Complete ledgers (including the extended 1,800-run retrospective/held-out window and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> sweep and 480-run source-only predictor sweep for both MARUR and PACER, as well as the Oslo Commute pre-2010 bus quantile regressor check) reside in <code>results/pacer</code> and <code>results/exploratory/sensitivity</code>.</p>
 <div class="table*">
 <table>
 <tbody>
@@ -1883,6 +1883,177 @@
 <td style="text-align: left;">-2.12</td>
 <td style="text-align: left;">-2.07</td>
 <td style="text-align: left;">+0.02</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">Scope</td>
+<td style="text-align: left;">Cand</td>
+<td style="text-align: right;">Cap</td>
+<td style="text-align: right;">G</td>
+<td style="text-align: right;">Camp</td>
+<td style="text-align: right;">ICC</td>
+<td style="text-align: right;">DEFF</td>
+<td style="text-align: right;">Geff</td>
+<td style="text-align: right;">NaiveSE</td>
+<td style="text-align: right;">AdjSE</td>
+<td style="text-align: right;">AdjMDE</td>
+<td style="text-align: right;">Adjp2pp</td>
+<td style="text-align: right;">HierBoot95</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro</td>
+<td style="text-align: left;">MAR</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.62</td>
+<td style="text-align: right;">4.16</td>
+<td style="text-align: right;">3.84</td>
+<td style="text-align: right;">0.55</td>
+<td style="text-align: right;">1.13</td>
+<td style="text-align: right;">4.93</td>
+<td style="text-align: right;">0.0971</td>
+<td style="text-align: right;">-2.46 to +1.43</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro</td>
+<td style="text-align: left;">PAC</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">1.08</td>
+<td style="text-align: right;">14.77</td>
+<td style="text-align: right;">0.36</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">1.13</td>
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">-1.07 to +0.71</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro</td>
+<td style="text-align: left;">MAR</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">1.72</td>
+<td style="text-align: right;">9.28</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.64</td>
+<td style="text-align: right;">2.05</td>
+<td style="text-align: right;">0.0099</td>
+<td style="text-align: right;">-1.65 to +0.98</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro</td>
+<td style="text-align: left;">PAC</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">16.00</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">-0.56 to +1.03</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">PAC</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">9.24</td>
+<td style="text-align: right;">2.81</td>
+<td style="text-align: right;">1.38</td>
+<td style="text-align: right;">4.18</td>
+<td style="text-align: right;">26.06</td>
+<td style="text-align: right;">0.6052</td>
+<td style="text-align: right;">-13.12 to +0.62</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">MAR</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">9.36</td>
+<td style="text-align: right;">2.78</td>
+<td style="text-align: right;">1.56</td>
+<td style="text-align: right;">4.77</td>
+<td style="text-align: right;">30.33</td>
+<td style="text-align: right;">0.5973</td>
+<td style="text-align: right;">-14.55 to +1.01</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">PAC</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">3.87</td>
+<td style="text-align: right;">6.73</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">1.66</td>
+<td style="text-align: right;">5.64</td>
+<td style="text-align: right;">0.1388</td>
+<td style="text-align: right;">-1.60 to +4.49</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">MAR</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">5.15</td>
+<td style="text-align: right;">5.05</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">1.31</td>
+<td style="text-align: right;">4.92</td>
+<td style="text-align: right;">0.2623</td>
+<td style="text-align: right;">-4.33 to +0.15</td>
+</tr>
+<tr>
+<td style="text-align: left;">AllCoh</td>
+<td style="text-align: left;">PAC</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">7.23</td>
+<td style="text-align: right;">5.81</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">2.39</td>
+<td style="text-align: right;">8.49</td>
+<td style="text-align: right;">0.5119</td>
+<td style="text-align: right;">-7.60 to +0.45</td>
+</tr>
+<tr>
+<td style="text-align: left;">AllCoh</td>
+<td style="text-align: left;">PAC</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">2.40</td>
+<td style="text-align: right;">17.48</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">2.46</td>
+<td style="text-align: right;">0.0145</td>
+<td style="text-align: right;">-1.14 to +2.41</td>
 </tr>
 </tbody>
 </table>

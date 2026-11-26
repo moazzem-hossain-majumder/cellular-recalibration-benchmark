@@ -1,9 +1,12 @@
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import pytest
 
 from scripts.audit_policy import main as cli_main
 from src.audit.recalibration_audit import audit_ledger
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def _cluster_summary_fixture(*, unmatched_queries: bool = False, zero_offers: bool = False) -> pd.DataFrame:
@@ -30,7 +33,7 @@ def _cluster_summary_fixture(*, unmatched_queries: bool = False, zero_offers: bo
             'missing_outcomes': 0 if zero_offers else 3,
             'queries_charged': 25 if unmatched_queries else 10,
             'observed_sum': 1000.0,
-            'delivered_sum': 0.0 if zero_offers else 21.0 + idx * 0.5,
+            'delivered_sum': 0.0 if zero_offers else 22.0 + idx * (8.0 if idx % 2 == 0 else -5.0),
         })
     return pd.DataFrame(rows)
 
@@ -51,6 +54,8 @@ def test_audit_identity_bounds_warnings_and_tost():
     assert any('fewer than 10 clusters' in w for w in comp['warnings'])
     assert comp['mde80_du_pp'] > 0
     assert '+-1pp' in comp['tost_p_values'] and '+-2pp' in comp['tost_p_values']
+    assert '+-50%' in comp['tost_rel_p_values'] and '+-25%' in comp['tost_rel_p_values']
+    assert any('relative TOST +-50% inconclusive' in w for w in comp['warnings'])
 
 
 def test_audit_zero_offers_warning():
@@ -68,7 +73,7 @@ def test_audit_accepts_tick_level_ledger_and_cli(tmp_path, capsys):
             for t in range(25):
                 is_elig = t > 0
                 y = np.nan if (t == 24) else 10.0 + c_idx
-                lower = 0.0 if (not is_elig or t % 2 == 1) else (12.0 if t % 4 == 0 else 8.0)
+                lower = 0.0 if (not is_elig or t % 2 == 1) else ((12.0 if pol == 'MARUR' else 9.0) if t % 4 == 0 else (7.0 + c_idx * 0.5))
                 rows.append({
                     'policy': pol,
                     'cluster_id': f'Day-{c_idx}',
@@ -83,4 +88,22 @@ def test_audit_accepts_tick_level_ledger_and_cli(tmp_path, capsys):
     assert rc == 0
     out = capsys.readouterr().out
     assert 'Empirical Recalibration Accounting Audit' in out
+    assert 'Relative TOST' in out
     assert 'WARNING' in out
+
+
+def test_worked_heldout_c10_example_reproduces_headline_and_relative_results():
+    """Verify worked CLI ledger reproduces paper held-out C=10 headline and relative TOST values."""
+    worked_csv = ROOT / 'examples/worked_heldout_c10_ledger.csv'
+    frame = pd.read_csv(worked_csv)
+    rep = audit_ledger(frame, reference='Periodic', min_clusters=20, n_boot=2000, seed=42)
+    pac = next(c for c in rep['comparisons'] if c['candidate'] == 'PACER')
+    assert pac['clusters'] == 26
+    assert np.isclose(pac['pooled_dpos_hi_pp'], -23.41, atol=0.01)
+    assert np.isclose(pac['equal_cluster_dpos_hi_pp'], +0.37, atol=0.01)
+    assert np.isclose(pac['equal_cluster_du_pp'], -3.29, atol=0.01)
+    assert np.isclose(pac['mde80_du_pp'], 4.01, atol=0.01)
+    assert pac['zero_ref_u_clusters'] == 4
+    assert np.isclose(pac['pooled_rel_du_pct'], +46.85, atol=0.05)
+    assert pac['tost_rel_p_values']['+-50%'] > 0.05
+    assert pac['tost_rel_p_values']['+-25%'] > 0.05

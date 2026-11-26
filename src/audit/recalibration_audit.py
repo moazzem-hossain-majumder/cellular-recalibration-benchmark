@@ -2,9 +2,10 @@
 
 Computes positive-offer frequency A, exact finite-record conditional risk bounds
 R_+ in [e/M, (e+m)/M], all-issued identity R = A * R_+ consistency verification,
-supported measured throughput U, realized query expenditure, paired cluster
-bootstrap and Student-t confidence intervals, TOST equivalence / 80%-power MDE,
-and operational warnings.
+supported measured throughput U, realized query expenditure, pooled and paired
+cluster bootstrap / Student-t confidence intervals, relative-scale TOST
+equivalence (+-50% and +-25% of reference U), absolute-scale TOST (+-1 / +-2 pp),
+80%-power MDE, and automated operational warnings.
 """
 from __future__ import annotations
 
@@ -25,9 +26,9 @@ REQUIRED_CLUSTER_COLUMNS = {
 }
 
 
-def _solve_mde_t(se: float, df: int, alpha: float = 0.05, power: float = 0.80) -> float:
+def _solve_mde_t(se: float, df: float, alpha: float = 0.05, power: float = 0.80) -> float:
     """Solve minimum detectable effect for a two-sided one-sample t-test at target power."""
-    if df < 1 or not np.isfinite(se) or se <= 0.0:
+    if not np.isfinite(df) or df < 1.0 or not np.isfinite(se) or se <= 0.0:
         return float('nan')
     t_crit = float(stats.t.ppf(1.0 - alpha / 2.0, df))
     lo, hi = 0.0, max(1e-6, (t_crit + float(stats.t.ppf(power, df))) * se * 2.5)
@@ -45,16 +46,7 @@ def _solve_mde_t(se: float, df: int, alpha: float = 0.05, power: float = 0.80) -
 
 
 def normalize_ledger(frame: pd.DataFrame) -> pd.DataFrame:
-    """Normalize either pre-aggregated cluster counts or tick-level decision logs.
-
-    Cluster-summary inputs use columns:
-      cluster_id (or unit/date), eligible, offers (or positive), observed_outcomes
-      or violations, missing_outcomes (or unresolved), queries_charged (or queries_new),
-      and optional policy, observed_sum, delivered_sum.
-
-    Tick-level inputs use columns:
-      eligible (bool/0-1), lower, y, query (plus optional cluster_id/unit/date, policy).
-    """
+    """Normalize either pre-aggregated cluster counts or tick-level decision logs."""
     df = frame.copy()
     if 'policy' not in df.columns:
         df['policy'] = 'Policy'
@@ -90,7 +82,7 @@ def normalize_ledger(frame: pd.DataFrame) -> pd.DataFrame:
             work['observed_sum'] = np.nan
         if 'delivered_sum' not in work.columns:
             work['delivered_sum'] = np.nan
-        grouped = work.groupby(['policy', 'cluster_id'], as_index=False, sort=True).agg(
+        return work.groupby(['policy', 'cluster_id'], as_index=False, sort=True).agg(
             eligible=('eligible', 'sum'),
             offers=('offers', 'sum'),
             observed_outcomes=('observed_outcomes', 'sum'),
@@ -100,9 +92,7 @@ def normalize_ledger(frame: pd.DataFrame) -> pd.DataFrame:
             observed_sum=('observed_sum', lambda s: float(s.sum()) if s.notna().all() else float('nan')),
             delivered_sum=('delivered_sum', lambda s: float(s.sum()) if s.notna().all() else float('nan')),
         )
-        return grouped
 
-    # Otherwise normalize tick-level logs (must contain eligible, lower, y, query)
     tick_req = {'eligible', 'lower', 'y', 'query'}
     if not tick_req.issubset(df.columns):
         missing_cols = sorted(tick_req.union({'offers', 'violations', 'missing_outcomes', 'queries_charged'}).difference(df.columns))
@@ -163,11 +153,7 @@ def summarize_single_policy(
     r_all_hi = (e_viol + m_miss) / n_elig if n_elig > 0 else float('nan')
     r_pos_lo = e_viol / m_pos if m_pos > 0 else float('nan')
     r_pos_hi = (e_viol + m_miss) / m_pos if m_pos > 0 else float('nan')
-
-    if m_pos > 0 and n_elig > 0:
-        id_err = max(abs(r_all_lo - offer_freq * r_pos_lo), abs(r_all_hi - offer_freq * r_pos_hi))
-    else:
-        id_err = 0.0
+    id_err = max(abs(r_all_lo - offer_freq * r_pos_lo), abs(r_all_hi - offer_freq * r_pos_hi)) if (m_pos > 0 and n_elig > 0) else 0.0
 
     has_u = bool(sub['observed_sum'].notna().all() and sub['delivered_sum'].notna().all() and sub['observed_sum'].sum() > 0)
     supported_u = float(sub['delivered_sum'].sum() / sub['observed_sum'].sum()) if has_u else float('nan')
@@ -208,6 +194,14 @@ def summarize_single_policy(
     }
 
 
+def _tost_p(mean: float, se: float, df: int, margin: float) -> float:
+    if df < 1 or not np.isfinite(se) or se <= 0.0 or not np.isfinite(margin) or margin <= 0.0:
+        return float('nan')
+    p1 = float(1.0 - stats.t.cdf((mean + margin) / se, df=df))
+    p2 = float(stats.t.cdf((mean - margin) / se, df=df))
+    return max(p1, p2)
+
+
 def compare_policies_paired(
     cluster_df: pd.DataFrame,
     *,
@@ -217,8 +211,9 @@ def compare_policies_paired(
     n_boot: int = 2000,
     seed: int = 42,
     equiv_margins_pp: Sequence[float] = (1.0, 2.0),
+    rel_margins_pct: Sequence[float] = (50.0, 25.0),
 ) -> dict:
-    """Compute matched-cluster bootstrap CIs, equal-cluster t intervals, MDE, TOST, and warnings."""
+    """Compute matched-cluster bootstrap CIs, t intervals, relative/absolute TOST, MDE, and warnings."""
     c_df = cluster_df[cluster_df['policy'] == candidate].set_index('cluster_id').sort_index()
     r_df = cluster_df[cluster_df['policy'] == reference].set_index('cluster_id').sort_index()
     if c_df.empty or r_df.empty:
@@ -248,33 +243,54 @@ def compare_policies_paired(
         if c_pos.sum() > 0 and r_pos.sum() > 0
         else float('nan')
     )
-
     eq_c_pos = np.where(c_pos > 0, (c_v + c_m) / np.where(c_pos > 0, c_pos, 1.0), np.nan)
     eq_r_pos = np.where(r_pos > 0, (r_v + r_m) / np.where(r_pos > 0, r_pos, 1.0), np.nan)
     valid_pos = ~(np.isnan(eq_c_pos) | np.isnan(eq_r_pos))
     eq_dpos_hi = float(np.mean(eq_c_pos[valid_pos] - eq_r_pos[valid_pos])) if valid_pos.any() else float('nan')
 
+    ref_pool_u_pp = float('nan')
+    zero_ref_u_clusters = 0
+    pooled_rel_du_pct = float('nan')
+    boot_rel_du_ci95_pct = [float('nan'), float('nan')]
+    boot_rel_du_ci90_pct = [float('nan'), float('nan')]
+    tost_rel_p: dict[str, float] = {}
+    tost_abs_p: dict[str, float] = {}
+
     if has_u and c_obs.sum() > 0 and r_obs.sum() > 0:
-        pool_du = float(c_del.sum() / c_obs.sum() - r_del.sum() / r_obs.sum())
-        eq_u_diff = (c_del / np.where(c_obs > 0, c_obs, np.nan)) - (r_del / np.where(r_obs > 0, r_obs, np.nan))
+        pool_uc = float(c_del.sum() / c_obs.sum())
+        pool_ur = float(r_del.sum() / r_obs.sum())
+        pool_du = pool_uc - pool_ur
+        ref_pool_u_pp = 100.0 * pool_ur
+        pooled_rel_du_pct = 100.0 * (pool_uc / pool_ur - 1.0) if pool_ur > 0 else float('nan')
+
+        c_u_cl = c_del / np.where(c_obs > 0, c_obs, np.nan)
+        r_u_cl = r_del / np.where(r_obs > 0, r_obs, np.nan)
+        zero_ref_u_clusters = int(np.sum(np.isfinite(r_u_cl) & (r_u_cl <= 0.0)))
+        eq_u_diff = c_u_cl - r_u_cl
         valid_u = eq_u_diff[~np.isnan(eq_u_diff)] * 100.0
         n_u = len(valid_u)
         eq_du_pp = float(np.mean(valid_u)) if n_u > 0 else float('nan')
         sd_du_pp = float(np.std(valid_u, ddof=1)) if n_u > 1 else float('nan')
         se_du_pp = sd_du_pp / math.sqrt(n_u) if n_u > 1 else float('nan')
-        if n_u > 1 and se_du_pp > 0:
+        if n_u > 1 and se_du_pp > 1e-12:
             t_lo, t_hi = stats.t.interval(0.95, df=n_u - 1, loc=eq_du_pp, scale=se_du_pp)
             mde_80 = _solve_mde_t(se_du_pp, n_u - 1)
-            tost = {}
             for mg in equiv_margins_pp:
-                p1 = float(1.0 - stats.t.cdf((eq_du_pp + mg) / se_du_pp, df=n_u - 1))
-                p2 = float(stats.t.cdf((eq_du_pp - mg) / se_du_pp, df=n_u - 1))
-                tost[f'+-{mg:g}pp'] = max(p1, p2)
+                tost_abs_p[f'+-{mg:g}pp'] = _tost_p(eq_du_pp, se_du_pp, n_u - 1, mg)
+            for rp in rel_margins_pct:
+                mg_rel_pp = (rp / 100.0) * ref_pool_u_pp
+                tost_rel_p[f'+-{rp:g}%'] = _tost_p(eq_du_pp, se_du_pp, n_u - 1, mg_rel_pp)
+        elif n_u > 1:
+            t_lo, t_hi, mde_80 = eq_du_pp, eq_du_pp, 0.0
+            for mg in equiv_margins_pp:
+                tost_abs_p[f'+-{mg:g}pp'] = 0.0 if abs(eq_du_pp) < mg else 1.0
+            for rp in rel_margins_pct:
+                mg_rel_pp = (rp / 100.0) * ref_pool_u_pp
+                tost_rel_p[f'+-{rp:g}%'] = 0.0 if (np.isfinite(mg_rel_pp) and abs(eq_du_pp) < mg_rel_pp) else 1.0
         else:
-            t_lo, t_hi, mde_80, tost = float('nan'), float('nan'), float('nan'), {}
+            t_lo, t_hi, mde_80 = float('nan'), float('nan'), float('nan')
     else:
         pool_du = eq_du_pp = sd_du_pp = se_du_pp = t_lo = t_hi = mde_80 = float('nan')
-        tost = {}
 
     rng = np.random.default_rng(seed)
     idx = rng.integers(0, g_count, size=(n_boot, g_count))
@@ -282,10 +298,18 @@ def compare_policies_paired(
     if has_u:
         co = c_obs[idx].sum(axis=1)
         ro = r_obs[idx].sum(axis=1)
+        cd = c_del[idx].sum(axis=1)
+        rd = r_del[idx].sum(axis=1)
         ok_u = (co > 0) & (ro > 0)
         if ok_u.any():
-            bu = 100.0 * (c_del[idx][ok_u].sum(axis=1) / co[ok_u] - r_del[idx][ok_u].sum(axis=1) / ro[ok_u])
-            boot_du_lo, boot_du_hi = [float(x) for x in np.percentile(bu, [2.5, 97.5])]
+            bu_c = cd[ok_u] / co[ok_u]
+            bu_r = rd[ok_u] / ro[ok_u]
+            boot_du_lo, boot_du_hi = [float(x) for x in np.percentile(100.0 * (bu_c - bu_r), [2.5, 97.5])]
+            ok_rel = bu_r > 0
+            if ok_rel.any():
+                brel = 100.0 * (bu_c[ok_rel] / bu_r[ok_rel] - 1.0)
+                boot_rel_du_ci95_pct = [float(x) for x in np.percentile(brel, [2.5, 97.5])]
+                boot_rel_du_ci90_pct = [float(x) for x in np.percentile(brel, [5.0, 95.0])]
 
     cp = c_pos[idx].sum(axis=1)
     rp = r_pos[idx].sum(axis=1)
@@ -305,6 +329,8 @@ def compare_policies_paired(
         warnings.append(f'fewer than {min_clusters} clusters (G={g_count})')
     if np.isfinite(pool_dpos_hi) and np.isfinite(eq_dpos_hi) and abs(pool_dpos_hi - eq_dpos_hi) > 0.05:
         warnings.append(f'pooling sensitivity: offer-weighted dR+hi ({100*pool_dpos_hi:+.2f} pp) diverges from equal-cluster ({100*eq_dpos_hi:+.2f} pp)')
+    if tost_rel_p.get('+-50%', 1.0) >= 0.05:
+        warnings.append('relative TOST +-50% inconclusive (cannot rule out +-50% change relative to baseline U)')
 
     return {
         'candidate': candidate,
@@ -314,13 +340,19 @@ def compare_policies_paired(
         'queries_candidate': q_cand,
         'queries_reference': q_ref,
         'queries_matched': q_cand == q_ref,
+        'ref_pooled_u_pp': ref_pool_u_pp,
+        'zero_ref_u_clusters': zero_ref_u_clusters,
+        'pooled_rel_du_pct': pooled_rel_du_pct,
+        'boot_rel_du_ci95_pct': boot_rel_du_ci95_pct,
+        'boot_rel_du_ci90_pct': boot_rel_du_ci90_pct,
+        'tost_rel_p_values': tost_rel_p,
         'pooled_du_pp': 100.0 * pool_du if np.isfinite(pool_du) else float('nan'),
         'boot_du_ci95_pp': [boot_du_lo, boot_du_hi],
         'equal_cluster_du_pp': eq_du_pp,
         'between_cluster_sd_pp': sd_du_pp,
         't_du_ci95_pp': [float(t_lo), float(t_hi)],
         'mde80_du_pp': mde_80,
-        'tost_p_values': tost,
+        'tost_p_values': tost_abs_p,
         'pooled_dpos_hi_pp': 100.0 * pool_dpos_hi if np.isfinite(pool_dpos_hi) else float('nan'),
         'boot_dpos_hi_ci95_pp': [boot_dpos_hi_lo, boot_dpos_hi_hi],
         'equal_cluster_dpos_hi_pp': 100.0 * eq_dpos_hi if np.isfinite(eq_dpos_hi) else float('nan'),
@@ -337,6 +369,7 @@ def audit_ledger(
     n_boot: int = 2000,
     seed: int = 42,
     equiv_margins_pp: Iterable[float] = (1.0, 2.0),
+    rel_margins_pct: Iterable[float] = (50.0, 25.0),
 ) -> dict:
     """Run complete single-policy and paired-policy empirical accounting audit."""
     cluster_df = normalize_ledger(frame)
@@ -349,6 +382,7 @@ def audit_ledger(
     if len(policies) >= 2:
         ref_pol = reference if reference in policies else ('Periodic' if 'Periodic' in policies else policies[0])
         margins = tuple(float(m) for m in equiv_margins_pp)
+        rmargins = tuple(float(m) for m in rel_margins_pct)
         for pol in policies:
             if pol == ref_pol:
                 continue
@@ -361,6 +395,7 @@ def audit_ledger(
                     n_boot=n_boot,
                     seed=seed,
                     equiv_margins_pp=margins,
+                    rel_margins_pct=rmargins,
                 )
             )
     return {
@@ -371,7 +406,7 @@ def audit_ledger(
             'Report exact finite-record conditional risk bounds [e/M, (e+m)/M] rather than only all-issued R.',
             'Verify identity R = A * R_+ on both lower and upper endpoints.',
             'Report realized query attempts Q_new separately from initial pre-test calibration labels.',
-            'Evaluate comparisons at physical cluster level (G dates/drives) with between-cluster SD and MDE.',
+            'Evaluate comparisons at physical cluster and campaign levels with between-cluster SD, MDE, and relative TOST.',
             'Declare how missing outcomes enter buffers and inspect equal-cluster vs. offer-weighted pooling.',
         ],
     }

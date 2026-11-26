@@ -1,0 +1,19 @@
+\begin{table*}[!ht]
+\centering\footnotesize\setlength{\tabcolsep}{2.2pt}
+\caption{Exploratory campaign-level dependence sensitivity across physical geographic campaigns (Camp=3 Retrospective, 3 HeldOut, 6 AllCohorts; HistGBM, recorded). Reports ANOVA ICC, Donner design effect (DEFF), effective date count (Geff), inflated SE/MDE80/TOST p at +-2 pp, and two-stage hierarchical cluster bootstrap 95 percent intervals.}
+\begin{tabular}{llrrrrrrrrrrr}
+\hline
+Scope & Cand & Cap & G & Camp & ICC & DEFF & Geff & NaiveSE & AdjSE & AdjMDE & Adjp2pp & HierBoot95 \\
+Retro & MAR & 10 & 16 & 3 & 0.62 & 4.16 & 3.84 & 0.55 & 1.13 & 4.93 & 0.0971 & -2.46 to +1.43 \\
+Retro & PAC & 10 & 16 & 3 & 0.02 & 1.08 & 14.77 & 0.36 & 0.37 & 1.13 & 0.0001 & -1.07 to +0.71 \\
+Retro & MAR & 40 & 16 & 3 & 0.14 & 1.72 & 9.28 & 0.49 & 0.64 & 2.05 & 0.0099 & -1.65 to +0.98 \\
+Retro & PAC & 40 & 16 & 3 & 0.00 & 1.00 & 16.00 & 0.33 & 0.33 & 1.00 & 0.0000 & -0.56 to +1.03 \\
+HeldOut & PAC & 10 & 26 & 3 & 0.81 & 9.24 & 2.81 & 1.38 & 4.18 & 26.06 & 0.6052 & -13.12 to +0.62 \\
+HeldOut & MAR & 10 & 26 & 3 & 0.82 & 9.36 & 2.78 & 1.56 & 4.77 & 30.33 & 0.5973 & -14.55 to +1.01 \\
+HeldOut & PAC & 40 & 26 & 3 & 0.28 & 3.87 & 6.73 & 0.84 & 1.66 & 5.64 & 0.1388 & -1.60 to +4.49 \\
+HeldOut & MAR & 40 & 26 & 3 & 0.41 & 5.15 & 5.05 & 0.58 & 1.31 & 4.92 & 0.2623 & -4.33 to +0.15 \\
+AllCoh & PAC & 10 & 42 & 6 & 0.76 & 7.23 & 5.81 & 0.89 & 2.39 & 8.49 & 0.5119 & -7.60 to +0.45 \\
+AllCoh & PAC & 40 & 42 & 6 & 0.17 & 2.40 & 17.48 & 0.53 & 0.83 & 2.46 & 0.0145 & -1.14 to +2.41 \\
+\hline
+\end{tabular}
+\end{table*}

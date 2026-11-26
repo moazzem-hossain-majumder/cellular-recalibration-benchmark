@@ -198,7 +198,7 @@ def plot_main_fig3_theorem1_bounds(seeds: pd.DataFrame) -> None:
 
 
 def plot_legacy_fig9(seeds: pd.DataFrame, summ: pd.DataFrame) -> None:
-    """Keep legacy fig9_pacer refreshed without overstated 'Untouched' labels."""
+    """Keep legacy fig9_pacer refreshed with neutral 'heldout_public' domain labels."""
     plt.rcParams.update({'font.size': 8, 'axes.titlesize': 9, 'axes.labelsize': 8})
     sm = (
         seeds.groupby(['domain', 'cohort', 'model', 'cap_new'], as_index=False)
@@ -206,7 +206,7 @@ def plot_legacy_fig9(seeds: pd.DataFrame, summ: pd.DataFrame) -> None:
     )
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.2, 2.45), dpi=300)
     for dom, label, marker, color in [
-        ('untouched_heldout', 'Held-out public archives (4 cohorts)', 'o', '#1f77b4'),
+        ('heldout_public', 'Held-out public archives (4 cohorts)', 'o', '#1f77b4'),
         ('retrospective', 'Retrospective (6 cohorts)', 's', '#d62728'),
     ]:
         sub = sm[sm['domain'] == dom]
@@ -224,7 +224,7 @@ def plot_legacy_fig9(seeds: pd.DataFrame, summ: pd.DataFrame) -> None:
     ax1.grid(True, alpha=0.25, linewidth=0.5)
 
     u = summ[
-        (summ['domain'] == 'untouched_heldout')
+        (summ['domain'] == 'heldout_public')
         & (summ['model'] == 'HistGBM')
         & (summ['scenario'] == 'Recorded')
         & (summ['cap_new'] == 10)

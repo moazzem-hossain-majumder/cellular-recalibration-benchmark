@@ -1,9 +1,0 @@
-paired_sd,halfwidth,independent_complete_trip_pairs,assumption
-0.05,0.025,18,t precision for independent regular trip differences
-0.05,0.05,7,t precision for independent regular trip differences
-0.1,0.025,64,t precision for independent regular trip differences
-0.1,0.05,18,t precision for independent regular trip differences
-0.15,0.025,141,t precision for independent regular trip differences
-0.15,0.05,38,t precision for independent regular trip differences
-0.2,0.025,249,t precision for independent regular trip differences
-0.2,0.05,64,t precision for independent regular trip differences

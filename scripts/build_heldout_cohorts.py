@@ -28,8 +28,8 @@ OUT_DIR = ROOT / 'results/pacer'
 
 def _load_frozen_rome_model(plan_dir: Path | None = None):
     """Load the SHA-256-verified frozen 57-row Rome HistGBM source predictor."""
-    directory = plan_dir or (ROOT / 'results/prospective_planning')
-    freeze_meta = json.loads((directory / 'model_freeze.json').read_text(encoding='utf8'))
+    directory = plan_dir or (ROOT / 'results/pacer')
+    freeze_meta = json.loads((directory / 'frozen_rome_model.json').read_text(encoding='utf8'))
     model_path = directory / 'frozen_rome_histgbm.joblib'
     actual_sha = hashlib.sha256(model_path.read_bytes()).hexdigest()
     if actual_sha != freeze_meta['model_sha256']:
@@ -276,9 +276,9 @@ def build_all() -> pd.DataFrame:
         'group_id', 'physical_unit',
     ]
     combined = pd.concat([f[keep_cols] for f in frames], ignore_index=True)
-    combined['domain'] = 'untouched_heldout'
+    combined['domain'] = 'heldout_public'
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    combined.to_csv(OUT_DIR / 'untouched_opportunities.csv.gz', index=False, compression={'method': 'gzip', 'mtime': 0})
+    combined.to_csv(OUT_DIR / 'heldout_opportunities.csv.gz', index=False, compression={'method': 'gzip', 'mtime': 0})
     return combined
 
 

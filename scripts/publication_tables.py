@@ -63,8 +63,10 @@ def _main_tables(root: Path) -> dict:
             f'{100 * r.pool_dhi:+.2f}',
         ])
 
-    # Table IV: Task 2 Power, MDE (80%), and TOST Equivalence Analysis
+    # Table IV: Relative (+-50% / +-25%) and Absolute (+-1 / +-2 pp) Power & TOST Equivalence
     pow_df = pd.read_csv(root / 'results/exploratory/sensitivity/power_equivalence.csv')
+    scope_short = {'Retrospective': 'Retro', 'HeldOut': 'HeldOut', 'AllCohorts': 'AllCoh'}
+    cand_short = {'MARUR': 'MAR', 'PACER': 'PAC'}
     pow_rows = []
     for sc, cap, cand in [
         ('Retrospective', 10, 'MARUR'),
@@ -72,17 +74,22 @@ def _main_tables(root: Path) -> dict:
         ('HeldOut', 10, 'MARUR'),
         ('HeldOut', 10, 'PACER'),
         ('HeldOut', 40, 'PACER'),
+        ('AllCohorts', 10, 'PACER'),
         ('AllCohorts', 40, 'PACER'),
     ]:
         r = pow_df[(pow_df['scope'] == sc) & (pow_df['cap_new'] == cap) & (pow_df['candidate'] == cand)].iloc[0]
         pow_rows.append([
-            sc,
-            f'{cand} vs Per',
+            scope_short[sc],
+            cand_short[cand],
             str(int(r.cap_new)),
             str(int(r.clusters)),
+            str(int(r.zero_ref_u_clusters)),
+            f'{r.ref_pool_u_pp:.2f}',
+            f'{r.pool_rel_du_pct:+.1f}',
+            f'{r.boot_rel_lo_pct:+.1f} to {r.boot_rel_hi_pct:+.1f}',
+            f'{r.tost_p_rel50:.4f}',
+            f'{r.tost_p_rel25:.4f}',
             f'{r.eq_du_mean_pp:+.2f}',
-            f'{r.between_cluster_sd_pp:.2f}',
-            f'{r.t_ci95_lo_pp:+.2f} to {r.t_ci95_hi_pp:+.2f}',
             f'{r.mde80_pp:.2f}',
             f'{r.tost_p_1pp:.4f}',
             f'{r.tost_p_2pp:.4f}',
@@ -145,9 +152,9 @@ def _main_tables(root: Path) -> dict:
     con = pd.read_csv(root / 'results/pacer/pacer_paired_contrasts.csv')
     pool_all_rows = []
     for scope_lbl, con_scope, doms in [
-        ('HeldOut', 'UntouchedHeldOut', ['untouched_heldout']),
+        ('HeldOut', 'HeldOutPublic', ['heldout_public']),
         ('Retrospective', 'Retrospective', ['retrospective']),
-        ('AllCohorts', 'AllCohortsPooled', ['untouched_heldout', 'retrospective']),
+        ('AllCohorts', 'AllCohortsPooled', ['heldout_public', 'retrospective']),
     ]:
         for cap in (10, 40):
             ow = con[
@@ -300,8 +307,8 @@ def _main_tables(root: Path) -> dict:
             cluster_rows,
         ),
         'table_m4_power_equivalence': (
-            'Between-cluster SD, 80 percent power MDE (MDE80), and TOST equivalence p-values for equal-cluster utility difference dU (percentage points, HistGBM, recorded feedback) against +-1.0 pp and +-2.0 pp margins.',
-            ['Scope', 'Contrast', 'Cap', 'G', 'Mean dU', 'SD', 'tCI95', 'MDE80', 'p1pp', 'p2pp'],
+            'Exploratory relative (+-50 percent primary, +-25 percent sensitivity relative to pooled Periodic U, with Z0 zero-U clusters excluded from per-cluster ratios) and absolute (+-1.0 / +-2.0 pp) power and TOST equivalence checks (HistGBM, recorded).',
+            ['Scope', 'Cand', 'Cap', 'G', 'Z0', 'RefU', 'PoolRel', 'Rel95CI', 'pRel50', 'pRel25', 'EqdU', 'MDE80', 'p1pp', 'p2pp'],
             pow_rows,
         ),
         'table_m5_pacer_breakdown': (
@@ -348,7 +355,7 @@ def _supp_extra_tables(root: Path) -> dict:
 
     # S15: Operational comparator taxonomy (MARUR vs PACER)
     retro40 = pacer_df[(pacer_df['domain'] == 'retrospective') & (pacer_df['model'] == 'HistGBM') & (pacer_df['scenario'] == 'Recorded') & (pacer_df['cap_new'] == 40)].groupby('policy')[['positive_high', 'u']].mean()
-    unt10 = con_df[(con_df['scope'] == 'UntouchedHeldOut') & (con_df['model'] == 'HistGBM') & (con_df['scenario'] == 'Recorded') & (con_df['cap_new'] == 10) & (con_df['reference'] == 'Periodic')].iloc[0]
+    unt10 = con_df[(con_df['scope'] == 'HeldOutPublic') & (con_df['model'] == 'HistGBM') & (con_df['scenario'] == 'Recorded') & (con_df['cap_new'] == 10) & (con_df['reference'] == 'Periodic')].iloc[0]
     pers40 = con_df[(con_df['scope'] == 'AllCohortsPooled') & (con_df['model'] == 'Persistence') & (con_df['scenario'] == 'Recorded') & (con_df['cap_new'] == 40) & (con_df['reference'] == 'Frozen')].iloc[0]
     taxonomy_rows = [
         ['Static high offer (A at least 0.50)', 'PACER', 'T1 O(1/K)', '5.12-6.98 PosHi IrelandSt', 'Needs horizon length T'],
@@ -361,9 +368,9 @@ def _supp_extra_tables(root: Path) -> dict:
     # S16: Full 18-row Pooling-Rule Matrix
     pool_rows = []
     for scope_lbl, con_scope, doms in [
-        ('HeldOut', 'UntouchedHeldOut', ['untouched_heldout']),
+        ('HeldOut', 'HeldOutPublic', ['heldout_public']),
         ('Retrospective', 'Retrospective', ['retrospective']),
-        ('AllCohorts', 'AllCohortsPooled', ['untouched_heldout', 'retrospective']),
+        ('AllCohorts', 'AllCohortsPooled', ['heldout_public', 'retrospective']),
     ]:
         for cap in (10, 40):
             ow = con_df[(con_df['scope'] == con_scope) & (con_df['model'] == 'HistGBM') & (con_df['scenario'] == 'Recorded') & (con_df['cap_new'] == cap) & (con_df['reference'] == 'Periodic')].iloc[0]
@@ -397,6 +404,28 @@ def _supp_extra_tables(root: Path) -> dict:
             f'{r.eq_du_pacer_c40_pp:+.2f}',
         ])
 
+    # S18: Exploratory campaign-level dependence sensitivity (two-stage hierarchical bootstrap & ICC/DEFF)
+    camp_df = pd.read_csv(root / 'results/exploratory/sensitivity/campaign_dependence.csv')
+    scope_short = {'Retrospective': 'Retro', 'HeldOut': 'HeldOut', 'AllCohorts': 'AllCoh'}
+    cand_short = {'MARUR': 'MAR', 'PACER': 'PAC'}
+    camp_rows = []
+    for r in camp_df.itertuples():
+        camp_rows.append([
+            scope_short[r.scope],
+            cand_short[r.candidate],
+            str(int(r.cap_new)),
+            str(int(r.clusters)),
+            str(int(r.campaigns)),
+            f'{r.icc:.2f}',
+            f'{r.deff:.2f}',
+            f'{r.g_eff:.2f}',
+            f'{r.naive_se_pp:.2f}',
+            f'{r.adj_se_pp:.2f}',
+            f'{r.adj_mde80_pp:.2f}',
+            f'{r.adj_tost_p_2pp:.4f}',
+            f'{r.hier_boot95_lo_pp:+.2f} to {r.hier_boot95_hi_pp:+.2f}',
+        ])
+
     return {
         'table_s14_marur_audit': (
             'Retrospective six-cohort controllers at new-query cap 40 under frozen HistGBM and recorded feedback (with ten initial successful labels).',
@@ -417,6 +446,11 @@ def _supp_extra_tables(root: Path) -> dict:
             'Leave-one-cohort-out check across all 10 cohorts (42 total clusters, HistGBM, recorded feedback). Mobile risk range excludes static Ireland; U is median supported throughput.',
             ['Dropped', 'G', 'MobRhiRng', 'MobRhiMed', 'UMed', 'EqdU MAR10', 'EqdU PAC10', 'EqdU PAC40'],
             loco_rows,
+        ),
+        'table_s18_campaign_dependence': (
+            'Exploratory campaign-level dependence sensitivity across physical geographic campaigns (Camp=3 Retrospective, 3 HeldOut, 6 AllCohorts; HistGBM, recorded). Reports ANOVA ICC, Donner design effect (DEFF), effective date count (Geff), inflated SE/MDE80/TOST p at +-2 pp, and two-stage hierarchical cluster bootstrap 95 percent intervals.',
+            ['Scope', 'Cand', 'Cap', 'G', 'Camp', 'ICC', 'DEFF', 'Geff', 'NaiveSE', 'AdjSE', 'AdjMDE', 'Adjp2pp', 'HierBoot95'],
+            camp_rows,
         ),
     }
 
@@ -530,8 +564,9 @@ def tables(root=ROOT):
 def latex(spec):
     caption, header, rows = spec
     prose = header[0] in {'Policy', 'Regime', 'OfferStratum', 'Scope', 'Axis', 'Dropped'}
-    size = r'\centering\footnotesize\setlength{\tabcolsep}{3.5pt}' if prose else r'\centering\small'
-    align = 'l' * len(header) if prose else 'l' + 'r' * (len(header) - 1)
+    wide_pow = len(header) >= 12
+    size = r'\centering\footnotesize\setlength{\tabcolsep}{' + ('2.2pt' if wide_pow else '3.5pt') + '}' if prose else r'\centering\small'
+    align = ('ll' + 'r' * (len(header) - 2)) if wide_pow else ('l' * len(header) if prose else 'l' + 'r' * (len(header) - 1))
     lines = [r'\begin{table*}[!ht]', size, r'\caption{' + caption + '}', r'\begin{tabular}{' + align + '}', r'\hline']
     for row in [header, *rows]:
         lines.append(' & '.join(row) + r' \\')

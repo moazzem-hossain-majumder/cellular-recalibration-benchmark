@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from scripts.audit_trip_level_inference import _paired_cluster_stats, physical_campaign_key
-from scripts.build_untouched_cohorts import (
+from scripts.build_heldout_cohorts import (
     _ireland_static_ticks,
     _load_frozen_rome_model,
     _rome_capacity_ticks,
@@ -122,7 +122,7 @@ def _build_oslo_bus_quantile_predictor(oslo_cutoff_iso: str) -> HistGradientBoos
 
 
 def run_power_and_equivalence() -> pd.DataFrame:
-    """Task 2: Compute 80%-power MDE and TOST (+-1.0, +-1.5, +-2.0, +-3.0 pp) from frozen cluster ledgers."""
+    """Task 1 & 2: Compute relative (+-50%, +-25% of baseline U) and absolute TOST + 80%-power MDE."""
     p_cl = pd.read_csv(ROOT / 'results/pacer/pacer_cluster_dates.csv')
     rows = []
     specs = [
@@ -130,10 +130,10 @@ def run_power_and_equivalence() -> pd.DataFrame:
         ('Retrospective', 'retrospective', 10, 'PACER'),
         ('Retrospective', 'retrospective', 40, 'MARUR'),
         ('Retrospective', 'retrospective', 40, 'PACER'),
-        ('HeldOut', 'untouched_heldout', 10, 'PACER'),
-        ('HeldOut', 'untouched_heldout', 10, 'MARUR'),
-        ('HeldOut', 'untouched_heldout', 40, 'PACER'),
-        ('HeldOut', 'untouched_heldout', 40, 'MARUR'),
+        ('HeldOut', 'heldout_public', 10, 'PACER'),
+        ('HeldOut', 'heldout_public', 10, 'MARUR'),
+        ('HeldOut', 'heldout_public', 40, 'PACER'),
+        ('HeldOut', 'heldout_public', 40, 'MARUR'),
         ('AllCohorts', 'all', 10, 'PACER'),
         ('AllCohorts', 'all', 10, 'MARUR'),
         ('AllCohorts', 'all', 40, 'PACER'),
@@ -145,7 +145,15 @@ def run_power_and_equivalence() -> pd.DataFrame:
             sub = sub[sub['domain'] == dom_filter]
         agg = sub.groupby(['unit', 'policy'], as_index=False)[['delivered_sum', 'observed_sum']].sum()
         piv = agg.pivot(index='unit', columns='policy')
-        diff = (100.0 * (piv['delivered_sum'][cand] / piv['observed_sum'][cand] - piv['delivered_sum']['Periodic'] / piv['observed_sum']['Periodic'])).dropna()
+        u_c = 100.0 * piv['delivered_sum'][cand] / piv['observed_sum'][cand]
+        u_r = 100.0 * piv['delivered_sum']['Periodic'] / piv['observed_sum']['Periodic']
+        diff = (u_c - u_r).dropna()
+        units = diff.index.tolist()
+        dc = piv['delivered_sum'][cand].loc[units].to_numpy(dtype=float)
+        oc = piv['observed_sum'][cand].loc[units].to_numpy(dtype=float)
+        dr = piv['delivered_sum']['Periodic'].loc[units].to_numpy(dtype=float)
+        or_ = piv['observed_sum']['Periodic'].loc[units].to_numpy(dtype=float)
+
         n = int(len(diff))
         mean = float(diff.mean())
         sd = float(diff.std(ddof=1))
@@ -153,6 +161,28 @@ def run_power_and_equivalence() -> pd.DataFrame:
         t95_lo, t95_hi = stats.t.interval(0.95, df=n - 1, loc=mean, scale=se)
         t90_lo, t90_hi = stats.t.interval(0.90, df=n - 1, loc=mean, scale=se)
         mde80 = _solve_mde_t(se, n - 1, alpha=0.05, power=0.80)
+
+        # Pooled relative ratio and whole-cluster bootstrap CI
+        ref_pool_u = 100.0 * float(dr.sum() / or_.sum())
+        ref_mean_u = float(u_r.loc[units].mean())
+        zero_ref_u = int((u_r.loc[units] <= 0.0).sum())
+        cand_pool_u = 100.0 * float(dc.sum() / oc.sum())
+        pool_rel_pct = 100.0 * (cand_pool_u / ref_pool_u - 1.0)
+        rng = np.random.default_rng(42)
+        idx = rng.integers(0, n, size=(2000, n))
+        b_uc = dc[idx].sum(axis=1) / oc[idx].sum(axis=1)
+        b_ur = dr[idx].sum(axis=1) / or_[idx].sum(axis=1)
+        ok = b_ur > 0
+        b_rel = 100.0 * (b_uc[ok] / b_ur[ok] - 1.0)
+        b_rel_95_lo, b_rel_95_hi = [float(x) for x in np.percentile(b_rel, [2.5, 97.5])]
+        b_rel_90_lo, b_rel_90_hi = [float(x) for x in np.percentile(b_rel, [5.0, 95.0])]
+
+        # Standardized relative-margin TOST (margin expressed as +-50% and +-25% of pooled Periodic U)
+        m_rel50 = 0.50 * ref_pool_u
+        m_rel25 = 0.25 * ref_pool_u
+        tost_rel50 = float(max(1.0 - stats.t.cdf((mean + m_rel50) / se, df=n - 1), stats.t.cdf((mean - m_rel50) / se, df=n - 1)))
+        tost_rel25 = float(max(1.0 - stats.t.cdf((mean + m_rel25) / se, df=n - 1), stats.t.cdf((mean - m_rel25) / se, df=n - 1)))
+
         tost_1 = float(max(1.0 - stats.t.cdf((mean + 1.0) / se, df=n - 1), stats.t.cdf((mean - 1.0) / se, df=n - 1)))
         tost_15 = float(max(1.0 - stats.t.cdf((mean + 1.5) / se, df=n - 1), stats.t.cdf((mean - 1.5) / se, df=n - 1)))
         tost_2 = float(max(1.0 - stats.t.cdf((mean + 2.0) / se, df=n - 1), stats.t.cdf((mean - 2.0) / se, df=n - 1)))
@@ -164,6 +194,19 @@ def run_power_and_equivalence() -> pd.DataFrame:
                 'candidate': cand,
                 'reference': 'Periodic',
                 'clusters': n,
+                'zero_ref_u_clusters': zero_ref_u,
+                'ref_pool_u_pp': ref_pool_u,
+                'ref_mean_u_pp': ref_mean_u,
+                'pool_rel_du_pct': pool_rel_pct,
+                'boot_rel_lo_pct': b_rel_95_lo,
+                'boot_rel_hi_pct': b_rel_95_hi,
+                'boot_rel90_lo_pct': b_rel_90_lo,
+                'boot_rel90_hi_pct': b_rel_90_hi,
+                'rel_margin50_pp': m_rel50,
+                'rel_margin25_pp': m_rel25,
+                'tost_p_rel50': tost_rel50,
+                'tost_p_rel25': tost_rel25,
+                'boot_rel_equiv50': bool(b_rel_90_lo >= -50.0 and b_rel_90_hi <= 50.0),
                 'eq_du_mean_pp': mean,
                 'between_cluster_sd_pp': sd,
                 'se_pp': se,
@@ -178,6 +221,103 @@ def run_power_and_equivalence() -> pd.DataFrame:
                 'tost_p_3pp': tost_3,
                 'equiv_1pp': bool(tost_1 < 0.05),
                 'equiv_2pp': bool(tost_2 < 0.05),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def _campaign_from_unit(unit: str, domain: str) -> str:
+    if domain == 'retrospective':
+        if unit.startswith('Rome:'):
+            return 'Rome_2023'
+        if unit.startswith('US_Drive3:'):
+            return 'US_Drive3'
+        return 'Ireland_Drive'
+    if unit.startswith('RomeCap:'):
+        return 'Rome_Capacity'
+    if unit.startswith('Oslo:'):
+        return 'Oslo_Commute'
+    return 'Ireland_Static'
+
+
+def run_campaign_dependence() -> pd.DataFrame:
+    """Task 2 (exploratory/post-hoc): Campaign-level hierarchical bootstrap and ICC/DEFF analysis."""
+    p_cl = pd.read_csv(ROOT / 'results/pacer/pacer_cluster_dates.csv')
+    rows = []
+    specs = [
+        ('Retrospective', 'retrospective', 10, 'MARUR'),
+        ('Retrospective', 'retrospective', 10, 'PACER'),
+        ('Retrospective', 'retrospective', 40, 'MARUR'),
+        ('Retrospective', 'retrospective', 40, 'PACER'),
+        ('HeldOut', 'heldout_public', 10, 'PACER'),
+        ('HeldOut', 'heldout_public', 10, 'MARUR'),
+        ('HeldOut', 'heldout_public', 40, 'PACER'),
+        ('HeldOut', 'heldout_public', 40, 'MARUR'),
+        ('AllCohorts', 'all', 10, 'PACER'),
+        ('AllCohorts', 'all', 40, 'PACER'),
+    ]
+    for scope, dom_filter, cap, cand in specs:
+        sub = p_cl[(p_cl['model'] == 'HistGBM') & (p_cl['scenario'] == 'Recorded') & (p_cl['cap_new'] == cap)]
+        if dom_filter != 'all':
+            sub = sub[sub['domain'] == dom_filter]
+        unit_dom = sub[['unit', 'domain']].drop_duplicates().set_index('unit')['domain'].to_dict()
+        agg = sub.groupby(['unit', 'policy'], as_index=False)[['delivered_sum', 'observed_sum']].sum()
+        piv = agg.pivot(index='unit', columns='policy')
+        diff = (100.0 * (piv['delivered_sum'][cand] / piv['observed_sum'][cand] - piv['delivered_sum']['Periodic'] / piv['observed_sum']['Periodic'])).dropna()
+        camps = pd.Series([_campaign_from_unit(u, unit_dom[u]) for u in diff.index], index=diff.index)
+        groups = [diff[camps == c].to_numpy(dtype=float) for c in sorted(camps.unique())]
+        k_camp = len(groups)
+        ns = np.array([len(g) for g in groups], dtype=float)
+        n_tot = float(ns.sum())
+        grand = float(diff.mean())
+        ssb = float(sum(len(g) * (g.mean() - grand) ** 2 for g in groups))
+        ssw = float(sum(((g - g.mean()) ** 2).sum() for g in groups))
+        msb = ssb / (k_camp - 1)
+        msw = ssw / (n_tot - k_camp)
+        n0 = (n_tot - float((ns ** 2).sum()) / n_tot) / (k_camp - 1)
+        var_b = max(0.0, (msb - msw) / n0)
+        icc = var_b / (var_b + msw) if (var_b + msw) > 0 else 0.0
+        m_eff = float((ns ** 2).sum()) / n_tot
+        deff = 1.0 + (m_eff - 1.0) * icc
+        g_eff = n_tot / deff
+
+        naive_sd = float(diff.std(ddof=1))
+        naive_se = naive_sd / float(np.sqrt(n_tot))
+        adj_se = naive_se * float(np.sqrt(deff))
+        mde_adj = _solve_mde_t(adj_se, max(1.0, g_eff - 1.0), alpha=0.05, power=0.80)
+        tost_adj_2pp = float(max(
+            1.0 - stats.t.cdf((grand + 2.0) / adj_se, df=max(1.0, g_eff - 1.0)),
+            stats.t.cdf((grand - 2.0) / adj_se, df=max(1.0, g_eff - 1.0)),
+        ))
+
+        rng = np.random.default_rng(42)
+        camp_names = sorted(camps.unique())
+        camp_arrs = {c: diff[camps == c].to_numpy(dtype=float) for c in camp_names}
+        hb = []
+        for _ in range(2000):
+            chosen_c = rng.choice(camp_names, size=len(camp_names), replace=True)
+            draws = [rng.choice(camp_arrs[c], size=len(camp_arrs[c]), replace=True) for c in chosen_c]
+            hb.append(float(np.concatenate(draws).mean()))
+        hb_lo, hb_hi = [float(x) for x in np.percentile(hb, [2.5, 97.5])]
+        rows.append(
+            {
+                'scope': scope,
+                'cap_new': cap,
+                'candidate': cand,
+                'reference': 'Periodic',
+                'clusters': int(n_tot),
+                'campaigns': k_camp,
+                'eq_du_mean_pp': grand,
+                'naive_se_pp': naive_se,
+                'icc': icc,
+                'deff': deff,
+                'g_eff': g_eff,
+                'adj_se_pp': adj_se,
+                'adj_mde80_pp': mde_adj,
+                'adj_tost_p_2pp': tost_adj_2pp,
+                'hier_boot_sd_pp': float(np.std(hb)),
+                'hier_boot95_lo_pp': hb_lo,
+                'hier_boot95_hi_pp': hb_hi,
             }
         )
     return pd.DataFrame(rows)
@@ -473,26 +613,35 @@ def run_predictor_sensitivity(
     return df_point, df_policy, pd.DataFrame(cluster_contrasts)
 
 
-def main() -> None:
+def main(stats_only: bool = False) -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     start = datetime.now(timezone.utc).isoformat()
     opp = pd.read_csv(ROOT / 'results/marur/opportunities.csv.gz', float_precision='round_trip', low_memory=False)
-    heldout = pd.read_csv(ROOT / 'results/pacer/untouched_opportunities.csv.gz', float_precision='round_trip', low_memory=False)
+    heldout = pd.read_csv(ROOT / 'results/pacer/heldout_opportunities.csv.gz', float_precision='round_trip', low_memory=False)
     mcfg = json.loads((ROOT / 'configs/marur.json').read_text(encoding='utf8'))
     pcfg = json.loads((ROOT / 'configs/pacer.json').read_text(encoding='utf8'))
 
     df_pow = run_power_and_equivalence()
+    df_camp = run_campaign_dependence()
     df_loco = run_leave_one_cohort_out()
-    df_wa, df_wa_cl = run_window_alpha_sensitivity(opp, heldout, mcfg, pcfg)
-    df_pt, df_pr, df_pr_cl = run_predictor_sensitivity(opp, heldout, mcfg, pcfg)
-
     df_pow.to_csv(OUT_DIR / 'power_equivalence.csv', index=False)
+    df_camp.to_csv(OUT_DIR / 'campaign_dependence.csv', index=False)
     df_loco.to_csv(OUT_DIR / 'leave_one_cohort_out.csv', index=False)
-    df_wa.to_csv(OUT_DIR / 'window_alpha_sensitivity.csv', index=False)
-    df_wa_cl.to_csv(OUT_DIR / 'window_alpha_clusters.csv', index=False)
-    df_pt.to_csv(OUT_DIR / 'predictor_point_accuracy.csv', index=False)
-    df_pr.to_csv(OUT_DIR / 'predictor_sensitivity.csv', index=False)
-    df_pr_cl.to_csv(OUT_DIR / 'predictor_sensitivity_clusters.csv', index=False)
+
+    if stats_only:
+        df_wa = pd.read_csv(OUT_DIR / 'window_alpha_sensitivity.csv')
+        df_wa_cl = pd.read_csv(OUT_DIR / 'window_alpha_clusters.csv')
+        df_pt = pd.read_csv(OUT_DIR / 'predictor_point_accuracy.csv')
+        df_pr = pd.read_csv(OUT_DIR / 'predictor_sensitivity.csv')
+        df_pr_cl = pd.read_csv(OUT_DIR / 'predictor_sensitivity_clusters.csv')
+    else:
+        df_wa, df_wa_cl = run_window_alpha_sensitivity(opp, heldout, mcfg, pcfg)
+        df_pt, df_pr, df_pr_cl = run_predictor_sensitivity(opp, heldout, mcfg, pcfg)
+        df_wa.to_csv(OUT_DIR / 'window_alpha_sensitivity.csv', index=False)
+        df_wa_cl.to_csv(OUT_DIR / 'window_alpha_clusters.csv', index=False)
+        df_pt.to_csv(OUT_DIR / 'predictor_point_accuracy.csv', index=False)
+        df_pr.to_csv(OUT_DIR / 'predictor_sensitivity.csv', index=False)
+        df_pr_cl.to_csv(OUT_DIR / 'predictor_sensitivity_clusters.csv', index=False)
 
     receipt = {
         'start_utc': start,
@@ -501,6 +650,7 @@ def main() -> None:
         'heldout_cohorts_exploratory': True,
         'frozen_results_modified': False,
         'power_equivalence_rows': int(len(df_pow)),
+        'campaign_dependence_rows': int(len(df_camp)),
         'loco_rows': int(len(df_loco)),
         'window_alpha_rows': int(len(df_wa)),
         'predictor_rows': int(len(df_pr)),
@@ -511,16 +661,14 @@ def main() -> None:
     }
     (OUT_DIR / 'execution.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf8')
     print(json.dumps({k: v for k, v in receipt.items() if k != 'sha256'}, indent=2))
-    print('\n=== Task 2: Power and Equivalence Summary ===')
-    print(df_pow[['scope', 'cap_new', 'candidate', 'clusters', 'eq_du_mean_pp', 'between_cluster_sd_pp', 'mde80_pp', 'tost_p_1pp', 'tost_p_2pp']].to_string(index=False))
-    print('\n=== Task 3: Leave-One-Cohort-Out Summary ===')
-    print(df_loco[['dropped_cohort', 'clusters_g', 'mobile_r_pos_hi_med_pp', 'u_med_pp', 'eq_du_marur_c10_pp', 'eq_du_pacer_c10_pp', 'eq_du_pacer_c40_pp']].to_string(index=False))
-    print('\n=== Task 3: PACER vs Periodic Window/Alpha (HeldOut & Retro, HistGBM) ===')
-    sub_p = df_wa_cl[(df_wa_cl['model'] == 'HistGBM') & (df_wa_cl['candidate'] == 'PACER') & (df_wa_cl['scope'].isin(['retrospective', 'heldout_exploratory']))]
-    print(sub_p[['scope', 'alpha', 'window', 'cap_new', 'cand_pos_rate', 'cand_pos_hi', 'ref_pos_hi', 'cand_u', 'eq_du_mean', 't_du_lo', 't_du_hi']].to_string(index=False))
-    print('\n=== Task 3: Source-Only Predictor Summary (PACER & MARUR vs Periodic) ===')
-    print(df_pr_cl[['domain', 'predictor', 'cap_new', 'candidate', 'cand_pos_rate', 'cand_pos_hi', 'ref_pos_hi', 'cand_u', 'eq_du_mean']].to_string(index=False))
+    print('\n=== Task 1: Relative and Absolute Power/TOST Summary ===')
+    print(df_pow[['scope', 'cap_new', 'candidate', 'clusters', 'zero_ref_u_clusters', 'ref_pool_u_pp', 'pool_rel_du_pct', 'boot_rel_lo_pct', 'boot_rel_hi_pct', 'tost_p_rel50', 'tost_p_rel25', 'mde80_pp', 'tost_p_1pp', 'tost_p_2pp']].to_string(index=False))
+    print('\n=== Task 2: Exploratory Campaign-Dependence Summary ===')
+    print(df_camp[['scope', 'cap_new', 'candidate', 'clusters', 'campaigns', 'icc', 'deff', 'g_eff', 'naive_se_pp', 'adj_se_pp', 'adj_mde80_pp', 'adj_tost_p_2pp', 'hier_boot95_lo_pp', 'hier_boot95_hi_pp']].to_string(index=False))
 
 
 if __name__ == '__main__':
-    main()
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--stats-only', action='store_true')
+    main(stats_only=ap.parse_args().stats_only)

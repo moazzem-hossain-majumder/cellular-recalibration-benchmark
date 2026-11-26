@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from scripts.audit_trip_level_inference import _paired_cluster_stats, physical_campaign_key
-from scripts.build_untouched_cohorts import build_all
+from scripts.build_heldout_cohorts import build_all
 from scripts.run_marur import aggregate
 from src.evaluation.marur import replay as replay_marur
 from src.evaluation.pacer import replay_pacer, theoretical_excess_bound
@@ -41,7 +41,7 @@ def _verify_frozen_checksums() -> dict:
 
 
 def _load_all_cohorts() -> pd.DataFrame:
-    untouched = build_all()
+    heldout = build_all()
     retro = pd.read_csv(ROOT / 'results/marur/opportunities.csv.gz', low_memory=False)
     retro = retro[retro['partition'].isin(['cal', 'test'])].copy()
     retro['HistGBM'] = np.where(retro['HistGBM'].notna(), retro['HistGBM'], retro['Tree'])
@@ -51,7 +51,7 @@ def _load_all_cohorts() -> pd.DataFrame:
         'cohort', 'partition', 'date', 'issue', 'ready', 'id', 'pattern', 'y',
         'Persistence', 'HistGBM', 'trace', 'physical_unit', 'domain',
     ]
-    return pd.concat([untouched[cols], retro[cols]], ignore_index=True)
+    return pd.concat([heldout[cols], retro[cols]], ignore_index=True)
 
 
 def _cluster_metrics(ledger: pd.DataFrame, unit_map: dict[str, str]) -> pd.DataFrame:
@@ -189,9 +189,9 @@ def run_study() -> None:
     # Paired physical-campaign cluster contrasts: PACER vs comparators
     contrast_rows = []
     for scope_name, domains in (
-        ('UntouchedHeldOut', ('untouched_heldout',)),
+        ('HeldOutPublic', ('heldout_public',)),
         ('Retrospective', ('retrospective',)),
-        ('AllCohortsPooled', ('untouched_heldout', 'retrospective')),
+        ('AllCohortsPooled', ('heldout_public', 'retrospective')),
     ):
         for model in ('HistGBM', 'Persistence'):
             for scenario in ('Recorded', 'QueryCensor20'):
@@ -253,13 +253,13 @@ def run_study() -> None:
     audit_report = {
         'generated_utc': datetime.now(timezone.utc).isoformat(),
         'frozen_config_checksums_verified': True,
-        'heldout_cohorts': sorted(data.loc[data['domain'] == 'untouched_heldout', 'cohort'].unique().tolist()),
+        'evaluation_scope': 'retrospective_public_archives_only',
+        'heldout_cohorts': sorted(data.loc[data['domain'] == 'heldout_public', 'cohort'].unique().tolist()),
         'retrospective_cohorts': sorted(data.loc[data['domain'] == 'retrospective', 'cohort'].unique().tolist()),
         'physical_clusters': {
-            'heldout_public': int(data.loc[(data['domain'] == 'untouched_heldout') & (data['partition'] == 'test'), 'physical_unit'].nunique()),
+            'heldout_public': int(data.loc[(data['domain'] == 'heldout_public') & (data['partition'] == 'test'), 'physical_unit'].nunique()),
             'retrospective': int(data.loc[(data['domain'] == 'retrospective') & (data['partition'] == 'test'), 'physical_unit'].nunique()),
         },
-        'prospective_trips_collected': 0,
         'theorem1_mean_excess_checks': {
             'total_cells': int(len(seed_mean)),
             'all_within_bound': bool(seed_mean['satisfies_bound'].all()),
