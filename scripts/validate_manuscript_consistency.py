@@ -187,13 +187,18 @@ def validate_pacer_claims(root):
         raise ValueError('Leave-one-campaign-out claim mismatch')
     abl=pd.read_csv(sens_dir/'single_factor_ablation.csv')
     abl_tex=(root/'paper/tables/table_m9_ablation.tex').read_text(encoding='utf8')
+    bdown=pd.read_csv(sens_dir/'ablation_breakdown.csv', keep_default_na=False)
+    bdown_tex=(root/'paper/tables/table_s21_ablation_breakdown.tex').read_text(encoding='utf8')
     par_df=pd.read_csv(sens_dir/'risk_utility_pareto.csv')
     par_tex=(root/'paper/tables/table_s20_pareto_fairness.tex').read_text(encoding='utf8')
     fair_df=pd.read_csv(sens_dir/'baseline_fairness_audit.csv')
-    if len(abl)!=6 or '228/400' not in source or '228/400' not in abl_tex or '47/120' not in source:
+    readme_txt=(root/'README.md').read_text(encoding='utf8')
+    if len(abl)!=6 or '228/400' not in source or '228/400' not in abl_tex or '47/120' not in source or '55.5' not in abl_tex or '55.5' not in source:
         raise ValueError('Single-factor ablation consistency mismatch')
-    if len(fair_df)!=8 or 'FairnessSieve' not in par_tex or '3/100' not in combined:
-        raise ValueError('Pareto/fairness sieve consistency mismatch')
+    if len(bdown)!=9 or '27.5' not in bdown_tex or '75.8' not in bdown_tex or '27.5' not in source:
+        raise ValueError('Per-campaign / scenario ablation breakdown mismatch')
+    if len(fair_df)!=8 or 'FairnessSieve' not in par_tex or '3/28' not in source or '3/100' not in source or '3/28' not in readme_txt or '3/100' not in readme_txt:
+        raise ValueError('Pareto/fairness sieve 3/28 vs 3/100 consistency mismatch')
     related=(root/'paper/related_work.tex').read_text(encoding='utf8')
     if 'sentosa2025cellreplay' not in related:
         raise ValueError('CellReplay citation missing from related_work.tex')

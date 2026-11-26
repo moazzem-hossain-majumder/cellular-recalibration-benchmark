@@ -352,7 +352,7 @@ def plot_main_fig4_ablation_pareto() -> None:
 
     ax2.axhline(10.0, color='#2ca02c', linestyle='--', linewidth=0.9)
     ax2.text(0.18, 11.4, 'Target alpha = 10% (unmet)', fontsize=6.0, color='#246b3a', ha='left')
-    ax2.text(1.75, 21.0, 'Matched (Q, A):\n3/100 wins vs Per', fontsize=6.0, bbox=dict(boxstyle='round,pad=0.25', fc='#fffbe6', ec='#b59b00', lw=0.6))
+    ax2.text(1.45, 18.8, 'Jointly fair (Q, A):\n3/28 wins (10.7%)\n[3/100 of all pairs]', fontsize=5.8, bbox=dict(boxstyle='round,pad=0.25', fc='#fffbe6', ec='#b59b00', lw=0.6))
     ax2.set_xlim(0.0, 6.2)
     ax2.set_ylim(5.0, 58.0)
     ax2.set_xlabel('Mean Supported Throughput $U$ (%)')

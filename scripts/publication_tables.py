@@ -56,7 +56,7 @@ def _main_tables(root: Path) -> dict:
         )
         return ' '.join(cleaned.split())
     abl_rows = [
-        [_tex_clean(r.label), _tex_clean(r.condition), f'{int(r.n_affected)}/{int(r.n_total)}', f'{r.pct_affected:.1f}', _tex_clean(r.note)]
+        [_tex_clean(r.label), _tex_clean(r.condition), f'{int(r.n_affected)}/{int(r.n_total)}', f'{r.pct_affected:.1f}', f'{r.rec_pct:.1f}', _tex_clean(r.note)]
         for r in abl_df.itertuples()
     ]
 
@@ -353,8 +353,8 @@ def _main_tables(root: Path) -> dict:
             baseline_rows,
         ),
         'table_m9_ablation': (
-            'Controlled single-factor accounting ablation across immutable saved contrasts versus Periodic baseline (rates in percent), empirically testing Proposition 1 reversal conditions (post-hoc exploratory ledger audit).',
-            ['AccountingChoice', 'Prop1Condition', 'Affected', 'Rate', 'SecondaryAuditNote'],
+            'Controlled single-factor accounting ablation across immutable saved contrasts versus Periodic baseline (rates in percent; RecPct shows natural Recorded truncation only without QueryCensor20), empirically testing Proposition 1 conditions across 6 physical campaigns.',
+            ['AccountingChoice', 'Prop1Condition', 'Affected', 'AllPct', 'RecPct', 'SecondaryAuditNote'],
             abl_rows,
         ),
         'table_m3_cluster_inference': (
@@ -517,8 +517,37 @@ def _supp_extra_tables(root: Path) -> dict:
     ]
     sieve_row = par_df[par_df['source'] == 'FairnessSieve_100Pairs'].iloc[0]
     par_rows.append([
-        'FairnessSieve', '10/40', 'Q=Periodic', 'dA max 5pp', '100 pairs', '3/28 matched', '3/100 win', 'E1/TMob Early10; Op1 MAR10'
+        'FairnessSieve', '10/40', 'Q=Per', 'dA max 5pp', '100 pairs', '3/28 (10.7)', '3/100 (3.0)', 'E1/TMob Early10; Op1 MAR10'
     ])
+
+    # S21: Ablation breakdown by scenario (Recorded vs QueryCensor20), all 6 campaigns, and denominator definition
+    bdown_df = pd.read_csv(root / 'results/exploratory/sensitivity/ablation_breakdown.csv', keep_default_na=False)
+    def _cmp_cell(s: str) -> str:
+        return (
+            str(s)
+            .replace(' pct)', ')')
+            .replace('HistGBM Recorded (6 camp)', 'HistGBM Rec')
+            .replace('unfilt win', 'unfilt')
+            .replace('Q-matched', 'Q')
+            .replace('(Q,A) matched', 'Q,A')
+            .replace('fair win ', '')
+            .replace('net all ', '')
+            .replace('In scope pool', 'Pooled')
+        )
+    bdown_rows = [
+        [
+            'Scen' if r.group_type == 'ScenarioSplit' else ('Camp' if r.group_type == 'Campaign' else 'Sieve'),
+            _cmp_cell(r.group),
+            str(int(r.n_contrasts)),
+            str(int(r.n_campaigns)),
+            _cmp_cell(r.sla_flip),
+            _cmp_cell(r.rank_flip),
+            _cmp_cell(r.q_unmatched),
+            _cmp_cell(r.miss_overlap),
+            _cmp_cell(r.pool_rhi_flip),
+        ]
+        for r in bdown_df.itertuples()
+    ]
 
     return {
         'table_s14_marur_audit': (
@@ -552,9 +581,14 @@ def _supp_extra_tables(root: Path) -> dict:
             locampo_rows,
         ),
         'table_s20_pareto_fairness': (
-            'Exploratory 10-cohort Risk-Utility operating summary (HistGBM, recorded feedback; percentages) and sequential fairness sieve over all 100 contrasts vs Periodic after matching realized queries Qnew and offer rate A.',
+            'Exploratory 10-cohort Risk-Utility operating summary (HistGBM, recorded feedback; percentages) and sequential fairness sieve reporting both win rate among 28 jointly fair contrasts (3/28, 10.7 percent) and share of all 100 initial contrasts (3/100, 3.0 percent).',
             ['Policy', 'Cap', 'RealQ', 'OfferA', 'AllRiskHi', 'CondRiskHi', 'SuppU', 'Notes'],
             par_rows,
+        ),
+        'table_s21_ablation_breakdown': (
+            'Ablation experimental-unit construction and reversal breakdown (count/total and percent in parentheses) separated by missingness regime (natural Recorded truncation vs synthetic QueryCensor20), each of the 6 physical campaigns, and sequential fairness sieve denominators.',
+            ['Type', 'Group', 'N', 'Camp', 'SLARev', 'RankRev', 'QUnmatch', 'MissOverlap', 'PoolRev'],
+            bdown_rows,
         ),
     }
 
@@ -671,9 +705,9 @@ def tables(root=ROOT):
 
 def latex(spec):
     caption, header, rows = spec
-    prose = header[0] in {'Policy', 'Regime', 'OfferStratum', 'Scope', 'Axis', 'Dropped', 'DroppedCamp', 'AccountingChoice'}
+    prose = header[0] in {'Policy', 'Regime', 'OfferStratum', 'Scope', 'Axis', 'Dropped', 'DroppedCamp', 'AccountingChoice', 'Type'}
     wide_pow = len(header) >= 12
-    size = r'\centering\footnotesize\setlength{\tabcolsep}{' + ('2.2pt' if wide_pow else '3.5pt') + '}' if prose else r'\centering\small'
+    size = r'\centering\footnotesize\setlength{\tabcolsep}{' + ('2.2pt' if wide_pow else ('2.4pt' if len(header) >= 9 else '3.5pt')) + '}' if prose else r'\centering\small'
     align = (('llll' + 'r' * (len(header) - 4)) if len(header) > 3 and header[3] == 'Estimand' else ('ll' + 'r' * (len(header) - 2))) if wide_pow else ('l' * len(header) if prose else 'l' + 'r' * (len(header) - 1))
     lines = [r'\begin{table*}[!ht]', size, r'\caption{' + caption + '}', r'\begin{tabular}{' + align + '}', r'\hline']
     for row in [header, *rows]:

@@ -27,13 +27,15 @@ def test_manifest_handles_checkout_line_endings(tmp_path):
 def test_single_factor_ablation_and_pareto_sieve():
     from scripts.run_sensitivity_exploratory import run_single_factor_ablation, run_risk_utility_and_fairness_audit
 
-    abl = run_single_factor_ablation().set_index('factor')
+    abl, bdown = run_single_factor_ablation()
+    abl = abl.set_index('factor')
     assert abl.loc['R_vs_Rplus_SLA', 'n_affected'] == 228
     assert abl.loc['R_vs_Rplus_Rank', 'n_affected'] == 135
     assert abl.loc['Cap_vs_Qnew_All', 'n_affected'] == 124
     assert abl.loc['Missing_Bounds_Overlap', 'n_affected'] == 135
     assert abl.loc['Pooling_Weight_Rplus', 'n_affected'] == 47
     assert abl.loc['Campaign_Clustering_Donner', 'n_affected'] == 2
+    assert len(bdown) == 9
 
     pareto, fair = run_risk_utility_and_fairness_audit()
     sieve = pareto[pareto['source'] == 'FairnessSieve_100Pairs'].iloc[0]

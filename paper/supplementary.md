@@ -419,7 +419,7 @@ These archives were inspected before the controller and cost audit were designed
 
 ## Comparator taxonomy, PACER protocol details, and extended exploratory sweeps
 
-To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation, making this a frozen retrospective evaluation rather than independent external replication), all PACER parameters ($`\alpha=0.10`$, $`\gamma=0.05`$, $`a_{\text{veto}}=0.15`$, $`\kappa_{\text{ext}}=2.0`$, $`W_{\text{obs}}=20`$, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S15 summarizes the operational taxonomy comparing MARUR and PACER across regimes, Table S16 reports the complete 18-row pooling-rule sensitivity matrix across HeldOut, Retrospective, and AllCohorts scopes, Table S17 reports the complete 11-row Leave-One-Cohort-Out check across all 10 cohorts (42 total clusters), Table S18 reports the exploratory, low-precision campaign-level dependence sensitivity over the 3 retrospective and 3 held-out geographic campaigns (contrasting naive equal-cluster $`\pm 50\%`$ TOST $`p`$ against Donner campaign-adjusted $`\pm 50\%`$ and $`\pm 25\%`$ relative TOST $`p`$-values, adjusted $`\pm 2`$ pp $`p`$, effective date counts $`G_{\text{eff}}`$, and two-stage hierarchical bootstrap 90% equal-cluster relative intervals, where non-significant results indicate insufficient precision rather than evidence of equivalence), Table S19 reports both per-campaign risk/utility medians and the 6-campaign Leave-One-Campaign-Out (LOCampO, 5 remaining campaigns per exclusion) robustness check, Table S20 details the 10-cohort Risk–Utility Pareto operating points and the 100-contrast sequential fairness sieve, Table S21 reports Theorem 1 operational strata ceilings, and Table S22 reports the full exploratory window/$`\alpha`$, predictor, LOCO, and LOCampO matrix alongside Fig. S9. Formally, PACER’s weighted selective-excess bound over $`K=\min(C_{\text{new}}, T)`$ uniform block probes $`u_k \sim \mathrm{Uniform}(\mathcal{B}_k)`$ satisfies
+To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation, making this a frozen retrospective evaluation rather than independent external replication), all PACER parameters ($`\alpha=0.10`$, $`\gamma=0.05`$, $`a_{\text{veto}}=0.15`$, $`\kappa_{\text{ext}}=2.0`$, $`W_{\text{obs}}=20`$, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S15 summarizes the operational taxonomy comparing MARUR and PACER across regimes, Table S16 reports the complete 18-row pooling-rule sensitivity matrix across HeldOut, Retrospective, and AllCohorts scopes, Table S17 reports the complete 11-row Leave-One-Cohort-Out check across all 10 cohorts (42 total clusters), Table S18 reports the exploratory, low-precision campaign-level dependence sensitivity over the 3 retrospective and 3 held-out geographic campaigns (contrasting naive equal-cluster $`\pm 50\%`$ TOST $`p`$ against Donner campaign-adjusted $`\pm 50\%`$ and $`\pm 25\%`$ relative TOST $`p`$-values, adjusted $`\pm 2`$ pp $`p`$, effective date counts $`G_{\text{eff}}`$, and two-stage hierarchical bootstrap 90% equal-cluster relative intervals, where non-significant results indicate insufficient precision rather than evidence of equivalence), Table S19 reports both per-campaign risk/utility medians and the 6-campaign Leave-One-Campaign-Out (LOCampO, 5 remaining campaigns per exclusion) robustness check, Table S20 details the 10-cohort Risk–Utility Pareto operating points and the sequential fairness sieve (reporting both ‘3/28‘, ‘10.7
 ``` math
 \begin{equation}
 \mathbf{E}\!\left[A\left(R_+^{\text{upper}} - \alpha\right)\right] \le \frac{W_{\max}}{T} \cdot \frac{\alpha + a_{\text{veto}} + \gamma(1 - \alpha)(1 + D)}{\gamma} \approx \frac{6.8}{K},
@@ -537,7 +537,24 @@ where $`W_{\max}=\lceil T/K \rceil`$ and inter-block delay $`D \le 1`$ under an 
 | PACER | 40 | 37.8 | 23.13 | 6.53 | 43.68 | 2.40 | 10-coh mean |
 | Periodic | 10 | 10.0 | 21.18 | 8.14 | 41.03 | 3.02 | 10-coh mean |
 | Periodic | 40 | 21.6 | 22.94 | 6.57 | 34.36 | 2.13 | 10-coh mean |
-| FairnessSieve | 10/40 | Q=Periodic | dA max 5pp | 100 pairs | 3/28 matched | 3/100 win | E1/TMob Early10; Op1 MAR10 |
+| FairnessSieve | 10/40 | Q=Per | dA max 5pp | 100 pairs | 3/28 (10.7) | 3/100 (3.0) | E1/TMob Early10; Op1 MAR10 |
+
+</div>
+
+<div class="table*">
+
+|  |  |  |  |  |  |  |  |  |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| Type | Group | N | Camp | SLARev | RankRev | QUnmatch | MissOverlap | PoolRev |
+| Scen | QueryCensor20 | 200 | 6 | 117/200 (58.5) | 64/200 (32.0) | 62/200 (31.0) | 67/142 (47.2) | 26/60 (43.3) |
+| Scen | Recorded | 200 | 6 | 111/200 (55.5) | 71/200 (35.5) | 62/200 (31.0) | 68/143 (47.6) | 21/60 (35.0) |
+| Camp | Ireland Drive | 40 | 1 | 24/40 (60.0) | 20/40 (50.0) | 12/40 (30.0) | 5/40 (12.5) | Pooled |
+| Camp | Ireland Static | 40 | 1 | 11/40 (27.5) | 11/40 (27.5) | 16/40 (40.0) | 12/40 (30.0) | Pooled |
+| Camp | Oslo Commute | 40 | 1 | 25/40 (62.5) | 4/40 (10.0) | 8/40 (20.0) | 14/40 (35.0) | Pooled |
+| Camp | Rome 2023 | 80 | 1 | 47/80 (58.8) | 29/80 (36.2) | 24/80 (30.0) | 49/80 (61.3) | Pooled |
+| Camp | Rome Capacity | 80 | 1 | 30/80 (37.5) | 20/80 (25.0) | 24/80 (30.0) | 55/80 (68.8) | Pooled |
+| Camp | US Drive3 | 120 | 1 | 91/120 (75.8) | 51/120 (42.5) | 40/120 (33.3) | 0/5 (0.0) | Pooled |
+| Sieve | HistGBM Rec | 100 | 6 | 15/100 unfilt | 8/69 Q | 28/100 Q,A | 3/28 (10.7) | 3/100 (3.0) |
 
 </div>
 

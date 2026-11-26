@@ -525,6 +525,8 @@ def run_single_factor_ablation() -> pd.DataFrame:
                 meas_sla_flip = (c['v_given_positive'] <= 0.10) != (c['positive_high'] <= 0.10)
                 comp_rows.append(
                     {
+                        'campaign': _camp_from_cohort(cohort),
+                        'scenario': scen,
                         'rank_flip': rank_flip,
                         'sla_flip': sla_flip,
                         'q_unmatched': q_unmatched,
@@ -580,6 +582,7 @@ def run_single_factor_ablation() -> pd.DataFrame:
                 )
                 pool_rows.append(
                     {
+                        'scenario': scen,
                         'rhi_sign_flip': np.sign(d_rhi_pool) != np.sign(d_rhi_eq),
                         'rhi_gap_gt5': abs(d_rhi_pool - d_rhi_eq) > 5.0,
                         'u_sign_flip': (d_u_pool > 0.01 and d_u_eq < -0.01) or (d_u_pool < -0.01 and d_u_eq > 0.01),
@@ -595,17 +598,51 @@ def run_single_factor_ablation() -> pd.DataFrame:
     hier_rev = naive_pass & ~((cd['hier_boot90_eq_rel_lo_pct'] > -50.0) & (cd['hier_boot90_eq_rel_hi_pct'] < 50.0))
     pool_hier_pass = (cd['hier_boot90_pool_rel_lo_pct'] > -50.0) & (cd['hier_boot90_pool_rel_hi_pct'] < 50.0)
 
+    cdf_rec = cdf[cdf['scenario'] == 'Recorded']
+    cdf_rec_unres = cdf_rec[cdf_rec['has_unres']]
+    pldf_rec = pldf[pldf['scenario'] == 'Recorded']
+
     n_unres = int(cdf['has_unres'].sum())
     n_naive_pass = int(naive_pass.sum())
     ablation = [
-        dict(factor='R_vs_Rplus_SLA', label='All-issued R vs Cond R+ (SLA<=10%)', condition='R<=a permits R+>a when A<R+/a', n_total=int(len(cdf)), n_affected=int(cdf['sla_flip'].sum()), pct_affected=100.0 * float(cdf['sla_flip'].mean()), note='0 algebraic mismatches'),
-        dict(factor='R_vs_Rplus_Rank', label='All-issued R vs Cond R+ (Winner)', condition='A_1/A_2 < R+,2/R+,1', n_total=int(len(cdf)), n_affected=int(cdf['rank_flip'].sum()), pct_affected=100.0 * float(cdf['rank_flip'].mean()), note='Exact 0 mismatches across 400'),
-        dict(factor='Cap_vs_Qnew_All', label='Nominal Cnew vs Realized Qnew', condition='Qnew(cand) != Qnew(Periodic)', n_total=int(len(cdf)), n_affected=int(cdf['q_unmatched'].sum()), pct_affected=100.0 * float(cdf['q_unmatched'].mean()), note='72/432 in 6-coh MARUR audit'),
-        dict(factor='Missing_Bounds_Overlap', label='Complete R+meas vs Bounds [lo,hi]', condition='max(lo)<=min(hi) when m>0', n_total=n_unres, n_affected=int(cdf['miss_overlap'].sum()), pct_affected=100.0 * float(cdf['miss_overlap'].sum() / n_unres), note=f'{int(cdf["meas_flip"].sum())} rank / {int(cdf["meas_sla_flip"].sum())} SLA flips'),
-        dict(factor='Pooling_Weight_Rplus', label='OfferWtd vs EqualUnit Pooling (dR+hi)', condition='Cov(w_c, r_c) != 0 flips sum(w*d)', n_total=int(len(pldf)), n_affected=int(pldf['rhi_sign_flip'].sum()), pct_affected=100.0 * float(pldf['rhi_sign_flip'].mean()), note=f'{int(pldf["u_sign_flip"].sum())}/{len(pldf)} U flips ({100*pldf["u_sign_flip"].mean():.1f}%)'),
-        dict(factor='Campaign_Clustering_Donner', label='Date TOST vs Donner DEFF (p<0.05)', condition='DEFF = 1+(n-1)rho > G/Greq', n_total=n_naive_pass, n_affected=int(donner_rev.sum()), pct_affected=100.0 * float(donner_rev.sum() / n_naive_pass), note=f'{int(hier_rev.sum())}/{n_naive_pass} HierBoot Eq flips; {int(pool_hier_pass.sum())}/10 Pool pass'),
+        dict(factor='R_vs_Rplus_SLA', label='All-issued R vs Cond R+ (SLA<=10%)', condition='R<=a permits R+>a when A<R+/a', denom_formula='10 coh x 5 pol x 2 cap x 2 mod x 2 scen (6 camp)', n_total=int(len(cdf)), n_affected=int(cdf['sla_flip'].sum()), pct_affected=100.0 * float(cdf['sla_flip'].mean()), rec_count=f"{int(cdf_rec['sla_flip'].sum())}/{len(cdf_rec)}", rec_pct=100.0 * float(cdf_rec['sla_flip'].mean()), note='0 algebraic mismatches'),
+        dict(factor='R_vs_Rplus_Rank', label='All-issued R vs Cond R+ (Winner)', condition='A_1/A_2 < R+,2/R+,1', denom_formula='10 coh x 5 pol x 2 cap x 2 mod x 2 scen (6 camp)', n_total=int(len(cdf)), n_affected=int(cdf['rank_flip'].sum()), pct_affected=100.0 * float(cdf['rank_flip'].mean()), rec_count=f"{int(cdf_rec['rank_flip'].sum())}/{len(cdf_rec)}", rec_pct=100.0 * float(cdf_rec['rank_flip'].mean()), note='Exact 0 mismatches across 400'),
+        dict(factor='Cap_vs_Qnew_All', label='Nominal Cnew vs Realized Qnew', condition='Qnew(cand) != Qnew(Periodic)', denom_formula='10 coh x 5 pol x 2 cap x 2 mod x 2 scen (6 camp)', n_total=int(len(cdf)), n_affected=int(cdf['q_unmatched'].sum()), pct_affected=100.0 * float(cdf['q_unmatched'].mean()), rec_count=f"{int(cdf_rec['q_unmatched'].sum())}/{len(cdf_rec)}", rec_pct=100.0 * float(cdf_rec['q_unmatched'].mean()), note='72/432 in 6-coh MARUR audit'),
+        dict(factor='Missing_Bounds_Overlap', label='Complete R+meas vs Bounds [lo,hi]', condition='max(lo)<=min(hi) when m>0', denom_formula='Unresolved subset of 400 contrasts (m>0)', n_total=n_unres, n_affected=int(cdf['miss_overlap'].sum()), pct_affected=100.0 * float(cdf['miss_overlap'].sum() / n_unres), rec_count=f"{int(cdf_rec_unres['miss_overlap'].sum())}/{len(cdf_rec_unres)}", rec_pct=100.0 * float(cdf_rec_unres['miss_overlap'].mean()), note=f'{int(cdf["meas_flip"].sum())} rank / {int(cdf["meas_sla_flip"].sum())} SLA flips'),
+        dict(factor='Pooling_Weight_Rplus', label='OfferWtd vs EqualUnit Pooling (dR+hi)', condition='Cov(w_c, r_c) != 0 flips sum(w*d)', denom_formula='3 scopes x 5 pol x 2 cap x 2 mod x 2 scen (6 camp)', n_total=int(len(pldf)), n_affected=int(pldf['rhi_sign_flip'].sum()), pct_affected=100.0 * float(pldf['rhi_sign_flip'].mean()), rec_count=f"{int(pldf_rec['rhi_sign_flip'].sum())}/{len(pldf_rec)}", rec_pct=100.0 * float(pldf_rec['rhi_sign_flip'].mean()), note=f'{int(pldf["u_sign_flip"].sum())}/{len(pldf)} U flips ({100*pldf["u_sign_flip"].mean():.1f}%)'),
+        dict(factor='Campaign_Clustering_Donner', label='Date TOST vs Donner DEFF (p<0.05)', condition='DEFF = 1+(n-1)rho > G/Greq', denom_formula='Naive p<0.05 subset of 10 HistGBM Recorded TOST', n_total=n_naive_pass, n_affected=int(donner_rev.sum()), pct_affected=100.0 * float(donner_rev.sum() / n_naive_pass), rec_count=f"{int(donner_rev.sum())}/{n_naive_pass}", rec_pct=100.0 * float(donner_rev.sum() / n_naive_pass), note=f'{int(hier_rev.sum())}/{n_naive_pass} HierBoot Eq flips; {int(pool_hier_pass.sum())}/10 Pool pass'),
     ]
-    return pd.DataFrame(ablation)
+
+    # Separate breakdown by scenario (Recorded vs QueryCensor20) AND by each of the 6 physical campaigns
+    bdown = []
+    for sc, g in cdf.groupby('scenario', sort=True):
+        u = g[g['has_unres']]
+        pg = pldf[pldf['scenario'] == sc]
+        bdown.append({
+            'group_type': 'ScenarioSplit', 'group': sc, 'n_contrasts': int(len(g)), 'n_campaigns': 6,
+            'sla_flip': f"{int(g['sla_flip'].sum())}/{len(g)} ({100*g['sla_flip'].mean():.1f} pct)",
+            'rank_flip': f"{int(g['rank_flip'].sum())}/{len(g)} ({100*g['rank_flip'].mean():.1f} pct)",
+            'q_unmatched': f"{int(g['q_unmatched'].sum())}/{len(g)} ({100*g['q_unmatched'].mean():.1f} pct)",
+            'miss_overlap': f"{int(u['miss_overlap'].sum())}/{len(u)} ({100*u['miss_overlap'].mean():.1f} pct)",
+            'pool_rhi_flip': f"{int(pg['rhi_sign_flip'].sum())}/{len(pg)} ({100*pg['rhi_sign_flip'].mean():.1f} pct)",
+        })
+    for cp, g in cdf.groupby('campaign', sort=True):
+        u = g[g['has_unres']]
+        ov = f"{int(u['miss_overlap'].sum())}/{len(u)} ({100*u['miss_overlap'].mean():.1f} pct)" if len(u) else '0/0'
+        bdown.append({
+            'group_type': 'Campaign', 'group': cp.replace('_', ' '), 'n_contrasts': int(len(g)), 'n_campaigns': 1,
+            'sla_flip': f"{int(g['sla_flip'].sum())}/{len(g)} ({100*g['sla_flip'].mean():.1f} pct)",
+            'rank_flip': f"{int(g['rank_flip'].sum())}/{len(g)} ({100*g['rank_flip'].mean():.1f} pct)",
+            'q_unmatched': f"{int(g['q_unmatched'].sum())}/{len(g)} ({100*g['q_unmatched'].mean():.1f} pct)",
+            'miss_overlap': ov,
+            'pool_rhi_flip': 'In scope pool',
+        })
+    bdown.append({
+        'group_type': 'FairnessSieve', 'group': 'HistGBM Recorded (6 camp)', 'n_contrasts': 100, 'n_campaigns': 6,
+        'sla_flip': '15/100 unfilt win', 'rank_flip': '8/69 Q-matched', 'q_unmatched': '28/100 (Q,A) matched',
+        'miss_overlap': '3/28 fair win (10.7 pct)', 'pool_rhi_flip': '3/100 net all (3.0 pct)',
+    })
+    return pd.DataFrame(ablation), pd.DataFrame(bdown)
 
 
 def run_risk_utility_and_fairness_audit() -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -986,13 +1023,14 @@ def main(stats_only: bool = False) -> None:
     df_camp = run_campaign_dependence()
     df_loco = run_leave_one_cohort_out()
     df_locampo = run_leave_one_campaign_out()
-    df_abl = run_single_factor_ablation()
+    df_abl, df_bdown = run_single_factor_ablation()
     df_pareto, df_fair = run_risk_utility_and_fairness_audit()
     df_pow.to_csv(OUT_DIR / 'power_equivalence.csv', index=False)
     df_camp.to_csv(OUT_DIR / 'campaign_dependence.csv', index=False)
     df_loco.to_csv(OUT_DIR / 'leave_one_cohort_out.csv', index=False)
     df_locampo.to_csv(OUT_DIR / 'leave_one_campaign_out.csv', index=False)
     df_abl.to_csv(OUT_DIR / 'single_factor_ablation.csv', index=False)
+    df_bdown.to_csv(OUT_DIR / 'ablation_breakdown.csv', index=False)
     df_pareto.to_csv(OUT_DIR / 'risk_utility_pareto.csv', index=False)
     df_fair.to_csv(OUT_DIR / 'baseline_fairness_audit.csv', index=False)
 
@@ -1022,6 +1060,7 @@ def main(stats_only: bool = False) -> None:
         'loco_rows': int(len(df_loco)),
         'locampo_rows': int(len(df_locampo)),
         'ablation_rows': int(len(df_abl)),
+        'ablation_breakdown_rows': int(len(df_bdown)),
         'pareto_rows': int(len(df_pareto)),
         'fairness_rows': int(len(df_fair)),
         'window_alpha_rows': int(len(df_wa)),

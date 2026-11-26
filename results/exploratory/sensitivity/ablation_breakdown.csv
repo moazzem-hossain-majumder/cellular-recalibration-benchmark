@@ -1,0 +1,10 @@
+group_type,group,n_contrasts,n_campaigns,sla_flip,rank_flip,q_unmatched,miss_overlap,pool_rhi_flip
+ScenarioSplit,QueryCensor20,200,6,117/200 (58.5 pct),64/200 (32.0 pct),62/200 (31.0 pct),67/142 (47.2 pct),26/60 (43.3 pct)
+ScenarioSplit,Recorded,200,6,111/200 (55.5 pct),71/200 (35.5 pct),62/200 (31.0 pct),68/143 (47.6 pct),21/60 (35.0 pct)
+Campaign,Ireland Drive,40,1,24/40 (60.0 pct),20/40 (50.0 pct),12/40 (30.0 pct),5/40 (12.5 pct),In scope pool
+Campaign,Ireland Static,40,1,11/40 (27.5 pct),11/40 (27.5 pct),16/40 (40.0 pct),12/40 (30.0 pct),In scope pool
+Campaign,Oslo Commute,40,1,25/40 (62.5 pct),4/40 (10.0 pct),8/40 (20.0 pct),14/40 (35.0 pct),In scope pool
+Campaign,Rome 2023,80,1,47/80 (58.8 pct),29/80 (36.2 pct),24/80 (30.0 pct),49/80 (61.3 pct),In scope pool
+Campaign,Rome Capacity,80,1,30/80 (37.5 pct),20/80 (25.0 pct),24/80 (30.0 pct),55/80 (68.8 pct),In scope pool
+Campaign,US Drive3,120,1,91/120 (75.8 pct),51/120 (42.5 pct),40/120 (33.3 pct),0/5 (0.0 pct),In scope pool
+FairnessSieve,HistGBM Recorded (6 camp),100,6,15/100 unfilt win,8/69 Q-matched,"28/100 (Q,A) matched",3/28 fair win (10.7 pct),3/100 net all (3.0 pct)
