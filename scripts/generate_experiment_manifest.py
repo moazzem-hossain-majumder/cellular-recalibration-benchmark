@@ -24,7 +24,7 @@ PATTERNS = [
     "results/runs/clean_controller_reproduction.json","results/runs/clean_audit_tests.xml","results/runs/dependency_licenses.json",
     'results/marur_audit/*','results/marur/*','configs/*.json',
     'results/runs/isolated_baseline_reproduction.json','results/runs/isolated_marur_reproduction.json',
-    'src/**/*.py','scripts/*.py','tests/**/*.py','results/diagnostics/*',
+    'src/**/*.py','scripts/*.py','scripts/archive/*','tests/**/*.py','examples/*','results/diagnostics/*',
     'results/metrics/*','results/tables/*','results/figures/*','results/pacer/*','paper/**/*','app/*',
     'data/metadata/*.json','README.md','LICENSE','requirements.txt','pyproject.toml',
     '.github/workflows/*','results/runs/final_tests.xml','results/runs/execution.json',

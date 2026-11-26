@@ -24,20 +24,20 @@ def _require(cond: bool, msg: str) -> None:
 
 
 def verify_lock_and_artifacts() -> dict:
-    lock = json.loads((PACER_DIR / 'preregistration_lock.json').read_text(encoding='utf8'))
+    lock = json.loads((PACER_DIR / 'frozen_config_checksums.json').read_text(encoding='utf8'))
     for rel, expected in lock['sha256_lf'].items():
         actual = hashlib.sha256((ROOT / rel).read_bytes().replace(b'\r\n', b'\n')).hexdigest()
-        _require(actual == expected, f'Pre-registration SHA-256 mismatch for {rel}: {actual} != {expected}')
+        _require(actual == expected, f'Frozen configuration SHA-256 mismatch for {rel}: {actual} != {expected}')
 
     cfg = json.loads((ROOT / 'configs/pacer.json').read_text(encoding='utf8'))
-    _require(cfg == lock['config'], 'configs/pacer.json does not match preregistration lock')
-    _require(not cfg['tuning_allowed_after_unseal'], 'tuning_allowed_after_unseal must remain false')
+    _require(cfg == lock['config'], 'configs/pacer.json does not match frozen configuration checksums')
+    _require(not cfg['tuning_allowed_after_unseal'], 'post-freeze tuning flag must remain false')
 
-    untouched = pd.read_csv(PACER_DIR / 'untouched_opportunities.csv.gz')
-    expected_untouched = {'Rome_Capacity_Op1', 'Rome_Capacity_Op2', 'Oslo_Commute', 'Ireland_Static'}
-    _require(set(untouched['cohort'].unique()) == expected_untouched, 'Unexpected untouched cohort set')
+    heldout = pd.read_csv(PACER_DIR / 'untouched_opportunities.csv.gz')
+    expected_heldout = {'Rome_Capacity_Op1', 'Rome_Capacity_Op2', 'Oslo_Commute', 'Ireland_Static'}
+    _require(set(heldout['cohort'].unique()) == expected_heldout, 'Unexpected held-out cohort set')
 
-    for cohort, grp in untouched.groupby('cohort'):
+    for cohort, grp in heldout.groupby('cohort'):
         cal = grp[grp['partition'] == 'cal']
         test = grp[grp['partition'] == 'test']
         _require(len(cal) == cfg['initial_labels'], f'{cohort}: expected 10 initial labels, got {len(cal)}')
@@ -52,7 +52,7 @@ def verify_lock_and_artifacts() -> dict:
     report = json.loads((PACER_DIR / 'pacer_audit_report.json').read_text(encoding='utf8'))
 
     _require(report['prospective_trips_collected'] == 0, 'prospective_trips_collected must stay 0')
-    _require(report['preregistration_lock_verified'] is True, 'preregistration_lock_verified must be true')
+    _require(report['frozen_config_checksums_verified'] is True, 'frozen_config_checksums_verified must be true')
 
     # Recompute cluster-level metrics and match summary row-for-row
     key_cols = ['cohort', 'model', 'scenario', 'cap_new', 'policy']
@@ -120,8 +120,8 @@ def verify_lock_and_artifacts() -> dict:
         np.testing.assert_allclose(row['pool_du'], recomp['pool_du'], atol=1e-12)
         np.testing.assert_allclose(row['pool_dpos_hi'], recomp['pool_dpos_hi'], atol=1e-12)
 
-    # Deterministic replay spot-check on untouched Ireland_Static HistGBM cap=40
-    sub_ir = untouched[(untouched['cohort'] == 'Ireland_Static') & (untouched['partition'].isin(['cal', 'test']))].copy()
+    # Deterministic replay spot-check on held-out Ireland_Static HistGBM cap=40
+    sub_ir = heldout[(heldout['cohort'] == 'Ireland_Static') & (heldout['partition'].isin(['cal', 'test']))].copy()
     sub_ir['point'] = sub_ir['HistGBM'].astype(float)
     cal_ir = sub_ir[sub_ir['partition'] == 'cal'].sort_values(['issue', 'id'])
     test_ir = sub_ir[sub_ir['partition'] == 'test'].sort_values(['issue', 'id']).reset_index(drop=True)

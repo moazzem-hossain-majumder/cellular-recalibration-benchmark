@@ -207,39 +207,38 @@
 <p class="author">Md. Moazzem Hossain Majumder</p>
 <div class="abstract">
 <div class="abstract-title">Abstract</div>
-<p>Calibration policies evaluated at the same nominal query cap can mislead through unequal probe spending, unobserved outcomes, and heavy abstention. Across 16 physical campaign-dates pooling retrospective multi-carrier archives, matched-cost supported-throughput differences between Missingness-Aware Recalibration under Uncertainty and Risk (MARUR) and periodic recalibration are statistically indistinguishable from zero. Across mobile cellular cohorts under frozen tree predictors, positive-offer upper violation risk averages roughly 17–63%—far above nominal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>—while supported measured throughput remains only 1–3% of observed rate. We establish an auditable empirical accounting framework separating realized probe attempts, finite-record missing-outcome risk intervals, selective offer decomposition <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R=(M/N)R_+</annotation></semantics></math>, and physical cluster inference, benchmarking MARUR against Fixed-Period recalibration (Periodic) and Horizon-Paced Selective-Offer Conformal Control (PACER) across retrospective and held-out public archives. Exploratory sensitivity analyses across conformal windows, nominal error levels, and alternative source-only predictors confirm these trade-offs, while live prospective field trips remain absent.</p>
+<p>Calibration policies evaluated at the same nominal query cap can mislead through unequal probe spending, unobserved outcomes, and heavy abstention. Across 16 retrospective physical campaign-dates, matched-cost supported-throughput differences between Missingness-Aware Recalibration under Uncertainty and Risk (MARUR) and periodic recalibration cannot be distinguished from zero; power is limited, and two one-sided equivalence tests indicate that utility gains exceeding two percentage points are unlikely given observed cluster variability. Across mobile cellular cohorts under frozen tree predictors, positive-offer upper violation risk spans between 9% and 68%—well above nominal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>—while supported measured throughput remains around 1% to 3%. We contribute an open-source empirical accounting framework and command-line audit tool (<code>audit_policy.py</code>) alongside a practical reporting checklist integrating realized probe attempts, finite-record missing-outcome risk intervals, selective offer decomposition <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R=(M/N)R_+</annotation></semantics></math>, physical-cluster equivalence inference, and pooling-weight checks. Benchmarking MARUR, Fixed-Period recalibration, and Horizon-Paced Selective-Offer Conformal Control (PACER) across retrospective and held-out archives shows that sparse feedback rarely cures out-of-domain failures, and all evidence remains strictly retrospective from public archives without live field validation.</p>
 </div>
 </header>
 <div class="IEEEkeywords">
-<p>Cellular throughput, calibration feedback, selective prediction, cluster inference, measurement methodology.</p>
+<p>Cellular throughput, calibration feedback, selective prediction, cluster equivalence, measurement methodology.</p>
 </div>
 <h1 id="sec:intro">Introduction</h1>
-<p>An application that commits to a minimum cellular throughput needs both useful delivered bandwidth and a tolerable rate of broken promises. Point forecast error, low all-issued average violations, and equal nominal recalibration budgets do not independently establish either property. Under sparse feedback, a calibration policy can appear safer simply by abstaining more often, avoiding expensive probes, front-loading its query budget before distribution shifts arrive, or omitting unmeasured horizon outcomes from its failure rate.</p>
-<p>This paper asks a concrete empirical measurement question: <em>when does recalibration feedback help cellular throughput commitments, and how do unequal query cost, missing responses, and abstention make apparent gains misleading?</em> Rather than claiming a universally superior conformal controller, our central contribution is an auditable evaluation and accounting framework tested across six retrospective cellular cohorts and four held-out public archives. Specifically, we contribute:</p>
+<p>An application committing to a minimum cellular throughput requires useful delivered bandwidth alongside tolerable failure rates. Point error, low all-issued violations, and equal nominal recalibration caps do not establish either property: under sparse feedback, a controller can appear safer simply by abstaining more often, exhausting probes early, spending unequal realized queries, or omitting unmeasured outcomes from failure counts.</p>
+<p>We address an empirical measurement question: <em>when does recalibration feedback help cellular throughput commitments, and how do unequal query cost, missingness, and abstention make apparent gains misleading?</em> Alongside our multi-cohort findings, our primary practical contribution is an open-source accounting library and CLI tool (<code>src/audit/recalibration_audit.py</code>, <code>scripts/audit_policy.py</code>) verified across six retrospective cohorts and four held-out public archives:</p>
 <ol>
-<li><p><strong>Causal acquisition accounting:</strong> An event-ledger methodology separating initial pre-test labels from charged new probes, unsuccessful horizon completions, residual-window admissions, and delayed availability for subsequent forecasts.</p></li>
-<li><p><strong>Selective-risk and missing-outcome bounds:</strong> Exact finite-record bounds <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>M</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[e/M,(e+m)/M]</annotation></semantics></math> alongside the identity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R = (M/N)R_+</annotation></semantics></math>, demonstrating how all-issued reliability conceals conditional failure rates of roughly <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>17</mn><annotation encoding="application/x-tex">17</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>63</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">63\%</annotation></semantics></math> under heavy abstention.</p></li>
-<li><p><strong>Physical-cluster and matched-cost inference:</strong> Pairing policies at equal realized probe expenditures over physical campaign-dates (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">G=16</annotation></semantics></math> retrospective dates; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>26</mn></mrow><annotation encoding="application/x-tex">G=26</annotation></semantics></math> held-out dates), showing that large configuration grids (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>576</mn><annotation encoding="application/x-tex">576</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>848</mn></mrow><annotation encoding="application/x-tex">1{,}848</annotation></semantics></math> runs) do not multiply independent statistical evidence.</p></li>
-<li><p><strong>Honest comparator and bound auditing:</strong> Benchmarking <em>Missingness-Aware Recalibration under Uncertainty and Risk</em> (MARUR) and <em>Horizon-Paced Selective-Offer Conformal Control</em> (PACER) against established baselines, alongside algebraic limits showing where sparse-budget guarantees become vacuous and where controllers should not be deployed.</p></li>
+<li><p><strong>Causal ledger and reporting CLI:</strong> Event-level separation of probe requests, horizon missingness, and finite-record bounds <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>M</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[e/M,(e+m)/M]</annotation></semantics></math> satisfying <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R=(M/N)R_+</annotation></semantics></math>, paired with an automated warning CLI and practitioner checklist.</p></li>
+<li><p><strong>Physical-cluster power and equivalence:</strong> Matched-cost contrasts grouped by campaign-date (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">G=16</annotation></semantics></math> retrospective; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>26</mn></mrow><annotation encoding="application/x-tex">G=26</annotation></semantics></math> held-out), reporting 80%-power Minimum Detectable Effect (MDE) and Two One-Sided Tests (TOST) rather than misinterpreting small-sample null intervals.</p></li>
+<li><p><strong>Comparator and bound auditing:</strong> Benchmarking <em>Missingness-Aware Recalibration under Uncertainty and Risk</em> (MARUR) and <em>Horizon-Paced Selective-Offer Conformal Control</em> (PACER) against standard baselines, exposing pooling-weight artifacts and vacuous small-budget regimes.</p></li>
 </ol>
-<p>All evaluations use retrospective and frozen held-out public archives; zero prospective live field trips have been collected, and all negative findings are retained.</p>
+<p>All evidence is retrospective from public archives and no live field validation was performed; all negative findings are retained.</p>
 <h1 id="sec:related_work">Related Work</h1>
 <h2 id="cellular-measurement-prediction-and-rate-decisions">Cellular Measurement, Prediction, and Rate Decisions</h2>
-<p>Operational measurements establish that cellular throughput depends on radio conditions, mobility, and the collection regime. The channel/context dataset of Raca et al. <span class="citation" data-cites="raca2020">(Raca et al. 2020)</span> and the commercial mmWave measurements underlying Lumos5G <span class="citation" data-cites="narayanan2020">(Narayanan et al. 2020)</span> support context-aware prediction. More recent multi-technology measurements, longitudinal service analysis, and machine-learning modeling extend this evidence to evolving non-standalone networks <span class="citation" data-cites="kousias2024data caso2024 kousias2024model">(Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; Kousias, Rajiullah, Caso, Alay, et al. 2024)</span>. However, forecast counts within a shared route or campaign are temporally correlated rather than independent replications, and point error does not measure commitment violation risk.</p>
-<p>Missing predictors and deployment constraints motivate complementary approaches. BAMMO incorporates missing covariates into additive boosting on commercial 5G data <span class="citation" data-cites="jacobson2025">(Jacobson et al. 2025)</span>, addressing missing inputs rather than unsuccessful acquisition of future calibration outcomes. Real-time smartphone evaluations highlight sampling, labeling, and distribution shift <span class="citation" data-cites="raca2024">(Raca et al. 2024)</span>, while multi-carrier experiments reveal conflicting histories that limit fine-grained accuracy <span class="citation" data-cites="basit2024">(Basit et al. 2024)</span>. The closest work to our decision objective is Sirhan’s evaluation of global, regime-conditioned, and adaptive conformal throughput intervals <span class="citation" data-cites="sirhan2026">(Sirhan 2026)</span>, which shows that mobility conditioning can aid two-sided intervals while a global one-sided bound performs competitively for rate selection. Neither work audits how unequal probe spending, unsuccessful responses, and heavy abstention interact across budgets and physical campaigns.</p>
+<p>Operational measurements establish that cellular throughput depends on radio conditions, mobility, and collection protocol. Earlier channel/context traces <span class="citation" data-cites="raca2020">(Raca et al. 2020)</span> and commercial millimeter-wave (mmWave) fifth-generation (5G) campaigns <span class="citation" data-cites="narayanan2020">(Narayanan et al. 2020)</span> enabled context-aware rate prediction, while newer multi-technology datasets and machine-learning evaluations extend these insights to non-standalone 5G deployments <span class="citation" data-cites="kousias2024data caso2024 kousias2024model">(Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; Kousias, Rajiullah, Caso, Alay, et al. 2024)</span>. However, forecast errors sampled within a single route or shared drive are temporally correlated rather than independent replications, and low point error does not bound rate-commitment violations.</p>
+<p>Missing inputs and deployment realism motivate complementary lines of work. The Boosted Additive Model for data with Missing Observations (BAMMO) handles missing covariates during commercial 5G throughput modeling <span class="citation" data-cites="jacobson2025">(Jacobson et al. 2025)</span>, addressing unobserved inputs rather than unsuccessful acquisition of future calibration outcomes. Smartphone video streaming studies highlight real-time sampling shift <span class="citation" data-cites="raca2024">(Raca et al. 2024)</span>, multi-carrier experiments document conflicting rate histories across links <span class="citation" data-cites="basit2024">(Basit et al. 2024)</span>, and Sirhan <span class="citation" data-cites="sirhan2026">(Sirhan 2026)</span> compares global, regime-conditioned, and adaptive conformal intervals for mobile 5G rate selection. None of these studies audits how unequal probe spending, failed outcome horizon completions, and heavy abstention jointly distort controller comparisons.</p>
 <h2 id="missingness-adaptation-and-budgeted-feedback">Missingness, Adaptation, and Budgeted Feedback</h2>
-<p>Conformal calibration under missing covariates distinguishes marginal coverage from missingness-pattern conditioning <span class="citation" data-cites="zaffran2023">(Zaffran et al. 2023)</span>. Covariate-shift weighting <span class="citation" data-cites="tibshirani2019">(Tibshirani et al. 2019)</span> and non-exchangeable weighted conformal methods <span class="citation" data-cites="barber2023">(Barber et al. 2023)</span> establish bounds under structural assumptions that break under unrestricted temporal drift and outcome censoring. Time-series conformal methods <span class="citation" data-cites="zaffran2022 xu2023 lin2022 gibbs2024">(Zaffran et al. 2022; Xu and Xie 2023; Lin et al. 2022; Gibbs and Candès 2024)</span>, online level adaptation <span class="citation" data-cites="gibbs2021 bhatnagar2023 pid2023 angelopoulos2024online podkopaev2024">(Gibbs and Candès 2021; Bhatnagar et al. 2023; Angelopoulos et al. 2023; Anastasios Nikolas Angelopoulos et al. 2024; Podkopaev et al. 2024)</span>, and risk-controlling formulations <span class="citation" data-cites="bates2021 angelopoulos2024risk gibbs2025 gauthier2026">(Bates et al. 2021; Anastasios N. Angelopoulos et al. 2024; Gibbs et al. 2025; Gauthier et al. 2026)</span> establish strong full-feedback baselines, while selective classification <span class="citation" data-cites="geifman2017">(Geifman and El-Yaniv 2017)</span> and stability critiques <span class="citation" data-cites="min2026">(Min et al. 2026)</span> formalize the link between abstention and conditional error.</p>
-<p>Budgeted and partial-feedback calibration has recently gained direct attention. Ilyas et al. <span class="citation" data-cites="ilyas2026">(Ilyas et al. 2026)</span> analyze upfront stopping rules for i.i.d. arrivals, Ge et al. <span class="citation" data-cites="ge2025">(Ge et al. 2025)</span> study stochastic semi-bandit feedback revealed by set inclusion, and Hou et al. <span class="citation" data-cites="hou2025">(Hou et al. 2025)</span> calibrate probabilistic solvers via sporadic edge–cloud feedback. Our empirical contribution bridges these threads inside real cellular logs by accounting jointly for charged measurement probes, failed responses, selective offer frequency <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R = (M/N)R_+</annotation></semantics></math>, and physical collection-date dependence across established reactive (MARUR) and paced (PACER) comparators. Table I summarizes the closest related publications.</p>
+<p>Conformal calibration with missing covariates separates marginal coverage from missingness-pattern conditioning <span class="citation" data-cites="zaffran2023">(Zaffran et al. 2023)</span>, whereas covariate-shift reweighting <span class="citation" data-cites="tibshirani2019">(Tibshirani et al. 2019)</span> and non-exchangeable weighted quantiles <span class="citation" data-cites="barber2023">(Barber et al. 2023)</span> rely on structural weights that degrade under unmodeled drift and outcome censoring. Sequential time-series conformal methods <span class="citation" data-cites="zaffran2022 xu2023 lin2022 gibbs2024">(Zaffran et al. 2022; Xu and Xie 2023; Lin et al. 2022; Gibbs and Candès 2024)</span>, Adaptive Conformal Inference (ACI) and online variants <span class="citation" data-cites="gibbs2021 bhatnagar2023 pid2023 angelopoulos2024online podkopaev2024">(Gibbs and Candès 2021; Bhatnagar et al. 2023; Angelopoulos et al. 2023; Anastasios Nikolas Angelopoulos et al. 2024; Podkopaev et al. 2024)</span>, and risk-controlling formulations <span class="citation" data-cites="bates2021 angelopoulos2024risk angelopoulos2021ltt gibbs2025 gauthier2026">(Bates et al. 2021; Anastasios N. Angelopoulos et al. 2024; Angelopoulos et al. 2025; Gibbs et al. 2025; Gauthier et al. 2026)</span> assume complete label revelation after each step, while selective classification <span class="citation" data-cites="geifman2017">(Geifman and El-Yaniv 2017)</span> and interval-stability critiques <span class="citation" data-cites="min2026">(Min et al. 2026)</span> formalize abstention–risk interactions.</p>
+<p>Recent work examines partial or costly feedback directly: upfront stopping rules under i.i.d. arrivals <span class="citation" data-cites="ilyas2026">(Ilyas et al. 2026)</span>, semi-bandit feedback revealed by set inclusion <span class="citation" data-cites="ge2025">(Ge et al. 2025)</span>, and sporadic edge–cloud calibration <span class="citation" data-cites="hou2025">(Hou et al. 2025)</span>. Our study complements these directions by auditing real cellular ledgers jointly over probe expenditures, unobserved outcomes, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R=(M/N)R_+</annotation></semantics></math>, and physical cluster equivalence (Table I).</p>
 <div class="table*">
 <table>
 <thead>
 <tr>
 <th style="text-align: left;"><strong>Work</strong></th>
 <th style="text-align: left;"><strong>Modality</strong></th>
-<th style="text-align: left;"><strong>Dataset or environment</strong></th>
-<th style="text-align: left;"><strong>Core method</strong></th>
-<th style="text-align: left;"><strong>Relevant limitation</strong></th>
-<th style="text-align: left;"><strong>Present study distinction</strong></th>
+<th style="text-align: left;"><strong>Environment</strong></th>
+<th style="text-align: left;"><strong>Core Method</strong></th>
+<th style="text-align: left;"><strong>Audit Boundary</strong></th>
+<th style="text-align: left;"><strong>Present Contribution</strong></th>
 </tr>
 </thead>
 <tbody>
@@ -249,128 +248,123 @@
 <td style="text-align: left;">Commercial mmWave 5G</td>
 <td style="text-align: left;">Missing-covariate additive boosting</td>
 <td style="text-align: left;">Missing inputs differ from missing future outcomes</td>
-<td style="text-align: left;">Separates input vs. feedback missingness</td>
+<td style="text-align: left;">Separates input vs. outcome missingness</td>
 </tr>
 <tr>
 <td style="text-align: left;">Raca et al. <span class="citation" data-cites="raca2024">(Raca et al. 2024)</span></td>
-<td style="text-align: left;">Smartphone telemetry</td>
-<td style="text-align: left;">Live cellular video streaming</td>
+<td style="text-align: left;">Smartphone</td>
+<td style="text-align: left;">Live video streaming</td>
 <td style="text-align: left;">On-device throughput prediction</td>
 <td style="text-align: left;">No selective commitment audit across caps</td>
-<td style="text-align: left;">Retrospective ledger audit; no live-QoE claim</td>
+<td style="text-align: left;">Causal trace ledger without live-QoE claim</td>
 </tr>
 <tr>
 <td style="text-align: left;">Basit et al. <span class="citation" data-cites="basit2024">(Basit et al. 2024)</span></td>
-<td style="text-align: left;">Rate histories/context</td>
-<td style="text-align: left;">Multi-carrier LTE/5G driving</td>
-<td style="text-align: left;">Fine-grained prediction feasibility</td>
-<td style="text-align: left;">Conflicting samples limit point accuracy</td>
-<td style="text-align: left;">Evaluates conditional risk and supported rate</td>
+<td style="text-align: left;">Rate histories</td>
+<td style="text-align: left;">Multi-carrier driving</td>
+<td style="text-align: left;">Fine-grained ML predictability</td>
+<td style="text-align: left;">Conflicting histories limit point accuracy</td>
+<td style="text-align: left;">Audits conditional risk and supported rate</td>
 </tr>
 <tr>
 <td style="text-align: left;">Sirhan <span class="citation" data-cites="sirhan2026">(Sirhan 2026)</span></td>
 <td style="text-align: left;">Rate, RAT, handover</td>
-<td style="text-align: left;">Commercial mobile 5G traces</td>
-<td style="text-align: left;">Global/group/adaptive conformal rate bounds</td>
+<td style="text-align: left;">Commercial mobile 5G</td>
+<td style="text-align: left;">Global/grouped/adaptive conformal bounds</td>
 <td style="text-align: left;">Full-outcome split; no attempt-budget ledger</td>
-<td style="text-align: left;">Tracks realized probe cost and unresolved labels</td>
+<td style="text-align: left;">Separates probe attempts and missing outcomes</td>
 </tr>
 <tr>
 <td style="text-align: left;">Zaffran et al. <span class="citation" data-cites="zaffran2023">(Zaffran et al. 2023)</span></td>
-<td style="text-align: left;">Incomplete covariates</td>
-<td style="text-align: left;">Regression with missing inputs</td>
-<td style="text-align: left;">Missing-pattern conformal calibration</td>
-<td style="text-align: left;">Input patterns differ from failed label requests</td>
-<td style="text-align: left;">Logs failed probes separately from buffer updates</td>
+<td style="text-align: left;">Incomplete inputs</td>
+<td style="text-align: left;">Regression missingness</td>
+<td style="text-align: left;">Missing-pattern conformal sets</td>
+<td style="text-align: left;">Input missingness differs from failed requests</td>
+<td style="text-align: left;">Tracks probe failures vs. buffer admissions</td>
 </tr>
 <tr>
 <td style="text-align: left;">Conformal PID <span class="citation" data-cites="pid2023">(Angelopoulos et al. 2023)</span></td>
 <td style="text-align: left;">Temporal scores</td>
-<td style="text-align: left;">Forecasting time series</td>
+<td style="text-align: left;">Forecasting series</td>
 <td style="text-align: left;">Online PID quantile control</td>
-<td style="text-align: left;">Assumes full score feedback per step</td>
+<td style="text-align: left;">Assumes full score feedback every step</td>
 <td style="text-align: left;">Audits delayed and censored sparse probes</td>
 </tr>
 <tr>
 <td style="text-align: left;">Ilyas et al. <span class="citation" data-cites="ilyas2026">(Ilyas et al. 2026)</span></td>
-<td style="text-align: left;">IID data arrivals</td>
-<td style="text-align: left;">Upfront label stopping</td>
+<td style="text-align: left;">IID arrivals</td>
+<td style="text-align: left;">Label stopping</td>
 <td style="text-align: left;">Cost-efficient stopping rule</td>
 <td style="text-align: left;">Stationary arrivals differ from mobile drift</td>
-<td style="text-align: left;">Accounts seed vs. new probes over shifts</td>
+<td style="text-align: left;">Accounts seed vs. new probes under drift</td>
 </tr>
 <tr>
 <td style="text-align: left;">Ge et al. <span class="citation" data-cites="ge2025">(Ge et al. 2025)</span></td>
-<td style="text-align: left;">Sets and partial labels</td>
-<td style="text-align: left;">Stochastic semi-bandit tasks</td>
-<td style="text-align: left;">Online conformal regret analysis</td>
-<td style="text-align: left;">Set-inclusion feedback differs from probe failure</td>
-<td style="text-align: left;">Tracks maturation delay and probe attempts</td>
+<td style="text-align: left;">Partial labels</td>
+<td style="text-align: left;">Semi-bandit sets</td>
+<td style="text-align: left;">Online conformal regret bounds</td>
+<td style="text-align: left;">Set-inclusion differs from probe failure</td>
+<td style="text-align: left;">Tracks maturation delay and charged probes</td>
 </tr>
 <tr>
 <td style="text-align: left;">Hou et al. <span class="citation" data-cites="hou2025">(Hou et al. 2025)</span></td>
 <td style="text-align: left;">Solver outputs</td>
-<td style="text-align: left;">Edge–cloud linear systems</td>
+<td style="text-align: left;">Edge–cloud systems</td>
 <td style="text-align: left;">Sporadic-feedback calibration</td>
-<td style="text-align: left;">Two-sided set size differs from SLA rate risk</td>
-<td style="text-align: left;">One-sided throughput commitments and abstention</td>
+<td style="text-align: left;">Two-sided width differs from SLA rate risk</td>
+<td style="text-align: left;">One-sided commitments and abstention</td>
 </tr>
 <tr>
 <td style="text-align: left;">CRC <span class="citation" data-cites="angelopoulos2024risk">(Anastasios N. Angelopoulos et al. 2024)</span></td>
-<td style="text-align: left;">Scores and losses</td>
-<td style="text-align: left;">Vision/language benchmarks</td>
+<td style="text-align: left;">Scores/losses</td>
+<td style="text-align: left;">Vision/language sets</td>
 <td style="text-align: left;">Expected monotone-loss control</td>
-<td style="text-align: left;">Population guarantees differ from finite ledgers</td>
+<td style="text-align: left;">Population guarantees differ from finite logs</td>
 <td style="text-align: left;">Finite-record <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>M</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[e/M,(e+m)/M]</annotation></semantics></math> risk intervals</td>
 </tr>
 <tr>
 <td style="text-align: left;">Min et al. <span class="citation" data-cites="min2026">(Min et al. 2026)</span></td>
 <td style="text-align: left;">Predictive sets</td>
-<td style="text-align: left;">Regression and classification</td>
+<td style="text-align: left;">Regression/classif.</td>
 <td style="text-align: left;">Coverage–length stability critique</td>
-<td style="text-align: left;">Diagnostic rather than budgeted query ledger</td>
+<td style="text-align: left;">Diagnostic rather than probe-cost ledger</td>
 <td style="text-align: left;">Jointly tracks <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mo>+</mo></msub><annotation encoding="application/x-tex">R_+</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>, and query cost</td>
 </tr>
 <tr>
 <td style="text-align: left;">Gauthier et al. <span class="citation" data-cites="gauthier2026">(Gauthier et al. 2026)</span></td>
-<td style="text-align: left;">Covariates and sets</td>
-<td style="text-align: left;">Adaptive-coverage tasks</td>
-<td style="text-align: left;">Learned coverage policies via e-values</td>
-<td style="text-align: left;">Requires dedicated validity construction</td>
-<td style="text-align: left;">Heuristic vs. finite-horizon comparators</td>
+<td style="text-align: left;">Adaptive sets</td>
+<td style="text-align: left;">Adaptive coverage</td>
+<td style="text-align: left;">Learned coverage via e-values</td>
+<td style="text-align: left;">Requires e-value policy design</td>
+<td style="text-align: left;">Audits fixed-cadence vs. adaptive comparators</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Present study</strong></td>
-<td style="text-align: left;"><strong>Rate and missing telemetry</strong></td>
-<td style="text-align: left;"><strong>Ten cohorts (42 campaign-dates)</strong></td>
-<td style="text-align: left;"><strong>Causal acquisition and selective-risk accounting</strong></td>
-<td style="text-align: left;"><strong>Retrospective archives; 0 live trips</strong></td>
-<td style="text-align: left;"><strong>Joint probe cost, missing bounds, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R=(M/N)R_+</annotation></semantics></math>, cluster inference</strong></td>
+<td style="text-align: left;"><strong>Rate and radio</strong></td>
+<td style="text-align: left;"><strong>Ten cohorts (42 dates)</strong></td>
+<td style="text-align: left;"><strong>Causal acquisition and cluster audit</strong></td>
+<td style="text-align: left;"><strong>Public archives; zero live trips</strong></td>
+<td style="text-align: left;"><strong>CLI tool, checklist, MDE/TOST, pooling audit</strong></td>
 </tr>
 </tbody>
 </table>
 </div>
-<h1 id="sec:framework">Decision Process and Accounting Framework</h1>
-<h2 id="scheduled-opportunities-and-acquisition-ledger">Scheduled Opportunities and Acquisition Ledger</h2>
-<p>At scheduled issue time <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>, a frozen source-trained predictor outputs point forecast <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>t</mi></msub><annotation encoding="application/x-tex">p_t</annotation></semantics></math> using only telemetry and lagged throughput measured strictly before issue. The controller issues a nonnegative throughput commitment <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>t</mi></msub><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L_t \ge 0</annotation></semantics></math> and decides whether to request the future outcome <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>t</mi></msub><annotation encoding="application/x-tex">y_t</annotation></semantics></math> over the measurement horizon (<code>ready</code> timestamp). All scheduled intervals enter the decision ledger; ticks lacking a valid prior rate are marked ineligible (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>t</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L_t = 0</annotation></semantics></math>).</p>
-<p>Every policy begins with identical historical pre-test labels (ten complete initial calibration rows per cohort), whose prior physical acquisition attempts are unknown and accounted separately from new target queries <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Q</mi><mtext mathvariant="normal">new</mtext></msub><annotation encoding="application/x-tex">Q_{\text{new}}</annotation></semantics></math>. Each new feedback request is charged against budget <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><annotation encoding="application/x-tex">C_{\text{new}}</annotation></semantics></math> at issue time, including queries whose responses arrive missing (unsuccessful), time out, or mature after the evaluation stream ends. The ledger logs five distinct quantities: issued requests <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Q</mi><mtext mathvariant="normal">new</mtext></msub><annotation encoding="application/x-tex">Q_{\text{new}}</annotation></semantics></math>, completed observed responses, failed responses, residuals admitted to the calibration buffer, and updates actually available before later issue times. Because raw lag-throughput monitoring and oracle evaluation labels remain outside the calibration query budget, fewer requested calibration labels do not establish physical energy or radio byte savings. Unmatched operating points where policies consume unequal realized queries are never interpolated into equal-cost claims.</p>
-<h2 id="abstention-conditional-risk-and-supported-service">Abstention, Conditional Risk, and Supported Service</h2>
-<p>Across <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> eligible opportunities, let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><msub><mo>∑</mo><mi>t</mi></msub><mn mathvariant="bold">𝟏</mn><mo stretchy="false" form="prefix">{</mo><msub><mi>L</mi><mi>t</mi></msub><mo>&gt;</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">M = \sum_{t} \mathbf{1}\{L_t &gt; 0\}</annotation></semantics></math> denote positive commitments (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mi>M</mi><mi>/</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">A = M/N</annotation></semantics></math> the positive-offer frequency), <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math> observed violations (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>t</mi></msub><mo>&gt;</mo><msub><mi>y</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">L_t &gt; y_t</annotation></semantics></math>), and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> positive commitments whose horizon outcomes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>t</mi></msub><annotation encoding="application/x-tex">y_t</annotation></semantics></math> are unobserved. Because throughput is nonnegative (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>t</mi></msub><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y_t \ge 0</annotation></semantics></math>) and zero commitments (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>t</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L_t = 0</annotation></semantics></math>) cannot violate, all-issued risk <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math> and positive-offer conditional risk <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mo>+</mo></msub><annotation encoding="application/x-tex">R_+</annotation></semantics></math> satisfy <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>R</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>A</mi><mo>⋅</mo><msub><mi>R</mi><mo>+</mo></msub><mo>,</mo><mspace width="2.0em"></mspace><mi>R</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>N</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">]</mo><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>R</mi><mo>+</mo></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>M</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi><mo stretchy="false" form="postfix">]</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mo>&gt;</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}
+<h1 id="sec:framework">Decision Process, Accounting, and Audit Tool</h1>
+<p>At scheduled issue time <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>, a frozen predictor outputs point forecast <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>t</mi></msub><annotation encoding="application/x-tex">p_t</annotation></semantics></math> from strictly prior lag throughput and radio telemetry. A controller selects nonnegative commitment <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>t</mi></msub><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L_t \ge 0</annotation></semantics></math> and decides whether to request outcome <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>t</mi></msub><annotation encoding="application/x-tex">y_t</annotation></semantics></math> over the upcoming horizon (<code>ready</code> timestamp); ticks lacking a valid prior rate are marked ineligible (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>t</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L_t = 0</annotation></semantics></math>). All controllers begin with identical complete initial pre-test labels excluded from new target queries <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Q</mi><mtext mathvariant="normal">new</mtext></msub><annotation encoding="application/x-tex">Q_{\text{new}}</annotation></semantics></math> under budget cap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><annotation encoding="application/x-tex">C_{\text{new}}</annotation></semantics></math>.</p>
+<p>Across <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> eligible opportunities, let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><msub><mo>∑</mo><mi>t</mi></msub><mn mathvariant="bold">𝟏</mn><mo stretchy="false" form="prefix">{</mo><msub><mi>L</mi><mi>t</mi></msub><mo>&gt;</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">M = \sum_t \mathbf{1}\{L_t &gt; 0\}</annotation></semantics></math> denote positive commitments, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mi>M</mi><mi>/</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">A = M/N</annotation></semantics></math> the positive-offer frequency, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math> observed violations (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>t</mi></msub><mo>&gt;</mo><msub><mi>y</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">L_t &gt; y_t</annotation></semantics></math>), and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> positive commitments lacking observed <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>t</mi></msub><annotation encoding="application/x-tex">y_t</annotation></semantics></math>. Because <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>t</mi></msub><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y_t \ge 0</annotation></semantics></math> prevents zero commitments from violating, all-issued risk <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math> and positive-offer conditional risk <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mo>+</mo></msub><annotation encoding="application/x-tex">R_+</annotation></semantics></math> obey <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>R</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>A</mi><mo>⋅</mo><msub><mi>R</mi><mo>+</mo></msub><mo>,</mo><mspace width="2.0em"></mspace><mi>R</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>N</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">]</mo><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>R</mi><mo>+</mo></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>M</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi><mo stretchy="false" form="postfix">]</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mo>&gt;</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}
 \begin{aligned}
 R &amp;= A \cdot R_+,\qquad R \in [e/N, (e+m)/N],\\
-R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
+R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0),
 \end{aligned}
 \label{eq:risk_bounds}
-\end{equation}</annotation></semantics></math> Here <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">lo</mtext></msubsup><mo>=</mo><mi>e</mi><mi>/</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">R_+^{\text{lo}} = e/M</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">hi</mtext></msubsup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">R_+^{\text{hi}} = (e+m)/M</annotation></semantics></math> are exact finite-record partial-identification bounds <span class="citation" data-cites="manski1989selection">(Manski 1989)</span> attained by setting unobserved outcomes to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mi>t</mi></msub><annotation encoding="application/x-tex">L_t</annotation></semantics></math> or <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>, respectively; they are neither asymptotic confidence intervals nor population guarantees. Whenever <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math> shrinks via abstention, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>≤</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">R \le \alpha</annotation></semantics></math> permits conditional failure <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mo>+</mo></msub><mo>≈</mo><mi>α</mi><mi>/</mi><mi>A</mi><mo>≫</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">R_+ \approx \alpha / A \gg \alpha</annotation></semantics></math>.</p>
-<p>We measure delivered service via conditional supported-throughput fraction <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><msub><mo>∑</mo><mrow><mi>t</mi><mo>:</mo><msub><mi>y</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> obs</mtext></mrow></mrow></msub><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>L</mi><mi>t</mi></msub><mo>,</mo><msub><mi>y</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><msub><mo>∑</mo><mrow><mi>t</mi><mo>:</mo><msub><mi>y</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> obs</mtext></mrow></mrow></msub><msub><mi>y</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">U = \sum_{t:y_t\text{ obs}}\min(L_t,y_t)/\sum_{t:y_t\text{ obs}}y_t</annotation></semantics></math> and observed supported Mbps per eligible tick. Both measure offline trace agreement rather than live application Quality of Experience (QoE). Reliable interpretation requires reporting <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>Q</mi><mtext mathvariant="normal">new</mtext></msub><mo>,</mo><mi>A</mi><mo>,</mo><mo stretchy="false" form="prefix">[</mo><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">lo</mtext></msubsup><mo>,</mo><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">hi</mtext></msubsup><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mi>U</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(Q_{\text{new}}, A, [R_+^{\text{lo}}, R_+^{\text{hi}}], U)</annotation></semantics></math> alongside independent cluster counts.</p>
+\end{equation}</annotation></semantics></math> where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>M</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[e/M,(e+m)/M]</annotation></semantics></math> are exact finite-record partial-identification bounds <span class="citation" data-cites="manski1989selection">(Manski 1989)</span>. Whenever abstention shrinks <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>≤</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">R \le \alpha</annotation></semantics></math> permits <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mo>+</mo></msub><mo>≈</mo><mi>α</mi><mi>/</mi><mi>A</mi><mo>≫</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">R_+ \approx \alpha/A \gg \alpha</annotation></semantics></math>. Service utility is measured via supported throughput <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><msub><mo>∑</mo><mrow><mi>t</mi><mo>:</mo><msub><mi>y</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> obs</mtext></mrow></mrow></msub><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>L</mi><mi>t</mi></msub><mo>,</mo><msub><mi>y</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><msub><mo>∑</mo><mrow><mi>t</mi><mo>:</mo><msub><mi>y</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> obs</mtext></mrow></mrow></msub><msub><mi>y</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">U = \sum_{t:y_t\text{ obs}}\min(L_t,y_t)/\sum_{t:y_t\text{ obs}}y_t</annotation></semantics></math>.</p>
+<h2 id="practitioner-checklist-and-audit_policy.py-tool">Practitioner Checklist and <code>audit_policy.py</code> Tool</h2>
+<p>To operationalize these checks, <code>src/audit/recalibration_audit.py</code> and <code>scripts/audit_policy.py</code> ingest cluster-summary or tick-level comma-separated values (CSV) ledgers, verify <a href="#eq:risk_bounds" data-reference-type="eqref" data-reference="eq:risk_bounds">[eq:risk_bounds]</a>, compute cluster bootstrap confidence intervals (CI), equal-cluster Student-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> intervals, between-cluster standard deviation (SD), <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">MDE</mtext><mn>80</mn></msub><annotation encoding="application/x-tex">\text{MDE}_{80}</annotation></semantics></math>, and TOST <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-values, and emit automated deployment warnings (boxed checklist below). Run on our exported held-out cap-10 CSV (<code>examples/worked_heldout_c10_ledger.csv</code>), the tool automatically flags zero-offer clusters, unmatched realized queries, and offer-count pooling divergence (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>23.41</mn></mrow><annotation encoding="application/x-tex">-23.41</annotation></semantics></math> pp vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>0.37</mn></mrow><annotation encoding="application/x-tex">+0.37</annotation></semantics></math> pp).</p>
+<figure data-latex-placement="!t">
+
+</figure>
 <h2 id="evaluated-controllers-and-baselines">Evaluated Controllers and Baselines</h2>
-<p>We evaluate nine policy families under a common causal interface (Table II; implementation details and the MARUR-vs.-PACER decision taxonomy appear in Supplementary Table S14):</p>
-<ul>
-<li><p><strong>Static and nonadaptive baselines:</strong> <em>Frozen</em> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=0</annotation></semantics></math>, initial 10 labels only), <em>Early</em> (queries every eligible tick until cap exhaustion), <em>Random</em> (pre-drawn uniform schedules over seeds <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>42</mn><mo>,</mo><mn>123</mn><mo>,</mo><mn>2026</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{42, 123, 2026\}</annotation></semantics></math>), and <em>Periodic</em> (fixed spacing every <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">P=15</annotation></semantics></math> ticks).</p></li>
-<li><p><strong>Online sparse-feedback comparators:</strong> Adapted <em>ACI</em> <span class="citation" data-cites="gibbs2021">(Gibbs and Candès 2021)</span> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\eta=0.05</annotation></semantics></math>, updating <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\alpha_t</annotation></semantics></math> conservatively on missing requested responses with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>t</mi></msub><mo>≤</mo><msub><mi>p</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">L_t \le p_t</annotation></semantics></math>) and <em>DecayingOGD</em> <span class="citation" data-cites="angelopoulos2024online">(Anastasios Nikolas Angelopoulos et al. 2024)</span> (step exponent <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.6</mn><annotation encoding="application/x-tex">0.6</annotation></semantics></math>). Neither retains full-feedback theoretical assumptions under delayed selective censoring.</p></li>
-<li><p><strong>MARUR (reactive comparator) and ablations:</strong> Triggers probes on 60-minute response age or LTE/NR pattern switches, maintains a FIFO buffer (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">W=10</annotation></semantics></math>) inserting conservative upper residual <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>t</mi></msub><annotation encoding="application/x-tex">p_t</annotation></semantics></math> when missing, requires at least nine matching-pattern residuals for pattern quantiles (otherwise pooled), and abstains below three matching entries. Note failed responses still reset the cooldown clock even when an ablation drops missing scores.</p></li>
-<li><p><strong>PACER (paced comparator):</strong> Formulated <em>after</em> inspecting MARUR failures on the retrospective cohorts, PACER divides a finite horizon <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math> into <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K = \min(C_{\text{new}}, T)</annotation></semantics></math> contiguous blocks, draws one uniform probe per block, excludes missing responses from an observed residual buffer (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mtext mathvariant="normal">obs</mtext></msub><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">W_{\text{obs}}=20</annotation></semantics></math>), updates its threshold <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>k</mi></msub><annotation encoding="application/x-tex">a_k</annotation></semantics></math> only on positive offers via smooth interpolation/veto (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mtext mathvariant="normal">veto</mtext></msub><mo>=</mo><mn>0.15</mn></mrow><annotation encoding="application/x-tex">a_{\text{veto}}=0.15</annotation></semantics></math>), and freezes thresholds within each block.</p></li>
-</ul>
+<p>Nine policy families share this causal interface (Table II; decision taxonomy in Supplement Table S15): static <em>Frozen</em>, greedy <em>Early</em>, uniform <em>Random</em>, fixed <em>Periodic</em>, sparse <em>ACI</em> <span class="citation" data-cites="gibbs2021">(Gibbs and Candès 2021)</span>, <em>Decaying Online Gradient Descent</em> (<em>DecayingOGD</em>) <span class="citation" data-cites="angelopoulos2024online">(Anastasios Nikolas Angelopoulos et al. 2024)</span>, reactive <em>MARUR</em> (60-minute or Long Term Evolution / New Radio [LTE/NR] pattern triggers, window <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">W=10</annotation></semantics></math> inserting <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>t</mi></msub><annotation encoding="application/x-tex">p_t</annotation></semantics></math> when missing, and pattern gates), and <em>PACER</em> (designed after retrospective MARUR diagnostics; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K=\min(C_{\text{new}}, T)</annotation></semantics></math> uniform blocks, excluding missingness from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mtext mathvariant="normal">obs</mtext></msub><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">W_{\text{obs}}=20</annotation></semantics></math>, and smooth selective updates).</p>
 <div class="table*">
 <table>
 <tbody>
@@ -457,190 +451,8 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 </tbody>
 </table>
 </div>
-<h1 id="sec:retrospective">Retrospective Evaluation and Physical Cluster Inference</h1>
-<h2 id="cohorts-dependency-structure-and-predictor-choice">Cohorts, Dependency Structure, and Predictor Choice</h2>
-<p>The retrospective benchmark spans six cohorts evaluated at 60-second causal intervals <span class="citation" data-cites="kousias2024data caso2024 nuwinsarchive raca2020">(Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; NUWiNS 2025; Raca et al. 2020)</span>: Rome <em>E1</em> (2023 Op1) and <em>E3</em> (2023 Op2), US Drive 3 (<em>AT&amp;T</em>, <em>T-Mobile</em>, <em>Verizon</em>), and <em>Ireland</em> driving downloads. To avoid temporal or cross-carrier leakage across chronologically ordered partitions, all five retrospective splits of earliest Rome Op1 (Zenodo 8224890) reserve distinct calendar dates (35/10/15/15/25% of days), leaving exactly 57 causal training rows (two dates), 9 validation rows, and 33 source-calibration rows for the frozen Histogram Gradient Boosted Machine (<em>HistGBM</em>) predictor. While a 57-row fit exhibits high cross-domain point violation rates (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>57</mn><annotation encoding="application/x-tex">57</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>79</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">79\%</annotation></semantics></math> across held-out suffixes), Section <a href="#sec:sensitivity" data-reference-type="ref" data-reference="sec:sensitivity">6</a> verifies that replacing it with a lower-MAE neural predictor trained on the same split (<code>ThroughputResNet</code>), a pinball quantile regressor, a 112-row clock-minute source tree, or raw lag <em>Persistence</em> leaves every accounting conclusion intact.</p>
-<p>Critically, evaluating multiple carriers during the same drive (three carriers sharing US Drive 3; Op1 and Op2 sharing six of seven Rome collection dates) or running large parameter sweeps does not increase independent sample size. Pooling all six retrospective cohorts yields only three distinct geographic campaigns and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">G=16</annotation></semantics></math> physical campaign-dates: 8 Rome dates, 3 shared US dates, and 5 Irish driving dates spanning 11 traces.</p>
-<h2 id="matched-cost-mechanisms-conditional-risk-and-null-cluster-utility">Matched-Cost Mechanisms, Conditional Risk, and Null Cluster Utility</h2>
-<p>Table III summarizes the six-cohort behavior at new-query cap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=40</annotation></semantics></math>, showing that nominal cap equality hides disparate actual spending (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>16</mn><annotation encoding="application/x-tex">16</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>40</mn><annotation encoding="application/x-tex">40</annotation></semantics></math> queries on E1; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>23</mn><annotation encoding="application/x-tex">23</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>20</mn><annotation encoding="application/x-tex">20</annotation></semantics></math> on Ireland) and that conditional upper risk stays high (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>7.55</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">7.55\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>65.38</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">65.38\%</annotation></semantics></math>) whenever offers occur. Across the full matched-cost audit (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>576</mn><annotation encoding="application/x-tex">576</annotation></semantics></math> original runs, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>720</mn><annotation encoding="application/x-tex">720</annotation></semantics></math> full-suffix replays, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>384</mn><annotation encoding="application/x-tex">384</annotation></semantics></math> exact-cost pairs), apparent gains stem from distinct mechanisms rather than reliable calibration: on Rome E1 at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10</mn><annotation encoding="application/x-tex">10</annotation></semantics></math> queries, MARUR increases supported throughput over Periodic (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2.907</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">2.907\%</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.523</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">0.523\%</annotation></semantics></math>) while raising all-issued upper risk (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10.924</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">10.924\%</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6.303</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">6.303\%</annotation></semantics></math>); on Ireland, both issue <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>159</mn><annotation encoding="application/x-tex">159</annotation></semantics></math> positive offers and MARUR removes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>14</mn><annotation encoding="application/x-tex">14</annotation></semantics></math> observed violations by shrinking commitment magnitude, dropping support from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4.117</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">4.117\%</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.129</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1.129\%</annotation></semantics></math>; on Verizon, MARUR drops <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10</mn><annotation encoding="application/x-tex">10</annotation></semantics></math> of Early’s offers rather than reducing failures on shared offers.</p>
-<div class="table*">
-<table>
-<tbody>
-<tr>
-<td style="text-align: left;">Cohort</td>
-<td style="text-align: right;">Policy</td>
-<td style="text-align: right;">Queries</td>
-<td style="text-align: right;">Offers</td>
-<td style="text-align: right;">PosLow</td>
-<td style="text-align: right;">PosHigh</td>
-<td style="text-align: right;">U</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1</td>
-<td style="text-align: right;">Frozen</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">130</td>
-<td style="text-align: right;">51.54</td>
-<td style="text-align: right;">57.69</td>
-<td style="text-align: right;">7.154</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1</td>
-<td style="text-align: right;">Periodic</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">42.42</td>
-<td style="text-align: right;">51.52</td>
-<td style="text-align: right;">1.008</td>
-</tr>
-<tr>
-<td style="text-align: left;">E1</td>
-<td style="text-align: right;">MARUR</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">44.83</td>
-<td style="text-align: right;">44.83</td>
-<td style="text-align: right;">2.025</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3</td>
-<td style="text-align: right;">Frozen</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">66.67</td>
-<td style="text-align: right;">66.67</td>
-<td style="text-align: right;">0.065</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3</td>
-<td style="text-align: right;">Periodic</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">43.75</td>
-<td style="text-align: right;">50.00</td>
-<td style="text-align: right;">0.605</td>
-</tr>
-<tr>
-<td style="text-align: left;">E3</td>
-<td style="text-align: right;">MARUR</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">45.00</td>
-<td style="text-align: right;">55.00</td>
-<td style="text-align: right;">0.504</td>
-</tr>
-<tr>
-<td style="text-align: left;">ATT</td>
-<td style="text-align: right;">Frozen</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">57</td>
-<td style="text-align: right;">38.60</td>
-<td style="text-align: right;">38.60</td>
-<td style="text-align: right;">2.252</td>
-</tr>
-<tr>
-<td style="text-align: left;">ATT</td>
-<td style="text-align: right;">Periodic</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">23.33</td>
-<td style="text-align: right;">23.33</td>
-<td style="text-align: right;">0.402</td>
-</tr>
-<tr>
-<td style="text-align: left;">ATT</td>
-<td style="text-align: right;">MARUR</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">111</td>
-<td style="text-align: right;">43.24</td>
-<td style="text-align: right;">43.24</td>
-<td style="text-align: right;">6.481</td>
-</tr>
-<tr>
-<td style="text-align: left;">T-Mobile</td>
-<td style="text-align: right;">Frozen</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">236</td>
-<td style="text-align: right;">52.12</td>
-<td style="text-align: right;">52.12</td>
-<td style="text-align: right;">1.254</td>
-</tr>
-<tr>
-<td style="text-align: left;">T-Mobile</td>
-<td style="text-align: right;">Periodic</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: right;">55.32</td>
-<td style="text-align: right;">55.32</td>
-<td style="text-align: right;">0.141</td>
-</tr>
-<tr>
-<td style="text-align: left;">T-Mobile</td>
-<td style="text-align: right;">MARUR</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">52</td>
-<td style="text-align: right;">65.38</td>
-<td style="text-align: right;">65.38</td>
-<td style="text-align: right;">0.337</td>
-</tr>
-<tr>
-<td style="text-align: left;">Verizon</td>
-<td style="text-align: right;">Frozen</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">0.003</td>
-</tr>
-<tr>
-<td style="text-align: left;">Verizon</td>
-<td style="text-align: right;">Periodic</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">20.00</td>
-<td style="text-align: right;">20.00</td>
-<td style="text-align: right;">0.006</td>
-</tr>
-<tr>
-<td style="text-align: left;">Verizon</td>
-<td style="text-align: right;">MARUR</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">61.90</td>
-<td style="text-align: right;">61.90</td>
-<td style="text-align: right;">0.597</td>
-</tr>
-<tr>
-<td style="text-align: left;">Ireland</td>
-<td style="text-align: right;">Frozen</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">159</td>
-<td style="text-align: right;">27.04</td>
-<td style="text-align: right;">29.56</td>
-<td style="text-align: right;">7.740</td>
-</tr>
-<tr>
-<td style="text-align: left;">Ireland</td>
-<td style="text-align: right;">Periodic</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">159</td>
-<td style="text-align: right;">11.32</td>
-<td style="text-align: right;">13.84</td>
-<td style="text-align: right;">2.966</td>
-</tr>
-<tr>
-<td style="text-align: left;">Ireland</td>
-<td style="text-align: right;">MARUR</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">159</td>
-<td style="text-align: right;">7.55</td>
-<td style="text-align: right;">10.06</td>
-<td style="text-align: right;">1.175</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Clustering strictly at the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">G=16</annotation></semantics></math> physical campaign-dates under matched <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10</mn><annotation encoding="application/x-tex">10</annotation></semantics></math>-query cost (Table IV) resolves whether MARUR improves over Periodic: it does not. Pooled <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>U</mi></mrow><annotation encoding="application/x-tex">\Delta U</annotation></semantics></math> across the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>16</mn><annotation encoding="application/x-tex">16</annotation></semantics></math> clusters is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>0.21</mn></mrow><annotation encoding="application/x-tex">+0.21</annotation></semantics></math> percentage points (2<span>,</span>000-draw cluster bootstrap 95% CI <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1.26</mn></mrow><annotation encoding="application/x-tex">-1.26</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>0.79</mn></mrow><annotation encoding="application/x-tex">+0.79</annotation></semantics></math>), equal-campaign-date mean <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>U</mi></mrow><annotation encoding="application/x-tex">\Delta U</annotation></semantics></math> is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>0.09</mn></mrow><annotation encoding="application/x-tex">-0.09</annotation></semantics></math> percentage points (95% <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>-interval <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1.27</mn></mrow><annotation encoding="application/x-tex">-1.27</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>1.08</mn></mrow><annotation encoding="application/x-tex">+1.08</annotation></semantics></math>), and all-issued upper risk shifts by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>4.07</mn></mrow><annotation encoding="application/x-tex">+4.07</annotation></semantics></math> percentage points (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>0.11</mn></mrow><annotation encoding="application/x-tex">-0.11</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>6.38</mn></mrow><annotation encoding="application/x-tex">+6.38</annotation></semantics></math>). Five of six within-cohort intervals cross zero, MARUR spends all <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10</mn><annotation encoding="application/x-tex">10</annotation></semantics></math> queries on Day 1 in E1, AT&amp;T, T-Mobile, and Verizon (1/7–1/3 query days vs. Periodic’s 13/16 dates), and across Ireland’s 11 traces MARUR loses <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>2.99</mn></mrow><annotation encoding="application/x-tex">-2.99</annotation></semantics></math> percentage points pooled utility (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>4.83</mn></mrow><annotation encoding="application/x-tex">-4.83</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1.88</mn></mrow><annotation encoding="application/x-tex">-1.88</annotation></semantics></math>) via offer shrinkage. Across all <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10</mn><annotation encoding="application/x-tex">10</annotation></semantics></math> retrospective and held-out cohorts (Fig. 1), low all-issued risk routinely masks conditional violation rates of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>17</mn><annotation encoding="application/x-tex">17</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>68</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">68\%</annotation></semantics></math> well above <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, while supported throughput typically remains <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">3\%</annotation></semantics></math> on LTE/5G cohorts.</p>
+<h1 id="sec:retrospective">Retrospective Inference and Power Analysis</h1>
+<p>Six retrospective cohorts operate on 60-second causal clocks <span class="citation" data-cites="kousias2024data caso2024 nuwinsarchive raca2020">(Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; NUWiNS 2025; Raca et al. 2020)</span>: Rome <em>E1</em> and <em>E3</em>, US Drive 3 (<em>AT&amp;T</em>, <em>T-Mobile</em>, <em>Verizon</em>), and <em>Ireland</em> driving traces. Earliest Rome Op1 splits train the frozen Histogram Gradient Boosted Machine (<em>HistGBM</em>) on 57 source rows without future leakage. Because multiple carriers share drives, co-located recordings collapse onto three geographic campaigns and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">G=16</annotation></semantics></math> physical campaign-dates. Across all 54 mobile-cohort <em>HistGBM</em> evaluations (<em>Periodic</em>, <em>MARUR</em>, <em>PACER</em> across both caps), conditional upper risk <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">hi</mtext></msubsup><annotation encoding="application/x-tex">R_+^{\text{hi}}</annotation></semantics></math> spans <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">9\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>68</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">68\%</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8.8</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">8.8\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>68.2</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">68.2\%</annotation></semantics></math>, median <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>47.6</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">47.6\%</annotation></semantics></math>), far above <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, while quasi-stationary <em>Ireland Static</em> stays lower and supported throughput generally remains <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">3\%</annotation></semantics></math> (Fig. 1; full cap-40 breakdown in Supplement Table S14).</p>
 <div class="table*">
 <table>
 <tbody>
@@ -764,13 +576,105 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 </tbody>
 </table>
 </div>
+<h2 id="cluster-equivalence-and-statistical-power">Cluster Equivalence and Statistical Power</h2>
+<p>At matched 10-query cost across <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">G=16</annotation></semantics></math> retrospective dates (Table III), MARUR minus Periodic gives pooled <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>U</mi><mo>=</mo><mi>+</mi><mn>0.21</mn></mrow><annotation encoding="application/x-tex">\Delta U = +0.21</annotation></semantics></math> pp and equal-cluster mean <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>U</mi><mo>=</mo><mi>−</mi><mn>0.09</mn></mrow><annotation encoding="application/x-tex">\Delta U = -0.09</annotation></semantics></math> pp (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>95</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">95\%</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>-CI <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1.27</mn></mrow><annotation encoding="application/x-tex">-1.27</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>1.08</mn></mrow><annotation encoding="application/x-tex">+1.08</annotation></semantics></math>). To distinguish lack of evidence from equivalence, Table IV reports <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">MDE</mtext><mn>80</mn></msub><annotation encoding="application/x-tex">\text{MDE}_{80}</annotation></semantics></math> and TOST against <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>1.0</mn></mrow><annotation encoding="application/x-tex">\pm 1.0</annotation></semantics></math> pp and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>2.0</mn></mrow><annotation encoding="application/x-tex">\pm 2.0</annotation></semantics></math> pp margins justified by the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">3\%</annotation></semantics></math> baseline throughput scale (where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>1.0</mn></mrow><annotation encoding="application/x-tex">\pm 1.0</annotation></semantics></math> pp equals <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>33</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">33\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">100\%</annotation></semantics></math> of typical delivered bandwidth). With <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">G=16</annotation></semantics></math> clusters, power is limited (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext mathvariant="normal">MDE</mtext><mn>80</mn></msub><mo>=</mo><mn>1.65</mn></mrow><annotation encoding="application/x-tex">\text{MDE}_{80}=1.65</annotation></semantics></math> pp): TOST is inconclusive at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>1.0</mn></mrow><annotation encoding="application/x-tex">\pm 1.0</annotation></semantics></math> pp yet rejects differences exceeding <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>2.0</mn></mrow><annotation encoding="application/x-tex">\pm 2.0</annotation></semantics></math> pp (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.0018</mn></mrow><annotation encoding="application/x-tex">p=0.0018</annotation></semantics></math>). Across <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>26</mn></mrow><annotation encoding="application/x-tex">G=26</annotation></semantics></math> held-out dates at cap 10, PACER reduces equal-cluster utility relative to Periodic (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>3.29</mn></mrow><annotation encoding="application/x-tex">-3.29</annotation></semantics></math> pp), whereas cap-40 differences sit within <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>2.0</mn></mrow><annotation encoding="application/x-tex">\pm 2.0</annotation></semantics></math> pp (Table IV).</p>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">Scope</td>
+<td style="text-align: left;">Contrast</td>
+<td style="text-align: left;">Cap</td>
+<td style="text-align: left;">G</td>
+<td style="text-align: left;">Mean dU</td>
+<td style="text-align: left;">SD</td>
+<td style="text-align: left;">tCI95</td>
+<td style="text-align: left;">MDE80</td>
+<td style="text-align: left;">p1pp</td>
+<td style="text-align: left;">p2pp</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retrospective</td>
+<td style="text-align: left;">MARUR vs Per</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">-0.09</td>
+<td style="text-align: left;">2.21</td>
+<td style="text-align: left;">-1.27 to +1.08</td>
+<td style="text-align: left;">1.65</td>
+<td style="text-align: left;">0.0609</td>
+<td style="text-align: left;">0.0018</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retrospective</td>
+<td style="text-align: left;">PACER vs Per</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">-0.10</td>
+<td style="text-align: left;">1.44</td>
+<td style="text-align: left;">-0.87 to +0.67</td>
+<td style="text-align: left;">1.08</td>
+<td style="text-align: left;">0.0122</td>
+<td style="text-align: left;">0.0000</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">MARUR vs Per</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">-3.36</td>
+<td style="text-align: left;">7.95</td>
+<td style="text-align: left;">-6.57 to -0.15</td>
+<td style="text-align: left;">4.54</td>
+<td style="text-align: left;">0.9286</td>
+<td style="text-align: left;">0.8041</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">PACER vs Per</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">-3.29</td>
+<td style="text-align: left;">7.02</td>
+<td style="text-align: left;">-6.12 to -0.46</td>
+<td style="text-align: left;">4.01</td>
+<td style="text-align: left;">0.9457</td>
+<td style="text-align: left;">0.8213</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">PACER vs Per</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">+0.01</td>
+<td style="text-align: left;">4.30</td>
+<td style="text-align: left;">-1.72 to +1.75</td>
+<td style="text-align: left;">2.46</td>
+<td style="text-align: left;">0.1261</td>
+<td style="text-align: left;">0.0132</td>
+</tr>
+<tr>
+<td style="text-align: left;">AllCohorts</td>
+<td style="text-align: left;">PACER vs Per</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">+0.02</td>
+<td style="text-align: left;">3.45</td>
+<td style="text-align: left;">-1.05 to +1.10</td>
+<td style="text-align: left;">1.53</td>
+<td style="text-align: left;">0.0372</td>
+<td style="text-align: left;">0.0003</td>
+</tr>
+</tbody>
+</table>
+</div>
 <figure id="fig:policy_summary" data-latex-placement="!t">
-<embed src="figures/main_fig1_policy_summary.png" style="width:92.0%" />
-<figcaption>Joint overview of (a) positive-offer frequency <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>, (b) positive-offer upper risk <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mo>+</mo><mrow><mi mathvariant="normal">h</mi><mi mathvariant="normal">i</mi></mrow></msubsup><annotation encoding="application/x-tex">R_+^{\mathrm{hi}}</annotation></semantics></math> versus <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>10</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\alpha=10\%</annotation></semantics></math>, and (c) supported measured throughput <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> across all 10 archived cohorts (6 retrospective R, 4 held-out public archives H) under frozen HistGBM and recorded feedback.</figcaption>
+<embed src="figures/main_fig1_policy_summary.png" style="width:84.0%" />
+<figcaption>Overview of (a) positive-offer frequency <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>, (b) conditional upper risk <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mo>+</mo><mrow><mi mathvariant="normal">h</mi><mi mathvariant="normal">i</mi></mrow></msubsup><annotation encoding="application/x-tex">R_+^{\mathrm{hi}}</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>10</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\alpha=10\%</annotation></semantics></math>, and (c) supported throughput <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> across all 10 archived cohorts (6 retrospective R, 4 held-out H) under frozen HistGBM and recorded feedback.</figcaption>
 </figure>
-<h1 id="sec:pacer_audit">Held-Out Public Archives and Bound Audit</h1>
-<h2 id="cohort-by-cohort-performance-and-pooling-rule-sensitivity">Cohort-by-Cohort Performance and Pooling-Rule Sensitivity</h2>
-<p>We next evaluate all comparators on four held-out public archives not used during retrospective controller comparisons, with PACER’s configuration (<code>configs/pacer.json</code>) and SHA-256 checksums frozen before evaluation on the held-out archives (the authors had prior access to the public archives, and PACER was designed after diagnosing MARUR failures on the retrospective cohorts). These four held-out cohorts add <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>26</mn><annotation encoding="application/x-tex">26</annotation></semantics></math> physical campaign-dates: <em>Rome Capacity Op1</em> and <em>Op2</em> (sharing <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>15</mn><annotation encoding="application/x-tex">15</annotation></semantics></math> calendar dates merged into 15 physical <code>RomeCap</code> units), <em>Oslo Commute</em> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>7</mn><annotation encoding="application/x-tex">7</annotation></semantics></math> post-2011-01-30 dates <span class="citation" data-cites="riiser2013commute">(Riiser et al. 2013)</span>), and <em>Ireland Static</em> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>4</mn><annotation encoding="application/x-tex">4</annotation></semantics></math> static-download dates excluded from driving evaluation), yielding <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>42</mn><annotation encoding="application/x-tex">42</annotation></semantics></math> pooled physical clusters across all <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10</mn><annotation encoding="application/x-tex">10</annotation></semantics></math> cohorts.</p>
+<h1 id="sec:pacer_audit">Held-Out Archives and Bound Audit</h1>
+<p>Four held-out public archives contribute <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>26</mn></mrow><annotation encoding="application/x-tex">G=26</annotation></semantics></math> additional physical campaign-dates (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>42</mn><annotation encoding="application/x-tex">42</annotation></semantics></math> pooled clusters total): shared <em>Rome Capacity Op1/Op2</em> dates, post-2011 <em>Oslo Commute</em> <span class="citation" data-cites="riiser2013commute">(Riiser et al. 2013)</span>, and <em>Ireland Static</em>. Configuration and SHA-256 checksums (<code>docs/PACER_FROZEN_PROTOCOL.md</code>) were frozen prior to evaluation, although the authors had prior archive access and designed PACER after inspecting retrospective failures.</p>
+<p>Per-cohort outcomes remain heterogeneous (Table V, Fig. 2): PACER lowers Day-1 risk on Oslo at cap 10 and maintains low risk on Ireland Static, yet matches or trails Periodic across most mobile cells (including the retrospective mean). Table VI resolves why pooled headlines diverge: offer-weighted held-out contrast (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>23.41</mn></mrow><annotation encoding="application/x-tex">-23.41</annotation></semantics></math> pp at cap 10) reflects Oslo Commute’s heavy Periodic offer share versus Ireland Static’s heavy PACER share, vanishing under equal-cluster weighting (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>0.37</mn></mrow><annotation encoding="application/x-tex">+0.37</annotation></semantics></math> pp), higher query caps (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>0.83</mn></mrow><annotation encoding="application/x-tex">-0.83</annotation></semantics></math> pp at cap 40), and 42-cluster pooling (Supplement Table S16). Under Persistence at cap 40, PACER’s abstention cuts pooled utility by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>29.95</mn></mrow><annotation encoding="application/x-tex">-29.95</annotation></semantics></math> pp relative to Frozen.</p>
 <div class="table*">
 <table>
 <tbody>
@@ -921,11 +825,9 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 </table>
 </div>
 <figure id="fig:pacer_breakdown" data-latex-placement="!t">
-<embed src="figures/main_fig2_pacer_breakdown.png" style="width:88.0%" />
-<figcaption>Per-cohort conditional upper risk <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mo>+</mo><mrow><mi mathvariant="normal">h</mi><mi mathvariant="normal">i</mi></mrow></msubsup><annotation encoding="application/x-tex">R_+^{\mathrm{hi}}</annotation></semantics></math> comparing Periodic, MARUR, and PACER across held-out public archives and the 6-cohort retrospective mean at (a) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\mathrm{new}}=10</annotation></semantics></math> and (b) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\mathrm{new}}=40</annotation></semantics></math> (frozen HistGBM, recorded feedback). Improvements concentrate at Oslo Commute <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\mathrm{new}}=10</annotation></semantics></math>, while PACER matches or trails Periodic in Rome Op1, Oslo <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\mathrm{new}}=40</annotation></semantics></math>, and the retrospective mean.</figcaption>
+<embed src="figures/main_fig2_pacer_breakdown.png" style="width:78.0%" />
+<figcaption>Per-cohort conditional upper risk <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mo>+</mo><mrow><mi mathvariant="normal">h</mi><mi mathvariant="normal">i</mi></mrow></msubsup><annotation encoding="application/x-tex">R_+^{\mathrm{hi}}</annotation></semantics></math> comparing Periodic, MARUR, and PACER across held-out public archives and the 6-cohort retrospective mean at (a) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\mathrm{new}}=10</annotation></semantics></math> and (b) <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\mathrm{new}}=40</annotation></semantics></math> (frozen HistGBM, recorded feedback).</figcaption>
 </figure>
-<p>Table V and Fig. 2 reveal heterogeneous outcomes rather than uniform dominance. On Oslo Commute at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=10</annotation></semantics></math>, PACER eliminates Periodic’s Day-1 over-committing (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>17.69</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">17.69\%</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>48.70</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">48.70\%</annotation></semantics></math> upper risk) and keeps risk at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5.12</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">5.12\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6.98</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">6.98\%</annotation></semantics></math> on quasi-stationary Ireland Static. However, PACER performs worse than or similar to Periodic across most mobile cells: Rome Capacity Op1 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>52.38</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">52.38\%</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>46.91</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">46.91\%</annotation></semantics></math> at cap 10; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>62.96</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">62.96\%</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>47.19</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">47.19\%</annotation></semantics></math> at cap 40), Rome Capacity Op2 cap 10 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>56.10</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">56.10\%</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>47.37</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">47.37\%</annotation></semantics></math>), Oslo Commute cap 40 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>32.40</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">32.40\%</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20.68</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">20.68\%</annotation></semantics></math>), and the 6-cohort retrospective mean (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>49.26</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">49.26\%</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>43.24</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">43.24\%</annotation></semantics></math> at cap 10; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>47.81</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">47.81\%</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>35.67</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">35.67\%</annotation></semantics></math> at cap 40, where PACER’s 20-sample residual buffer forgets stale initial scores slower than Periodic’s 10-sample buffer).</p>
-<p>Table VI explains how pooling definitions alter the aggregate headline. Under offer-weighted pooling (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∑</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mi>u</mi></msub><mo>+</mo><msub><mi>m</mi><mi>u</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mo>∑</mo><msub><mi>M</mi><mi>u</mi></msub></mrow><annotation encoding="application/x-tex">\sum (e_u + m_u)/\sum M_u</annotation></semantics></math>, merging shared Rome dates across Op1 and Op2), PACER minus Periodic at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=10</annotation></semantics></math> on the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>26</mn><annotation encoding="application/x-tex">26</annotation></semantics></math> held-out clusters equals <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>23.41</mn></mrow><annotation encoding="application/x-tex">-23.41</annotation></semantics></math> percentage points (95% bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>37.04</mn></mrow><annotation encoding="application/x-tex">-37.04</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>5.91</mn></mrow><annotation encoding="application/x-tex">-5.91</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>U</mi><mo>=</mo><mi>+</mi><mn>0.47</mn></mrow><annotation encoding="application/x-tex">\Delta U=+0.47</annotation></semantics></math> pp). That aggregate figure is driven by offer-count imbalance: Oslo Commute contributes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>499</mn><annotation encoding="application/x-tex">499</annotation></semantics></math> of Periodic’s <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>688</mn><annotation encoding="application/x-tex">688</annotation></semantics></math> total positive offers (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>72.5</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">72.5\%</annotation></semantics></math>), while Ireland Static (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5.12</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">5.12\%</annotation></semantics></math> risk) supplies <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>215</mn><annotation encoding="application/x-tex">215</annotation></semantics></math> of PACER’s <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>620</mn><annotation encoding="application/x-tex">620</annotation></semantics></math> offers. When clusters with active offers on both policies are weighted equally (EqualUnit, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>22</mn><mi>/</mi><mn>26</mn></mrow><annotation encoding="application/x-tex">22/26</annotation></semantics></math> clusters), the difference vanishes to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>0.37</mn></mrow><annotation encoding="application/x-tex">+0.37</annotation></semantics></math> percentage points (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>U</mi><mo>=</mo><mi>−</mi><mn>3.29</mn></mrow><annotation encoding="application/x-tex">\Delta U = -3.29</annotation></semantics></math> pp); under equal cohort weighting, it is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>4.88</mn></mrow><annotation encoding="application/x-tex">-4.88</annotation></semantics></math> pp. Across <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=40</annotation></semantics></math>, offer-weighted held-out contrast is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>0.83</mn></mrow><annotation encoding="application/x-tex">-0.83</annotation></semantics></math> pp (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>16.13</mn></mrow><annotation encoding="application/x-tex">-16.13</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>11.46</mn></mrow><annotation encoding="application/x-tex">+11.46</annotation></semantics></math>), equal-unit is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>2.79</mn></mrow><annotation encoding="application/x-tex">+2.79</annotation></semantics></math> pp, retrospective cohorts show <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>8.83</mn></mrow><annotation encoding="application/x-tex">+8.83</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>16.26</mn></mrow><annotation encoding="application/x-tex">+16.26</annotation></semantics></math> pp worse risk for PACER, and across all <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>42</mn><annotation encoding="application/x-tex">42</annotation></semantics></math> pooled clusters both cap 10 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>14.37</mn></mrow><annotation encoding="application/x-tex">-14.37</annotation></semantics></math> pp, CI <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>26.80</mn></mrow><annotation encoding="application/x-tex">-26.80</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>0.85</mn></mrow><annotation encoding="application/x-tex">+0.85</annotation></semantics></math>) and cap 40 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>3.29</mn></mrow><annotation encoding="application/x-tex">+3.29</annotation></semantics></math> pp, CI <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>7.49</mn></mrow><annotation encoding="application/x-tex">-7.49</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>12.49</mn></mrow><annotation encoding="application/x-tex">+12.49</annotation></semantics></math>) cross zero. Under Persistence, PACER’s conservative abstention lowers pooled utility by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>29.95</mn></mrow><annotation encoding="application/x-tex">-29.95</annotation></semantics></math> pp vs. Frozen across 42 clusters at cap 40.</p>
 <div class="table*">
 <table>
 <tbody>
@@ -993,60 +895,6 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 <td style="text-align: left;">+0.56</td>
 </tr>
 <tr>
-<td style="text-align: left;">Retrospective</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: left;">OfferWtd</td>
-<td style="text-align: left;">16</td>
-<td style="text-align: left;">+8.83</td>
-<td style="text-align: left;">-2.16 to +13.99</td>
-<td style="text-align: left;">+0.11</td>
-</tr>
-<tr>
-<td style="text-align: left;">Retrospective</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: left;">EqualUnit</td>
-<td style="text-align: left;">10/16</td>
-<td style="text-align: left;">-4.36</td>
-<td style="text-align: left;">paired valid</td>
-<td style="text-align: left;">-0.10</td>
-</tr>
-<tr>
-<td style="text-align: left;">Retrospective</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: left;">EqualCohort</td>
-<td style="text-align: left;">6 coh</td>
-<td style="text-align: left;">+6.02</td>
-<td style="text-align: left;">unweighted</td>
-<td style="text-align: left;">+0.13</td>
-</tr>
-<tr>
-<td style="text-align: left;">Retrospective</td>
-<td style="text-align: left;">40</td>
-<td style="text-align: left;">OfferWtd</td>
-<td style="text-align: left;">16</td>
-<td style="text-align: left;">+16.26</td>
-<td style="text-align: left;">+4.68 to +24.93</td>
-<td style="text-align: left;">+0.19</td>
-</tr>
-<tr>
-<td style="text-align: left;">Retrospective</td>
-<td style="text-align: left;">40</td>
-<td style="text-align: left;">EqualUnit</td>
-<td style="text-align: left;">9/16</td>
-<td style="text-align: left;">-5.93</td>
-<td style="text-align: left;">paired valid</td>
-<td style="text-align: left;">+0.05</td>
-</tr>
-<tr>
-<td style="text-align: left;">Retrospective</td>
-<td style="text-align: left;">40</td>
-<td style="text-align: left;">EqualCohort</td>
-<td style="text-align: left;">6 coh</td>
-<td style="text-align: left;">+12.15</td>
-<td style="text-align: left;">unweighted</td>
-<td style="text-align: left;">+0.08</td>
-</tr>
-<tr>
 <td style="text-align: left;">AllCohorts</td>
 <td style="text-align: left;">10</td>
 <td style="text-align: left;">OfferWtd</td>
@@ -1066,15 +914,6 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 </tr>
 <tr>
 <td style="text-align: left;">AllCohorts</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: left;">EqualCohort</td>
-<td style="text-align: left;">10 coh</td>
-<td style="text-align: left;">+1.66</td>
-<td style="text-align: left;">unweighted</td>
-<td style="text-align: left;">-1.09</td>
-</tr>
-<tr>
-<td style="text-align: left;">AllCohorts</td>
 <td style="text-align: left;">40</td>
 <td style="text-align: left;">OfferWtd</td>
 <td style="text-align: left;">42</td>
@@ -1091,30 +930,19 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 <td style="text-align: left;">paired valid</td>
 <td style="text-align: left;">+0.02</td>
 </tr>
-<tr>
-<td style="text-align: left;">AllCohorts</td>
-<td style="text-align: left;">40</td>
-<td style="text-align: left;">EqualCohort</td>
-<td style="text-align: left;">10 coh</td>
-<td style="text-align: left;">+9.32</td>
-<td style="text-align: left;">unweighted</td>
-<td style="text-align: left;">+0.27</td>
-</tr>
 </tbody>
 </table>
 </div>
-<h2 id="bound-tightness-proof-assumptions-and-conditional-ceilings">Bound Tightness, Proof Assumptions, and Conditional Ceilings</h2>
-<p>To clarify the limits of finite-sample guarantees under sparse queries, consider PACER’s weighted selective-excess bound over <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K = \min(C_{\text{new}}, T)</annotation></semantics></math> uniform block probes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>k</mi></msub><mo>∼</mo><mrow><mi mathvariant="normal">U</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">f</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">m</mi></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="script">ℬ</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u_k \sim \mathrm{Uniform}(\mathcal{B}_k)</annotation></semantics></math> with block-constant threshold <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>q</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo></mrow></msub><annotation encoding="application/x-tex">q_{(k)}</annotation></semantics></math> updated at block boundaries (protocol and derivation in <code>docs/PACER_THEORY_AND_PREREGISTRATION.md</code>): <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝑬</mi><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">[</mo><mi>A</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>−</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mo>≤</mo><mfrac><msub><mi>W</mi><mi mathvariant="normal">max</mi></msub><mi>T</mi></mfrac><mo>⋅</mo><mfrac><mrow><mi>α</mi><mo>+</mo><msub><mi>a</mi><mtext mathvariant="normal">veto</mtext></msub><mo>+</mo><mi>γ</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>D</mi><mo stretchy="false" form="postfix">)</mo></mrow><mi>γ</mi></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{equation}
+<h2 id="theorem-1-bound-tightness-and-operational-ceilings">Theorem 1 Bound Tightness and Operational Ceilings</h2>
+<p>PACER’s weighted selective-excess bound over <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K=\min(C_{\text{new}}, T)</annotation></semantics></math> uniform probes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>k</mi></msub><mo>∼</mo><mrow><mi mathvariant="normal">U</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">f</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">m</mi></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="script">ℬ</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u_k \sim \mathrm{Uniform}(\mathcal{B}_k)</annotation></semantics></math> is <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝑬</mi><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">[</mo><mi>A</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>−</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mo>≤</mo><mfrac><msub><mi>W</mi><mi mathvariant="normal">max</mi></msub><mi>T</mi></mfrac><mo>⋅</mo><mfrac><mrow><mi>α</mi><mo>+</mo><msub><mi>a</mi><mtext mathvariant="normal">veto</mtext></msub><mo>+</mo><mi>γ</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>D</mi><mo stretchy="false" form="postfix">)</mo></mrow><mi>γ</mi></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{equation}
 \mathbf{E}\!\left[A\left(R_+^{\text{upper}} - \alpha\right)\right] \le \frac{W_{\max}}{T} \cdot \frac{\alpha + a_{\text{veto}} + \gamma(1 - \alpha)(1 + D)}{\gamma},
 \label{eq:t1_bound}
-\end{equation}</annotation></semantics></math> where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mi mathvariant="normal">max</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">⌈</mo><mi>T</mi><mi>/</mi><mi>K</mi><mo stretchy="false" form="postfix">⌉</mo></mrow><annotation encoding="application/x-tex">W_{\max} = \lceil T/K \rceil</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">D \le 1</annotation></semantics></math> is inter-block completion delay (verified <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">D=0</annotation></semantics></math> across evaluated streams), and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝑬</mi><mo stretchy="false" form="prefix">[</mo><mi>⋅</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathbf{E}[\cdot]</annotation></semantics></math> holds under two explicit independence assumptions: (i) an oblivious stream <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>p</mi><mi>t</mi></msub><mo>,</mo><msub><mi>Y</mi><mi>t</mi></msub><mo>,</mo><msub><mi>O</mi><mi>t</mi></msub><msubsup><mo stretchy="false" form="postfix">)</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>T</mi></msubsup></mrow><annotation encoding="application/x-tex">(p_t, Y_t, O_t)_{t=1}^T</annotation></semantics></math> whose covariates, outcomes, and censoring do not adapt to realized probe indices <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>u</mi><mi>K</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(u_1,\dots,u_K)</annotation></semantics></math>, and (ii) block-constant thresholds <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>q</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo></mrow></msub><annotation encoding="application/x-tex">q_{(k)}</annotation></semantics></math> frozen throughout <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="script">ℬ</mi><mi>k</mi></msub><annotation encoding="application/x-tex">\mathcal{B}_k</annotation></semantics></math> prior to revealing <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>u</mi><mi>k</mi></msub><annotation encoding="application/x-tex">u_k</annotation></semantics></math> so <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝑬</mi><mo stretchy="false" form="prefix">[</mo><msub><mi>I</mi><msub><mi>u</mi><mi>k</mi></msub></msub><mo stretchy="false" form="prefix">(</mo><msubsup><mi>e</mi><msub><mi>u</mi><mi>k</mi></msub><mtext mathvariant="normal">cons</mtext></msubsup><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>∣</mo><msub><mi mathvariant="script">ℱ</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><msub><mi mathvariant="script">ℬ</mi><mi>k</mi></msub><msup><mo stretchy="false" form="prefix">|</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><msub><mo>∑</mo><mrow><mi>t</mi><mo>∈</mo><msub><mi mathvariant="script">ℬ</mi><mi>k</mi></msub></mrow></msub><msub><mi>I</mi><mi>t</mi></msub><mo stretchy="false" form="prefix">(</mo><msubsup><mi>e</mi><mi>t</mi><mtext mathvariant="normal">cons</mtext></msubsup><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{E}[I_{u_k}(e_{u_k}^{\text{cons}}-\alpha)\mid \mathcal{F}_{k-1}] = |\mathcal{B}_k|^{-1}\sum_{t\in\mathcal{B}_k} I_t(e_t^{\text{cons}}-\alpha)</annotation></semantics></math>.</p>
-<p><strong>Remark 1 (Vacuous Regime at Small <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> or Low Offer Frequency):</strong> Plugging locked parameters (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn><mo>,</mo><mi>γ</mi><mo>=</mo><mn>0.05</mn><mo>,</mo><msub><mi>a</mi><mtext mathvariant="normal">veto</mtext></msub><mo>=</mo><mn>0.15</mn><mo>,</mo><mi>D</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10, \gamma=0.05, a_{\text{veto}}=0.15, D=1</annotation></semantics></math>) into <a href="#eq:t1_bound" data-reference-type="eqref" data-reference="eq:t1_bound">[eq:t1_bound]</a> yields <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0.10</mn><mo>+</mo><mn>0.15</mn><mo>+</mo><mn>0.05</mn><mo>⋅</mo><mn>0.90</mn><mo>⋅</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>0.05</mn><mo>=</mo><mn>6.8</mn></mrow><annotation encoding="application/x-tex">(0.10+0.15+0.05\cdot 0.90\cdot 2)/0.05 = 6.8</annotation></semantics></math>, giving bound <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>6.8</mn><msub><mi>W</mi><mi mathvariant="normal">max</mi></msub><mi>/</mi><mi>T</mi><mo>≈</mo><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">B_1(K) = 6.8 W_{\max}/T \approx 6.8/K</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.683</mn><annotation encoding="application/x-tex">0.683</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.714</mn><annotation encoding="application/x-tex">0.714</annotation></semantics></math> at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">K=10</annotation></semantics></math>; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.178</mn><annotation encoding="application/x-tex">0.178</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.192</mn><annotation encoding="application/x-tex">0.192</annotation></semantics></math> at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">K=40</annotation></semantics></math>). Meanwhile, since <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">R_+^{\text{upper}} \le 1</annotation></semantics></math>, <em>every</em> policy deterministically satisfies <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≤</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>A</mi><mo>=</mo><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">A(R_+^{\text{upper}}-\alpha) \le (1-\alpha)A = 0.9A</annotation></semantics></math>. Consequently, <a href="#eq:t1_bound" data-reference-type="eqref" data-reference="eq:t1_bound">[eq:t1_bound]</a> is strictly trivial whenever <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">B_1(K) \ge 0.9A</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>≤</mo><mn>0.76</mn></mrow><annotation encoding="application/x-tex">A \le 0.76</annotation></semantics></math> at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">K=10</annotation></semantics></math>; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>≤</mo><mn>0.20</mn></mrow><annotation encoding="application/x-tex">A \le 0.20</annotation></semantics></math> at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">K=40</annotation></semantics></math>). As Fig. 3 confirms across all 40 seed-averaged cohort–model–cap cells, <a href="#eq:t1_bound" data-reference-type="eqref" data-reference="eq:t1_bound">[eq:t1_bound]</a> falls below the trivial ceiling on only <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math> of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>20</mn><annotation encoding="application/x-tex">20</annotation></semantics></math> cells at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=10</annotation></semantics></math> (Ireland Static HistGBM) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math> of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>20</mn><annotation encoding="application/x-tex">20</annotation></semantics></math> cells at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=40</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>/</mi><mn>40</mn></mrow><annotation encoding="application/x-tex">4/40</annotation></semantics></math> overall); <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>40</mn><mi>/</mi><mn>40</mn></mrow><annotation encoding="application/x-tex">40/40</annotation></semantics></math> satisfaction therefore reflects small <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math> and large <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">6.8/K</annotation></semantics></math> rather than tight conditional risk control. Informative bounds require either <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>≥</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}} \ge 40</annotation></semantics></math> at high <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math> or substantially larger <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> (e.g., guaranteeing <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>−</mo><mi>α</mi><mo>≤</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">R_+^{\text{upper}}-\alpha \le 0.10</annotation></semantics></math> at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mn>0.50</mn></mrow><annotation encoding="application/x-tex">A=0.50</annotation></semantics></math> requires <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>≥</mo><mn>136</mn></mrow><annotation encoding="application/x-tex">K \ge 136</annotation></semantics></math>).</p>
-<p><strong>Proposition 1 (Blind-Suffix Risk Under Budget Exhaustion):</strong> Any policy exhausting <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><annotation encoding="application/x-tex">C_{\text{new}}</annotation></semantics></math> at index <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>&lt;</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">\tau &lt; T</annotation></semantics></math> holds <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>q</mi><mi>t</mi></msub><annotation encoding="application/x-tex">q_t</annotation></semantics></math> frozen over all <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mtext mathvariant="normal">post</mtext></msub><annotation encoding="application/x-tex">M_{\text{post}}</annotation></semantics></math> post-exhaustion positive offers, admitting an outcome shift on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">(\tau, T]</annotation></semantics></math> with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>≥</mo><msub><mi>M</mi><mtext mathvariant="normal">post</mtext></msub><mi>/</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">R_+^{\text{upper}} \ge M_{\text{post}}/M</annotation></semantics></math>, whereas block pacing caps unprobed gaps at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mi mathvariant="normal">max</mi></msub><mo>≤</mo><mo stretchy="false" form="prefix">⌈</mo><mi>T</mi><mi>/</mi><mi>K</mi><mo stretchy="false" form="postfix">⌉</mo></mrow><annotation encoding="application/x-tex">W_{\max} \le \lceil T/K \rceil</annotation></semantics></math> ticks.</p>
+\end{equation}</annotation></semantics></math> where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mi mathvariant="normal">max</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">⌈</mo><mi>T</mi><mi>/</mi><mi>K</mi><mo stretchy="false" form="postfix">⌉</mo></mrow><annotation encoding="application/x-tex">W_{\max}=\lceil T/K \rceil</annotation></semantics></math> and inter-block delay <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">D \le 1</annotation></semantics></math> (verified <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">D=0</annotation></semantics></math>), assuming (i) an oblivious stream independent of probe indices <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(u_k)</annotation></semantics></math> and (ii) block-constant thresholds <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>q</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo></mrow></msub><annotation encoding="application/x-tex">q_{(k)}</annotation></semantics></math> <span class="citation" data-cites="vovk2005algorithmic">(Vovk et al. 2005)</span>. With locked parameters, <a href="#eq:t1_bound" data-reference-type="eqref" data-reference="eq:t1_bound">[eq:t1_bound]</a> yields <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">B_1(K) \approx 6.8/K</annotation></semantics></math>.</p>
+<p><strong>Remark 1 (Vacuous Regime) and Proposition 1:</strong> Every policy deterministically obeys <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≤</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>A</mi><mo>=</mo><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">A(R_+^{\text{upper}}-\alpha) \le (1-\alpha)A = 0.9A</annotation></semantics></math>. Hence <a href="#eq:t1_bound" data-reference-type="eqref" data-reference="eq:t1_bound">[eq:t1_bound]</a> is vacuous (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo>≥</mo><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">B_1 \ge 0.9A</annotation></semantics></math>) below <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>≈</mo><mn>0.76</mn></mrow><annotation encoding="application/x-tex">A \approx 0.76</annotation></semantics></math> at cap 10 and falls below <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">0.9A</annotation></semantics></math> in only <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>/</mi><mn>40</mn></mrow><annotation encoding="application/x-tex">4/40</annotation></semantics></math> seed-mean cells overall (Fig. 3). Separately, <em>Proposition 1</em> observes that early budget exhaustion freezes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>q</mi><mi>t</mi></msub><annotation encoding="application/x-tex">q_t</annotation></semantics></math> across suffix offers, whereas uniform block pacing bounds unprobed gaps at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>W</mi><mi mathvariant="normal">max</mi></msub><annotation encoding="application/x-tex">W_{\max}</annotation></semantics></math>. Table VII maps <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>≤</mo><mi>α</mi><mo>+</mo><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">R_+^{\text{upper}} \le \alpha + B_1(K)/A</annotation></semantics></math> into operational rules prohibiting SLA deployment when <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>&lt;</mo><mn>0.30</mn></mrow><annotation encoding="application/x-tex">A &lt; 0.30</annotation></semantics></math> or under lag Persistence.</p>
 <figure id="fig:t1_bounds" data-latex-placement="!t">
-<embed src="figures/main_fig3_theorem1_bounds.png" style="width:88.0%" />
-<figcaption>Comparison of PACER’s weighted selective-excess bound <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">B_1(K) \approx 6.8/K</annotation></semantics></math>, the deterministic trivial ceiling <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>A</mi><mo>=</mo><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">(1-\alpha)A = 0.9A</annotation></semantics></math>, and 3-seed mean observed excess across all 40 cohort–model–cap cells. At <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\mathrm{new}}=10</annotation></semantics></math>, 19/20 cells lie inside the vacuous region <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo>≥</mo><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">B_1 \ge 0.9A</annotation></semantics></math>; only 4/40 cells overall (Ireland Static cap 10/40; Ireland and Oslo Commute cap 40) sit below <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">0.9A</annotation></semantics></math>.</figcaption>
+<embed src="figures/main_fig3_theorem1_bounds.png" style="width:78.0%" />
+<figcaption>PACER weighted selective-excess bound <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">B_1(K) \approx 6.8/K</annotation></semantics></math>, trivial ceiling <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>A</mi><mo>=</mo><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">(1-\alpha)A = 0.9A</annotation></semantics></math>, and 3-seed mean excess across all 40 cells (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\mathrm{new}}=10</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.683</mn><annotation encoding="application/x-tex">0.683</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.714</mn><annotation encoding="application/x-tex">0.714</annotation></semantics></math>; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\mathrm{new}}=40</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.178</mn><annotation encoding="application/x-tex">0.178</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.192</mn><annotation encoding="application/x-tex">0.192</annotation></semantics></math>). Only <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mn>20</mn></mrow><annotation encoding="application/x-tex">1/20</annotation></semantics></math> cells at cap 10 and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>/</mi><mn>20</mn></mrow><annotation encoding="application/x-tex">3/20</annotation></semantics></math> at cap 40 (4/40 total) sit below <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">0.9A</annotation></semantics></math>.</figcaption>
 </figure>
-<p>Table VII converts <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>≤</mo><mi>α</mi><mo>+</mo><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">R_+^{\text{upper}} \le \alpha + B_1(K)/A</annotation></semantics></math> into operational deployment boundaries. When <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>&lt;</mo><mn>0.25</mn></mrow><annotation encoding="application/x-tex">A &lt; 0.25</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.30</mn><annotation encoding="application/x-tex">0.30</annotation></semantics></math> (observed across E1, E3, AT&amp;T, T-Mobile, Verizon, Ireland driving, and Rome Capacity Op1/Op2) or under uncalibrated lag predictors, controllers must <strong>not be deployed</strong> for SLA-backed rate commitments.</p>
 <div class="table*">
 <table>
 <tbody>
@@ -1175,49 +1003,27 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 </tbody>
 </table>
 </div>
-<h1 id="sec:sensitivity">Exploratory Sensitivity and Robustness</h1>
-<p>To ensure findings are not artifacts of the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">W=10</annotation></semantics></math> sample-max quantile (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⌈</mo><mn>11</mn><mo>×</mo><mn>0.9</mn><mo stretchy="false" form="postfix">⌉</mo><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">\lceil 11 \times 0.9 \rceil = 10</annotation></semantics></math>) or the 57-row HistGBM predictor, we conducted strictly exploratory sensitivity runs over the 6 retrospective cohorts (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">G=16</annotation></semantics></math> physical dates; held-out public archives remained isolated from any model or hyperparameter change).</p>
+<h1 id="sec:sensitivity">Extended Exploratory Sensitivity and Scope</h1>
+<p>Under an explicitly <em>exploratory</em> label (<code>results/exploratory/sensitivity/</code>) preserving all frozen results, we extended window/<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> and source-only predictor evaluations to both <em>MARUR</em> and <em>PACER</em> across retrospective and held-out archives, plus a 10-cohort Leave-One-Cohort-Out (LOCO) check (Table VIII; full LOCO in Supplement Table S17). Note that parameter sweep counts (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>576</mn><annotation encoding="application/x-tex">576</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>848</mn></mrow><annotation encoding="application/x-tex">1{,}848</annotation></semantics></math>) remain deterministic evaluations over the same <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>42</mn><annotation encoding="application/x-tex">42</annotation></semantics></math> physical campaign-dates.</p>
 <div class="table*">
 <table>
 <tbody>
 <tr>
 <td style="text-align: left;">Axis</td>
+<td style="text-align: left;">Policy</td>
 <td style="text-align: left;">Setting</td>
 <td style="text-align: left;">Cap</td>
-<td style="text-align: left;">PosRate</td>
-<td style="text-align: left;">MARHi</td>
+<td style="text-align: left;">CandHi</td>
 <td style="text-align: left;">PerHi</td>
-<td style="text-align: left;">MARU</td>
+<td style="text-align: left;">CandU</td>
 <td style="text-align: left;">Eq dU</td>
 <td style="text-align: left;">tCI95</td>
 </tr>
 <tr>
-<td style="text-align: left;">Win/Alpha</td>
-<td style="text-align: left;">a=0.05, W=10</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: left;">0.0</td>
-<td style="text-align: left;">undef</td>
-<td style="text-align: left;">undef</td>
-<td style="text-align: left;">0.00</td>
-<td style="text-align: left;">+0.00</td>
-<td style="text-align: left;">all zero</td>
-</tr>
-<tr>
-<td style="text-align: left;">Win/Alpha</td>
-<td style="text-align: left;">a=0.05, W=20</td>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.05,W=40</td>
 <td style="text-align: left;">40</td>
-<td style="text-align: left;">2.5</td>
-<td style="text-align: left;">52.50</td>
-<td style="text-align: left;">15.15</td>
-<td style="text-align: left;">0.12</td>
-<td style="text-align: left;">-0.08</td>
-<td style="text-align: left;">-0.48 to +0.32</td>
-</tr>
-<tr>
-<td style="text-align: left;">Win/Alpha</td>
-<td style="text-align: left;">a=0.05, W=40</td>
-<td style="text-align: left;">40</td>
-<td style="text-align: left;">11.5</td>
 <td style="text-align: left;">24.06</td>
 <td style="text-align: left;">15.15</td>
 <td style="text-align: left;">0.33</td>
@@ -1225,21 +1031,10 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 <td style="text-align: left;">-0.28 to +0.59</td>
 </tr>
 <tr>
-<td style="text-align: left;">Win/Alpha</td>
-<td style="text-align: left;">a=0.10, W=10</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: left;">25.4</td>
-<td style="text-align: left;">32.77</td>
-<td style="text-align: left;">29.49</td>
-<td style="text-align: left;">0.82</td>
-<td style="text-align: left;">-0.09</td>
-<td style="text-align: left;">-1.27 to +1.08</td>
-</tr>
-<tr>
-<td style="text-align: left;">Win/Alpha</td>
-<td style="text-align: left;">a=0.10, W=20</td>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.10,W=20</td>
 <td style="text-align: left;">40</td>
-<td style="text-align: left;">34.1</td>
 <td style="text-align: left;">38.04</td>
 <td style="text-align: left;">31.96</td>
 <td style="text-align: left;">1.86</td>
@@ -1247,32 +1042,10 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 <td style="text-align: left;">-1.13 to +1.57</td>
 </tr>
 <tr>
-<td style="text-align: left;">Win/Alpha</td>
-<td style="text-align: left;">a=0.10, W=40</td>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.20,W=20</td>
 <td style="text-align: left;">40</td>
-<td style="text-align: left;">23.1</td>
-<td style="text-align: left;">30.67</td>
-<td style="text-align: left;">32.30</td>
-<td style="text-align: left;">0.78</td>
-<td style="text-align: left;">-0.30</td>
-<td style="text-align: left;">-1.52 to +0.93</td>
-</tr>
-<tr>
-<td style="text-align: left;">Win/Alpha</td>
-<td style="text-align: left;">a=0.20, W=10</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: left;">36.3</td>
-<td style="text-align: left;">45.58</td>
-<td style="text-align: left;">42.23</td>
-<td style="text-align: left;">2.33</td>
-<td style="text-align: left;">-0.22</td>
-<td style="text-align: left;">-1.19 to +0.75</td>
-</tr>
-<tr>
-<td style="text-align: left;">Win/Alpha</td>
-<td style="text-align: left;">a=0.20, W=20</td>
-<td style="text-align: left;">40</td>
-<td style="text-align: left;">45.1</td>
 <td style="text-align: left;">45.75</td>
 <td style="text-align: left;">44.33</td>
 <td style="text-align: left;">6.82</td>
@@ -1280,43 +1053,109 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 <td style="text-align: left;">+0.48 to +4.03</td>
 </tr>
 <tr>
-<td style="text-align: left;">Win/Alpha</td>
-<td style="text-align: left;">a=0.20, W=40</td>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.05,W=40</td>
 <td style="text-align: left;">40</td>
-<td style="text-align: left;">43.1</td>
-<td style="text-align: left;">46.85</td>
-<td style="text-align: left;">45.28</td>
-<td style="text-align: left;">3.41</td>
-<td style="text-align: left;">+1.58</td>
-<td style="text-align: left;">+0.47 to +2.69</td>
+<td style="text-align: left;">40.48</td>
+<td style="text-align: left;">15.15</td>
+<td style="text-align: left;">0.21</td>
+<td style="text-align: left;">+0.18</td>
+<td style="text-align: left;">-0.54 to +0.90</td>
 </tr>
 <tr>
-<td style="text-align: left;">Predictor</td>
-<td style="text-align: left;">HistGBM57 (E1 32.2)</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: left;">25.4</td>
-<td style="text-align: left;">32.77</td>
-<td style="text-align: left;">29.49</td>
-<td style="text-align: left;">0.82</td>
-<td style="text-align: left;">-0.09</td>
-<td style="text-align: left;">-1.27 to +1.08</td>
-</tr>
-<tr>
-<td style="text-align: left;">Predictor</td>
-<td style="text-align: left;">ResNet57 (E1 29.7)</td>
-<td style="text-align: left;">10</td>
-<td style="text-align: left;">21.5</td>
-<td style="text-align: left;">37.97</td>
-<td style="text-align: left;">27.10</td>
-<td style="text-align: left;">0.23</td>
-<td style="text-align: left;">-0.47</td>
-<td style="text-align: left;">-1.05 to +0.11</td>
-</tr>
-<tr>
-<td style="text-align: left;">Predictor</td>
-<td style="text-align: left;">ResNet57 (E1 29.7)</td>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.10,W=20</td>
 <td style="text-align: left;">40</td>
-<td style="text-align: left;">31.1</td>
+<td style="text-align: left;">44.19</td>
+<td style="text-align: left;">31.96</td>
+<td style="text-align: left;">0.76</td>
+<td style="text-align: left;">-0.22</td>
+<td style="text-align: left;">-1.14 to +0.70</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.20,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">43.63</td>
+<td style="text-align: left;">44.33</td>
+<td style="text-align: left;">1.93</td>
+<td style="text-align: left;">+0.15</td>
+<td style="text-align: left;">-0.51 to +0.82</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.05,W=40</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">19.69</td>
+<td style="text-align: left;">20.91</td>
+<td style="text-align: left;">0.18</td>
+<td style="text-align: left;">-0.71</td>
+<td style="text-align: left;">-1.54 to +0.12</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.10,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">19.49</td>
+<td style="text-align: left;">24.90</td>
+<td style="text-align: left;">1.17</td>
+<td style="text-align: left;">-1.33</td>
+<td style="text-align: left;">-2.14 to -0.52</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.20,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">28.25</td>
+<td style="text-align: left;">37.17</td>
+<td style="text-align: left;">3.20</td>
+<td style="text-align: left;">-1.72</td>
+<td style="text-align: left;">-2.70 to -0.74</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.05,W=40</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">16.90</td>
+<td style="text-align: left;">20.91</td>
+<td style="text-align: left;">0.25</td>
+<td style="text-align: left;">+0.29</td>
+<td style="text-align: left;">-0.40 to +0.98</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.10,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">25.80</td>
+<td style="text-align: left;">24.90</td>
+<td style="text-align: left;">1.68</td>
+<td style="text-align: left;">+0.46</td>
+<td style="text-align: left;">-0.90 to +1.83</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.20,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">35.80</td>
+<td style="text-align: left;">37.17</td>
+<td style="text-align: left;">5.38</td>
+<td style="text-align: left;">+0.48</td>
+<td style="text-align: left;">-3.15 to +4.10</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">ResNet57</td>
+<td style="text-align: left;">40</td>
 <td style="text-align: left;">23.90</td>
 <td style="text-align: left;">28.14</td>
 <td style="text-align: left;">0.31</td>
@@ -1324,10 +1163,21 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 <td style="text-align: left;">-1.02 to +0.16</td>
 </tr>
 <tr>
-<td style="text-align: left;">Predictor</td>
-<td style="text-align: left;">QGBM10 (E1 29.7)</td>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">ResNet57</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">25.81</td>
+<td style="text-align: left;">28.14</td>
+<td style="text-align: left;">0.33</td>
+<td style="text-align: left;">+0.38</td>
+<td style="text-align: left;">-0.76 to +1.51</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">QGBM10</td>
 <td style="text-align: left;">10</td>
-<td style="text-align: left;">17.1</td>
 <td style="text-align: left;">51.99</td>
 <td style="text-align: left;">50.36</td>
 <td style="text-align: left;">0.63</td>
@@ -1335,10 +1185,21 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 <td style="text-align: left;">+0.06 to +1.98</td>
 </tr>
 <tr>
-<td style="text-align: left;">Predictor</td>
-<td style="text-align: left;">ClkGBM112 (E1 32.5)</td>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">QGBM10</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">54.41</td>
+<td style="text-align: left;">50.36</td>
+<td style="text-align: left;">0.54</td>
+<td style="text-align: left;">-0.18</td>
+<td style="text-align: left;">-0.37 to +0.02</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">ClkGBM112</td>
 <td style="text-align: left;">40</td>
-<td style="text-align: left;">14.5</td>
 <td style="text-align: left;">37.87</td>
 <td style="text-align: left;">44.13</td>
 <td style="text-align: left;">1.57</td>
@@ -1346,29 +1207,129 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0).
 <td style="text-align: left;">-4.75 to -0.16</td>
 </tr>
 <tr>
-<td style="text-align: left;">Predictor</td>
-<td style="text-align: left;">Persist (E1 44.3)</td>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">ClkGBM112</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">42.41</td>
+<td style="text-align: left;">44.13</td>
+<td style="text-align: left;">1.28</td>
+<td style="text-align: left;">-1.72</td>
+<td style="text-align: left;">-3.62 to +0.17</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">Persist</td>
 <td style="text-align: left;">10</td>
-<td style="text-align: left;">17.7</td>
 <td style="text-align: left;">65.73</td>
 <td style="text-align: left;">64.21</td>
 <td style="text-align: left;">9.50</td>
 <td style="text-align: left;">-4.03</td>
 <td style="text-align: left;">-12.18 to +4.12</td>
 </tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">Persist</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">66.82</td>
+<td style="text-align: left;">64.21</td>
+<td style="text-align: left;">14.35</td>
+<td style="text-align: left;">-8.18</td>
+<td style="text-align: left;">-15.85 to -0.50</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">ResNet57</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">8.43</td>
+<td style="text-align: left;">41.38</td>
+<td style="text-align: left;">0.13</td>
+<td style="text-align: left;">-1.11</td>
+<td style="text-align: left;">-3.35 to +1.13</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">ResNet57</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">19.38</td>
+<td style="text-align: left;">41.38</td>
+<td style="text-align: left;">0.11</td>
+<td style="text-align: left;">-1.08</td>
+<td style="text-align: left;">-3.33 to +1.17</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">QGBM10</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">45.68</td>
+<td style="text-align: left;">58.62</td>
+<td style="text-align: left;">0.46</td>
+<td style="text-align: left;">-0.26</td>
+<td style="text-align: left;">-0.56 to +0.05</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">QGBM10</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">52.23</td>
+<td style="text-align: left;">58.62</td>
+<td style="text-align: left;">0.94</td>
+<td style="text-align: left;">+0.14</td>
+<td style="text-align: left;">-0.23 to +0.51</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">Persist</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">57.21</td>
+<td style="text-align: left;">53.71</td>
+<td style="text-align: left;">33.69</td>
+<td style="text-align: left;">+4.04</td>
+<td style="text-align: left;">-0.56 to +8.64</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">Persist</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">59.82</td>
+<td style="text-align: left;">53.71</td>
+<td style="text-align: left;">39.21</td>
+<td style="text-align: left;">+0.80</td>
+<td style="text-align: left;">-12.71 to +14.32</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCO (10 cohorts)</td>
+<td style="text-align: left;">MAR/PAC</td>
+<td style="text-align: left;">Drop any 1/10</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">47.1-49.3</td>
+<td style="text-align: left;">47.1 full</td>
+<td style="text-align: left;">0.67-1.17</td>
+<td style="text-align: left;">-2.38 to +0.12</td>
+<td style="text-align: left;">p95 G=35..42</td>
+</tr>
 </tbody>
 </table>
 </div>
-<p><strong>Window Length (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>10</mn><mo>,</mo><mn>20</mn><mo>,</mo><mn>40</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">n \in \{10,20,40\}</annotation></semantics></math>) and Nominal Level (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>0.05</mn><mo>,</mo><mn>0.10</mn><mo>,</mo><mn>0.20</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\alpha \in \{0.05,0.10,0.20\}</annotation></semantics></math>):</strong> As Table VIII shows, eliminating the max-of-10 discontinuity via larger windows (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">n=20</annotation></semantics></math> selects rank <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>19</mn><mi>/</mi><mn>20</mn></mrow><annotation encoding="application/x-tex">19/20</annotation></semantics></math>; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">n=40</annotation></semantics></math> selects <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>37</mn><mi>/</mi><mn>40</mn></mrow><annotation encoding="application/x-tex">37/40</annotation></semantics></math>) or relaxed <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.20</mn></mrow><annotation encoding="application/x-tex">\alpha=0.20</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn><mi>/</mi><mn>10</mn></mrow><annotation encoding="application/x-tex">9/10</annotation></semantics></math> at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">n=10</annotation></semantics></math>) preserves every qualitative finding. At <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\alpha=0.05</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">n=10</annotation></semantics></math> abstains completely (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><mi>+</mi><mi>∞</mi></mrow><annotation encoding="application/x-tex">q=+\infty</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.0</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">0.0\%</annotation></semantics></math> offers), while <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>20</mn><mo>,</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">n=20,40</annotation></semantics></math> recover <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2.5</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">2.5\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>11.5</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">11.5\%</annotation></semantics></math> offers yet yield <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>24.1</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">24.1\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>52.5</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">52.5\%</annotation></semantics></math> conditional risk and near-zero <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>U</mi></mrow><annotation encoding="application/x-tex">\Delta U</annotation></semantics></math>. At <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, enlarging to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>=</mo><mn>20</mn><mo>,</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">W=20,40</annotation></semantics></math> leaves MARUR conditional upper risk at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>30.7</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">30.7\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>38.0</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">38.0\%</annotation></semantics></math> (Periodic <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>32.0</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">32.0\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>33.0</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">33.0\%</annotation></semantics></math>), utility below <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.9</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1.9\%</annotation></semantics></math>, and every equal-date <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>U</mi></mrow><annotation encoding="application/x-tex">\Delta U</annotation></semantics></math> interval crossing zero. Even at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.20</mn></mrow><annotation encoding="application/x-tex">\alpha=0.20</annotation></semantics></math>, risk reaches <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>45.0</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">45.0\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>46.9</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">46.9\%</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mn>2</mn><mo>×</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">&gt;2\times \alpha</annotation></semantics></math>) with modest cap-40 utility gains (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>1.58</mn></mrow><annotation encoding="application/x-tex">+1.58</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>2.25</mn></mrow><annotation encoding="application/x-tex">+2.25</annotation></semantics></math> pp).</p>
-<p><strong>Source-Only Alternative Predictors:</strong> Evaluated strictly on the chronological Op1 2021 source split (never touching held-out dates), <code>ThroughputResNet_57</code> (Val MAE <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>5.91</mn><annotation encoding="application/x-tex">5.91</annotation></semantics></math> Mbps vs. HistGBM’s <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>11.00</mn><annotation encoding="application/x-tex">11.00</annotation></semantics></math>) achieves lower point MAE across every retrospective cohort (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>29.67</mn><annotation encoding="application/x-tex">29.67</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>32.20</mn><annotation encoding="application/x-tex">32.20</annotation></semantics></math> on E1; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>28.24</mn><annotation encoding="application/x-tex">28.24</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>32.60</mn><annotation encoding="application/x-tex">32.60</annotation></semantics></math> on Ireland; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>149.07</mn><annotation encoding="application/x-tex">149.07</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>154.22</mn><annotation encoding="application/x-tex">154.22</annotation></semantics></math> on T-Mobile). Replaying it alongside pinball <code>QuantileGBM_p10_57</code> (Val MAE <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>5.01</mn><annotation encoding="application/x-tex">5.01</annotation></semantics></math>), a 112-row source clock-minute <code>HistGBM_Clock112</code>, and Persistence shows all core conclusions survive: bounded source predictors keep MARUR conditional upper risk at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>23.9</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">23.9\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>56.4</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">56.4\%</annotation></semantics></math> and utility at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.23</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">0.23\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.57</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1.57\%</annotation></semantics></math>, whereas Persistence raises utility to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9.50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">9.50\%</annotation></semantics></math> at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>65.73</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">65.73\%</annotation></semantics></math> conditional risk while losing <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>4.03</mn></mrow><annotation encoding="application/x-tex">-4.03</annotation></semantics></math> pp equal-date utility relative to Periodic (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>-CI <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>12.18</mn></mrow><annotation encoding="application/x-tex">-12.18</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>4.12</mn></mrow><annotation encoding="application/x-tex">+4.12</annotation></semantics></math>). Note also that parameter sweep counts (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>576</mn><annotation encoding="application/x-tex">576</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>720</mn><annotation encoding="application/x-tex">720</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>792</mn><annotation encoding="application/x-tex">792</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>848</mn></mrow><annotation encoding="application/x-tex">1{,}848</annotation></semantics></math>) remain deterministic permutations over the same archives; effective independent evidence resides in the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>16</mn><annotation encoding="application/x-tex">16</annotation></semantics></math> retrospective and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>26</mn><annotation encoding="application/x-tex">26</annotation></semantics></math> held-out campaign-dates.</p>
-<h1 id="sec:limitations">Limitations, Reproducibility, and Scope</h1>
-<p><strong>Threats to Validity:</strong> (1) <em>Internal:</em> Random baselines use full-horizon eligibility offline; prospective runs require pre-committed schedules. Fixed 60-second clock intervals differ from transport-level transfer completions, and position-based <code>QueryCensor20</code> does not replicate correlated physical radio outages. (2) <em>External and statistical:</em> All ten evaluated cohorts come from historical public archives; <code>prospective_trips_collected</code> remains <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>. Frozen artifact <code>frozen_rome_histgbm.joblib</code> and harness <code>scripts/run_prospective_validation.py</code> remain ready without modification, alongside an empty prospective pilot template in the supplement, should live trips be collected later. (3) <em>Construct and secondary scope:</em> Results strictly evaluate cellular throughput commitment accounting; session boundary sensitivity, random-split trace analyses <span class="citation" data-cites="raca2020 sirhan2026">(Raca et al. 2020; Sirhan 2026)</span>, trace-driven Oslo video QoE replays, and the detailed MARUR-vs.-PACER comparator taxonomy reside in the accompanying supplementary document.</p>
-<p><strong>Reproducibility and Hardware:</strong> Locked configurations, SHA-256 checksums, and MIT-licensed scripts run end-to-end on standard x86-64 CPUs in Python 3.11 (verified in a fresh virtual environment via <code>scripts/reproduce_all.py</code> with CPU fallback for the optional <code>ThroughputResNet</code> neural comparator, which also supports CUDA 12.1 / RTX 4060). Continuous integration runs CPU unit tests alongside automated manuscript-table verification and manifest digest checks.</p>
-<h1 id="sec:conclusion">Conclusion</h1>
-<p>Evaluated rigorously over <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>16</mn><annotation encoding="application/x-tex">16</annotation></semantics></math> retrospective and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>26</mn><annotation encoding="application/x-tex">26</annotation></semantics></math> held-out physical campaign-dates, sparse recalibration feedback does not automatically improve cellular throughput commitments. Matched-cost cluster utility differences between MARUR and Periodic are statistically indistinguishable from zero (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>0.09</mn></mrow><annotation encoding="application/x-tex">-0.09</annotation></semantics></math> pp equal-date mean), conditional upper violation risks routinely span <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>17</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">17\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>63</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">63\%</annotation></semantics></math> far above <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, supported throughput generally remains <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">3\%</annotation></semantics></math>, and favorable pooled risk headlines (such as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>23.41</mn></mrow><annotation encoding="application/x-tex">-23.41</annotation></semantics></math> pp at cap 10) can hinge on offer-count weighting across heterogeneous cohorts while vanishing under equal-cluster weighting (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>0.37</mn></mrow><annotation encoding="application/x-tex">+0.37</annotation></semantics></math> pp) or higher query caps. Separating realized costs, missing-outcome bounds, offer frequency, and cluster units—while recognizing when theoretical bounds hold trivially—prevents misleading deployment claims until genuinely prospective field validation becomes available.</p>
+<p><strong>Window, Nominal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>, Source Predictors, and LOCO:</strong> Enlarging windows (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>20</mn><mo>,</mo><mn>40</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">W \in \{20,40\}</annotation></semantics></math>) or varying <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> leaves PACER and MARUR conditional risks far above target across both retrospective and held-out archives without consistent equal-cluster utility gains (Table VIII). Similarly, replaying lower Mean Absolute Error (MAE) source-only predictors—<code>ThroughputResNet_57</code>, <code>QuantileGBM_p10_57</code>, <code>HistGBM_Clock112</code>, Oslo pre-2010 <code>OsloBus_QuantileGBM_p10</code>, and <em>Persistence</em>—either retains elevated conditional risk or suppresses delivered throughput below 1%. Dropping any single cohort in LOCO preserves mobile median conditional risk near <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>47</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">47\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>49</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">49\%</annotation></semantics></math> and median <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> near <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1\%</annotation></semantics></math>; omitting Oslo Commute eliminates the negative held-out cap-10 utility shift without revealing positive gains elsewhere.</p>
+<p><strong>What Remains Untested:</strong> Four regimes remain unmeasured: (1) closed-loop live network deployment where rate commitments alter congestion and user Quality of Experience (QoE); (2) large query budgets (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>≥</mo><mn>136</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}} \ge 136</annotation></semantics></math>) where Theorem 1 becomes tight at moderate offer frequencies; (3) cellular deployments outside European/US archives and correlated burst outages beyond <code>QueryCensor20</code>; and (4) non-60s prediction horizons independent of logged transfer intervals.</p>
+<h1 id="sec:conclusion">Limitations, Reproducibility, and Conclusion</h1>
+<p><strong>Limitations and Reproducibility:</strong> All evidence is retrospective from public archives and no live field validation was performed. Random schedules inspect offline horizon eligibility, fixed 60-second clocks omit transport congestion feedback, and session-boundary/video-playback extensions appear in the supplement. All SHA-256 locked configurations run on Central Processing Unit (CPU) Python 3.11 via <code>scripts/reproduce_all.py</code> (with CPU fallback for Graphics Processing Unit [GPU]-capable <code>ThroughputResNet</code>) alongside CI checks and <code>scripts/audit_policy.py</code>.</p>
+<p><strong>Conclusion:</strong> Across <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>16</mn><annotation encoding="application/x-tex">16</annotation></semantics></math> retrospective and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>26</mn><annotation encoding="application/x-tex">26</annotation></semantics></math> held-out physical campaign-dates, sparse recalibration cannot reliably rescue cellular throughput commitments: cluster utility power is limited at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">G=16</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext mathvariant="normal">MDE</mtext><mn>80</mn></msub><mo>=</mo><mn>1.65</mn></mrow><annotation encoding="application/x-tex">\text{MDE}_{80}=1.65</annotation></semantics></math> pp) with TOST ruling out gains above <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\pm 2</annotation></semantics></math> pp (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.0018</mn></mrow><annotation encoding="application/x-tex">p=0.0018</annotation></semantics></math>), mobile conditional risk spans <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">9\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>68</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">68\%</annotation></semantics></math> above <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, supported throughput averages <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">3\%</annotation></semantics></math>, and sparse bounds are vacuous on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>36</mn><mi>/</mi><mn>40</mn></mrow><annotation encoding="application/x-tex">36/40</annotation></semantics></math> cells. Running <code>scripts/audit_policy.py</code> and following the six-item reporting checklist prevents abstention and pooling artifacts from masking deployment risk.</p>
 <h1 class="unnumbered" id="acknowledgment">Acknowledgment</h1>
 <p>OpenAI Codex assisted with code development, experimental checks, and manuscript drafting and revision.</p>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-angelopoulos2021ltt" class="csl-entry" role="listitem">
+Angelopoulos, Anastasios N., Stephen Bates, Emmanuel J. Candès, Michael I. Jordan, and Lihua Lei. 2025. <span>“<span class="nocase">Learn then test: Calibrating predictive algorithms to achieve risk control</span>.”</span> <em>The Annals of Applied Statistics</em> 19 (2): 1641–62. <a href="https://doi.org/10.1214/24-AOAS1998">https://doi.org/10.1214/24-AOAS1998</a>.
+</div>
 <div id="ref-angelopoulos2024risk" class="csl-entry" role="listitem">
 Angelopoulos, Anastasios N., Stephen Bates, Adam Fisch, Lihua Lei, and Tal Schuster. 2024. <span>“<span>Conformal Risk Control</span>.”</span> <em>Proceedings of the International Conference on Learning Representations (ICLR)</em>. <a href="https://openreview.net/forum?id=33XGfHLtZg">https://openreview.net/forum?id=33XGfHLtZg</a>.
 </div>
@@ -1439,7 +1400,7 @@ Min, Yizhou, Yizhou Lu, Lanqi Li, Zhen Zhang, and Jiaye Teng. 2026. <span>“<sp
 Narayanan, Arvind, Eman Ramadan, Rishabh Mehta, et al. 2020. <span>“<span class="nocase">Lumos5G: Mapping and Predicting Commercial mmWave 5G Throughput</span>.”</span> <em>Proceedings of the ACM Internet Measurement Conference (IMC)</em>, 176–93. <a href="https://doi.org/10.1145/3419394.3423629">https://doi.org/10.1145/3419394.3423629</a>.
 </div>
 <div id="ref-nuwinsarchive" class="csl-entry" role="listitem">
-NUWiNS. 2025. <em><span>PAM 2025 Multi-Carrier Dataset</span></em>. Public data and transfer intervals, commit 782b712.
+NUWiNS. 2025. <em><span>PAM 2025 Multi-Carrier Dataset</span></em>. Public data and transfer intervals, commit 782b712. <a href="https://github.com/NUWiNS/pam2025-multi-carrier-dataset">https://github.com/NUWiNS/pam2025-multi-carrier-dataset</a>.
 </div>
 <div id="ref-podkopaev2024" class="csl-entry" role="listitem">
 Podkopaev, Aleksandr, Dong Xu, and Kuang-Chih Lee. 2024. <span>“<span class="nocase">Adaptive Conformal Inference by Betting</span>.”</span> <em>Proceedings of the 41st International Conference on Machine Learning (ICML)</em>, Proceedings of machine learning research, vol. 235: 40886–907. <a href="https://proceedings.mlr.press/v235/podkopaev24a.html">https://proceedings.mlr.press/v235/podkopaev24a.html</a>.
@@ -1458,6 +1419,9 @@ Sirhan, Najem N. 2026. <span>“<span class="nocase">Handover-Aware Conformal Th
 </div>
 <div id="ref-tibshirani2019" class="csl-entry" role="listitem">
 Tibshirani, Ryan J., Rina Foygel Barber, Emmanuel J. Candès, and Aaditya Ramdas. 2019. <span>“<span>Conformal Prediction Under Covariate Shift</span>.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em> 32: 2530–40. <a href="https://proceedings.neurips.cc/paper_files/paper/2019/hash/8fb21ee7a2207526da55a679f0332de2-Abstract.html">https://proceedings.neurips.cc/paper_files/paper/2019/hash/8fb21ee7a2207526da55a679f0332de2-Abstract.html</a>.
+</div>
+<div id="ref-vovk2005algorithmic" class="csl-entry" role="listitem">
+Vovk, Vladimir, Alex Gammerman, and Glenn Shafer. 2005. <em><span class="nocase">Algorithmic Learning in a Random World</span></em>. Springer. <a href="https://doi.org/10.1007/b106715">https://doi.org/10.1007/b106715</a>.
 </div>
 <div id="ref-xu2023" class="csl-entry" role="listitem">
 Xu, Chen, and Yao Xie. 2023. <span>“<span class="nocase">Sequential Predictive Conformal Inference for Time Series</span>.”</span> <em>Proceedings of the 40th International Conference on Machine Learning (ICML)</em>, Proceedings of machine learning research, vol. 202: 38707–27. <a href="https://proceedings.mlr.press/v202/xu23r.html">https://proceedings.mlr.press/v202/xu23r.html</a>.

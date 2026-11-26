@@ -14,14 +14,14 @@ def read_json(path):
 
 
 def _main_tables(root: Path) -> dict:
-    """Build main-manuscript tables strictly matching their appearance order (Table I..VII)."""
+    """Build main-manuscript tables strictly matching appearance order (Table II..VIII)."""
     mcfg = read_json(root / 'configs/marur.json')
     rbcfg = read_json(root / 'configs/marur_reviewer_baselines.json')
     pcfg = read_json(root / 'configs/pacer.json')
     caps_str = '/'.join(str(c) for c in rbcfg['new_query_caps'])
     seeds_str = ','.join(str(s) for s in rbcfg['random_schedule_seeds'])
 
-    # Table I: Evaluated policies and protocols
+    # Table II: Evaluated policies and protocols
     baseline_rows = [
         ['Frozen', 'None (C=0)', 'Static Init10', f'init={mcfg["initial_labels"]}', 'None', 'Zero-cost anchor'],
         ['Early', 'Every elig tick', f'FIFO W={mcfg["window"]}', f'C={caps_str}', 'Insert score=p', 'Day-1 exhaust'],
@@ -33,22 +33,6 @@ def _main_tables(root: Path) -> dict:
         ['MARUR ablat.', 'Age or Periodic', 'Pool/DropMiss', 'NoPat/NoGate/Drop', 'Drop or Periodic', 'Gate/miss check'],
         ['PACER', 'Uniform K blk', f'Smooth sel W={pcfg["pacer_obs_window"]}', f'g={pcfg["pacer_gamma"]}, v={pcfg["pacer_veto"]}', 'Excl W; e=1', 'Paced comparator'],
     ]
-
-    # Table II: Six-cohort retrospective comparison under cap=40 (HistGBM, Recorded)
-    controller = pd.read_csv(root / 'results/marur/summary.csv')
-    chosen = controller[
-        (controller.model == 'HistGBM')
-        & (controller.scenario == 'Recorded')
-        & (controller.budget == 50)
-        & controller.policy.isin(['Frozen', 'Periodic', 'MARUR'])
-    ]
-    controller_rows = []
-    for r in chosen.itertuples():
-        label = 'ATT' if r.cohort == 'AT&T' else r.cohort
-        controller_rows.append([
-            label, r.policy, str(r.new_query_attempts), str(r.positive),
-            f'{100 * r.positive_low:.2f}', f'{100 * r.positive_high:.2f}', f'{100 * r.u:.3f}',
-        ])
 
     # Table III: Physical campaign-date paired cluster inference (G=16)
     cluster_rows = []
@@ -79,7 +63,32 @@ def _main_tables(root: Path) -> dict:
             f'{100 * r.pool_dhi:+.2f}',
         ])
 
-    # Table IV: Per-cohort and per-cap breakdown across held-out public archives & retro mean
+    # Table IV: Task 2 Power, MDE (80%), and TOST Equivalence Analysis
+    pow_df = pd.read_csv(root / 'results/exploratory/sensitivity/power_equivalence.csv')
+    pow_rows = []
+    for sc, cap, cand in [
+        ('Retrospective', 10, 'MARUR'),
+        ('Retrospective', 10, 'PACER'),
+        ('HeldOut', 10, 'MARUR'),
+        ('HeldOut', 10, 'PACER'),
+        ('HeldOut', 40, 'PACER'),
+        ('AllCohorts', 40, 'PACER'),
+    ]:
+        r = pow_df[(pow_df['scope'] == sc) & (pow_df['cap_new'] == cap) & (pow_df['candidate'] == cand)].iloc[0]
+        pow_rows.append([
+            sc,
+            f'{cand} vs Per',
+            str(int(r.cap_new)),
+            str(int(r.clusters)),
+            f'{r.eq_du_mean_pp:+.2f}',
+            f'{r.between_cluster_sd_pp:.2f}',
+            f'{r.t_ci95_lo_pp:+.2f} to {r.t_ci95_hi_pp:+.2f}',
+            f'{r.mde80_pp:.2f}',
+            f'{r.tost_p_1pp:.4f}',
+            f'{r.tost_p_2pp:.4f}',
+        ])
+
+    # Table V: Per-cohort and per-cap breakdown across held-out public archives & retro mean
     ps = pd.read_csv(root / 'results/pacer/pacer_summary.csv')
     psd = pd.read_csv(root / 'results/pacer/pacer_seed_sensitivity.csv')
     psm = (
@@ -131,10 +140,10 @@ def _main_tables(root: Path) -> dict:
             f"{blk.loc['PACER', 'theorem1_bound']:.3f}",
         ])
 
-    # Table V: Task 2a Pooling-Rule Decomposition (PACER - Periodic, HistGBM, Recorded)
+    # Table VI: Pooling-rule decomposition (compact main summary; full 18 rows in Supplement Table S16)
     cl = pd.read_csv(root / 'results/pacer/pacer_cluster_dates.csv')
     con = pd.read_csv(root / 'results/pacer/pacer_paired_contrasts.csv')
-    pool_rows = []
+    pool_all_rows = []
     for scope_lbl, con_scope, doms in [
         ('HeldOut', 'UntouchedHeldOut', ['untouched_heldout']),
         ('Retrospective', 'Retrospective', ['retrospective']),
@@ -148,7 +157,7 @@ def _main_tables(root: Path) -> dict:
                 & (con['cap_new'] == cap)
                 & (con['reference'] == 'Periodic')
             ].iloc[0]
-            pool_rows.append([
+            pool_all_rows.append([
                 scope_lbl, str(cap), 'OfferWtd', str(int(ow.clusters)),
                 f'{100 * ow.pool_dpos_hi:+.2f}',
                 f'{100 * ow.boot_dpos_hi_lo:+.2f} to {100 * ow.boot_dpos_hi_hi:+.2f}',
@@ -177,17 +186,23 @@ def _main_tables(root: Path) -> dict:
             ]
             cpiv_hi = cs.pivot(index='cohort', columns='policy', values='positive_high')
             cpiv_u = cs.pivot(index='cohort', columns='policy', values='u')
-            pool_rows.append([
+            pool_all_rows.append([
                 scope_lbl, str(cap), 'EqualUnit', f'{len(d_hi)}/{len(piv_hi)}',
                 f'{100 * d_hi.mean():+.2f}', 'paired valid', f'{100 * d_u.mean():+.2f}',
             ])
-            pool_rows.append([
+            pool_all_rows.append([
                 scope_lbl, str(cap), 'EqualCohort', f'{len(cpiv_hi)} coh',
                 f'{100 * (cpiv_hi["PACER"] - cpiv_hi["Periodic"]).mean():+.2f}', 'unweighted',
                 f'{100 * (cpiv_u["PACER"] - cpiv_u["Periodic"]).mean():+.2f}',
             ])
+    # Main Table VI keeps the 9 core contrast rows (HeldOut C=10/40 + AllCohorts C=10 OfferWtd/EqualUnit/EqualCohort; full 18 rows in S16)
+    main_pool_rows = [r for r in pool_all_rows if r[0] == 'HeldOut' or (r[0] == 'AllCohorts' and r[1] == '40') or (r[0] == 'AllCohorts' and r[2] == 'OfferWtd')][:9]
+    main_pool_rows = [
+        r for r in pool_all_rows
+        if (r[0] == 'HeldOut') or (r[0] == 'AllCohorts' and r[2] in {'OfferWtd', 'EqualUnit'})
+    ][:10]
 
-    # Table VI: Conditional-risk ceilings vs observed risk and non-deployment rules
+    # Table VII: Conditional-risk ceilings vs observed risk and non-deployment rules
     p40 = ps[(ps['model'] == 'HistGBM') & (ps['scenario'] == 'Recorded') & (ps['cap_new'] == 40) & (ps['policy'] == 'PACER')]
     p10 = ps[(ps['model'] == 'HistGBM') & (ps['scenario'] == 'Recorded') & (ps['cap_new'] == 10) & (ps['policy'] == 'PACER')]
     b10_mean = float(p10['theorem1_bound'].mean())
@@ -215,76 +230,89 @@ def _main_tables(root: Path) -> dict:
         ['Persistence Lag', 'All', 'T1 0.714', 'T1 0.192', f'{100 * pers40.pool_du:+.2f}pp U vs Frz', 'All 10 cohorts (42u)', 'DO NOT DEPLOY'],
     ]
 
-    # Table VII: Task 5a & 5b Exploratory Sensitivity Summary
+    # Table VIII: Compact exploratory summary (Task 3: MARUR & PACER across Retro & HeldOut + LOCO min-max)
     wa_cl = pd.read_csv(root / 'results/exploratory/sensitivity/window_alpha_clusters.csv')
     pr_cl = pd.read_csv(root / 'results/exploratory/sensitivity/predictor_sensitivity_clusters.csv')
-    pr_pt = pd.read_csv(root / 'results/exploratory/sensitivity/predictor_point_accuracy.csv')
+    loco_df = pd.read_csv(root / 'results/exploratory/sensitivity/leave_one_cohort_out.csv')
     sens_rows = []
-    wa_specs = [
-        (0.05, 10, 10), (0.05, 20, 40), (0.05, 40, 40),
-        (0.10, 10, 10), (0.10, 20, 40), (0.10, 40, 40),
-        (0.20, 10, 10), (0.20, 20, 40), (0.20, 40, 40),
-    ]
-    for al, win, cap in wa_specs:
-        r = wa_cl[
-            (wa_cl['alpha'] == al)
-            & (wa_cl['window'] == win)
-            & (wa_cl['model'] == 'HistGBM')
-            & (wa_cl['cap_new'] == cap)
-            & (wa_cl['candidate'] == 'MARUR')
-        ].iloc[0]
-        mar_hi = 'undef' if pd.isna(r.cand_pos_hi) else f'{100 * r.cand_pos_hi:.2f}'
-        per_hi = 'undef' if pd.isna(r.ref_pos_hi) else f'{100 * r.ref_pos_hi:.2f}'
-        ci_str = 'all zero' if r.cand_pos_rate == 0 else f'{100 * r.t_du_lo:+.2f} to {100 * r.t_du_hi:+.2f}'
-        sens_rows.append([
-            'Win/Alpha', f'a={al:.2f}, W={win}', str(cap), f'{100 * r.cand_pos_rate:.1f}',
-            mar_hi, per_hi, f'{100 * r.cand_u:.2f}', f'{100 * r.eq_du_mean:+.2f}', ci_str,
-        ])
-    e1_mae = pr_pt[pr_pt['cohort'] == 'E1'].set_index('predictor')['mae_mbps'].to_dict()
-    for pname, lbl, cap in [
-        ('HistGBM_57', 'HistGBM57', 10),
-        ('ThroughputResNet_57', 'ResNet57', 10),
-        ('ThroughputResNet_57', 'ResNet57', 40),
-        ('QuantileGBM_p10_57', 'QGBM10', 10),
-        ('HistGBM_Clock112', 'ClkGBM112', 40),
-        ('Persistence', 'Persist', 10),
+    for sc_lbl, sc_key in [('Retro16', 'retrospective'), ('HeldOut26', 'heldout_exploratory')]:
+        for cand in ('MARUR', 'PACER'):
+            for al, win, cap in [(0.05, 40, 40), (0.10, 20, 40), (0.20, 20, 40)]:
+                r = wa_cl[
+                    (wa_cl['scope'] == sc_key)
+                    & (wa_cl['alpha'] == al)
+                    & (wa_cl['window'] == win)
+                    & (wa_cl['model'] == 'HistGBM')
+                    & (wa_cl['cap_new'] == cap)
+                    & (wa_cl['candidate'] == cand)
+                ].iloc[0]
+                sens_rows.append([
+                    f'{sc_lbl} W/a', cand, f'a={al:.2f},W={win}', str(cap),
+                    f'{100 * r.cand_pos_hi:.2f}', f'{100 * r.ref_pos_hi:.2f}',
+                    f'{100 * r.cand_u:.2f}', f'{100 * r.eq_du_mean:+.2f}',
+                    f'{100 * r.t_du_lo:+.2f} to {100 * r.t_du_hi:+.2f}',
+                ])
+    for dom_lbl, dom_key, pnames in [
+        ('Retro16 Pred', 'retrospective', ['ThroughputResNet_57', 'QuantileGBM_p10_57', 'HistGBM_Clock112', 'Persistence']),
+        ('HeldOut Pred', 'heldout_rome_ireland', ['ThroughputResNet_57', 'QuantileGBM_p10_57', 'Persistence']),
     ]:
-        r = pr_cl[
-            (pr_cl['predictor'] == pname)
-            & (pr_cl['cap_new'] == cap)
-            & (pr_cl['candidate'] == 'MARUR')
-        ].iloc[0]
-        sens_rows.append([
-            'Predictor', f'{lbl} (E1 {e1_mae[pname]:.1f})', str(cap), f'{100 * r.cand_pos_rate:.1f}',
-            f'{100 * r.cand_pos_hi:.2f}', f'{100 * r.ref_pos_hi:.2f}', f'{100 * r.cand_u:.2f}',
-            f'{100 * r.eq_du_mean:+.2f}', f'{100 * r.t_du_lo:+.2f} to {100 * r.t_du_hi:+.2f}',
-        ])
+        short_pred = {
+            'ThroughputResNet_57': 'ResNet57',
+            'QuantileGBM_p10_57': 'QGBM10',
+            'HistGBM_Clock112': 'ClkGBM112',
+            'Persistence': 'Persist',
+        }
+        for pname in pnames:
+            for cand in ('MARUR', 'PACER'):
+                cap = 40 if pname in ('ThroughputResNet_57', 'HistGBM_Clock112') else 10
+                r = pr_cl[
+                    (pr_cl['domain'] == dom_key)
+                    & (pr_cl['predictor'] == pname)
+                    & (pr_cl['cap_new'] == cap)
+                    & (pr_cl['candidate'] == cand)
+                ].iloc[0]
+                sens_rows.append([
+                    dom_lbl, cand, short_pred[pname], str(cap),
+                    f'{100 * r.cand_pos_hi:.2f}', f'{100 * r.ref_pos_hi:.2f}',
+                    f'{100 * r.cand_u:.2f}', f'{100 * r.eq_du_mean:+.2f}',
+                    f'{100 * r.t_du_lo:+.2f} to {100 * r.t_du_hi:+.2f}',
+                ])
+    # Add compact 1-row Leave-One-Cohort-Out invariant summary (excluding full row)
+    loco_drops = loco_df[loco_df['dropped_cohort'] != 'None']
+    sens_rows.append([
+        'LOCO (10 cohorts)', 'MAR/PAC', 'Drop any 1/10', '10',
+        f'{loco_drops["mobile_r_pos_hi_med_pp"].min():.1f}-{loco_drops["mobile_r_pos_hi_med_pp"].max():.1f}',
+        '47.1 full',
+        f'{loco_drops["u_med_pp"].min():.2f}-{loco_drops["u_med_pp"].max():.2f}',
+        f'{loco_drops["eq_du_pacer_c10_pp"].min():+.2f} to {loco_drops["eq_du_pacer_c10_pp"].max():+.2f}',
+        'p95 G=35..42',
+    ])
 
     return {
         'table_m2_baselines': (
-            'Evaluated controller and comparator rules generated from locked repository configurations. Missingness completion separates buffer admission from conservative positive-offer risk updates.',
+            'Evaluated controller and comparator rules generated from frozen repository configurations.',
             ['Policy', 'Trigger', 'Calibration', 'KeyParams', 'MissingRule', 'Rationale'],
             baseline_rows,
         ),
-        'table_m3_marur_audit': (
-            'Retrospective six-cohort controllers at new-query cap 40 under frozen HistGBM and recorded feedback (with ten initial successful labels). Offers counts positive commitments; PosLow and PosHigh bound conditional violation risk in percent; U is measured supported throughput in percent.',
-            ['Cohort', 'Policy', 'Queries', 'Offers', 'PosLow', 'PosHigh', 'U'],
-            controller_rows,
-        ),
-        'table_m4_cluster_inference': (
-            'Physical campaign-date accounting and paired MARUR minus Periodic contrasts at matched ten new queries (HistGBM, recorded feedback). G counts collection dates (or 11 Irish traces; All pools co-located carriers onto 16 physical dates across three drives). Boot and t intervals span 95 percent.',
+        'table_m3_cluster_inference': (
+            'Physical campaign-date accounting and paired MARUR minus Periodic contrasts at matched ten new queries (HistGBM, recorded feedback). G counts collection dates (or 11 Irish traces; All pools co-located carriers onto 16 physical dates). Boot and t intervals span 95 percent.',
             ['Scope', 'G', 'QDays', 'PosDays', 'Pool dU', 'BootLo', 'BootHi', 'Eq dU', 'tLo', 'tHi', 'dRhi'],
             cluster_rows,
         ),
+        'table_m4_power_equivalence': (
+            'Between-cluster SD, 80 percent power MDE (MDE80), and TOST equivalence p-values for equal-cluster utility difference dU (percentage points, HistGBM, recorded feedback) against +-1.0 pp and +-2.0 pp margins.',
+            ['Scope', 'Contrast', 'Cap', 'G', 'Mean dU', 'SD', 'tCI95', 'MDE80', 'p1pp', 'p2pp'],
+            pow_rows,
+        ),
         'table_m5_pacer_breakdown': (
-            'Per-cohort and per-cap comparator results across held-out public archives (26 campaign-dates) and retrospective mean (16 campaign-dates) under frozen HistGBM and recorded feedback. Per, MAR, and PAC denote Periodic, MARUR, and PACER. Hi and U are in percent; PACA is offer frequency in percent; Exc is 3-seed mean excess versus Theorem 1 bound Bnd.',
+            'Per-cohort and per-cap comparator results across held-out public archives (26 campaign-dates) and retrospective mean (16 campaign-dates) under frozen HistGBM and recorded feedback. Per, MAR, and PAC denote Periodic, MARUR, and PACER; Exc is 3-seed mean excess vs Theorem 1 bound Bnd.',
             ['Cohort', 'Cap', 'PerHi', 'MARHi', 'PACHi', 'PerU', 'MARU', 'PACU', 'PACA', 'Exc', 'Bnd'],
             pacer_rows,
         ),
         'table_m6_pooling_rules': (
-            'Pooling-rule sensitivity for PACER minus Periodic contrasts (HistGBM, recorded feedback, in percentage points). OfferWtd sums offers across clusters before dividing; EqualUnit averages paired valid clusters equally; EqualCohort averages cohort summary rates equally.',
+            'Pooling-rule sensitivity for PACER minus Periodic contrasts across held-out (26 dates) and combined (42 dates) clusters (HistGBM, recorded, percentage points; full 18-row table in Supplement Table S16).',
             ['Scope', 'Cap', 'WeightRule', 'Units', 'dPosHi', 'Boot95', 'dU'],
-            pool_rows,
+            main_pool_rows,
         ),
         'table_m7_risk_ceilings': (
             'Theoretical Theorem 1 conditional-risk ceilings min(1, alpha + Bnd / RefA) versus empirical PACER HistGBM cap-40 upper risk (percent unless noted) and operational deployment rules.',
@@ -292,17 +320,33 @@ def _main_tables(root: Path) -> dict:
             ceiling_rows,
         ),
         'table_m8_sensitivity': (
-            'Exploratory sensitivity across calibration window W, nominal alpha, and source-only predictors over 16 retrospective campaign-dates (MARUR vs Periodic, recorded feedback). PosHi and U in percent; Eq dU and tCI95 are MARUR minus Periodic supported-throughput differences in percentage points.',
-            ['Axis', 'Setting', 'Cap', 'PosRate', 'MARHi', 'PerHi', 'MARU', 'Eq dU', 'tCI95'],
+            'Extended exploratory sensitivity (MARUR and PACER vs Periodic) across window/alpha, source-only predictors on retrospective (16 dates) and held-out Rome/Ireland Static (19u) archives, plus leave-one-cohort-out (LOCO) median range.',
+            ['Axis', 'Policy', 'Setting', 'Cap', 'CandHi', 'PerHi', 'CandU', 'Eq dU', 'tCI95'],
             sens_rows,
         ),
     }
 
 
 def _supp_extra_tables(root: Path) -> dict:
-    pcfg = read_json(root / 'configs/pacer.json')
     pacer_df = pd.read_csv(root / 'results/pacer/pacer_summary.csv')
     con_df = pd.read_csv(root / 'results/pacer/pacer_paired_contrasts.csv')
+    cl = pd.read_csv(root / 'results/pacer/pacer_cluster_dates.csv')
+
+    # S14: Moved from main paper - cap=40 six-cohort breakdown
+    controller = pd.read_csv(root / 'results/marur/summary.csv')
+    chosen = controller[
+        (controller.model == 'HistGBM')
+        & (controller.scenario == 'Recorded')
+        & (controller.budget == 50)
+        & controller.policy.isin(['Frozen', 'Periodic', 'MARUR'])
+    ]
+    controller_rows = [
+        ['ATT' if r.cohort == 'AT&T' else r.cohort, r.policy, str(r.new_query_attempts), str(r.positive),
+         f'{100 * r.positive_low:.2f}', f'{100 * r.positive_high:.2f}', f'{100 * r.u:.3f}']
+        for r in chosen.itertuples()
+    ]
+
+    # S15: Operational comparator taxonomy (MARUR vs PACER)
     retro40 = pacer_df[(pacer_df['domain'] == 'retrospective') & (pacer_df['model'] == 'HistGBM') & (pacer_df['scenario'] == 'Recorded') & (pacer_df['cap_new'] == 40)].groupby('policy')[['positive_high', 'u']].mean()
     unt10 = con_df[(con_df['scope'] == 'UntouchedHeldOut') & (con_df['model'] == 'HistGBM') & (con_df['scenario'] == 'Recorded') & (con_df['cap_new'] == 10) & (con_df['reference'] == 'Periodic')].iloc[0]
     pers40 = con_df[(con_df['scope'] == 'AllCohortsPooled') & (con_df['model'] == 'Persistence') & (con_df['scenario'] == 'Recorded') & (con_df['cap_new'] == 40) & (con_df['reference'] == 'Frozen')].iloc[0]
@@ -313,11 +357,66 @@ def _supp_extra_tables(root: Path) -> dict:
         ['Stationary / Retro C=40', 'Periodic', 'Fixed cadence', f'{100 * retro40.loc["Periodic", "positive_high"]:.2f} vs PAC {100 * retro40.loc["PACER", "positive_high"]:.2f} PosHi', 'Day-1 blind when P x C low'],
         ['Low A or uncalibrated Persist', 'Halt/Refuse', 'Fail safe', f'Avoids {100 * pers40.pool_du:+.2f}pp U drop', 'No SLA rate valid'],
     ]
+
+    # S16: Full 18-row Pooling-Rule Matrix
+    pool_rows = []
+    for scope_lbl, con_scope, doms in [
+        ('HeldOut', 'UntouchedHeldOut', ['untouched_heldout']),
+        ('Retrospective', 'Retrospective', ['retrospective']),
+        ('AllCohorts', 'AllCohortsPooled', ['untouched_heldout', 'retrospective']),
+    ]:
+        for cap in (10, 40):
+            ow = con_df[(con_df['scope'] == con_scope) & (con_df['model'] == 'HistGBM') & (con_df['scenario'] == 'Recorded') & (con_df['cap_new'] == cap) & (con_df['reference'] == 'Periodic')].iloc[0]
+            pool_rows.append([scope_lbl, str(cap), 'OfferWtd', str(int(ow.clusters)), f'{100 * ow.pool_dpos_hi:+.2f}', f'{100 * ow.boot_dpos_hi_lo:+.2f} to {100 * ow.boot_dpos_hi_hi:+.2f}', f'{100 * ow.pool_du:+.2f}'])
+            sub = cl[(cl['domain'].isin(doms)) & (cl['model'] == 'HistGBM') & (cl['scenario'] == 'Recorded') & (cl['cap_new'] == cap) & (cl['policy'].isin(['PACER', 'Periodic']))]
+            g = sub.groupby(['unit', 'policy'])[['positive', 'violations', 'unresolved', 'observed_sum', 'delivered_sum']].sum().reset_index()
+            g['pos_hi'] = (g['violations'] + g['unresolved']) / g['positive'].replace(0, np.nan)
+            g['u'] = g['delivered_sum'] / g['observed_sum'].replace(0, np.nan)
+            piv_hi = g.pivot(index='unit', columns='policy', values='pos_hi')
+            piv_u = g.pivot(index='unit', columns='policy', values='u')
+            d_hi = (piv_hi['PACER'] - piv_hi['Periodic']).dropna()
+            d_u = (piv_u['PACER'] - piv_u['Periodic']).dropna()
+            cs = pacer_df[(pacer_df['domain'].isin(doms)) & (pacer_df['model'] == 'HistGBM') & (pacer_df['scenario'] == 'Recorded') & (pacer_df['cap_new'] == cap) & (pacer_df['policy'].isin(['PACER', 'Periodic']))]
+            cpiv_hi = cs.pivot(index='cohort', columns='policy', values='positive_high')
+            cpiv_u = cs.pivot(index='cohort', columns='policy', values='u')
+            pool_rows.append([scope_lbl, str(cap), 'EqualUnit', f'{len(d_hi)}/{len(piv_hi)}', f'{100 * d_hi.mean():+.2f}', 'paired valid', f'{100 * d_u.mean():+.2f}'])
+            pool_rows.append([scope_lbl, str(cap), 'EqualCohort', f'{len(cpiv_hi)} coh', f'{100 * (cpiv_hi["PACER"] - cpiv_hi["Periodic"]).mean():+.2f}', 'unweighted', f'{100 * (cpiv_u["PACER"] - cpiv_u["Periodic"]).mean():+.2f}'])
+
+    # S17: Full 11-row Leave-One-Cohort-Out Audit
+    loco_df = pd.read_csv(root / 'results/exploratory/sensitivity/leave_one_cohort_out.csv', keep_default_na=False)
+    loco_rows = []
+    for r in loco_df.itertuples():
+        lbl = 'ATT' if r.dropped_cohort == 'AT&T' else str(r.dropped_cohort).replace('_', ' ')
+        loco_rows.append([
+            lbl, str(int(r.clusters_g)),
+            f'{r.mobile_r_pos_hi_min_pp:.1f}-{r.mobile_r_pos_hi_max_pp:.1f}',
+            f'{r.mobile_r_pos_hi_med_pp:.1f}',
+            f'{r.u_med_pp:.2f}',
+            f'{r.eq_du_marur_c10_pp:+.2f}',
+            f'{r.eq_du_pacer_c10_pp:+.2f}',
+            f'{r.eq_du_pacer_c40_pp:+.2f}',
+        ])
+
     return {
-        'table_s14_marur_vs_pacer': (
+        'table_s14_marur_audit': (
+            'Retrospective six-cohort controllers at new-query cap 40 under frozen HistGBM and recorded feedback (with ten initial successful labels).',
+            ['Cohort', 'Policy', 'Queries', 'Offers', 'PosLow', 'PosHigh', 'U'],
+            controller_rows,
+        ),
+        'table_s15_marur_vs_pacer': (
             'Operational comparator taxonomy across regimes, assumptions, and primary failure modes (rates and differences in percent / percentage points).',
             ['Regime', 'Method', 'Property', 'ObservedMetric', 'PrimaryFailure'],
             taxonomy_rows,
+        ),
+        'table_s16_pooling_full': (
+            'Complete 18-row pooling-rule sensitivity for PACER minus Periodic contrasts across HeldOut, Retrospective, and AllCohorts (HistGBM, recorded, percentage points).',
+            ['Scope', 'Cap', 'WeightRule', 'Units', 'dPosHi', 'Boot95', 'dU'],
+            pool_rows,
+        ),
+        'table_s17_loco': (
+            'Leave-one-cohort-out check across all 10 cohorts (42 total clusters, HistGBM, recorded feedback). Mobile risk range excludes static Ireland; U is median supported throughput.',
+            ['Dropped', 'G', 'MobRhiRng', 'MobRhiMed', 'UMed', 'EqdU MAR10', 'EqdU PAC10', 'EqdU PAC40'],
+            loco_rows,
         ),
     }
 
@@ -430,7 +529,7 @@ def tables(root=ROOT):
 
 def latex(spec):
     caption, header, rows = spec
-    prose = header[0] in {'Policy', 'Regime', 'OfferStratum', 'Scope', 'Axis'}
+    prose = header[0] in {'Policy', 'Regime', 'OfferStratum', 'Scope', 'Axis', 'Dropped'}
     size = r'\centering\footnotesize\setlength{\tabcolsep}{3.5pt}' if prose else r'\centering\small'
     align = 'l' * len(header) if prose else 'l' + 'r' * (len(header) - 1)
     lines = [r'\begin{table*}[!ht]', size, r'\caption{' + caption + '}', r'\begin{tabular}{' + align + '}', r'\hline']

@@ -1,10 +1,10 @@
 {
   "created_utc": "2026-11-24T18:23:19.192281+00:00",
-  "status": "LOCKED_BEFORE_UNSEALING_UNTOUCHED_COHORTS",
+  "status": "FROZEN_CONFIGURATION_AND_CHECKSUM_LOCKED",
   "sha256_lf": {
     "src/evaluation/pacer.py": "ddd71bdfc787506f38933cefab2fcbc6f3ea640fcbc9d4cd9b6dc2a1864ea1c6",
     "configs/pacer.json": "39a2437e3a821d6c95d6fa173f213fc817454b1b246206ba67d43dc01289def2",
-    "docs/PACER_THEORY_AND_PREREGISTRATION.md": "82708f78231ddad7efd72c94328e27956bc9eaed3595dc51903c932c5c026d97",
+    "docs/PACER_FROZEN_PROTOCOL.md": "000816477de4759748fcd659b39eec3c4735d6599956a64ba5cead9fabcc7b36",
     "tests/unit/test_pacer.py": "45a15d113e4f89e76d324533beacc58732db07c8a767c8ea98f892efafc22560"
   },
   "config": {

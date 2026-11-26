@@ -1,0 +1,20 @@
+\begin{table*}[!ht]
+\centering\footnotesize\setlength{\tabcolsep}{3.5pt}
+\caption{Leave-one-cohort-out check across all 10 cohorts (42 total clusters, HistGBM, recorded feedback). Mobile risk range excludes static Ireland; U is median supported throughput.}
+\begin{tabular}{llllllll}
+\hline
+Dropped & G & MobRhiRng & MobRhiMed & UMed & EqdU MAR10 & EqdU PAC10 & EqdU PAC40 \\
+None & 42 & 8.8-68.2 & 47.6 & 1.01 & -2.11 & -2.07 & +0.02 \\
+ATT & 42 & 8.8-68.2 & 48.5 & 1.01 & -2.13 & -2.08 & +0.02 \\
+E1 & 41 & 8.8-66.7 & 47.3 & 0.90 & -2.27 & -2.25 & +0.03 \\
+E3 & 41 & 8.8-68.2 & 47.1 & 1.15 & -2.16 & -2.07 & -0.00 \\
+Ireland & 37 & 16.2-68.2 & 49.3 & 0.67 & -2.07 & -2.24 & -0.05 \\
+Ireland Static & 38 & 8.8-68.2 & 47.6 & 1.15 & -2.35 & -2.34 & -0.46 \\
+Oslo Commute & 35 & 8.8-68.2 & 49.1 & 0.67 & +0.36 & +0.12 & -0.04 \\
+Rome Capacity Op1 & 42 & 8.8-68.2 & 47.9 & 0.76 & -1.93 & -1.83 & +0.26 \\
+Rome Capacity Op2 & 42 & 8.8-68.2 & 47.4 & 0.76 & -2.29 & -2.38 & -0.55 \\
+T-Mobile & 42 & 8.8-68.2 & 47.3 & 1.17 & -2.06 & -2.06 & +0.04 \\
+Verizon & 42 & 8.8-68.2 & 47.5 & 1.17 & -2.12 & -2.07 & +0.02 \\
+\hline
+\end{tabular}
+\end{table*}

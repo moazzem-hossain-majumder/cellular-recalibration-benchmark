@@ -16,6 +16,7 @@ jobs:
       - run: python scripts/audit_trip_level_inference.py
       - run: python scripts/validate_pacer.py
       - run: python scripts/validate_manuscript_consistency.py
+      - run: python scripts/audit_policy.py examples/worked_heldout_c10_ledger.csv --reference Periodic --min-clusters 20
       - run: python scripts/generate_experiment_manifest.py --verify
   full-tests-with-real-data:
     runs-on: ubuntu-latest

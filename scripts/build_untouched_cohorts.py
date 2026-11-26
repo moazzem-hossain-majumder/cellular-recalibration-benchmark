@@ -1,7 +1,7 @@
-"""Build untouched held-out cohorts (Rome Capacity, Oslo Commute, Ireland Static).
+"""Build held-out public-archive cohorts (Rome Capacity, Oslo Commute, Ireland Static).
 
-Extracts causally aligned 60-second forecast opportunities from three completely
-uninspected public cellular archives using ONLY frozen pre-existing models
+Extracts causally aligned 60-second forecast opportunities from three held-out
+public cellular archives using ONLY frozen source-trained models
 (zero retraining on held-out targets) and strict chronological initial splits.
 """
 from __future__ import annotations
@@ -11,6 +11,7 @@ import json
 import sys
 from pathlib import Path
 
+import joblib
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import HistGradientBoostingRegressor
@@ -20,10 +21,22 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.clock_frontier import RADIO, clean_numeric, clock_pairs
 from scripts.replay_oslo_playback import BUS, CUTOFF, OUT as OSLO_META_DIR
-from scripts.run_prospective_validation import verify_frozen_assets
 from src.features.builder import FEATURE_COLS
 
 OUT_DIR = ROOT / 'results/pacer'
+
+
+def _load_frozen_rome_model(plan_dir: Path | None = None):
+    """Load the SHA-256-verified frozen 57-row Rome HistGBM source predictor."""
+    directory = plan_dir or (ROOT / 'results/prospective_planning')
+    freeze_meta = json.loads((directory / 'model_freeze.json').read_text(encoding='utf8'))
+    model_path = directory / 'frozen_rome_histgbm.joblib'
+    actual_sha = hashlib.sha256(model_path.read_bytes()).hexdigest()
+    if actual_sha != freeze_meta['model_sha256']:
+        raise ValueError(f"Frozen model SHA-256 mismatch: {actual_sha} != {freeze_meta['model_sha256']}")
+    if list(freeze_meta['features']) != list(FEATURE_COLS):
+        raise ValueError('Frozen model feature list does not match FEATURE_COLS')
+    return joblib.load(model_path), freeze_meta
 
 
 def _seconds(dt_series: pd.Series) -> np.ndarray:
@@ -32,7 +45,7 @@ def _seconds(dt_series: pd.Series) -> np.ndarray:
 
 
 def _rome_capacity_ticks(frozen_model) -> pd.DataFrame:
-    """Extract chronological 60s pairs for Op1 & Op2 in untouched Rome Capacity Tests."""
+    """Extract chronological 60s pairs for Op1 & Op2 in held-out Rome Capacity Tests."""
     cap_dir = ROOT / 'data/extracted/14073311/Active Performance Dataset - 1/Capacity Tests/Op1 and Op2 - Italy'
     raw_rows = []
     for file in sorted(cap_dir.rglob('*.csv')):
@@ -249,9 +262,9 @@ def _ireland_static_ticks(frozen_model) -> pd.DataFrame:
 
 
 def build_all() -> pd.DataFrame:
-    """Build and persist all untouched held-out cohorts cleanly."""
+    """Build and persist all held-out public-archive cohorts cleanly."""
     cfg = json.loads((ROOT / 'configs/pacer.json').read_text(encoding='utf8'))
-    frozen_model, _, _ = verify_frozen_assets()
+    frozen_model, _ = _load_frozen_rome_model()
     frames = [
         _rome_capacity_ticks(frozen_model),
         _oslo_commute_ticks(cfg['oslo_cutoff_utc']),

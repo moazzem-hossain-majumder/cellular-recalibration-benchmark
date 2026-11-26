@@ -352,7 +352,7 @@ On a second US drive we retained every released carrier and the same ten-label r
 
 On AT&T, 22 of 296 issued tree commitments violated (7.43 percent), including 22 of 57 positive commitments (38.60 percent). T-Mobile had 123 violations among 294 issued and 236 positive commitments. On Verizon the sole positive offer was honored. Masking NR inputs at issue while preserving the full-input tree offset yielded zero positive offers on every carrier. The different carrier operating points and short shared trip limit extrapolation to future deployments.
 
-We also tested feasibility when the 10 percent ceiling applies specifically to positive promises. Selective risk assessment and testing candidate rules motivate this comparison (Geifman and El-Yaniv 2017; Angelopoulos et al. 2021). On the same pre-test validation dates we scaled each ten-label tree or persistence bound by 0.25, 0.5 or 1. The exploratory service floors required positive offers on at least 10 percent of opportunities and support for at least 5 percent of measured throughput. We counted unresolved positive offers as failures. None of the six candidates met all three empirical criteria on either operator. Requiring a one-sided exact binomial upper limit with a six-way Bonferroni adjustment also yielded no candidate. The quarter-rate E3 tree failed on zero of five positive offers across 252 validation opportunities; its supported fraction was only 0.22 percent. Abstention consequently delivered no service on either suffix. The binomial limit assumes independent offers and supplies no temporal deployment guarantee.
+We also tested feasibility when the 10 percent ceiling applies specifically to positive promises. Selective risk assessment and testing candidate rules motivate this comparison (Geifman and El-Yaniv 2017; Angelopoulos et al. 2025). On the same pre-test validation dates we scaled each ten-label tree or persistence bound by 0.25, 0.5 or 1. The exploratory service floors required positive offers on at least 10 percent of opportunities and support for at least 5 percent of measured throughput. We counted unresolved positive offers as failures. None of the six candidates met all three empirical criteria on either operator. Requiring a one-sided exact binomial upper limit with a six-way Bonferroni adjustment also yielded no candidate. The quarter-rate E3 tree failed on zero of five positive offers across 252 validation opportunities; its supported fraction was only 0.22 percent. Abstention consequently delivered no service on either suffix. The binomial limit assumes independent offers and supplies no temporal deployment guarantee.
 
 ## Separate trips and client outcomes
 
@@ -381,21 +381,45 @@ For Ireland MARUR uses 20 new query attempts and supports 1.18 percent, with 12 
 
 ## Critical audit at matched realized query cost
 
-An additional exploratory replay fixes new-query caps at 0, 1, 5, 10, 20 and 40 for Frozen, Periodic, Early, modified ACI and MARUR, with both predictors and feedback scenarios. All 720 configurations are retained. A pair is matched only when both policies actually spend the stated number of queries on the full suffix; 384 such contrasts include zero-cost comparisons. Frozen spends zero and is therefore not a positive-cost comparator. No interpolation, shortened suffix or test-selected deployment policy is used.
+An additional exploratory replay fixes new-query caps at 0, 1, 5, 10, 20 and 40 for Frozen, Periodic, Early, modified ACI and MARUR across all predictors and feedback scenarios (576 original runs, 720 full-suffix replays, and 384 exact-cost pairs; complete cap-40 six-cohort breakdown in Table S14). Frozen spends zero and is therefore not a positive-cost comparator. No interpolation, shortened suffix or test-selected deployment policy is used.
+
+<div class="table*">
+
+|          |          |         |        |        |         |       |
+|:---------|---------:|--------:|-------:|-------:|--------:|------:|
+| Cohort   |   Policy | Queries | Offers | PosLow | PosHigh |     U |
+| E1       |   Frozen |       0 |    130 |  51.54 |   57.69 | 7.154 |
+| E1       | Periodic |      16 |     33 |  42.42 |   51.52 | 1.008 |
+| E1       |    MARUR |      40 |     29 |  44.83 |   44.83 | 2.025 |
+| E3       |   Frozen |       0 |      3 |  66.67 |   66.67 | 0.065 |
+| E3       | Periodic |      12 |     16 |  43.75 |   50.00 | 0.605 |
+| E3       |    MARUR |      29 |     20 |  45.00 |   55.00 | 0.504 |
+| ATT      |   Frozen |       0 |     57 |  38.60 |   38.60 | 2.252 |
+| ATT      | Periodic |      20 |     30 |  23.33 |   23.33 | 0.402 |
+| ATT      |    MARUR |      40 |    111 |  43.24 |   43.24 | 6.481 |
+| T-Mobile |   Frozen |       0 |    236 |  52.12 |   52.12 | 1.254 |
+| T-Mobile | Periodic |      20 |     47 |  55.32 |   55.32 | 0.141 |
+| T-Mobile |    MARUR |      40 |     52 |  65.38 |   65.38 | 0.337 |
+| Verizon  |   Frozen |       0 |      1 |   0.00 |    0.00 | 0.003 |
+| Verizon  | Periodic |      20 |      5 |  20.00 |   20.00 | 0.006 |
+| Verizon  |    MARUR |      40 |     21 |  61.90 |   61.90 | 0.597 |
+| Ireland  |   Frozen |       0 |    159 |  27.04 |   29.56 | 7.740 |
+| Ireland  | Periodic |      23 |    159 |  11.32 |   13.84 | 2.966 |
+| Ireland  |    MARUR |      20 |    159 |   7.55 |   10.06 | 1.175 |
+
+</div>
 
 At ten new queries with the frozen tree, MARUR’s E1 support is 2.907 percent versus Periodic’s 0.523 percent, but its all-issued upper risk is 10.924 versus 6.303 percent. On Ireland both make 159 positive offers: MARUR has fourteen fewer observed failures on those same offers while reducing support from 4.117 to 1.129 percent. This is smaller commitment size rather than increased abstention. On Verizon, MARUR removes ten of Early’s offers and six failures, without improving failures on shared offers. Complete costs, conditional risks, offer frequencies and date counts for every configuration are in the matched-cost supplement. These examples do not establish uniform superiority.
 
-The audit also clarifies that failed responses reset the query cooldown even when their score is discarded. Removing pattern dependence jointly removes triggering, gating and grouping, so it is not an isolated gate ablation. The synthetic missing-feedback mask applies to eligible positions divisible by five; periodic positions 1, 16, 31 and so on avoid it. It is therefore position-based censoring, not a uniform twenty-percent loss of requested labels. Prospective independent trips with frozen policies are needed to test replication.
+The audit also clarifies that failed responses reset the query cooldown even when their score is discarded. Removing pattern dependence jointly removes triggering, gating and grouping, so it is not an isolated gate ablation. The synthetic missing-feedback mask applies to eligible positions divisible by five; periodic positions 1, 16, 31 and so on avoid it. It is therefore position-based censoring, not a uniform twenty-percent loss of requested labels.
 
-# Limitations and prospective scope
+# Limitations, comparator taxonomy, and extended exploratory checks
 
-These archives were inspected before the controller and cost audit were designed. The 384 exact-cost contrasts are descriptive comparisons of shared observations, not independent trials or confirmatory tests. Missing-outcome intervals are finite-record partial-identification bounds, not sampling confidence intervals. A low all-issued risk can result from abstention; positive-conditional risk and useful service must be reported jointly. The modified ACI comparator, bundled pattern ablation and position-based feedback suppression limit method-specific conclusions. The controller remains heuristic and provides no conditional-risk guarantee.
+These archives were inspected before the controller and cost audit were designed. The 384 exact-cost contrasts are descriptive comparisons of shared observations, not independent trials or confirmatory tests. Missing-outcome intervals are finite-record partial-identification bounds, not sampling confidence intervals. A low all-issued risk can result from abstention; positive-conditional risk and useful service must be reported jointly. The modified ACI comparator, bundled pattern ablation and position-based feedback suppression limit method-specific conclusions. All evidence is retrospective from public archives and no live field validation was performed; simultaneous carriers do not increase independent campaign-dates, and simulated playback does not establish causal live QoE.
 
-No prospective validation has been completed. The proposed replication targets eighteen usable independent trip pairs under an assumed standard deviation of 0.10 and a two-sided 95 percent utility-difference interval half-width of 0.05; it does not establish sufficient precision for risk certification. Missing trips, greater heterogeneity or cross-date dependence can invalidate that planning assumption. Simultaneous carriers do not increase the number of independent drives, and simulated playback does not demonstrate causal live QoE. Venue-specific scope and independent replication remain necessary before stronger submission claims.
+## Comparator taxonomy, PACER protocol details, and extended exploratory sweeps
 
-## Comparator taxonomy, PACER protocol details, and exploratory sweep tallies
-
-To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation), all PACER parameters ($`\alpha=0.10`$, $`\gamma=0.05`$, $`a_{\text{veto}}=0.15`$, $`\kappa_{\text{ext}}=2.0`$, $`W_{\text{obs}}=20`$, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S14 summarizes the operational taxonomy comparing MARUR and PACER across regimes. Across all 120 seed-sensitivity evaluations (QueryCensor20 and Persistence included), weighted selective excess lies within $`B_1(K) \approx 6.8/K`$ on 40/40 cells, though as established in the main manuscript this bound holds trivially on 36/40 cells whenever $`B_1(K) \ge (1-\alpha)A`$ (19/20 cells at $`C_{\text{new}}=10`$ and 17/20 at $`C_{\text{new}}=40`$). Under Persistence across all 42 pooled clusters, PACER’s conservative abstention lowers utility $`U`$ by $`-18.89`$ percentage points at cap 10 (bootstrap $`-31.02`$ to $`-3.25`$) and $`-29.95`$ percentage points at cap 40 (bootstrap $`-37.26`$ to $`-16.39`$) relative to Frozen. For the exploratory controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield 6 matched utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs or risk-only changes, 129 unchanged cases, and 18 unmatched-cost cases; across the 792 configurations of the targeted baseline grid, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks. Complete ledgers reside in `results/pacer` and `results/exploratory`.
+To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation), all PACER parameters ($`\alpha=0.10`$, $`\gamma=0.05`$, $`a_{\text{veto}}=0.15`$, $`\kappa_{\text{ext}}=2.0`$, $`W_{\text{obs}}=20`$, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S15 summarizes the operational taxonomy comparing MARUR and PACER across regimes, Table S16 reports the complete 18-row pooling-rule sensitivity matrix across HeldOut, Retrospective, and AllCohorts scopes, and Table S17 reports the complete 11-row Leave-One-Cohort-Out check across all 10 cohorts (42 total clusters). Across all 120 seed-sensitivity evaluations (QueryCensor20 and Persistence included), weighted selective excess lies within $`B_1(K) \approx 6.8/K`$ on 40/40 cells, though as established in the main manuscript this bound holds trivially on 36/40 cells whenever $`B_1(K) \ge (1-\alpha)A`$ (19/20 cells at $`C_{\text{new}}=10`$ and 17/20 at $`C_{\text{new}}=40`$). Under Persistence across all 42 pooled clusters, PACER’s conservative abstention lowers utility $`U`$ by $`-18.89`$ percentage points at cap 10 (bootstrap $`-31.02`$ to $`-3.25`$) and $`-29.95`$ percentage points at cap 40 (bootstrap $`-37.26`$ to $`-16.39`$) relative to Frozen. For the exploratory controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield 6 matched utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs or risk-only changes, 129 unchanged cases, and 18 unmatched-cost cases; across the 792 configurations of the targeted baseline grid, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks. Complete ledgers (including the extended 1,800-run retrospective/held-out window and $`\alpha`$ sweep and 480-run source-only predictor sweep for both MARUR and PACER, as well as the Oslo Commute pre-2010 bus quantile regressor check) reside in `results/pacer` and `results/exploratory/sensitivity`.
 
 <div class="table*">
 
@@ -410,15 +434,48 @@ To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rom
 
 </div>
 
-# Prospective Pilot Validation (Template — Pending Real Field Trips)
+<div class="table*">
 
-Status as of this manuscript revision: `prospective_trips_collected = 0`. Because no newly collected live field drive logs exist yet, no simulated or replayed rows appear in Table <a href="#tab:pilot_template" data-reference-type="ref" data-reference="tab:pilot_template">[tab:pilot_template]</a>. Once real chronological drive traces containing the required lag, radio telemetry, and outcome timestamps are collected, run `python scripts/run_prospective_validation.py` with frozen model artifact `results/prospective_planning/frozen_rome_histgbm.joblib` and populate only genuinely recorded trips below.
+|               |     |             |        |        |                  |       |
+|:--------------|:----|:------------|:-------|:-------|:-----------------|:------|
+| Scope         | Cap | WeightRule  | Units  | dPosHi | Boot95           | dU    |
+| HeldOut       | 10  | OfferWtd    | 26     | -23.41 | -37.04 to -5.91  | +0.47 |
+| HeldOut       | 10  | EqualUnit   | 22/26  | +0.37  | paired valid     | -3.29 |
+| HeldOut       | 10  | EqualCohort | 4 coh  | -4.88  | unweighted       | -2.91 |
+| HeldOut       | 40  | OfferWtd    | 26     | -0.83  | -16.13 to +11.46 | +0.51 |
+| HeldOut       | 40  | EqualUnit   | 12/26  | +2.79  | paired valid     | +0.01 |
+| HeldOut       | 40  | EqualCohort | 4 coh  | +5.08  | unweighted       | +0.56 |
+| Retrospective | 10  | OfferWtd    | 16     | +8.83  | -2.16 to +13.99  | +0.11 |
+| Retrospective | 10  | EqualUnit   | 10/16  | -4.36  | paired valid     | -0.10 |
+| Retrospective | 10  | EqualCohort | 6 coh  | +6.02  | unweighted       | +0.13 |
+| Retrospective | 40  | OfferWtd    | 16     | +16.26 | +4.68 to +24.93  | +0.19 |
+| Retrospective | 40  | EqualUnit   | 9/16   | -5.93  | paired valid     | +0.05 |
+| Retrospective | 40  | EqualCohort | 6 coh  | +12.15 | unweighted       | +0.08 |
+| AllCohorts    | 10  | OfferWtd    | 42     | -14.37 | -26.80 to +0.85  | +0.25 |
+| AllCohorts    | 10  | EqualUnit   | 32/42  | -1.11  | paired valid     | -2.07 |
+| AllCohorts    | 10  | EqualCohort | 10 coh | +1.66  | unweighted       | -1.09 |
+| AllCohorts    | 40  | OfferWtd    | 42     | +3.29  | -7.49 to +12.49  | +0.31 |
+| AllCohorts    | 40  | EqualUnit   | 21/42  | -0.94  | paired valid     | +0.02 |
+| AllCohorts    | 40  | EqualCohort | 10 coh | +9.32  | unweighted       | +0.27 |
+
+</div>
 
 <div class="table*">
 
-| Campaign | Trips | Eligible | Queries ($`Q_{\text{new}}`$) | Offer Freq $`A`$ (%) | PosLow (%) | PosHigh (%) | Supported $`U`$ (%) |
-|:---|:---|:---|:---|:---|:---|:---|:---|
-| Pending real collection | 0 | — | — | — | — | — | — |
+|                   |     |           |           |      |            |            |            |
+|:------------------|:----|:----------|:----------|:-----|:-----------|:-----------|:-----------|
+| Dropped           | G   | MobRhiRng | MobRhiMed | UMed | EqdU MAR10 | EqdU PAC10 | EqdU PAC40 |
+| None              | 42  | 8.8-68.2  | 47.6      | 1.01 | -2.11      | -2.07      | +0.02      |
+| ATT               | 42  | 8.8-68.2  | 48.5      | 1.01 | -2.13      | -2.08      | +0.02      |
+| E1                | 41  | 8.8-66.7  | 47.3      | 0.90 | -2.27      | -2.25      | +0.03      |
+| E3                | 41  | 8.8-68.2  | 47.1      | 1.15 | -2.16      | -2.07      | -0.00      |
+| Ireland           | 37  | 16.2-68.2 | 49.3      | 0.67 | -2.07      | -2.24      | -0.05      |
+| Ireland Static    | 38  | 8.8-68.2  | 47.6      | 1.15 | -2.35      | -2.34      | -0.46      |
+| Oslo Commute      | 35  | 8.8-68.2  | 49.1      | 0.67 | +0.36      | +0.12      | -0.04      |
+| Rome Capacity Op1 | 42  | 8.8-68.2  | 47.9      | 0.76 | -1.93      | -1.83      | +0.26      |
+| Rome Capacity Op2 | 42  | 8.8-68.2  | 47.4      | 0.76 | -2.29      | -2.38      | -0.55      |
+| T-Mobile          | 42  | 8.8-68.2  | 47.3      | 1.17 | -2.06      | -2.06      | +0.04      |
+| Verizon           | 42  | 8.8-68.2  | 47.5      | 1.17 | -2.12      | -2.07      | +0.02      |
 
 </div>
 
@@ -434,7 +491,7 @@ OpenAI Codex assisted with code development, experimental checks and drafting an
 
 <div id="ref-angelopoulos2021ltt" class="csl-entry">
 
-Angelopoulos, Anastasios N., Stephen Bates, Emmanuel J. Candès, Michael I. Jordan, and Lihua Lei. 2021. *<span class="nocase">Learn then Test: Calibrating Predictive Algorithms to Achieve Risk Control</span>*. arXiv:2110.01052.
+Angelopoulos, Anastasios N., Stephen Bates, Emmanuel J. Candès, Michael I. Jordan, and Lihua Lei. 2025. “<span class="nocase">Learn then test: Calibrating predictive algorithms to achieve risk control</span>.” *The Annals of Applied Statistics* 19 (2): 1641–62. <https://doi.org/10.1214/24-AOAS1998>.
 
 </div>
 
@@ -506,7 +563,7 @@ Narayanan, Arvind, Eman Ramadan, Rishabh Mehta, et al. 2020. “<span class="noc
 
 <div id="ref-nuwinsarchive" class="csl-entry">
 
-NUWiNS. 2025. *PAM 2025 Multi-Carrier Dataset*. Public data and transfer intervals, commit 782b712.
+NUWiNS. 2025. *PAM 2025 Multi-Carrier Dataset*. Public data and transfer intervals, commit 782b712. <https://github.com/NUWiNS/pam2025-multi-carrier-dataset>.
 
 </div>
 

@@ -16,6 +16,10 @@ from scripts.validate_manuscript_consistency import source_digest
 
 def build():
     paper = ROOT / 'paper'
+    for directory in [paper / 'tables', ROOT / 'results/tables']:
+        directory.mkdir(parents=True, exist_ok=True)
+        for stale in directory.glob('*.tex'):
+            stale.unlink()
     for name, spec in tables().items():
         for directory in [paper / 'tables', ROOT / 'results/tables']:
             (directory / (name + '.tex')).write_text(latex(spec), encoding='utf8')

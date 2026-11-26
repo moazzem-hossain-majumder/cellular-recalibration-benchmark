@@ -1,15 +1,20 @@
 {
-  "start_utc": "2026-11-26T05:24:56.650636+00:00",
-  "end_utc": "2026-11-26T05:28:27.692215+00:00",
-  "status": "exploratory_retrospective_only",
-  "heldout_cohorts_touched": false,
-  "window_alpha_rows": 1080,
-  "predictor_rows": 300,
+  "start_utc": "2026-11-26T06:31:22.406186+00:00",
+  "end_utc": "2026-11-26T06:37:07.814257+00:00",
+  "status": "exploratory_sensitivity_only",
+  "heldout_cohorts_exploratory": true,
+  "frozen_results_modified": false,
+  "power_equivalence_rows": 12,
+  "loco_rows": 11,
+  "window_alpha_rows": 1800,
+  "predictor_rows": 480,
   "sha256": {
-    "results/exploratory/sensitivity/predictor_point_accuracy.csv": "25656a91139784c5787a9f2d4d8f9cd90eed1c6e0127092dca84ce257a543cb9",
-    "results/exploratory/sensitivity/predictor_sensitivity.csv": "99646565a021817d362015a8ad68c8a9078d4457cb189157dce6e1631dd94209",
-    "results/exploratory/sensitivity/predictor_sensitivity_clusters.csv": "f41e7b87ebc1ec38c1c5818a60893483124b98296b6bb2be36ac37b0d295a82d",
-    "results/exploratory/sensitivity/window_alpha_clusters.csv": "2773264543dcffe73b29bfe46980acba4e2533b6bb97fc12b7c0ead606666ec0",
-    "results/exploratory/sensitivity/window_alpha_sensitivity.csv": "fa25b926117a72dd01c4daa3d1e5e7fa8760b0bc8a9a341c2125199f83e9f35e"
+    "results/exploratory/sensitivity/leave_one_cohort_out.csv": "3555dade40d53c9dab8c6ad87b4ef74a132ead73a03b46d547e57209356c5425",
+    "results/exploratory/sensitivity/power_equivalence.csv": "3db26bc2e35e8bd10dcdbce6409061d2d0cc5957aaef0fa9254c91137caecdb1",
+    "results/exploratory/sensitivity/predictor_point_accuracy.csv": "91c77d46c816ee5edfc662829511171c9f94e8d766e6fc5468315f6de4ec4102",
+    "results/exploratory/sensitivity/predictor_sensitivity.csv": "ef92d512d6dc451b7a26cd3952c62a3de0802e0902cc952c4f7610ab3dd4230f",
+    "results/exploratory/sensitivity/predictor_sensitivity_clusters.csv": "5b56dcec8b140437faab68a27618ed1871b9032f24f37341300df8ce8dc33db1",
+    "results/exploratory/sensitivity/window_alpha_clusters.csv": "9732135673569aafea508f77c1f835c2e5847b6995398d84210e4c42774dc876",
+    "results/exploratory/sensitivity/window_alpha_sensitivity.csv": "eb977b4c956afef8e526cacf0a08b1ae933a0a308dafd3a599cc74300f2198ec"
   }
 }

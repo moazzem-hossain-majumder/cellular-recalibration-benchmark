@@ -28,7 +28,7 @@ Ablations remove pattern-based triggering, gating and grouping, omit unresolved 
 
 Recorded preserves the natural outcomes. QueryCensor20 additionally hides feedback on every fifth chronological eligible position from the controller only. The full recorded outcome remains in the evaluator so the two policies are scored on the same observations. This simulated calibration-response suppression is distinct from missing radio fields, missing audit outcomes and physical network failure. Existing raw feature-suppression and endpoint studies remain supporting evidence.
 
-Primary cohorts are the two Rome clock suffixes. US Drive 3 and Irish driving provide external transfer with the previously documented feature mappings and endpoint differences. US completed horizons stop at the publisher transfer end. Irish and Rome require full minute windows. None is a prospective untouched trial.
+Primary cohorts are the two Rome clock suffixes. US Drive 3 and Irish driving provide external transfer with the previously documented feature mappings and endpoint differences. US completed horizons stop at the publisher transfer end. Irish and Rome require full minute windows. None represents a live prospective field trial.
 
 ## Critical audit clarification (November 21, 2026)
 

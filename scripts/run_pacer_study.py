@@ -1,6 +1,6 @@
-"""Frozen Path A evaluation across untouched held-out & retrospective cohorts.
+"""Frozen Path A evaluation across held-out public archives & retrospective cohorts.
 
-Enforces SHA-256 pre-registration lock verification before & after scoring,
+Enforces SHA-256 frozen-configuration checksum verification before & after scoring,
 executes PACER alongside Frozen, Periodic, Early, ACI, DecayingOGD, and MARUR
 on identical opportunities, computes Theorem 1 empirical verification, and
 computes physical-campaign cluster inference without modifying prior MARUR runs.
@@ -28,15 +28,15 @@ from src.evaluation.pacer import replay_pacer, theoretical_excess_bound
 OUT_DIR = ROOT / 'results/pacer'
 
 
-def _verify_prereg_lock() -> dict:
-    lock_path = OUT_DIR / 'preregistration_lock.json'
+def _verify_frozen_checksums() -> dict:
+    lock_path = OUT_DIR / 'frozen_config_checksums.json'
     if not lock_path.exists():
-        raise RuntimeError('Missing results/pacer/preregistration_lock.json')
+        raise RuntimeError('Missing results/pacer/frozen_config_checksums.json')
     lock = json.loads(lock_path.read_text(encoding='utf8'))
     for rel, expected in lock['sha256_lf'].items():
         actual = hashlib.sha256((ROOT / rel).read_bytes().replace(b'\r\n', b'\n')).hexdigest()
         if actual != expected:
-            raise RuntimeError(f'Pre-registration lock violation in {rel}: {actual} != {expected}')
+            raise RuntimeError(f'Frozen checksum mismatch in {rel}: {actual} != {expected}')
     return lock
 
 
@@ -80,11 +80,11 @@ def _cluster_metrics(ledger: pd.DataFrame, unit_map: dict[str, str]) -> pd.DataF
 
 
 def run_study() -> None:
-    lock = _verify_prereg_lock()
+    lock = _verify_frozen_checksums()
     pacer_cfg = json.loads((ROOT / 'configs/pacer.json').read_text(encoding='utf8'))
     marur_cfg = json.loads((ROOT / 'configs/marur.json').read_text(encoding='utf8'))
     if pacer_cfg != lock['config']:
-        raise RuntimeError('configs/pacer.json diverged from pre-registration lock')
+        raise RuntimeError('configs/pacer.json diverged from frozen configuration checksums')
 
     data = _load_all_cohorts()
     policies_baseline = ['Frozen', 'Periodic', 'ACI', 'DecayingOGD', 'MARUR', 'Early']
@@ -248,16 +248,16 @@ def run_study() -> None:
     )
     seed_mean['satisfies_bound'] = seed_mean['mean_excess'] <= seed_mean['bound'] + 1e-12
 
-    # Post-run lock verification
-    _verify_prereg_lock()
+    # Post-run checksum verification
+    _verify_frozen_checksums()
     audit_report = {
         'generated_utc': datetime.now(timezone.utc).isoformat(),
-        'preregistration_lock_verified': True,
-        'untouched_cohorts': sorted(data.loc[data['domain'] == 'untouched_heldout', 'cohort'].unique().tolist()),
+        'frozen_config_checksums_verified': True,
+        'heldout_cohorts': sorted(data.loc[data['domain'] == 'untouched_heldout', 'cohort'].unique().tolist()),
         'retrospective_cohorts': sorted(data.loc[data['domain'] == 'retrospective', 'cohort'].unique().tolist()),
         'physical_clusters': {
-            dom: int(data.loc[(data['domain'] == dom) & (data['partition'] == 'test'), 'physical_unit'].nunique())
-            for dom in ('untouched_heldout', 'retrospective')
+            'heldout_public': int(data.loc[(data['domain'] == 'untouched_heldout') & (data['partition'] == 'test'), 'physical_unit'].nunique()),
+            'retrospective': int(data.loc[(data['domain'] == 'retrospective') & (data['partition'] == 'test'), 'physical_unit'].nunique()),
         },
         'prospective_trips_collected': 0,
         'theorem1_mean_excess_checks': {

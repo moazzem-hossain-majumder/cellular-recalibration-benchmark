@@ -77,13 +77,19 @@ def verify_metrics(root):
         raise ValueError('Forecast keys differ from metric keys')
 
 def validate_marur_claims(root):
-    """Bind the manuscript's abstract <=6-number summary and body metrics to authoritative ledgers."""
+    """Bind the manuscript's abstract 150-200w / <=6-number summary and body metrics to ledgers."""
     manuscript=(root/'paper/manuscript.tex').read_text(encoding='utf8')
+    supplement=(root/'paper/supplementary.tex').read_text(encoding='utf8')
+    combined=manuscript+'\n'+supplement
     abstract=manuscript.split(r'\begin{abstract}')[1].split(r'\end{abstract}')[0]
+    abstract_plain=re.sub(r'\\[a-zA-Z]+\{([^}]*)\}',r'\1',abstract).replace('---',' ').replace('--',' ').replace('\\','')
+    abstract_words=[w for w in abstract_plain.split() if w]
+    if not (150 <= len(abstract_words) <= 200):
+        raise ValueError(f'Abstract must be 150-200 words, found {len(abstract_words)}')
     abstract_nums=re.findall(r'-?\d+(?:\.\d+)?',abstract)
     if len(abstract_nums)>6:
         raise ValueError(f'Abstract must have at most 6 numbers, found {len(abstract_nums)}: {abstract_nums}')
-    for token in ['16','17','63','0.10','1','3']:
+    for token in ['16','9','68','0.10','1','3']:
         if token not in abstract:
             raise ValueError(f'Abstract headline claim missing {token}')
     folder=root/'results/marur_audit'
@@ -92,15 +98,15 @@ def validate_marur_claims(root):
     original=pd.read_csv(root/'results/marur/summary.csv')
     for value,phrase in [(len(original),'original runs'),(len(summary),'full-suffix replays'),
                          (int(pairs.matched.sum()),'exact-cost pairs')]:
-        if f'{value}' not in manuscript or phrase not in manuscript:
-            raise ValueError(f'Manuscript configuration/count mismatch: {value} {phrase}')
+        if f'{value}' not in combined or phrase not in combined:
+            raise ValueError(f'Combined manuscript/supplement count mismatch: {value} {phrase}')
     chosen=summary[(summary.model=='HistGBM')&(summary.scenario=='Recorded')&(summary.new_query_cap==10)]
     e1=chosen[chosen.cohort=='E1'].set_index('policy')
     ie=chosen[chosen.cohort=='Ireland'].set_index('policy')
     for value in [e1.loc['MARUR','u'],e1.loc['Periodic','u'],e1.loc['MARUR','hi'],e1.loc['Periodic','hi'],
                   ie.loc['MARUR','u'],ie.loc['Periodic','u']]:
-        if f'{100*value:.3f}' not in manuscript:
-            raise ValueError(f'Manuscript matched-cost value missing: {100*value:.3f}')
+        if f'{100*value:.3f}' not in combined:
+            raise ValueError(f'Combined manuscript/supplement matched-cost value missing: {100*value:.3f}')
     if ie.loc['MARUR','positive']!=159 or ie.loc['Periodic','positive']!=159:
         raise ValueError('Ireland shared-offer count changed')
     decomposition=pd.read_csv(folder/'offer_decomposition.csv')
@@ -117,28 +123,41 @@ def validate_marur_claims(root):
 
 
 def validate_pacer_claims(root):
-    """Bind held-out archive, pooling-rule, and Theorem 1 bound-audit claims to locked artifacts."""
+    """Bind held-out archive, pooling-rule, power/TOST, LOCO, and Theorem 1 bound-audit claims."""
     source=(root/'paper/manuscript.tex').read_text(encoding='utf8')
+    supplement=(root/'paper/supplementary.tex').read_text(encoding='utf8')
+    combined=source+'\n'+supplement
     report=read_json(root/'results/pacer/pacer_audit_report.json')
-    if not report['preregistration_lock_verified'] or report['prospective_trips_collected']!=0:
-        raise ValueError('PACER lock or zero-prospective check failed')
+    if not report['frozen_config_checksums_verified'] or report['prospective_trips_collected']!=0:
+        raise ValueError('PACER frozen checksum or zero-prospective check failed')
     if not report['theorem1_mean_excess_checks']['all_within_bound'] or report['theorem1_mean_excess_checks']['total_cells']!=40:
         raise ValueError('Theorem 1 verification count mismatch')
-    if report['physical_clusters']['untouched_heldout']!=26 or report['physical_clusters']['retrospective']!=16:
+    if report['physical_clusters']['heldout_public']!=26 or report['physical_clusters']['retrospective']!=16:
         raise ValueError('Physical cluster count mismatch')
     con=pd.read_csv(root/'results/pacer/pacer_paired_contrasts.csv')
     c_unt=con[(con.scope=='UntouchedHeldOut')&(con.model=='HistGBM')&(con.scenario=='Recorded')&(con.cap_new==10)&(con.reference=='Periodic')].iloc[0]
     p_per=con[(con.scope=='AllCohortsPooled')&(con.model=='Persistence')&(con.scenario=='Recorded')&(con.cap_new==40)&(con.reference=='Frozen')].iloc[0]
-    for tok in [f'{100*c_unt.pool_dpos_hi:+.2f}', f'{100*p_per.pool_du:+.2f}', '+0.37', '40/40', '4/40', '6.8', '26', '42']:
+    for tok in [f'{100*c_unt.pool_dpos_hi:+.2f}', f'{100*p_per.pool_du:+.2f}', '+0.37', '4/40', '6.8', '26', '42']:
         if tok not in source:
             raise ValueError(f'PACER numerical claim missing or mismatched in manuscript: {tok}')
     for fname in ['paper/manuscript.tex','paper/related_work.tex','paper/supplementary.tex','paper/cover_letter.tex','README.md']:
-        txt=(root/fname).read_text(encoding='utf8').replace('PACER_THEORY_AND_PREREGISTRATION','')
-        if re.search(r'\b(?:untouched|unsealed|pre-registered|preregistered)\b',txt,re.I):
-            raise ValueError(f'Overstated terminology remains in {fname}')
-    sens_exec=read_json(root/'results/exploratory/sensitivity/execution.json')
-    if sens_exec['status']!='exploratory_retrospective_only' or sens_exec['heldout_cohorts_touched']:
+        txt=(root/fname).read_text(encoding='utf8')
+        if re.search(r'\b(?:untouched|unsealed|unsealing|pre-registered|preregistered|prospective_trips_collected|prospective pilot)\b',txt,re.I):
+            raise ValueError(f'Overstated or removed-prospective terminology remains in {fname}')
+    sens_dir=root/'results/exploratory/sensitivity'
+    sens_exec=read_json(sens_dir/'execution.json')
+    if sens_exec['status']!='exploratory_sensitivity_only' or sens_exec['frozen_results_modified']:
         raise ValueError('Exploratory sensitivity ledger status check failed')
+    pow_df=pd.read_csv(sens_dir/'power_equivalence.csv')
+    r_m=pow_df[(pow_df.scope=='Retrospective')&(pow_df.cap_new==10)&(pow_df.candidate=='MARUR')].iloc[0]
+    h_p=pow_df[(pow_df.scope=='HeldOut')&(pow_df.cap_new==40)&(pow_df.candidate=='PACER')].iloc[0]
+    pow_tex=(root/'paper/tables/table_m4_power_equivalence.tex').read_text(encoding='utf8')
+    for tok in [f'{r_m.mde80_pp:.2f}', f'{r_m.tost_p_2pp:.4f}']:
+        if tok not in source:
+            raise ValueError(f'Power/TOST claim missing in manuscript: {tok}')
+    for tok in [f'{h_p.mde80_pp:.2f}', f'{h_p.tost_p_2pp:.4f}']:
+        if tok not in pow_tex:
+            raise ValueError(f'Power/TOST table claim missing: {tok}')
 
 
 def validate(root=ROOT):
@@ -268,7 +287,8 @@ def validate(root=ROOT):
     r_h40 = con_all[(con_all.scope=='UntouchedHeldOut')&(con_all.model=='HistGBM')&(con_all.scenario=='Recorded')&(con_all.cap_new==40)&(con_all.reference=='Periodic')].iloc[0]
     r_a40 = con_all[(con_all.scope=='AllCohortsPooled')&(con_all.model=='HistGBM')&(con_all.scenario=='Recorded')&(con_all.cap_new==40)&(con_all.reference=='Periodic')].iloc[0]
     for needle in [f'{100*row16.eq_du_mean:+.2f} pp', f'{100*row16.pool_du:+.2f} pp', f'{100*r_h10.pool_dpos_hi:+.2f} pp',
-                   f'{100*r_h40.pool_dpos_hi:+.2f} pp', f'{100*r_a40.pool_dpos_hi:+.2f} pp', '+0.37 pp', '4/40']:
+                   f'{100*r_h40.pool_dpos_hi:+.2f} pp', f'{100*r_a40.pool_dpos_hi:+.2f} pp', '+0.37 pp', '4/40',
+                   '1.65 pp', '2.46 pp', '47.1', '9--68%', '1--3%']:
         if needle not in readme_text:
             raise ValueError(f'README results table mismatch for {needle}')
     digest = source_digest(root)

@@ -1,7 +1,7 @@
 {
   "generated_utc": "2026-11-25T07:00:48.221949+00:00",
-  "preregistration_lock_verified": true,
-  "untouched_cohorts": [
+  "frozen_config_checksums_verified": true,
+  "heldout_cohorts": [
     "Ireland_Static",
     "Oslo_Commute",
     "Rome_Capacity_Op1",
@@ -16,7 +16,7 @@
     "Verizon"
   ],
   "physical_clusters": {
-    "untouched_heldout": 26,
+    "heldout_public": 26,
     "retrospective": 16
   },
   "prospective_trips_collected": 0,

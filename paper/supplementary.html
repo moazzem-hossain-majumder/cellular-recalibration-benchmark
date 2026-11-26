@@ -1336,7 +1336,7 @@
 </div>
 <p>On a second US drive we retained every released carrier and the same ten-label rule. Table S13 compares persistence and the original Rome-trained tree on identical active-transfer ticks. We aligned six serving-cell signal fields by device timestamp and used only measurements preceding issue. August 5–6 supplied calibration labels. August 7–9 supplied the suffix, with only two scheduled ticks per carrier after midnight on August 9. The three carriers shared the drive. The release lacked the last Verizon raw radio shard; we retained its rates and marked the signals missing.</p>
 <p>On AT&amp;T, 22 of 296 issued tree commitments violated (7.43 percent), including 22 of 57 positive commitments (38.60 percent). T-Mobile had 123 violations among 294 issued and 236 positive commitments. On Verizon the sole positive offer was honored. Masking NR inputs at issue while preserving the full-input tree offset yielded zero positive offers on every carrier. The different carrier operating points and short shared trip limit extrapolation to future deployments.</p>
-<p>We also tested feasibility when the 10 percent ceiling applies specifically to positive promises. Selective risk assessment and testing candidate rules motivate this comparison <span class="citation" data-cites="geifman2017 angelopoulos2021ltt">(Geifman and El-Yaniv 2017; Angelopoulos et al. 2021)</span>. On the same pre-test validation dates we scaled each ten-label tree or persistence bound by 0.25, 0.5 or 1. The exploratory service floors required positive offers on at least 10 percent of opportunities and support for at least 5 percent of measured throughput. We counted unresolved positive offers as failures. None of the six candidates met all three empirical criteria on either operator. Requiring a one-sided exact binomial upper limit with a six-way Bonferroni adjustment also yielded no candidate. The quarter-rate E3 tree failed on zero of five positive offers across 252 validation opportunities; its supported fraction was only 0.22 percent. Abstention consequently delivered no service on either suffix. The binomial limit assumes independent offers and supplies no temporal deployment guarantee.</p>
+<p>We also tested feasibility when the 10 percent ceiling applies specifically to positive promises. Selective risk assessment and testing candidate rules motivate this comparison <span class="citation" data-cites="geifman2017 angelopoulos2021ltt">(Geifman and El-Yaniv 2017; Angelopoulos et al. 2025)</span>. On the same pre-test validation dates we scaled each ten-label tree or persistence bound by 0.25, 0.5 or 1. The exploratory service floors required positive offers on at least 10 percent of opportunities and support for at least 5 percent of measured throughput. We counted unresolved positive offers as failures. None of the six candidates met all three empirical criteria on either operator. Requiring a one-sided exact binomial upper limit with a six-way Bonferroni adjustment also yielded no candidate. The quarter-rate E3 tree failed on zero of five positive offers across 252 validation opportunities; its supported fraction was only 0.22 percent. Abstention consequently delivered no service on either suffix. The binomial limit assumes independent offers and supplies no temporal deployment guarantee.</p>
 <h2 id="separate-trips-and-client-outcomes">Separate trips and client outcomes</h2>
 <p>We also replayed the Rome tree on eleven Irish driving-download traces across five held-out dates. The prior all-application calendar cutoff yielded no driving downloads for calibration. Before scoring this cohort, we moved calibration to its first two dates and retained all later dates. Four signal fields map to Rome; both SINR features remain missing. Under the full-minute clock, 334 of 335 ticks had an eligible lag, and 323 had observed outcomes. The tree broke 43 of 155 measurable positive promises, with four more positive promises unresolved. Its all-issued risk was 12.87–14.07 percent and supported throughput 7.74 percent. Persistence broke 31 of 41 positive promises, with all-issued risk 9.28 percent and supported throughput 16.42 percent. On these recordings persistence supported more rate and met the all-issued risk threshold, while failing more often conditional on a positive promise.</p>
 <p>To evaluate a client decision, we froze the Norwegian bus-trained lag model and replayed serial two-second video segment requests against measured TCP service on every remaining published route after the original cutoff. Twenty-two recordings on seven routes formed eleven route-date groups across seven calendar dates. Continuity breaks reset the client; each policy used identical blocks. The client selected among five representations from 0.15 to 3 Mbps, starting playback after the first segment and falling back to the lowest representation for smaller commitments. Calibration reduced the stall fraction on all eleven route-dates. Median route-date stall time as a fraction of post-start time fell from 19.12 to 12.93 percent, while median delivered representation fell from 1.01 to 0.24 Mbps. Constant 0.15 Mbps gave 12.30 percent median stalling. These counterfactual playback outcomes assume the measured service is unaffected by request size. They give no direct estimate of user preference or the effect of deploying the client on a live network.</p>
@@ -1352,14 +1352,190 @@
 <figcaption>Frozen-tree controller comparison under new-query caps 0, 10 and 40. Each connected point is a predefined cap, and bars span finite-record all-issued risk bounds. Actual costs differ between schedules. Horizontal axes use observed supported throughput. The nominal ten-percent line is a reference, not a guarantee. All conditional-risk, cost and ablation values are available in the action ledger.</figcaption>
 </figure>
 <h2 id="critical-audit-at-matched-realized-query-cost">Critical audit at matched realized query cost</h2>
-<p>An additional exploratory replay fixes new-query caps at 0, 1, 5, 10, 20 and 40 for Frozen, Periodic, Early, modified ACI and MARUR, with both predictors and feedback scenarios. All 720 configurations are retained. A pair is matched only when both policies actually spend the stated number of queries on the full suffix; 384 such contrasts include zero-cost comparisons. Frozen spends zero and is therefore not a positive-cost comparator. No interpolation, shortened suffix or test-selected deployment policy is used.</p>
+<p>An additional exploratory replay fixes new-query caps at 0, 1, 5, 10, 20 and 40 for Frozen, Periodic, Early, modified ACI and MARUR across all predictors and feedback scenarios (576 original runs, 720 full-suffix replays, and 384 exact-cost pairs; complete cap-40 six-cohort breakdown in Table S14). Frozen spends zero and is therefore not a positive-cost comparator. No interpolation, shortened suffix or test-selected deployment policy is used.</p>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">Cohort</td>
+<td style="text-align: right;">Policy</td>
+<td style="text-align: right;">Queries</td>
+<td style="text-align: right;">Offers</td>
+<td style="text-align: right;">PosLow</td>
+<td style="text-align: right;">PosHigh</td>
+<td style="text-align: right;">U</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">Frozen</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: right;">51.54</td>
+<td style="text-align: right;">57.69</td>
+<td style="text-align: right;">7.154</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">Periodic</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">42.42</td>
+<td style="text-align: right;">51.52</td>
+<td style="text-align: right;">1.008</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">MARUR</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">44.83</td>
+<td style="text-align: right;">44.83</td>
+<td style="text-align: right;">2.025</td>
+</tr>
+<tr>
+<td style="text-align: left;">E3</td>
+<td style="text-align: right;">Frozen</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">66.67</td>
+<td style="text-align: right;">66.67</td>
+<td style="text-align: right;">0.065</td>
+</tr>
+<tr>
+<td style="text-align: left;">E3</td>
+<td style="text-align: right;">Periodic</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">43.75</td>
+<td style="text-align: right;">50.00</td>
+<td style="text-align: right;">0.605</td>
+</tr>
+<tr>
+<td style="text-align: left;">E3</td>
+<td style="text-align: right;">MARUR</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">45.00</td>
+<td style="text-align: right;">55.00</td>
+<td style="text-align: right;">0.504</td>
+</tr>
+<tr>
+<td style="text-align: left;">ATT</td>
+<td style="text-align: right;">Frozen</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: right;">38.60</td>
+<td style="text-align: right;">38.60</td>
+<td style="text-align: right;">2.252</td>
+</tr>
+<tr>
+<td style="text-align: left;">ATT</td>
+<td style="text-align: right;">Periodic</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">23.33</td>
+<td style="text-align: right;">23.33</td>
+<td style="text-align: right;">0.402</td>
+</tr>
+<tr>
+<td style="text-align: left;">ATT</td>
+<td style="text-align: right;">MARUR</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">111</td>
+<td style="text-align: right;">43.24</td>
+<td style="text-align: right;">43.24</td>
+<td style="text-align: right;">6.481</td>
+</tr>
+<tr>
+<td style="text-align: left;">T-Mobile</td>
+<td style="text-align: right;">Frozen</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">236</td>
+<td style="text-align: right;">52.12</td>
+<td style="text-align: right;">52.12</td>
+<td style="text-align: right;">1.254</td>
+</tr>
+<tr>
+<td style="text-align: left;">T-Mobile</td>
+<td style="text-align: right;">Periodic</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">55.32</td>
+<td style="text-align: right;">55.32</td>
+<td style="text-align: right;">0.141</td>
+</tr>
+<tr>
+<td style="text-align: left;">T-Mobile</td>
+<td style="text-align: right;">MARUR</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">65.38</td>
+<td style="text-align: right;">65.38</td>
+<td style="text-align: right;">0.337</td>
+</tr>
+<tr>
+<td style="text-align: left;">Verizon</td>
+<td style="text-align: right;">Frozen</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.003</td>
+</tr>
+<tr>
+<td style="text-align: left;">Verizon</td>
+<td style="text-align: right;">Periodic</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">20.00</td>
+<td style="text-align: right;">20.00</td>
+<td style="text-align: right;">0.006</td>
+</tr>
+<tr>
+<td style="text-align: left;">Verizon</td>
+<td style="text-align: right;">MARUR</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">61.90</td>
+<td style="text-align: right;">61.90</td>
+<td style="text-align: right;">0.597</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: right;">Frozen</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">159</td>
+<td style="text-align: right;">27.04</td>
+<td style="text-align: right;">29.56</td>
+<td style="text-align: right;">7.740</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: right;">Periodic</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">159</td>
+<td style="text-align: right;">11.32</td>
+<td style="text-align: right;">13.84</td>
+<td style="text-align: right;">2.966</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: right;">MARUR</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">159</td>
+<td style="text-align: right;">7.55</td>
+<td style="text-align: right;">10.06</td>
+<td style="text-align: right;">1.175</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>At ten new queries with the frozen tree, MARUR’s E1 support is 2.907 percent versus Periodic’s 0.523 percent, but its all-issued upper risk is 10.924 versus 6.303 percent. On Ireland both make 159 positive offers: MARUR has fourteen fewer observed failures on those same offers while reducing support from 4.117 to 1.129 percent. This is smaller commitment size rather than increased abstention. On Verizon, MARUR removes ten of Early’s offers and six failures, without improving failures on shared offers. Complete costs, conditional risks, offer frequencies and date counts for every configuration are in the matched-cost supplement. These examples do not establish uniform superiority.</p>
-<p>The audit also clarifies that failed responses reset the query cooldown even when their score is discarded. Removing pattern dependence jointly removes triggering, gating and grouping, so it is not an isolated gate ablation. The synthetic missing-feedback mask applies to eligible positions divisible by five; periodic positions 1, 16, 31 and so on avoid it. It is therefore position-based censoring, not a uniform twenty-percent loss of requested labels. Prospective independent trips with frozen policies are needed to test replication.</p>
-<h1 id="limitations-and-prospective-scope">Limitations and prospective scope</h1>
-<p>These archives were inspected before the controller and cost audit were designed. The 384 exact-cost contrasts are descriptive comparisons of shared observations, not independent trials or confirmatory tests. Missing-outcome intervals are finite-record partial-identification bounds, not sampling confidence intervals. A low all-issued risk can result from abstention; positive-conditional risk and useful service must be reported jointly. The modified ACI comparator, bundled pattern ablation and position-based feedback suppression limit method-specific conclusions. The controller remains heuristic and provides no conditional-risk guarantee.</p>
-<p>No prospective validation has been completed. The proposed replication targets eighteen usable independent trip pairs under an assumed standard deviation of 0.10 and a two-sided 95 percent utility-difference interval half-width of 0.05; it does not establish sufficient precision for risk certification. Missing trips, greater heterogeneity or cross-date dependence can invalidate that planning assumption. Simultaneous carriers do not increase the number of independent drives, and simulated playback does not demonstrate causal live QoE. Venue-specific scope and independent replication remain necessary before stronger submission claims.</p>
-<h2 id="comparator-taxonomy-pacer-protocol-details-and-exploratory-sweep-tallies">Comparator taxonomy, PACER protocol details, and exploratory sweep tallies</h2>
-<p>To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation), all PACER parameters (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\gamma=0.05</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mtext mathvariant="normal">veto</mtext></msub><mo>=</mo><mn>0.15</mn></mrow><annotation encoding="application/x-tex">a_{\text{veto}}=0.15</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>κ</mi><mtext mathvariant="normal">ext</mtext></msub><mo>=</mo><mn>2.0</mn></mrow><annotation encoding="application/x-tex">\kappa_{\text{ext}}=2.0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mtext mathvariant="normal">obs</mtext></msub><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">W_{\text{obs}}=20</annotation></semantics></math>, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S14 summarizes the operational taxonomy comparing MARUR and PACER across regimes. Across all 120 seed-sensitivity evaluations (QueryCensor20 and Persistence included), weighted selective excess lies within <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">B_1(K) \approx 6.8/K</annotation></semantics></math> on 40/40 cells, though as established in the main manuscript this bound holds trivially on 36/40 cells whenever <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">B_1(K) \ge (1-\alpha)A</annotation></semantics></math> (19/20 cells at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=10</annotation></semantics></math> and 17/20 at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=40</annotation></semantics></math>). Under Persistence across all 42 pooled clusters, PACER’s conservative abstention lowers utility <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>18.89</mn></mrow><annotation encoding="application/x-tex">-18.89</annotation></semantics></math> percentage points at cap 10 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>31.02</mn></mrow><annotation encoding="application/x-tex">-31.02</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>3.25</mn></mrow><annotation encoding="application/x-tex">-3.25</annotation></semantics></math>) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>29.95</mn></mrow><annotation encoding="application/x-tex">-29.95</annotation></semantics></math> percentage points at cap 40 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>37.26</mn></mrow><annotation encoding="application/x-tex">-37.26</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>16.39</mn></mrow><annotation encoding="application/x-tex">-16.39</annotation></semantics></math>) relative to Frozen. For the exploratory controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield 6 matched utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs or risk-only changes, 129 unchanged cases, and 18 unmatched-cost cases; across the 792 configurations of the targeted baseline grid, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks. Complete ledgers reside in <code>results/pacer</code> and <code>results/exploratory</code>.</p>
+<p>The audit also clarifies that failed responses reset the query cooldown even when their score is discarded. Removing pattern dependence jointly removes triggering, gating and grouping, so it is not an isolated gate ablation. The synthetic missing-feedback mask applies to eligible positions divisible by five; periodic positions 1, 16, 31 and so on avoid it. It is therefore position-based censoring, not a uniform twenty-percent loss of requested labels.</p>
+<h1 id="limitations-comparator-taxonomy-and-extended-exploratory-checks">Limitations, comparator taxonomy, and extended exploratory checks</h1>
+<p>These archives were inspected before the controller and cost audit were designed. The 384 exact-cost contrasts are descriptive comparisons of shared observations, not independent trials or confirmatory tests. Missing-outcome intervals are finite-record partial-identification bounds, not sampling confidence intervals. A low all-issued risk can result from abstention; positive-conditional risk and useful service must be reported jointly. The modified ACI comparator, bundled pattern ablation and position-based feedback suppression limit method-specific conclusions. All evidence is retrospective from public archives and no live field validation was performed; simultaneous carriers do not increase independent campaign-dates, and simulated playback does not establish causal live QoE.</p>
+<h2 id="comparator-taxonomy-pacer-protocol-details-and-extended-exploratory-sweeps">Comparator taxonomy, PACER protocol details, and extended exploratory sweeps</h2>
+<p>To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation), all PACER parameters (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\gamma=0.05</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mtext mathvariant="normal">veto</mtext></msub><mo>=</mo><mn>0.15</mn></mrow><annotation encoding="application/x-tex">a_{\text{veto}}=0.15</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>κ</mi><mtext mathvariant="normal">ext</mtext></msub><mo>=</mo><mn>2.0</mn></mrow><annotation encoding="application/x-tex">\kappa_{\text{ext}}=2.0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mtext mathvariant="normal">obs</mtext></msub><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">W_{\text{obs}}=20</annotation></semantics></math>, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S15 summarizes the operational taxonomy comparing MARUR and PACER across regimes, Table S16 reports the complete 18-row pooling-rule sensitivity matrix across HeldOut, Retrospective, and AllCohorts scopes, and Table S17 reports the complete 11-row Leave-One-Cohort-Out check across all 10 cohorts (42 total clusters). Across all 120 seed-sensitivity evaluations (QueryCensor20 and Persistence included), weighted selective excess lies within <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">B_1(K) \approx 6.8/K</annotation></semantics></math> on 40/40 cells, though as established in the main manuscript this bound holds trivially on 36/40 cells whenever <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">B_1(K) \ge (1-\alpha)A</annotation></semantics></math> (19/20 cells at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=10</annotation></semantics></math> and 17/20 at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=40</annotation></semantics></math>). Under Persistence across all 42 pooled clusters, PACER’s conservative abstention lowers utility <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>18.89</mn></mrow><annotation encoding="application/x-tex">-18.89</annotation></semantics></math> percentage points at cap 10 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>31.02</mn></mrow><annotation encoding="application/x-tex">-31.02</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>3.25</mn></mrow><annotation encoding="application/x-tex">-3.25</annotation></semantics></math>) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>29.95</mn></mrow><annotation encoding="application/x-tex">-29.95</annotation></semantics></math> percentage points at cap 40 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>37.26</mn></mrow><annotation encoding="application/x-tex">-37.26</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>16.39</mn></mrow><annotation encoding="application/x-tex">-16.39</annotation></semantics></math>) relative to Frozen. For the exploratory controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield 6 matched utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs or risk-only changes, 129 unchanged cases, and 18 unmatched-cost cases; across the 792 configurations of the targeted baseline grid, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks. Complete ledgers (including the extended 1,800-run retrospective/held-out window and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> sweep and 480-run source-only predictor sweep for both MARUR and PACER, as well as the Oslo Commute pre-2010 bus quantile regressor check) reside in <code>results/pacer</code> and <code>results/exploratory/sensitivity</code>.</p>
 <div class="table*">
 <table>
 <tbody>
@@ -1408,32 +1584,305 @@
 </tbody>
 </table>
 </div>
-<h1 id="sec:pilot_template">Prospective Pilot Validation (Template — Pending Real Field Trips)</h1>
-<p>Status as of this manuscript revision: <code>prospective_trips_collected = 0</code>. Because no newly collected live field drive logs exist yet, no simulated or replayed rows appear in Table <a href="#tab:pilot_template" data-reference-type="ref" data-reference="tab:pilot_template">[tab:pilot_template]</a>. Once real chronological drive traces containing the required lag, radio telemetry, and outcome timestamps are collected, run <code>python scripts/run_prospective_validation.py</code> with frozen model artifact <code>results/prospective_planning/frozen_rome_histgbm.joblib</code> and populate only genuinely recorded trips below.</p>
 <div class="table*">
 <table>
-<thead>
-<tr>
-<th style="text-align: left;">Campaign</th>
-<th style="text-align: left;">Trips</th>
-<th style="text-align: left;">Eligible</th>
-<th style="text-align: left;">Queries (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Q</mi><mtext mathvariant="normal">new</mtext></msub><annotation encoding="application/x-tex">Q_{\text{new}}</annotation></semantics></math>)</th>
-<th style="text-align: left;">Offer Freq <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math> (%)</th>
-<th style="text-align: left;">PosLow (%)</th>
-<th style="text-align: left;">PosHigh (%)</th>
-<th style="text-align: left;">Supported <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> (%)</th>
-</tr>
-</thead>
 <tbody>
 <tr>
-<td style="text-align: left;">Pending real collection</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;">—</td>
+<td style="text-align: left;">Scope</td>
+<td style="text-align: left;">Cap</td>
+<td style="text-align: left;">WeightRule</td>
+<td style="text-align: left;">Units</td>
+<td style="text-align: left;">dPosHi</td>
+<td style="text-align: left;">Boot95</td>
+<td style="text-align: left;">dU</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">OfferWtd</td>
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">-23.41</td>
+<td style="text-align: left;">-37.04 to -5.91</td>
+<td style="text-align: left;">+0.47</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">EqualUnit</td>
+<td style="text-align: left;">22/26</td>
+<td style="text-align: left;">+0.37</td>
+<td style="text-align: left;">paired valid</td>
+<td style="text-align: left;">-3.29</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">EqualCohort</td>
+<td style="text-align: left;">4 coh</td>
+<td style="text-align: left;">-4.88</td>
+<td style="text-align: left;">unweighted</td>
+<td style="text-align: left;">-2.91</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">OfferWtd</td>
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">-0.83</td>
+<td style="text-align: left;">-16.13 to +11.46</td>
+<td style="text-align: left;">+0.51</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">EqualUnit</td>
+<td style="text-align: left;">12/26</td>
+<td style="text-align: left;">+2.79</td>
+<td style="text-align: left;">paired valid</td>
+<td style="text-align: left;">+0.01</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">EqualCohort</td>
+<td style="text-align: left;">4 coh</td>
+<td style="text-align: left;">+5.08</td>
+<td style="text-align: left;">unweighted</td>
+<td style="text-align: left;">+0.56</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retrospective</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">OfferWtd</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">+8.83</td>
+<td style="text-align: left;">-2.16 to +13.99</td>
+<td style="text-align: left;">+0.11</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retrospective</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">EqualUnit</td>
+<td style="text-align: left;">10/16</td>
+<td style="text-align: left;">-4.36</td>
+<td style="text-align: left;">paired valid</td>
+<td style="text-align: left;">-0.10</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retrospective</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">EqualCohort</td>
+<td style="text-align: left;">6 coh</td>
+<td style="text-align: left;">+6.02</td>
+<td style="text-align: left;">unweighted</td>
+<td style="text-align: left;">+0.13</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retrospective</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">OfferWtd</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">+16.26</td>
+<td style="text-align: left;">+4.68 to +24.93</td>
+<td style="text-align: left;">+0.19</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retrospective</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">EqualUnit</td>
+<td style="text-align: left;">9/16</td>
+<td style="text-align: left;">-5.93</td>
+<td style="text-align: left;">paired valid</td>
+<td style="text-align: left;">+0.05</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retrospective</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">EqualCohort</td>
+<td style="text-align: left;">6 coh</td>
+<td style="text-align: left;">+12.15</td>
+<td style="text-align: left;">unweighted</td>
+<td style="text-align: left;">+0.08</td>
+</tr>
+<tr>
+<td style="text-align: left;">AllCohorts</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">OfferWtd</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">-14.37</td>
+<td style="text-align: left;">-26.80 to +0.85</td>
+<td style="text-align: left;">+0.25</td>
+</tr>
+<tr>
+<td style="text-align: left;">AllCohorts</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">EqualUnit</td>
+<td style="text-align: left;">32/42</td>
+<td style="text-align: left;">-1.11</td>
+<td style="text-align: left;">paired valid</td>
+<td style="text-align: left;">-2.07</td>
+</tr>
+<tr>
+<td style="text-align: left;">AllCohorts</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">EqualCohort</td>
+<td style="text-align: left;">10 coh</td>
+<td style="text-align: left;">+1.66</td>
+<td style="text-align: left;">unweighted</td>
+<td style="text-align: left;">-1.09</td>
+</tr>
+<tr>
+<td style="text-align: left;">AllCohorts</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">OfferWtd</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">+3.29</td>
+<td style="text-align: left;">-7.49 to +12.49</td>
+<td style="text-align: left;">+0.31</td>
+</tr>
+<tr>
+<td style="text-align: left;">AllCohorts</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">EqualUnit</td>
+<td style="text-align: left;">21/42</td>
+<td style="text-align: left;">-0.94</td>
+<td style="text-align: left;">paired valid</td>
+<td style="text-align: left;">+0.02</td>
+</tr>
+<tr>
+<td style="text-align: left;">AllCohorts</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">EqualCohort</td>
+<td style="text-align: left;">10 coh</td>
+<td style="text-align: left;">+9.32</td>
+<td style="text-align: left;">unweighted</td>
+<td style="text-align: left;">+0.27</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">Dropped</td>
+<td style="text-align: left;">G</td>
+<td style="text-align: left;">MobRhiRng</td>
+<td style="text-align: left;">MobRhiMed</td>
+<td style="text-align: left;">UMed</td>
+<td style="text-align: left;">EqdU MAR10</td>
+<td style="text-align: left;">EqdU PAC10</td>
+<td style="text-align: left;">EqdU PAC40</td>
+</tr>
+<tr>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">8.8-68.2</td>
+<td style="text-align: left;">47.6</td>
+<td style="text-align: left;">1.01</td>
+<td style="text-align: left;">-2.11</td>
+<td style="text-align: left;">-2.07</td>
+<td style="text-align: left;">+0.02</td>
+</tr>
+<tr>
+<td style="text-align: left;">ATT</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">8.8-68.2</td>
+<td style="text-align: left;">48.5</td>
+<td style="text-align: left;">1.01</td>
+<td style="text-align: left;">-2.13</td>
+<td style="text-align: left;">-2.08</td>
+<td style="text-align: left;">+0.02</td>
+</tr>
+<tr>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">8.8-66.7</td>
+<td style="text-align: left;">47.3</td>
+<td style="text-align: left;">0.90</td>
+<td style="text-align: left;">-2.27</td>
+<td style="text-align: left;">-2.25</td>
+<td style="text-align: left;">+0.03</td>
+</tr>
+<tr>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">8.8-68.2</td>
+<td style="text-align: left;">47.1</td>
+<td style="text-align: left;">1.15</td>
+<td style="text-align: left;">-2.16</td>
+<td style="text-align: left;">-2.07</td>
+<td style="text-align: left;">-0.00</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">16.2-68.2</td>
+<td style="text-align: left;">49.3</td>
+<td style="text-align: left;">0.67</td>
+<td style="text-align: left;">-2.07</td>
+<td style="text-align: left;">-2.24</td>
+<td style="text-align: left;">-0.05</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ireland Static</td>
+<td style="text-align: left;">38</td>
+<td style="text-align: left;">8.8-68.2</td>
+<td style="text-align: left;">47.6</td>
+<td style="text-align: left;">1.15</td>
+<td style="text-align: left;">-2.35</td>
+<td style="text-align: left;">-2.34</td>
+<td style="text-align: left;">-0.46</td>
+</tr>
+<tr>
+<td style="text-align: left;">Oslo Commute</td>
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">8.8-68.2</td>
+<td style="text-align: left;">49.1</td>
+<td style="text-align: left;">0.67</td>
+<td style="text-align: left;">+0.36</td>
+<td style="text-align: left;">+0.12</td>
+<td style="text-align: left;">-0.04</td>
+</tr>
+<tr>
+<td style="text-align: left;">Rome Capacity Op1</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">8.8-68.2</td>
+<td style="text-align: left;">47.9</td>
+<td style="text-align: left;">0.76</td>
+<td style="text-align: left;">-1.93</td>
+<td style="text-align: left;">-1.83</td>
+<td style="text-align: left;">+0.26</td>
+</tr>
+<tr>
+<td style="text-align: left;">Rome Capacity Op2</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">8.8-68.2</td>
+<td style="text-align: left;">47.4</td>
+<td style="text-align: left;">0.76</td>
+<td style="text-align: left;">-2.29</td>
+<td style="text-align: left;">-2.38</td>
+<td style="text-align: left;">-0.55</td>
+</tr>
+<tr>
+<td style="text-align: left;">T-Mobile</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">8.8-68.2</td>
+<td style="text-align: left;">47.3</td>
+<td style="text-align: left;">1.17</td>
+<td style="text-align: left;">-2.06</td>
+<td style="text-align: left;">-2.06</td>
+<td style="text-align: left;">+0.04</td>
+</tr>
+<tr>
+<td style="text-align: left;">Verizon</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">8.8-68.2</td>
+<td style="text-align: left;">47.5</td>
+<td style="text-align: left;">1.17</td>
+<td style="text-align: left;">-2.12</td>
+<td style="text-align: left;">-2.07</td>
+<td style="text-align: left;">+0.02</td>
 </tr>
 </tbody>
 </table>
@@ -1444,7 +1893,7 @@
 <p>OpenAI Codex assisted with code development, experimental checks and drafting and revising the manuscript.</p>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-angelopoulos2021ltt" class="csl-entry" role="listitem">
-Angelopoulos, Anastasios N., Stephen Bates, Emmanuel J. Candès, Michael I. Jordan, and Lihua Lei. 2021. <em><span class="nocase">Learn then Test: Calibrating Predictive Algorithms to Achieve Risk Control</span></em>. arXiv:2110.01052.
+Angelopoulos, Anastasios N., Stephen Bates, Emmanuel J. Candès, Michael I. Jordan, and Lihua Lei. 2025. <span>“<span class="nocase">Learn then test: Calibrating predictive algorithms to achieve risk control</span>.”</span> <em>The Annals of Applied Statistics</em> 19 (2): 1641–62. <a href="https://doi.org/10.1214/24-AOAS1998">https://doi.org/10.1214/24-AOAS1998</a>.
 </div>
 <div id="ref-angelopoulos2024risk" class="csl-entry" role="listitem">
 Angelopoulos, Anastasios N., Stephen Bates, Adam Fisch, Lihua Lei, and Tal Schuster. 2024. <span>“<span>Conformal Risk Control</span>.”</span> <em>Proceedings of the International Conference on Learning Representations (ICLR)</em>. <a href="https://openreview.net/forum?id=33XGfHLtZg">https://openreview.net/forum?id=33XGfHLtZg</a>.
@@ -1480,7 +1929,7 @@ Manski, Charles F. 1989. <span>“<span class="nocase">Anatomy of the Selection 
 Narayanan, Arvind, Eman Ramadan, Rishabh Mehta, et al. 2020. <span>“<span class="nocase">Lumos5G: Mapping and Predicting Commercial mmWave 5G Throughput</span>.”</span> <em>Proceedings of the ACM Internet Measurement Conference (IMC)</em>, 176–93. <a href="https://doi.org/10.1145/3419394.3423629">https://doi.org/10.1145/3419394.3423629</a>.
 </div>
 <div id="ref-nuwinsarchive" class="csl-entry" role="listitem">
-NUWiNS. 2025. <em><span>PAM 2025 Multi-Carrier Dataset</span></em>. Public data and transfer intervals, commit 782b712.
+NUWiNS. 2025. <em><span>PAM 2025 Multi-Carrier Dataset</span></em>. Public data and transfer intervals, commit 782b712. <a href="https://github.com/NUWiNS/pam2025-multi-carrier-dataset">https://github.com/NUWiNS/pam2025-multi-carrier-dataset</a>.
 </div>
 <div id="ref-raca2020" class="csl-entry" role="listitem">
 Raca, Darijo, Dylan Leahy, Cormac J. Sreenan, and Jason J. Quinlan. 2020. <span>“<span class="nocase">Beyond throughput, the next generation: a 5G dataset with channel and context metrics</span>.”</span> <em>Proceedings of the 11th ACM Multimedia Systems Conference (MMSys)</em>, 303–8. <a href="https://doi.org/10.1145/3339825.3394938">https://doi.org/10.1145/3339825.3394938</a>.

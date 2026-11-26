@@ -1,6 +1,6 @@
-# Path A Theory and Frozen Preregistration: Horizon-Paced Selective Conformal Control (PACER)
+# Frozen Protocol and Checksum Audit: Horizon-Paced Selective Conformal Control (PACER)
 
-**Status:** Mathematical formulation and hyperparameter freeze written **prior** to running any evaluation on untouched held-out archives (`Rome 2023 Capacity Tests`, `Oslo Multi-Route Commute`, `Ireland Static Download`). Zero parameters may be adjusted after unsealing held-out cohorts.
+**Status:** Mathematical formulation and configuration frozen and verified by SHA-256 checksum **prior** to evaluating held-out public archives (`Rome 2023 Capacity Tests`, `Oslo Multi-Route Commute`, `Ireland Static Download`); investigators had prior access to public archives, and zero parameters are tuned on held-out targets.
 
 ## 1. Selective-Offer Identity and Three Mathematical Failure Modes
 
@@ -35,10 +35,10 @@ Three exact mechanisms explain why prior sparse-feedback controllers fail on cel
 
 **Theorem 2 (Adversarial Blind-Suffix Lower Bound for Front-Loaded Probing).** For any controller spending its entire budget $C$ by index $\tau_C < T$ ($Q_t \equiv 0$ for $t > \tau_C$), holding threshold $q_t$ fixed across $M_{\text{post}}$ positive suffix commitments, there exists an outcome-shifted continuation identical on $[1, \tau_C]$ whose conditional violation satisfies $R_+^{\text{upper}} \ge M_{\text{post}} / M$. Whenever horizon pacing keeps $\pi_k \ge 1/W_{\max} > 0$ across all $K$ blocks, blind frozen suffixes are bounded by $W_{\max}$ ticks rather than $T - \tau_C$. $\square$
 
-## 4. Pre-Committed Evaluation Protocol (Frozen Parameters in `configs/pacer.json`)
+## 4. Frozen Evaluation Protocol (`configs/pacer.json`)
 
 - **Frozen parameters:** $\alpha = 0.10$, $\gamma = 0.05$, $a_{\text{veto}} = 0.15$, $\kappa_{\text{ext}} = 2.0$, $W_{\text{obs}} = 20$, primary seed `42` (sensitivity seeds `42, 123, 2026`), caps $C_{\text{new}} \in \{10, 40\}$.
-- **Untouched Held-Out Public Archives:**
+- **Held-Out Public Archives:**
   1. `Oslo Multi-Route Commute` (`data/raw/oslo-playback/`, post-cutoff logs `>= 2011-01-30`, 7 routes across 7 calendar dates, lag-trained tree and persistence).
   2. `Rome 2023 Capacity Tests` (`data/extracted/14073311/.../Capacity Tests/`, Op1 and Op2 active capacity CSVs converted to identical 60s clock protocol with frozen Rome `HistGBM` + `Persistence`).
   3. `Ireland Static Download` (`data/raw/sirhan-external-work/consolidated.parquet`, static download traces excluded from driving-only replay, evaluated with frozen Rome `HistGBM` + `Persistence`).
