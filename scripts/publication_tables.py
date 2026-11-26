@@ -63,7 +63,7 @@ def _main_tables(root: Path) -> dict:
             f'{100 * r.pool_dhi:+.2f}',
         ])
 
-    # Table IV: Relative (+-50% / +-25%) and Absolute (+-1 / +-2 pp) Power & TOST Equivalence
+    # Table IV: Separated Estimands - Equal-cluster (EqualCl) vs Pooled-ratio (PoolRat) Relative & Absolute TOST
     pow_df = pd.read_csv(root / 'results/exploratory/sensitivity/power_equivalence.csv')
     scope_short = {'Retrospective': 'Retro', 'HeldOut': 'HeldOut', 'AllCohorts': 'AllCoh'}
     cand_short = {'MARUR': 'MAR', 'PACER': 'PAC'}
@@ -74,7 +74,6 @@ def _main_tables(root: Path) -> dict:
         ('HeldOut', 10, 'MARUR'),
         ('HeldOut', 10, 'PACER'),
         ('HeldOut', 40, 'PACER'),
-        ('AllCohorts', 10, 'PACER'),
         ('AllCohorts', 40, 'PACER'),
     ]:
         r = pow_df[(pow_df['scope'] == sc) & (pow_df['cap_new'] == cap) & (pow_df['candidate'] == cand)].iloc[0]
@@ -82,17 +81,33 @@ def _main_tables(root: Path) -> dict:
             scope_short[sc],
             cand_short[cand],
             str(int(r.cap_new)),
+            'EqualCl',
             str(int(r.clusters)),
             str(int(r.zero_ref_u_clusters)),
-            f'{r.ref_pool_u_pp:.2f}',
-            f'{r.pool_rel_du_pct:+.1f}',
-            f'{r.boot_rel_lo_pct:+.1f} to {r.boot_rel_hi_pct:+.1f}',
-            f'{r.tost_p_rel50:.4f}',
-            f'{r.tost_p_rel25:.4f}',
+            f'{r.eq_ref_u_pp:.2f}',
             f'{r.eq_du_mean_pp:+.2f}',
-            f'{r.mde80_pp:.2f}',
+            f'{r.eq_rel_du_pct:+.1f}',
+            f'MDE {r.mde80_pp:.2f}',
+            f'{r.eq_tost_p_rel50:.4f}',
+            f'{r.eq_tost_p_rel25:.4f}',
             f'{r.tost_p_1pp:.4f}',
             f'{r.tost_p_2pp:.4f}',
+        ])
+        pow_rows.append([
+            scope_short[sc],
+            cand_short[cand],
+            str(int(r.cap_new)),
+            'PoolRat',
+            str(int(r.clusters)),
+            str(int(r.zero_ref_u_clusters)),
+            f'{r.pool_ref_u_pp:.2f}',
+            f'{r.pool_du_pp:+.2f}',
+            f'{r.pool_rel_du_pct:+.1f}',
+            f'{r.pool_boot_rel90_lo_pct:+.1f} to {r.pool_boot_rel90_hi_pct:+.1f}',
+            f'{r.pool_tost_p_rel50:.4f}',
+            f'{r.pool_tost_p_rel25:.4f}',
+            'NA',
+            'NA',
         ])
 
     # Table V: Per-cohort and per-cap breakdown across held-out public archives & retro mean
@@ -307,8 +322,8 @@ def _main_tables(root: Path) -> dict:
             cluster_rows,
         ),
         'table_m4_power_equivalence': (
-            'Exploratory relative (+-50 percent primary, +-25 percent sensitivity relative to pooled Periodic U, with Z0 zero-U clusters excluded from per-cluster ratios) and absolute (+-1.0 / +-2.0 pp) power and TOST equivalence checks (HistGBM, recorded).',
-            ['Scope', 'Cand', 'Cap', 'G', 'Z0', 'RefU', 'PoolRel', 'Rel95CI', 'pRel50', 'pRel25', 'EqdU', 'MDE80', 'p1pp', 'p2pp'],
+            'Estimand-matched exploratory relative (+-50 percent primary, +-25 percent sensitivity) and absolute (+-1.0 / +-2.0 pp) TOST checks (HistGBM, recorded). EqualCl tests equal-cluster mean dU against +-50/25 percent of equal-cluster Periodic U (zero-U clusters Z0 retained; 0 undefined excluded); PoolRat tests pooled ratio against +-50/25 percent via 90 percent cluster bootstrap CIs.',
+            ['Scope', 'Cand', 'Cap', 'Estimand', 'G', 'Z0', 'RefU', 'Delta', 'RelPct', 'SpreadOrMDE', 'pRel50', 'pRel25', 'pAbs1', 'pAbs2'],
             pow_rows,
         ),
         'table_m5_pacer_breakdown': (
@@ -404,7 +419,7 @@ def _supp_extra_tables(root: Path) -> dict:
             f'{r.eq_du_pacer_c40_pp:+.2f}',
         ])
 
-    # S18: Exploratory campaign-level dependence sensitivity (two-stage hierarchical bootstrap & ICC/DEFF)
+    # S18: Exploratory campaign-level dependence sensitivity (adjusted relative & absolute TOST + hierarchical bootstrap)
     camp_df = pd.read_csv(root / 'results/exploratory/sensitivity/campaign_dependence.csv')
     scope_short = {'Retrospective': 'Retro', 'HeldOut': 'HeldOut', 'AllCohorts': 'AllCoh'}
     cand_short = {'MARUR': 'MAR', 'PACER': 'PAC'}
@@ -419,11 +434,12 @@ def _supp_extra_tables(root: Path) -> dict:
             f'{r.icc:.2f}',
             f'{r.deff:.2f}',
             f'{r.g_eff:.2f}',
-            f'{r.naive_se_pp:.2f}',
-            f'{r.adj_se_pp:.2f}',
-            f'{r.adj_mde80_pp:.2f}',
+            f'{r.naive_eq_tost_p_rel50:.4f}',
+            f'{r.adj_eq_tost_p_rel50:.4f}',
+            f'{r.adj_eq_tost_p_rel25:.4f}',
             f'{r.adj_tost_p_2pp:.4f}',
-            f'{r.hier_boot95_lo_pp:+.2f} to {r.hier_boot95_hi_pp:+.2f}',
+            f'{r.adj_mde80_pp:.2f}',
+            f'{r.hier_boot90_eq_rel_lo_pct:+.1f} to {r.hier_boot90_eq_rel_hi_pct:+.1f}',
         ])
 
     return {
@@ -448,8 +464,8 @@ def _supp_extra_tables(root: Path) -> dict:
             loco_rows,
         ),
         'table_s18_campaign_dependence': (
-            'Exploratory campaign-level dependence sensitivity across physical geographic campaigns (Camp=3 Retrospective, 3 HeldOut, 6 AllCohorts; HistGBM, recorded). Reports ANOVA ICC, Donner design effect (DEFF), effective date count (Geff), inflated SE/MDE80/TOST p at +-2 pp, and two-stage hierarchical cluster bootstrap 95 percent intervals.',
-            ['Scope', 'Cand', 'Cap', 'G', 'Camp', 'ICC', 'DEFF', 'Geff', 'NaiveSE', 'AdjSE', 'AdjMDE', 'Adjp2pp', 'HierBoot95'],
+            'Exploratory campaign-level dependence sensitivity across physical geographic campaigns (Camp=3 Retrospective, 3 HeldOut, 6 AllCohorts; HistGBM, recorded). Compares naive equal-cluster +-50 percent relative TOST p (Naive50) with Donner-adjusted relative TOST p (Adj50, Adj25), adjusted +-2 pp p (Adjp2), effective date count (Geff), adjusted MDE80 (pp), and two-stage hierarchical bootstrap 90 percent equal-cluster relative intervals (percent).',
+            ['Scope', 'Cand', 'Cap', 'G', 'Camp', 'ICC', 'DEFF', 'Geff', 'Naive50', 'Adj50', 'Adj25', 'Adjp2', 'AdjMDE', 'HierBoot90Rel'],
             camp_rows,
         ),
     }
@@ -566,7 +582,7 @@ def latex(spec):
     prose = header[0] in {'Policy', 'Regime', 'OfferStratum', 'Scope', 'Axis', 'Dropped'}
     wide_pow = len(header) >= 12
     size = r'\centering\footnotesize\setlength{\tabcolsep}{' + ('2.2pt' if wide_pow else '3.5pt') + '}' if prose else r'\centering\small'
-    align = ('ll' + 'r' * (len(header) - 2)) if wide_pow else ('l' * len(header) if prose else 'l' + 'r' * (len(header) - 1))
+    align = (('llll' + 'r' * (len(header) - 4)) if len(header) > 3 and header[3] == 'Estimand' else ('ll' + 'r' * (len(header) - 2))) if wide_pow else ('l' * len(header) if prose else 'l' + 'r' * (len(header) - 1))
     lines = [r'\begin{table*}[!ht]', size, r'\caption{' + caption + '}', r'\begin{tabular}{' + align + '}', r'\hline']
     for row in [header, *rows]:
         lines.append(' & '.join(row) + r' \\')

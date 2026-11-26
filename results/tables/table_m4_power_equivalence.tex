@@ -1,16 +1,21 @@
 \begin{table*}[!ht]
 \centering\footnotesize\setlength{\tabcolsep}{2.2pt}
-\caption{Exploratory relative (+-50 percent primary, +-25 percent sensitivity relative to pooled Periodic U, with Z0 zero-U clusters excluded from per-cluster ratios) and absolute (+-1.0 / +-2.0 pp) power and TOST equivalence checks (HistGBM, recorded).}
-\begin{tabular}{llrrrrrrrrrrrr}
+\caption{Estimand-matched exploratory relative (+-50 percent primary, +-25 percent sensitivity) and absolute (+-1.0 / +-2.0 pp) TOST checks (HistGBM, recorded). EqualCl tests equal-cluster mean dU against +-50/25 percent of equal-cluster Periodic U (zero-U clusters Z0 retained; 0 undefined excluded); PoolRat tests pooled ratio against +-50/25 percent via 90 percent cluster bootstrap CIs.}
+\begin{tabular}{llllrrrrrrrrrr}
 \hline
-Scope & Cand & Cap & G & Z0 & RefU & PoolRel & Rel95CI & pRel50 & pRel25 & EqdU & MDE80 & p1pp & p2pp \\
-Retro & MAR & 10 & 16 & 4 & 0.60 & +35.3 & -55.5 to +260.4 & 0.3564 & 0.4602 & -0.09 & 1.65 & 0.0609 & 0.0018 \\
-Retro & PAC & 10 & 16 & 4 & 0.60 & +18.3 & -40.6 to +140.5 & 0.2917 & 0.4449 & -0.10 & 1.08 & 0.0122 & 0.0000 \\
-HeldOut & MAR & 10 & 26 & 4 & 1.01 & +40.0 & -2.4 to +87.6 & 0.9605 & 0.9713 & -3.36 & 4.54 & 0.9286 & 0.8041 \\
-HeldOut & PAC & 10 & 26 & 4 & 1.01 & +46.9 & -9.7 to +131.6 & 0.9731 & 0.9817 & -3.29 & 4.01 & 0.9457 & 0.8213 \\
-HeldOut & PAC & 40 & 26 & 2 & 1.17 & +43.1 & -52.2 to +186.4 & 0.2508 & 0.3707 & +0.01 & 2.46 & 0.1261 & 0.0132 \\
-AllCoh & PAC & 10 & 42 & 8 & 0.76 & +32.6 & -12.8 to +95.3 & 0.9682 & 0.9799 & -2.07 & 2.55 & 0.8831 & 0.5334 \\
-AllCoh & PAC & 40 & 42 & 6 & 0.80 & +38.6 & -30.3 to +130.9 & 0.2436 & 0.3726 & +0.02 & 1.53 & 0.0372 & 0.0003 \\
+Scope & Cand & Cap & Estimand & G & Z0 & RefU & Delta & RelPct & SpreadOrMDE & pRel50 & pRel25 & pAbs1 & pAbs2 \\
+Retro & MAR & 10 & EqualCl & 16 & 4 & 1.52 & -0.09 & -6.2 & MDE 1.65 & 0.1228 & 0.3060 & 0.0609 & 0.0018 \\
+Retro & MAR & 10 & PoolRat & 16 & 4 & 0.60 & +0.21 & +35.3 & -44.3 to +207.3 & 0.4145 & 0.5560 & NA & NA \\
+Retro & PAC & 10 & EqualCl & 16 & 4 & 1.52 & -0.10 & -6.6 & MDE 1.08 & 0.0430 & 0.2239 & 0.0122 & 0.0000 \\
+Retro & PAC & 10 & PoolRat & 16 & 4 & 0.60 & +0.11 & +18.3 & -32.5 to +108.3 & 0.2260 & 0.4255 & NA & NA \\
+HeldOut & MAR & 10 & EqualCl & 26 & 4 & 6.32 & -3.36 & -53.1 & MDE 4.54 & 0.5497 & 0.8675 & 0.9286 & 0.8041 \\
+HeldOut & MAR & 10 & PoolRat & 26 & 4 & 1.01 & +0.40 & +40.0 & +4.4 to +81.9 & 0.3235 & 0.7325 & NA & NA \\
+HeldOut & PAC & 10 & EqualCl & 26 & 4 & 6.32 & -3.29 & -52.0 & MDE 4.01 & 0.5369 & 0.8872 & 0.9457 & 0.8213 \\
+HeldOut & PAC & 10 & PoolRat & 26 & 4 & 1.01 & +0.47 & +46.9 & -1.5 to +114.7 & 0.4240 & 0.7285 & NA & NA \\
+HeldOut & PAC & 40 & EqualCl & 26 & 2 & 4.47 & +0.01 & +0.3 & MDE 2.46 & 0.0071 & 0.1008 & 0.1261 & 0.0132 \\
+HeldOut & PAC & 40 & PoolRat & 26 & 2 & 1.17 & +0.51 & +43.1 & -39.5 to +154.0 & 0.4155 & 0.5925 & NA & NA \\
+AllCoh & PAC & 40 & EqualCl & 42 & 6 & 3.27 & +0.02 & +0.8 & MDE 1.53 & 0.0021 & 0.0721 & 0.0372 & 0.0003 \\
+AllCoh & PAC & 40 & PoolRat & 42 & 6 & 0.80 & +0.31 & +38.6 & -21.2 to +113.6 & 0.3575 & 0.6105 & NA & NA \\
 \hline
 \end{tabular}
 \end{table*}

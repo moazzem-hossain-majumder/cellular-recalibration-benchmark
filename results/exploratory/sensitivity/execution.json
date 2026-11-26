@@ -1,6 +1,6 @@
 {
-  "start_utc": "2026-11-26T07:16:21.630001+00:00",
-  "end_utc": "2026-11-26T07:16:22.865440+00:00",
+  "start_utc": "2026-11-26T08:16:23.752672+00:00",
+  "end_utc": "2026-11-26T08:22:07.567910+00:00",
   "status": "exploratory_sensitivity_only",
   "heldout_cohorts_exploratory": true,
   "frozen_results_modified": false,
@@ -10,9 +10,9 @@
   "window_alpha_rows": 1800,
   "predictor_rows": 480,
   "sha256": {
-    "results/exploratory/sensitivity/campaign_dependence.csv": "b67817af61188454f5af4b5bc895a46140d06571eb466959319758ba378cf32a",
+    "results/exploratory/sensitivity/campaign_dependence.csv": "b2a1be9bae4f9860fa4bab8bff5d12b7774a25ee183b30a5b6fe6c373c173e87",
     "results/exploratory/sensitivity/leave_one_cohort_out.csv": "3555dade40d53c9dab8c6ad87b4ef74a132ead73a03b46d547e57209356c5425",
-    "results/exploratory/sensitivity/power_equivalence.csv": "9d675cf4537e2fadf3068dee849398352a6c0acbabf7a11cf7440ca0995088f4",
+    "results/exploratory/sensitivity/power_equivalence.csv": "fdfdcfbae6f11a4bc7e57ce895f7e783eaf42c26711254ead634abf3d24ec8c6",
     "results/exploratory/sensitivity/predictor_point_accuracy.csv": "91c77d46c816ee5edfc662829511171c9f94e8d766e6fc5468315f6de4ec4102",
     "results/exploratory/sensitivity/predictor_sensitivity.csv": "ef92d512d6dc451b7a26cd3952c62a3de0802e0902cc952c4f7610ab3dd4230f",
     "results/exploratory/sensitivity/predictor_sensitivity_clusters.csv": "5b56dcec8b140437faab68a27618ed1871b9032f24f37341300df8ce8dc33db1",

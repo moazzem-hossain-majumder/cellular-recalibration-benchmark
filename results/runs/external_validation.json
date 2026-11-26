@@ -16,7 +16,7 @@
         "passed": 13
       },
       "unit": {
-        "passed": 123
+        "passed": 124
       }
     },
     "report": "results/runs/final_tests.xml"

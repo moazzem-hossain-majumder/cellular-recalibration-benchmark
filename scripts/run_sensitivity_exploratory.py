@@ -122,7 +122,7 @@ def _build_oslo_bus_quantile_predictor(oslo_cutoff_iso: str) -> HistGradientBoos
 
 
 def run_power_and_equivalence() -> pd.DataFrame:
-    """Task 1 & 2: Compute relative (+-50%, +-25% of baseline U) and absolute TOST + 80%-power MDE."""
+    """Task 1 & 2: Compute equal-cluster and pooled-ratio relative TOST (+-50%, +-25%) plus absolute TOST."""
     p_cl = pd.read_csv(ROOT / 'results/pacer/pacer_cluster_dates.csv')
     rows = []
     specs = [
@@ -147,7 +147,9 @@ def run_power_and_equivalence() -> pd.DataFrame:
         piv = agg.pivot(index='unit', columns='policy')
         u_c = 100.0 * piv['delivered_sum'][cand] / piv['observed_sum'][cand]
         u_r = 100.0 * piv['delivered_sum']['Periodic'] / piv['observed_sum']['Periodic']
-        diff = (u_c - u_r).dropna()
+        diff_all = u_c - u_r
+        undef_u = int(diff_all.isna().sum())
+        diff = diff_all.dropna()
         units = diff.index.tolist()
         dc = piv['delivered_sum'][cand].loc[units].to_numpy(dtype=float)
         oc = piv['observed_sum'][cand].loc[units].to_numpy(dtype=float)
@@ -162,12 +164,21 @@ def run_power_and_equivalence() -> pd.DataFrame:
         t90_lo, t90_hi = stats.t.interval(0.90, df=n - 1, loc=mean, scale=se)
         mde80 = _solve_mde_t(se, n - 1, alpha=0.05, power=0.80)
 
-        # Pooled relative ratio and whole-cluster bootstrap CI
-        ref_pool_u = 100.0 * float(dr.sum() / or_.sum())
-        ref_mean_u = float(u_r.loc[units].mean())
+        # (a) Equal-cluster relative TOST: margin = (rel% / 100) * equal-cluster mean of Periodic U
+        eq_ref_u = float(u_r.loc[units].mean())
+        eq_cand_u = float(u_c.loc[units].mean())
         zero_ref_u = int((u_r.loc[units] <= 0.0).sum())
-        cand_pool_u = 100.0 * float(dc.sum() / oc.sum())
-        pool_rel_pct = 100.0 * (cand_pool_u / ref_pool_u - 1.0)
+        eq_rel_pct = 100.0 * mean / eq_ref_u
+        m_eq_rel50 = 0.50 * eq_ref_u
+        m_eq_rel25 = 0.25 * eq_ref_u
+        tost_eq_rel50 = float(max(1.0 - stats.t.cdf((mean + m_eq_rel50) / se, df=n - 1), stats.t.cdf((mean - m_eq_rel50) / se, df=n - 1)))
+        tost_eq_rel25 = float(max(1.0 - stats.t.cdf((mean + m_eq_rel25) / se, df=n - 1), stats.t.cdf((mean - m_eq_rel25) / se, df=n - 1)))
+
+        # (b) Pooled-ratio TOST: pooled candidate U / pooled Periodic U with cluster bootstrap CI
+        pool_ref_u = 100.0 * float(dr.sum() / or_.sum())
+        pool_cand_u = 100.0 * float(dc.sum() / oc.sum())
+        pool_du = pool_cand_u - pool_ref_u
+        pool_rel_pct = 100.0 * (pool_cand_u / pool_ref_u - 1.0)
         rng = np.random.default_rng(42)
         idx = rng.integers(0, n, size=(2000, n))
         b_uc = dc[idx].sum(axis=1) / oc[idx].sum(axis=1)
@@ -176,12 +187,8 @@ def run_power_and_equivalence() -> pd.DataFrame:
         b_rel = 100.0 * (b_uc[ok] / b_ur[ok] - 1.0)
         b_rel_95_lo, b_rel_95_hi = [float(x) for x in np.percentile(b_rel, [2.5, 97.5])]
         b_rel_90_lo, b_rel_90_hi = [float(x) for x in np.percentile(b_rel, [5.0, 95.0])]
-
-        # Standardized relative-margin TOST (margin expressed as +-50% and +-25% of pooled Periodic U)
-        m_rel50 = 0.50 * ref_pool_u
-        m_rel25 = 0.25 * ref_pool_u
-        tost_rel50 = float(max(1.0 - stats.t.cdf((mean + m_rel50) / se, df=n - 1), stats.t.cdf((mean - m_rel50) / se, df=n - 1)))
-        tost_rel25 = float(max(1.0 - stats.t.cdf((mean + m_rel25) / se, df=n - 1), stats.t.cdf((mean - m_rel25) / se, df=n - 1)))
+        pool_tost_rel50 = float(max(np.mean(b_rel <= -50.0), np.mean(b_rel >= 50.0)))
+        pool_tost_rel25 = float(max(np.mean(b_rel <= -25.0), np.mean(b_rel >= 25.0)))
 
         tost_1 = float(max(1.0 - stats.t.cdf((mean + 1.0) / se, df=n - 1), stats.t.cdf((mean - 1.0) / se, df=n - 1)))
         tost_15 = float(max(1.0 - stats.t.cdf((mean + 1.5) / se, df=n - 1), stats.t.cdf((mean - 1.5) / se, df=n - 1)))
@@ -194,20 +201,12 @@ def run_power_and_equivalence() -> pd.DataFrame:
                 'candidate': cand,
                 'reference': 'Periodic',
                 'clusters': n,
+                'undef_u_clusters': undef_u,
                 'zero_ref_u_clusters': zero_ref_u,
-                'ref_pool_u_pp': ref_pool_u,
-                'ref_mean_u_pp': ref_mean_u,
-                'pool_rel_du_pct': pool_rel_pct,
-                'boot_rel_lo_pct': b_rel_95_lo,
-                'boot_rel_hi_pct': b_rel_95_hi,
-                'boot_rel90_lo_pct': b_rel_90_lo,
-                'boot_rel90_hi_pct': b_rel_90_hi,
-                'rel_margin50_pp': m_rel50,
-                'rel_margin25_pp': m_rel25,
-                'tost_p_rel50': tost_rel50,
-                'tost_p_rel25': tost_rel25,
-                'boot_rel_equiv50': bool(b_rel_90_lo >= -50.0 and b_rel_90_hi <= 50.0),
+                'eq_ref_u_pp': eq_ref_u,
+                'eq_cand_u_pp': eq_cand_u,
                 'eq_du_mean_pp': mean,
+                'eq_rel_du_pct': eq_rel_pct,
                 'between_cluster_sd_pp': sd,
                 'se_pp': se,
                 't_ci95_lo_pp': float(t95_lo),
@@ -215,12 +214,28 @@ def run_power_and_equivalence() -> pd.DataFrame:
                 't_ci90_lo_pp': float(t90_lo),
                 't_ci90_hi_pp': float(t90_hi),
                 'mde80_pp': mde80,
+                'eq_rel_margin50_pp': m_eq_rel50,
+                'eq_rel_margin25_pp': m_eq_rel25,
+                'eq_tost_p_rel50': tost_eq_rel50,
+                'eq_tost_p_rel25': tost_eq_rel25,
+                'eq_rel_equiv50': bool(tost_eq_rel50 < 0.05),
                 'tost_p_1pp': tost_1,
                 'tost_p_15pp': tost_15,
                 'tost_p_2pp': tost_2,
                 'tost_p_3pp': tost_3,
                 'equiv_1pp': bool(tost_1 < 0.05),
                 'equiv_2pp': bool(tost_2 < 0.05),
+                'pool_ref_u_pp': pool_ref_u,
+                'pool_cand_u_pp': pool_cand_u,
+                'pool_du_pp': pool_du,
+                'pool_rel_du_pct': pool_rel_pct,
+                'pool_boot_rel95_lo_pct': b_rel_95_lo,
+                'pool_boot_rel95_hi_pct': b_rel_95_hi,
+                'pool_boot_rel90_lo_pct': b_rel_90_lo,
+                'pool_boot_rel90_hi_pct': b_rel_90_hi,
+                'pool_tost_p_rel50': pool_tost_rel50,
+                'pool_tost_p_rel25': pool_tost_rel25,
+                'pool_rel_equiv50': bool(b_rel_90_lo > -50.0 and b_rel_90_hi < 50.0),
             }
         )
     return pd.DataFrame(rows)
@@ -241,7 +256,7 @@ def _campaign_from_unit(unit: str, domain: str) -> str:
 
 
 def run_campaign_dependence() -> pd.DataFrame:
-    """Task 2 (exploratory/post-hoc): Campaign-level hierarchical bootstrap and ICC/DEFF analysis."""
+    """Task 2 (exploratory/post-hoc): Campaign-level dependence adjustment for relative and absolute TOST."""
     p_cl = pd.read_csv(ROOT / 'results/pacer/pacer_cluster_dates.csv')
     rows = []
     specs = [
@@ -263,8 +278,17 @@ def run_campaign_dependence() -> pd.DataFrame:
         unit_dom = sub[['unit', 'domain']].drop_duplicates().set_index('unit')['domain'].to_dict()
         agg = sub.groupby(['unit', 'policy'], as_index=False)[['delivered_sum', 'observed_sum']].sum()
         piv = agg.pivot(index='unit', columns='policy')
-        diff = (100.0 * (piv['delivered_sum'][cand] / piv['observed_sum'][cand] - piv['delivered_sum']['Periodic'] / piv['observed_sum']['Periodic'])).dropna()
-        camps = pd.Series([_campaign_from_unit(u, unit_dom[u]) for u in diff.index], index=diff.index)
+        uc = 100.0 * piv['delivered_sum'][cand] / piv['observed_sum'][cand]
+        ur = 100.0 * piv['delivered_sum']['Periodic'] / piv['observed_sum']['Periodic']
+        diff = (uc - ur).dropna()
+        units = diff.index.tolist()
+        dc = piv['delivered_sum'][cand].loc[units].to_numpy(dtype=float)
+        oc = piv['observed_sum'][cand].loc[units].to_numpy(dtype=float)
+        dr = piv['delivered_sum']['Periodic'].loc[units].to_numpy(dtype=float)
+        or_ = piv['observed_sum']['Periodic'].loc[units].to_numpy(dtype=float)
+        eq_ref_u = float(ur.loc[units].mean())
+
+        camps = pd.Series([_campaign_from_unit(u, unit_dom[u]) for u in units], index=diff.index)
         groups = [diff[camps == c].to_numpy(dtype=float) for c in sorted(camps.unique())]
         k_camp = len(groups)
         ns = np.array([len(g) for g in groups], dtype=float)
@@ -284,21 +308,35 @@ def run_campaign_dependence() -> pd.DataFrame:
         naive_sd = float(diff.std(ddof=1))
         naive_se = naive_sd / float(np.sqrt(n_tot))
         adj_se = naive_se * float(np.sqrt(deff))
-        mde_adj = _solve_mde_t(adj_se, max(1.0, g_eff - 1.0), alpha=0.05, power=0.80)
-        tost_adj_2pp = float(max(
-            1.0 - stats.t.cdf((grand + 2.0) / adj_se, df=max(1.0, g_eff - 1.0)),
-            stats.t.cdf((grand - 2.0) / adj_se, df=max(1.0, g_eff - 1.0)),
-        ))
+        df_adj = max(1.0, g_eff - 1.0)
+        m50_eq = 0.50 * eq_ref_u
+        m25_eq = 0.25 * eq_ref_u
+        naive_rel50 = float(max(1.0 - stats.t.cdf((grand + m50_eq) / naive_se, df=n_tot - 1), stats.t.cdf((grand - m50_eq) / naive_se, df=n_tot - 1)))
+        naive_rel25 = float(max(1.0 - stats.t.cdf((grand + m25_eq) / naive_se, df=n_tot - 1), stats.t.cdf((grand - m25_eq) / naive_se, df=n_tot - 1)))
+        adj_rel50 = float(max(1.0 - stats.t.cdf((grand + m50_eq) / adj_se, df=df_adj), stats.t.cdf((grand - m50_eq) / adj_se, df=df_adj)))
+        adj_rel25 = float(max(1.0 - stats.t.cdf((grand + m25_eq) / adj_se, df=df_adj), stats.t.cdf((grand - m25_eq) / adj_se, df=df_adj)))
+        mde_adj = _solve_mde_t(adj_se, df_adj, alpha=0.05, power=0.80)
+        tost_adj_2pp = float(max(1.0 - stats.t.cdf((grand + 2.0) / adj_se, df=df_adj), stats.t.cdf((grand - 2.0) / adj_se, df=df_adj)))
 
         rng = np.random.default_rng(42)
         camp_names = sorted(camps.unique())
-        camp_arrs = {c: diff[camps == c].to_numpy(dtype=float) for c in camp_names}
-        hb = []
+        camp_idx = {c: np.where(camps.to_numpy() == c)[0] for c in camp_names}
+        hb_abs, hb_eq_rel, hb_pool_rel = [], [], []
         for _ in range(2000):
             chosen_c = rng.choice(camp_names, size=len(camp_names), replace=True)
-            draws = [rng.choice(camp_arrs[c], size=len(camp_arrs[c]), replace=True) for c in chosen_c]
-            hb.append(float(np.concatenate(draws).mean()))
-        hb_lo, hb_hi = [float(x) for x in np.percentile(hb, [2.5, 97.5])]
+            idx_b = np.concatenate([rng.choice(camp_idx[c], size=len(camp_idx[c]), replace=True) for c in chosen_c])
+            du_b = float(diff.iloc[idx_b].mean())
+            ur_b = float(ur.loc[units].iloc[idx_b].mean())
+            hb_abs.append(du_b)
+            if ur_b > 0:
+                hb_eq_rel.append(100.0 * du_b / ur_b)
+            pr_uc = float(dc[idx_b].sum() / oc[idx_b].sum())
+            pr_ur = float(dr[idx_b].sum() / or_[idx_b].sum())
+            if pr_ur > 0:
+                hb_pool_rel.append(100.0 * (pr_uc / pr_ur - 1.0))
+        hb_lo, hb_hi = [float(x) for x in np.percentile(hb_abs, [2.5, 97.5])]
+        h_eq90_lo, h_eq90_hi = [float(x) for x in np.percentile(hb_eq_rel, [5.0, 95.0])]
+        h_pl90_lo, h_pl90_hi = [float(x) for x in np.percentile(hb_pool_rel, [5.0, 95.0])]
         rows.append(
             {
                 'scope': scope,
@@ -307,6 +345,7 @@ def run_campaign_dependence() -> pd.DataFrame:
                 'reference': 'Periodic',
                 'clusters': int(n_tot),
                 'campaigns': k_camp,
+                'eq_ref_u_pp': eq_ref_u,
                 'eq_du_mean_pp': grand,
                 'naive_se_pp': naive_se,
                 'icc': icc,
@@ -314,10 +353,18 @@ def run_campaign_dependence() -> pd.DataFrame:
                 'g_eff': g_eff,
                 'adj_se_pp': adj_se,
                 'adj_mde80_pp': mde_adj,
+                'naive_eq_tost_p_rel50': naive_rel50,
+                'naive_eq_tost_p_rel25': naive_rel25,
+                'adj_eq_tost_p_rel50': adj_rel50,
+                'adj_eq_tost_p_rel25': adj_rel25,
                 'adj_tost_p_2pp': tost_adj_2pp,
-                'hier_boot_sd_pp': float(np.std(hb)),
+                'hier_boot_sd_pp': float(np.std(hb_abs)),
                 'hier_boot95_lo_pp': hb_lo,
                 'hier_boot95_hi_pp': hb_hi,
+                'hier_boot90_eq_rel_lo_pct': h_eq90_lo,
+                'hier_boot90_eq_rel_hi_pct': h_eq90_hi,
+                'hier_boot90_pool_rel_lo_pct': h_pl90_lo,
+                'hier_boot90_pool_rel_hi_pct': h_pl90_hi,
             }
         )
     return pd.DataFrame(rows)
@@ -661,10 +708,10 @@ def main(stats_only: bool = False) -> None:
     }
     (OUT_DIR / 'execution.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf8')
     print(json.dumps({k: v for k, v in receipt.items() if k != 'sha256'}, indent=2))
-    print('\n=== Task 1: Relative and Absolute Power/TOST Summary ===')
-    print(df_pow[['scope', 'cap_new', 'candidate', 'clusters', 'zero_ref_u_clusters', 'ref_pool_u_pp', 'pool_rel_du_pct', 'boot_rel_lo_pct', 'boot_rel_hi_pct', 'tost_p_rel50', 'tost_p_rel25', 'mde80_pp', 'tost_p_1pp', 'tost_p_2pp']].to_string(index=False))
+    print('\n=== Task 1: Equal-Cluster vs. Pooled-Ratio Relative Power/TOST Summary ===')
+    print(df_pow[['scope', 'cap_new', 'candidate', 'clusters', 'undef_u_clusters', 'zero_ref_u_clusters', 'eq_ref_u_pp', 'eq_du_mean_pp', 'eq_rel_du_pct', 'mde80_pp', 'eq_tost_p_rel50', 'eq_tost_p_rel25', 'tost_p_1pp', 'tost_p_2pp', 'pool_ref_u_pp', 'pool_rel_du_pct', 'pool_boot_rel90_lo_pct', 'pool_boot_rel90_hi_pct', 'pool_tost_p_rel50']].to_string(index=False))
     print('\n=== Task 2: Exploratory Campaign-Dependence Summary ===')
-    print(df_camp[['scope', 'cap_new', 'candidate', 'clusters', 'campaigns', 'icc', 'deff', 'g_eff', 'naive_se_pp', 'adj_se_pp', 'adj_mde80_pp', 'adj_tost_p_2pp', 'hier_boot95_lo_pp', 'hier_boot95_hi_pp']].to_string(index=False))
+    print(df_camp[['scope', 'cap_new', 'candidate', 'clusters', 'campaigns', 'icc', 'deff', 'g_eff', 'naive_se_pp', 'adj_se_pp', 'adj_mde80_pp', 'naive_eq_tost_p_rel50', 'adj_eq_tost_p_rel50', 'adj_eq_tost_p_rel25', 'adj_tost_p_2pp', 'hier_boot90_eq_rel_lo_pct', 'hier_boot90_eq_rel_hi_pct']].to_string(index=False))
 
 
 if __name__ == '__main__':

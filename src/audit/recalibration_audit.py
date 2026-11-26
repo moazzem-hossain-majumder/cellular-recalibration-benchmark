@@ -249,11 +249,19 @@ def compare_policies_paired(
     eq_dpos_hi = float(np.mean(eq_c_pos[valid_pos] - eq_r_pos[valid_pos])) if valid_pos.any() else float('nan')
 
     ref_pool_u_pp = float('nan')
+    cand_pool_u_pp = float('nan')
+    ref_eq_u_pp = float('nan')
+    cand_eq_u_pp = float('nan')
+    eq_rel_du_pct = float('nan')
+    undef_u_clusters = 0
     zero_ref_u_clusters = 0
     pooled_rel_du_pct = float('nan')
+    pooled_log_ratio = float('nan')
     boot_rel_du_ci95_pct = [float('nan'), float('nan')]
     boot_rel_du_ci90_pct = [float('nan'), float('nan')]
-    tost_rel_p: dict[str, float] = {}
+    tost_eq_rel_p: dict[str, float] = {}
+    tost_pool_rel_p: dict[str, float] = {}
+    pool_rel_equiv: dict[str, bool] = {}
     tost_abs_p: dict[str, float] = {}
 
     if has_u and c_obs.sum() > 0 and r_obs.sum() > 0:
@@ -261,16 +269,22 @@ def compare_policies_paired(
         pool_ur = float(r_del.sum() / r_obs.sum())
         pool_du = pool_uc - pool_ur
         ref_pool_u_pp = 100.0 * pool_ur
+        cand_pool_u_pp = 100.0 * pool_uc
         pooled_rel_du_pct = 100.0 * (pool_uc / pool_ur - 1.0) if pool_ur > 0 else float('nan')
+        pooled_log_ratio = float(math.log(pool_uc / pool_ur)) if (pool_uc > 0 and pool_ur > 0) else float('nan')
 
-        c_u_cl = c_del / np.where(c_obs > 0, c_obs, np.nan)
-        r_u_cl = r_del / np.where(r_obs > 0, r_obs, np.nan)
-        zero_ref_u_clusters = int(np.sum(np.isfinite(r_u_cl) & (r_u_cl <= 0.0)))
-        eq_u_diff = c_u_cl - r_u_cl
-        valid_u = eq_u_diff[~np.isnan(eq_u_diff)] * 100.0
-        n_u = len(valid_u)
-        eq_du_pp = float(np.mean(valid_u)) if n_u > 0 else float('nan')
-        sd_du_pp = float(np.std(valid_u, ddof=1)) if n_u > 1 else float('nan')
+        c_u_cl = np.where(c_obs > 0, c_del / np.where(c_obs > 0, c_obs, 1.0), np.nan)
+        r_u_cl = np.where(r_obs > 0, r_del / np.where(r_obs > 0, r_obs, 1.0), np.nan)
+        valid_u_mask = np.isfinite(c_u_cl) & np.isfinite(r_u_cl)
+        undef_u_clusters = int(g_count - np.sum(valid_u_mask))
+        zero_ref_u_clusters = int(np.sum(valid_u_mask & (r_u_cl <= 0.0)))
+        eq_u_diff = (c_u_cl - r_u_cl)[valid_u_mask] * 100.0
+        n_u = len(eq_u_diff)
+        ref_eq_u_pp = float(np.mean(r_u_cl[valid_u_mask]) * 100.0) if n_u > 0 else float('nan')
+        cand_eq_u_pp = float(np.mean(c_u_cl[valid_u_mask]) * 100.0) if n_u > 0 else float('nan')
+        eq_du_pp = float(np.mean(eq_u_diff)) if n_u > 0 else float('nan')
+        eq_rel_du_pct = (100.0 * eq_du_pp / ref_eq_u_pp) if (np.isfinite(ref_eq_u_pp) and ref_eq_u_pp > 0.0) else float('nan')
+        sd_du_pp = float(np.std(eq_u_diff, ddof=1)) if n_u > 1 else float('nan')
         se_du_pp = sd_du_pp / math.sqrt(n_u) if n_u > 1 else float('nan')
         if n_u > 1 and se_du_pp > 1e-12:
             t_lo, t_hi = stats.t.interval(0.95, df=n_u - 1, loc=eq_du_pp, scale=se_du_pp)
@@ -278,15 +292,15 @@ def compare_policies_paired(
             for mg in equiv_margins_pp:
                 tost_abs_p[f'+-{mg:g}pp'] = _tost_p(eq_du_pp, se_du_pp, n_u - 1, mg)
             for rp in rel_margins_pct:
-                mg_rel_pp = (rp / 100.0) * ref_pool_u_pp
-                tost_rel_p[f'+-{rp:g}%'] = _tost_p(eq_du_pp, se_du_pp, n_u - 1, mg_rel_pp)
+                mg_rel_pp = (rp / 100.0) * ref_eq_u_pp
+                tost_eq_rel_p[f'+-{rp:g}%'] = _tost_p(eq_du_pp, se_du_pp, n_u - 1, mg_rel_pp)
         elif n_u > 1:
             t_lo, t_hi, mde_80 = eq_du_pp, eq_du_pp, 0.0
             for mg in equiv_margins_pp:
                 tost_abs_p[f'+-{mg:g}pp'] = 0.0 if abs(eq_du_pp) < mg else 1.0
             for rp in rel_margins_pct:
-                mg_rel_pp = (rp / 100.0) * ref_pool_u_pp
-                tost_rel_p[f'+-{rp:g}%'] = 0.0 if (np.isfinite(mg_rel_pp) and abs(eq_du_pp) < mg_rel_pp) else 1.0
+                mg_rel_pp = (rp / 100.0) * ref_eq_u_pp
+                tost_eq_rel_p[f'+-{rp:g}%'] = 0.0 if (np.isfinite(mg_rel_pp) and abs(eq_du_pp) < mg_rel_pp) else 1.0
         else:
             t_lo, t_hi, mde_80 = float('nan'), float('nan'), float('nan')
     else:
@@ -310,12 +324,15 @@ def compare_policies_paired(
                 brel = 100.0 * (bu_c[ok_rel] / bu_r[ok_rel] - 1.0)
                 boot_rel_du_ci95_pct = [float(x) for x in np.percentile(brel, [2.5, 97.5])]
                 boot_rel_du_ci90_pct = [float(x) for x in np.percentile(brel, [5.0, 95.0])]
+                for rp in rel_margins_pct:
+                    tost_pool_rel_p[f'+-{rp:g}%'] = float(max(np.mean(brel <= -rp), np.mean(brel >= rp)))
+                    pool_rel_equiv[f'+-{rp:g}%'] = bool(boot_rel_du_ci90_pct[0] > -rp and boot_rel_du_ci90_pct[1] < rp)
 
     cp = c_pos[idx].sum(axis=1)
-    rp = r_pos[idx].sum(axis=1)
-    ok_p = (cp > 0) & (rp > 0)
+    rp_arr = r_pos[idx].sum(axis=1)
+    ok_p = (cp > 0) & (rp_arr > 0)
     if ok_p.any():
-        bp = 100.0 * ((c_v[idx][ok_p].sum(axis=1) + c_m[idx][ok_p].sum(axis=1)) / cp[ok_p] - (r_v[idx][ok_p].sum(axis=1) + r_m[idx][ok_p].sum(axis=1)) / rp[ok_p])
+        bp = 100.0 * ((c_v[idx][ok_p].sum(axis=1) + c_m[idx][ok_p].sum(axis=1)) / cp[ok_p] - (r_v[idx][ok_p].sum(axis=1) + r_m[idx][ok_p].sum(axis=1)) / rp_arr[ok_p])
         boot_dpos_hi_lo, boot_dpos_hi_hi = [float(x) for x in np.percentile(bp, [2.5, 97.5])]
 
     q_cand = int(round(c_df['queries_charged'].sum()))
@@ -329,30 +346,41 @@ def compare_policies_paired(
         warnings.append(f'fewer than {min_clusters} clusters (G={g_count})')
     if np.isfinite(pool_dpos_hi) and np.isfinite(eq_dpos_hi) and abs(pool_dpos_hi - eq_dpos_hi) > 0.05:
         warnings.append(f'pooling sensitivity: offer-weighted dR+hi ({100*pool_dpos_hi:+.2f} pp) diverges from equal-cluster ({100*eq_dpos_hi:+.2f} pp)')
-    if tost_rel_p.get('+-50%', 1.0) >= 0.05:
-        warnings.append('relative TOST +-50% inconclusive (cannot rule out +-50% change relative to baseline U)')
+    if tost_eq_rel_p.get('+-50%', 1.0) >= 0.05:
+        warnings.append('equal-cluster relative TOST +-50% inconclusive (cannot rule out +-50% change relative to equal-cluster baseline U)')
+    if not pool_rel_equiv.get('+-50%', False):
+        warnings.append('pooled-ratio TOST +-50% inconclusive (bootstrap CI extends beyond +-50%)')
 
     return {
         'candidate': candidate,
         'reference': reference,
         'clusters': g_count,
         'joint_active_clusters': int(valid_pos.sum()),
+        'undef_u_clusters': undef_u_clusters,
+        'zero_ref_u_clusters': zero_ref_u_clusters,
         'queries_candidate': q_cand,
         'queries_reference': q_ref,
         'queries_matched': q_cand == q_ref,
-        'ref_pooled_u_pp': ref_pool_u_pp,
-        'zero_ref_u_clusters': zero_ref_u_clusters,
-        'pooled_rel_du_pct': pooled_rel_du_pct,
-        'boot_rel_du_ci95_pct': boot_rel_du_ci95_pct,
-        'boot_rel_du_ci90_pct': boot_rel_du_ci90_pct,
-        'tost_rel_p_values': tost_rel_p,
-        'pooled_du_pp': 100.0 * pool_du if np.isfinite(pool_du) else float('nan'),
-        'boot_du_ci95_pp': [boot_du_lo, boot_du_hi],
+        'ref_equal_u_pp': ref_eq_u_pp,
+        'cand_equal_u_pp': cand_eq_u_pp,
         'equal_cluster_du_pp': eq_du_pp,
+        'equal_cluster_rel_du_pct': eq_rel_du_pct,
         'between_cluster_sd_pp': sd_du_pp,
+        'se_du_pp': se_du_pp,
         't_du_ci95_pp': [float(t_lo), float(t_hi)],
         'mde80_du_pp': mde_80,
+        'tost_eq_rel_p_values': tost_eq_rel_p,
         'tost_p_values': tost_abs_p,
+        'ref_pooled_u_pp': ref_pool_u_pp,
+        'cand_pooled_u_pp': cand_pool_u_pp,
+        'pooled_du_pp': 100.0 * pool_du if np.isfinite(pool_du) else float('nan'),
+        'boot_du_ci95_pp': [boot_du_lo, boot_du_hi],
+        'pooled_rel_du_pct': pooled_rel_du_pct,
+        'pooled_log_ratio': pooled_log_ratio,
+        'boot_rel_du_ci95_pct': boot_rel_du_ci95_pct,
+        'boot_rel_du_ci90_pct': boot_rel_du_ci90_pct,
+        'tost_pool_rel_p_values': tost_pool_rel_p,
+        'pooled_rel_equiv': pool_rel_equiv,
         'pooled_dpos_hi_pp': 100.0 * pool_dpos_hi if np.isfinite(pool_dpos_hi) else float('nan'),
         'boot_dpos_hi_ci95_pp': [boot_dpos_hi_lo, boot_dpos_hi_hi],
         'equal_cluster_dpos_hi_pp': 100.0 * eq_dpos_hi if np.isfinite(eq_dpos_hi) else float('nan'),

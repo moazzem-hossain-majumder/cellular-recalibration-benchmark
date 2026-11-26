@@ -28,18 +28,27 @@ def _format_text(report: dict) -> str:
             lines.append(f"  WARNING ({pol}): {w}")
     for c in report['comparisons']:
         lines.append(
-            f"[Paired {c['candidate']} - {c['reference']}] G={c['clusters']} (active={c['joint_active_clusters']}, zero_ref_U={c['zero_ref_u_clusters']}) "
-            f"PoolRel dU={c['pooled_rel_du_pct']:+.2f}% (95% boot [{c['boot_rel_du_ci95_pct'][0]:+.2f}%, {c['boot_rel_du_ci95_pct'][1]:+.2f}%]) | "
-            f"Eq dU={c['equal_cluster_du_pp']:+.2f} pp (SD={c['between_cluster_sd_pp']:.2f}, 95% t-CI [{c['t_du_ci95_pp'][0]:+.2f}, {c['t_du_ci95_pp'][1]:+.2f}], MDE80={c['mde80_du_pp']:.2f} pp) | "
-            f"Pool dU={c['pooled_du_pp']:+.2f} pp (boot [{c['boot_du_ci95_pp'][0]:+.2f}, {c['boot_du_ci95_pp'][1]:+.2f}]) | "
-            f"Pool dR+hi={c['pooled_dpos_hi_pp']:+.2f} pp (boot [{c['boot_dpos_hi_ci95_pp'][0]:+.2f}, {c['boot_dpos_hi_ci95_pp'][1]:+.2f}]) vs Eq dR+hi={c['equal_cluster_dpos_hi_pp']:+.2f} pp"
+            f"[Paired {c['candidate']} - {c['reference']}] G={c['clusters']} (active={c['joint_active_clusters']}, zero_ref_U={c['zero_ref_u_clusters']}, undef_U_excl={c['undef_u_clusters']})"
         )
-        if c['tost_rel_p_values']:
-            rel_str = ', '.join(f'{k}: p={v:.4f}' for k, v in c['tost_rel_p_values'].items())
-            lines.append(f"  Relative TOST (vs {c['ref_pooled_u_pp']:.3f}% pooled ref U): {rel_str}")
+        lines.append(
+            f"  [Equal-cluster] refU={c['ref_equal_u_pp']:.2f}% dU={c['equal_cluster_du_pp']:+.2f} pp ({c['equal_cluster_rel_du_pct']:+.1f}%) "
+            f"SD={c['between_cluster_sd_pp']:.2f} 95% t-CI=[{c['t_du_ci95_pp'][0]:+.2f}, {c['t_du_ci95_pp'][1]:+.2f}] MDE80={c['mde80_du_pp']:.2f} pp | Eq dR+hi={c['equal_cluster_dpos_hi_pp']:+.2f} pp"
+        )
+        if c['tost_eq_rel_p_values']:
+            rel_str = ', '.join(f'{k}: p={v:.4f}' for k, v in c['tost_eq_rel_p_values'].items())
+            lines.append(f"    Equal-cluster Relative TOST (vs {c['ref_equal_u_pp']:.2f}% equal-cluster ref U): {rel_str}")
         if c['tost_p_values']:
             tost_str = ', '.join(f'{k}: p={v:.4f}' for k, v in c['tost_p_values'].items())
-            lines.append(f"  Absolute TOST: {tost_str}")
+            lines.append(f"    Equal-cluster Absolute TOST: {tost_str}")
+        lines.append(
+            f"  [Pooled-ratio] refU={c['ref_pooled_u_pp']:.2f}% PoolRel={c['pooled_rel_du_pct']:+.2f}% "
+            f"(90% boot [{c['boot_rel_du_ci90_pct'][0]:+.1f}%, {c['boot_rel_du_ci90_pct'][1]:+.1f}%], 95% [{c['boot_rel_du_ci95_pct'][0]:+.1f}%, {c['boot_rel_du_ci95_pct'][1]:+.1f}%]) | "
+            f"Pool dU={c['pooled_du_pp']:+.2f} pp (boot [{c['boot_du_ci95_pp'][0]:+.2f}, {c['boot_du_ci95_pp'][1]:+.2f}]) | "
+            f"Pool dR+hi={c['pooled_dpos_hi_pp']:+.2f} pp (boot [{c['boot_dpos_hi_ci95_pp'][0]:+.2f}, {c['boot_dpos_hi_ci95_pp'][1]:+.2f}])"
+        )
+        if c['tost_pool_rel_p_values']:
+            pr_str = ', '.join(f'{k}: p={v:.4f} (equiv={c["pooled_rel_equiv"][k]})' for k, v in c['tost_pool_rel_p_values'].items())
+            lines.append(f"    Pooled-ratio Relative TOST (vs {c['ref_pooled_u_pp']:.2f}% pooled ref U): {pr_str}")
         for w in c['warnings']:
             lines.append(f"  WARNING ({c['candidate']} vs {c['reference']}): {w}")
     return '\n'.join(lines)

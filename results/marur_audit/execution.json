@@ -1,6 +1,6 @@
 {
-  "start_utc": "2026-11-25T06:56:44.874381+00:00",
-  "end_utc": "2026-11-25T06:58:48.504032+00:00",
+  "start_utc": "2026-11-26T08:12:17.719006+00:00",
+  "end_utc": "2026-11-26T08:14:17.943731+00:00",
   "command": [
     "python",
     "scripts/audit_marur.py"
@@ -25,6 +25,6 @@
     "src\\evaluation\\marur.py": "9e8e7557627fd0837302ceec0fdd30f7313111f038674570feed3554608aa6ae",
     "configs\\marur.json": "dfb8053d52aaaf1ce497b636f90f3c389859d434da42704d525dc756c13cf27c",
     "results\\marur\\opportunities.csv.gz": "6fc1c490106539f2c2c3f27bd141d391909cbe021f358dd9f2fdb1cadc6ce852",
-    "scripts\\audit_marur.py": "640c2174e6a3931e4a2decf10e549ecdec7a2ccb0c709f4927cf88dc83b08e3e"
+    "scripts\\audit_marur.py": "b0a828a3e6a6dd7c04bfafabf6f0458a11cc1cba2f52d70b3a17efd2bf087269"
   }
 }

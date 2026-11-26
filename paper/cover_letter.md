@@ -10,26 +10,26 @@ consideration in *IEEE Transactions on Network and Service Management*.
 
 Centered on a practical empirical accounting methodology, reporting
 checklist, and reusable open-source CLI tool (`audit_policy.py`), the
-manuscript investigates when budgeted conformal recalibration helps or
-misleads cellular throughput commitments across 16 retrospective
-physical campaign-dates and 26 additional dates from held-out public
-archives. In these public archives, with these frozen predictors and
-policies, sparse recalibration did not reliably improve commitments. We
-report both relative equivalence tests ($`\pm 50\%`$ primary and
-$`\pm 25\%`$ sensitivity relative to baseline supported throughput, both
-inconclusive) and absolute $`\pm 1 / \pm 2`$ percentage-point checks
-($`\mathrm{MDE}_{80}=1.65`$ pp retrospective, alongside exploratory
-campaign-level ICC/DEFF checks), alongside all negative results:
-conditional upper violation risks span $`9\%`$–$`68\%`$ across mobile
-cohorts well above nominal $`\alpha=0.10`$, supported measured
-throughput stays around $`1\%`$–$`3\%`$, aggregate contrasts depend
-heavily on offer-count pooling weights, and sparse finite-sample bounds
-become vacuous on $`36/40`$ evaluated cells.
+manuscript leads with our descriptive finding across 16 retrospective
+physical campaign-dates and 26 held-out archive dates under frozen
+predictors and fixed policies: mobile conditional upper violation risk
+spans $`9\%`$–$`68\%`$ above nominal $`\alpha=0.10`$ while supported
+measured throughput remains around $`1\%`$–$`3\%`$, aggregate contrasts
+depend heavily on offer-count pooling weights ($`-23.41`$
+vs. $`+0.37`$ pp), and sparse finite-sample bounds become vacuous on
+$`36/40`$ evaluated cells. Separating equal-cluster and pooled-ratio
+relative TOST equivalence at a $`\pm 50\%`$ baseline margin shows that
+naive date-level equivalence largely fails or collapses under
+three-campaign clustering sensitivity ($`G_{\text{eff}}=3.84/16`$
+retrospective MARUR; $`6.73/26`$ held-out cap-40 PACER,
+$`p=0.0071 \to 0.1153`$), leaving utility differences largely
+inconclusive.
 
-All evidence is retrospective from public archives and no live field
-validation was performed. Repository source code is released under the
-MIT License (`LICENSE`), and third-party public dataset terms are
-documented separately without redistribution.
+All evidence is retrospective from public archives, with no live field
+validation, and it does not cover other devices, operators, measurement
+tools, or closed-loop deployment. Repository source code is released
+under the MIT License (`LICENSE`), and third-party public dataset terms
+are documented separately without redistribution.
 
 Sincerely,\
 Md. Moazzem Hossain Majumder

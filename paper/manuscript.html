@@ -207,21 +207,21 @@
 <p class="author">Md. Moazzem Hossain Majumder</p>
 <div class="abstract">
 <div class="abstract-title">Abstract</div>
-<p>Calibration policies evaluated at identical nominal query caps can mislead through unequal probe spending, missing outcomes, and heavy abstention. We ask when sparse recalibration feedback helps cellular throughput commitments and how empirical accounting exposes false improvements. Across archived mobile evaluations under frozen tree predictors and fixed policies, conditional upper violation risk spans 9% to 68% (above nominal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>) while supported throughput remains 1% to 3%. At matched query cost, supported-throughput differences between adaptive and fixed-period recalibration are small in absolute points, yet two one-sided tests against a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> relative baseline margin are inconclusive: we cannot rule out large relative gains or losses. Overall, in these public archives with these frozen predictors and policies, sparse recalibration did not reliably improve commitments. We contribute an open-source accounting library, practitioner checklist, and command-line audit tool (<code>audit_policy.py</code>) separating query attempts, finite-record missing-outcome bounds, selective decomposition <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R=(M/N)R_+</annotation></semantics></math>, relative equivalence, and pooling checks. All evidence is retrospective from public archives without live field validation.</p>
+<p>Across six retrospective cohorts and four held-out public archives evaluated with frozen tree predictors and fixed policies, conditional upper violation risk spans 9% to 68% across mobile cohorts—far above nominal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>—while supported measured throughput generally remains 1% to 3%. Adaptive, fixed-period, and horizon-paced policies compared at equal nominal query caps can mislead through unequal probe spending, missing horizon outcomes, and heavy abstention. We contribute an empirical accounting library, practitioner checklist, and CLI tool (<code>audit_policy.py</code>) separating query attempts, finite-record missing-outcome bounds, selective decomposition <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R=(M/N)R_+</annotation></semantics></math>, and offer-count pooling weights. Separating equal-cluster and pooled-ratio relative equivalence tests at a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> baseline margin shows that naive date-level equivalence largely fails or reverses under field-campaign clustering (three campaigns per scope), with discordant pooled versus equal-cluster directions leaving utility differences largely inconclusive. All evidence is retrospective from public archives without live field validation and does not cover other devices, operators, measurement tools, or closed-loop deployment.</p>
 </div>
 </header>
 <div class="IEEEkeywords">
 <p>Cellular throughput, calibration feedback, selective prediction, cluster equivalence, measurement methodology.</p>
 </div>
 <h1 id="sec:intro">Introduction</h1>
-<p>An application committing to a minimum cellular throughput requires useful delivered bandwidth alongside tolerable failure rates. Point error, low all-issued violations, and equal nominal recalibration caps do not establish either property: under sparse feedback, a controller can appear safer simply by abstaining more often, exhausting probes early, spending unequal realized queries, or omitting unmeasured outcomes from failure counts.</p>
-<p>We address an empirical measurement question: <em>when does recalibration feedback help cellular throughput commitments, and how do unequal query cost, missingness, and abstention make apparent gains misleading?</em> In these public archives, with these frozen predictors and policies, sparse recalibration did not reliably improve commitments. Alongside our empirical findings, our primary contribution is an open-source accounting library and CLI tool (<code>src/audit/recalibration_audit.py</code>, <code>scripts/audit_policy.py</code>) verified across six retrospective cohorts and four held-out public archives:</p>
+<p>Across archived mobile cellular traces evaluated with frozen tree predictors and sparse recalibration, conditional upper violation risk spans <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">9\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>68</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">68\%</annotation></semantics></math> above nominal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math> while supported measured throughput remains around <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">3\%</annotation></semantics></math>. Point error, low all-issued violations, and equal nominal query caps obscure this operational reality because a controller can appear safer merely by abstaining more often, exhausting probes early, spending unequal realized queries, or omitting missing horizon outcomes.</p>
+<p>We ask when sparse recalibration feedback helps cellular throughput commitments and how empirical accounting exposes false improvements. In these public archives, with these frozen predictors and policies, sparse recalibration did not reliably improve commitments, and utility differences remain largely inconclusive with only a handful of physical campaigns; equivalence tests therefore bound precision rather than establish parity. Our primary practical contribution is an open-source accounting library and CLI tool (<code>src/audit/recalibration_audit.py</code>, <code>scripts/audit_policy.py</code>) verified across six retrospective cohorts and four held-out archives:</p>
 <ol>
 <li><p><strong>Causal ledger and reporting CLI:</strong> Event-level separation of probe requests, horizon missingness, and finite-record bounds <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>M</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[e/M,(e+m)/M]</annotation></semantics></math> satisfying <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>M</mi><mi>/</mi><mi>N</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>R</mi><mo>+</mo></msub></mrow><annotation encoding="application/x-tex">R=(M/N)R_+</annotation></semantics></math>, paired with an automated warning CLI and practitioner checklist.</p></li>
-<li><p><strong>Cluster equivalence and dependence checks:</strong> Matched-cost contrasts grouped by physical campaign-date (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">G=16</annotation></semantics></math> retrospective; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>26</mn></mrow><annotation encoding="application/x-tex">G=26</annotation></semantics></math> held-out), leading with relative Two One-Sided Tests (TOST) alongside absolute Minimum Detectable Effect (MDE) and campaign-level dependence sensitivity.</p></li>
+<li><p><strong>Estimand-matched equivalence limits:</strong> Physical campaign-date contrasts (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">G=16</annotation></semantics></math> retrospective; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>26</mn></mrow><annotation encoding="application/x-tex">G=26</annotation></semantics></math> held-out) separating equal-cluster relative TOST, pooled-ratio bootstrap TOST, and campaign-level dependence adjustments.</p></li>
 <li><p><strong>Comparator and bound auditing:</strong> Benchmarking <em>Missingness-Aware Recalibration under Uncertainty and Risk</em> (MARUR) and <em>Horizon-Paced Selective-Offer Conformal Control</em> (PACER) against standard baselines, exposing pooling-weight artifacts and vacuous small-budget regimes.</p></li>
 </ol>
-<p>All evidence is retrospective from public archives and no live field validation was performed; all negative findings are retained. Evidence from these public archives also does not cover closed-loop congestion deployment, other user devices or cellular operators outside the logged traces, alternative measurement tools, or non-60s prediction horizons.</p>
+<p>All evidence is retrospective from public archives, with no live field validation, and it does not cover other devices, operators, measurement tools, or closed-loop deployment; all negative findings are retained.</p>
 <h1 id="sec:related_work">Related Work</h1>
 <h2 id="cellular-measurement-prediction-and-rate-decisions">Cellular Measurement, Prediction, and Rate Decisions</h2>
 <p>Operational measurements establish that cellular throughput depends on radio conditions, mobility, and collection protocol. Earlier channel/context traces <span class="citation" data-cites="raca2020">(Raca et al. 2020)</span> and commercial millimeter-wave (mmWave) fifth-generation (5G) campaigns <span class="citation" data-cites="narayanan2020">(Narayanan et al. 2020)</span> enabled context-aware rate prediction, while newer multi-technology datasets and machine-learning evaluations extend these insights to non-standalone 5G deployments <span class="citation" data-cites="kousias2024data caso2024 kousias2024model">(Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; Kousias, Rajiullah, Caso, Alay, et al. 2024)</span>. However, forecast errors sampled within a single route or shared drive are temporally correlated rather than independent replications, and low point error does not bound rate-commitment violations.</p>
@@ -359,7 +359,7 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0),
 \label{eq:risk_bounds}
 \end{equation}</annotation></semantics></math> where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>e</mi><mi>/</mi><mi>M</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>M</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[e/M,(e+m)/M]</annotation></semantics></math> are exact finite-record partial-identification bounds <span class="citation" data-cites="manski1989selection">(Manski 1989)</span>. Whenever abstention shrinks <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>≤</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">R \le \alpha</annotation></semantics></math> permits <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mo>+</mo></msub><mo>≈</mo><mi>α</mi><mi>/</mi><mi>A</mi><mo>≫</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">R_+ \approx \alpha/A \gg \alpha</annotation></semantics></math>. Service utility is measured via supported throughput <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><msub><mo>∑</mo><mrow><mi>t</mi><mo>:</mo><msub><mi>y</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> obs</mtext></mrow></mrow></msub><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>L</mi><mi>t</mi></msub><mo>,</mo><msub><mi>y</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><msub><mo>∑</mo><mrow><mi>t</mi><mo>:</mo><msub><mi>y</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> obs</mtext></mrow></mrow></msub><msub><mi>y</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">U = \sum_{t:y_t\text{ obs}}\min(L_t,y_t)/\sum_{t:y_t\text{ obs}}y_t</annotation></semantics></math>.</p>
 <h2 id="practitioner-checklist-and-audit_policy.py-tool">Practitioner Checklist and <code>audit_policy.py</code> Tool</h2>
-<p>To operationalize these checks, <code>src/audit/recalibration_audit.py</code> and <code>scripts/audit_policy.py</code> ingest cluster-summary or tick-level CSV ledgers, verify <a href="#eq:risk_bounds" data-reference-type="eqref" data-reference="eq:risk_bounds">[eq:risk_bounds]</a>, compute relative and absolute equivalence tests, cluster bootstrap and Student-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> intervals, between-cluster SD, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">MDE</mtext><mn>80</mn></msub><annotation encoding="application/x-tex">\text{MDE}_{80}</annotation></semantics></math>, and emit automated deployment warnings (boxed checklist). Run on our exported held-out cap-10 ledger (<code>examples/worked_heldout_c10_ledger.csv</code>), the CLI flags zero-offer clusters, unmatched realized queries, inconclusive relative equivalence, and offer-count pooling divergence (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>23.41</mn></mrow><annotation encoding="application/x-tex">-23.41</annotation></semantics></math> pp vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>0.37</mn></mrow><annotation encoding="application/x-tex">+0.37</annotation></semantics></math> pp).</p>
+<p>To operationalize these checks, <code>src/audit/recalibration_audit.py</code> and <code>scripts/audit_policy.py</code> ingest cluster-summary or tick-level CSV ledgers, verify <a href="#eq:risk_bounds" data-reference-type="eqref" data-reference="eq:risk_bounds">[eq:risk_bounds]</a>, compute separate equal-cluster and pooled-ratio relative equivalence tests alongside absolute TOST and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">MDE</mtext><mn>80</mn></msub><annotation encoding="application/x-tex">\text{MDE}_{80}</annotation></semantics></math>, and emit automated deployment warnings (boxed checklist). Run on our exported held-out cap-10 ledger (<code>examples/worked_heldout_c10_ledger.csv</code>), the CLI flags zero-offer clusters, unmatched realized queries, inconclusive relative equivalence, and offer-count pooling divergence (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>23.41</mn></mrow><annotation encoding="application/x-tex">-23.41</annotation></semantics></math> pp vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>0.37</mn></mrow><annotation encoding="application/x-tex">+0.37</annotation></semantics></math> pp).</p>
 <figure data-latex-placement="!t">
 
 </figure>
@@ -577,143 +577,222 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0),
 </tbody>
 </table>
 </div>
-<h2 id="relative-equivalence-power-and-campaign-dependence">Relative Equivalence, Power, and Campaign Dependence</h2>
-<p>At matched ten-query cost across <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>16</mn><annotation encoding="application/x-tex">16</annotation></semantics></math> retrospective dates (Table III), MARUR minus Periodic yields equal-cluster mean <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>U</mi><mo>=</mo><mi>−</mi><mn>0.09</mn></mrow><annotation encoding="application/x-tex">\Delta U = -0.09</annotation></semantics></math> pp (pooled <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>0.21</mn></mrow><annotation encoding="application/x-tex">+0.21</annotation></semantics></math> pp), while Periodic’s pooled baseline utility sits at only <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.60</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">0.60\%</annotation></semantics></math>.</p>
-<p>Because absolute <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\pm 2</annotation></semantics></math> pp margins span more than three times this baseline, we evaluate relative equivalence against a primary <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> margin relative to Periodic’s <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> (ruling out at least halving or doubling baseline service) alongside <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>25</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 25\%</annotation></semantics></math> sensitivity, reporting excluded zero-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> cluster counts.</p>
-<p>Expressed relative to baseline utility (Table IV), retrospective MARUR yields a pooled relative ratio of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mn>35.3</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">+35.3\%</annotation></semantics></math> (excluding <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>4</mn><annotation encoding="application/x-tex">4</annotation></semantics></math> zero-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> clusters), with TOST inconclusive at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.3564</mn></mrow><annotation encoding="application/x-tex">p=0.3564</annotation></semantics></math>) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>25</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 25\%</annotation></semantics></math>: we cannot rule out substantial relative gains or losses of this magnitude in any retrospective, held-out, or pooled archive.</p>
-<p>On the absolute scale preserved alongside relative tests in Table IV, retrospective power is limited (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext mathvariant="normal">MDE</mtext><mn>80</mn></msub><mo>=</mo><mn>1.65</mn></mrow><annotation encoding="application/x-tex">\text{MDE}_{80}=1.65</annotation></semantics></math> pp) with two-point TOST rejecting large differences (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.0018</mn></mrow><annotation encoding="application/x-tex">p=0.0018</annotation></semantics></math>), while low-budget held-out PACER lowers equal-cluster utility (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>3.29</mn></mrow><annotation encoding="application/x-tex">-3.29</annotation></semantics></math> pp).</p>
-<p>In an exploratory post-hoc check for correlation among dates from the same field campaign (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math> campaigns per scope), two-stage hierarchical bootstrap and ANOVA intraclass-correlation adjustments further contract effective sample size (Supplement Table S18): on retrospective MARUR, effective dates shrink from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>16</mn><annotation encoding="application/x-tex">16</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3.84</mn><annotation encoding="application/x-tex">3.84</annotation></semantics></math>.</p>
-<p>On high-budget held-out PACER, effective units similarly fall from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>26</mn><annotation encoding="application/x-tex">26</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>6.73</mn><annotation encoding="application/x-tex">6.73</annotation></semantics></math>, reversing naive two-point TOST (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.0132</mn></mrow><annotation encoding="application/x-tex">p=0.0132</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.1388</mn></mrow><annotation encoding="application/x-tex">p=0.1388</annotation></semantics></math>) and leaving hierarchical intervals inconclusive.</p>
+<h2 id="matched-estimand-relative-equivalence-and-campaign-dependence">Matched-Estimand Relative Equivalence and Campaign Dependence</h2>
+<p>Equal-cluster and pooled summaries answer different weighting questions and can point in opposite directions (Table IV). Equal-cluster weighting weights each date identically (Periodic mean <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.52</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1.52\%</annotation></semantics></math> retrospective and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6.32</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">6.32\%</annotation></semantics></math> held-out), whereas pooled totals weight by observed throughput sums (Periodic pooled <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.60</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">0.60\%</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.01</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1.01\%</annotation></semantics></math>): because heavy-traffic days exhibit low baseline <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> and occasional positive gains, they lift pooled ratios while light-traffic days drive negative equal-cluster means (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>0.09</mn></mrow><annotation encoding="application/x-tex">-0.09</annotation></semantics></math> pp on retrospective MARUR).</p>
+<p>To avoid mixing estimands, we evaluate two matched relative TOST formulations at a primary <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> margin relative to each estimand’s own Periodic baseline (alongside <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>25</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 25\%</annotation></semantics></math> sensitivity and preserved <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>1</mn><mi>/</mi><mo>±</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\pm 1 / \pm 2</annotation></semantics></math> pp absolute columns). Clusters with undefined <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> are excluded (none across our cohorts), whereas zero-baseline clusters (four retrospective; four low-cap held-out) remain in linear equal-cluster differences rather than unstable per-cluster ratios.</p>
+<p>On naive campaign-date inference without campaign clustering (Table IV), equal-cluster <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> TOST is inconclusive for retrospective MARUR (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.1228</mn></mrow><annotation encoding="application/x-tex">p=0.1228</annotation></semantics></math>) and low-cap held-out PACER (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.5369</mn></mrow><annotation encoding="application/x-tex">p=0.5369</annotation></semantics></math>), while passing for retrospective PACER (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.0430</mn></mrow><annotation encoding="application/x-tex">p=0.0430</annotation></semantics></math>) and high-cap held-out PACER (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.0071</mn></mrow><annotation encoding="application/x-tex">p=0.0071</annotation></semantics></math>). Conversely, pooled-ratio equivalence fails in every scope because ninety-percent bootstrap intervals extend past fifty percent.</p>
+<p>Re-applying an exploratory post-hoc campaign-level adjustment over only three field campaigns per scope (Supplement Table S18) contracts effective units to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3.84</mn><mi>/</mi><mn>16</mn></mrow><annotation encoding="application/x-tex">3.84/16</annotation></semantics></math> on retrospective MARUR (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.2988</mn></mrow><annotation encoding="application/x-tex">p=0.2988</annotation></semantics></math>) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6.73</mn><mi>/</mi><mn>26</mn></mrow><annotation encoding="application/x-tex">6.73/26</annotation></semantics></math> on high-cap held-out PACER.</p>
+<p>This adjustment collapses high-cap held-out equivalence (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.0071</mn><mo>→</mo><mn>0.1153</mn></mrow><annotation encoding="application/x-tex">p=0.0071 \to 0.1153</annotation></semantics></math>). Where Donner’s three-campaign variance estimate stays near zero on retrospective PACER (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mtext mathvariant="normal">eff</mtext></msub><mo>=</mo><mn>14.77</mn><mi>/</mi><mn>16</mn></mrow><annotation encoding="application/x-tex">G_{\text{eff}}=14.77/16</annotation></semantics></math>, borderline <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.0498</mn></mrow><annotation encoding="application/x-tex">p=0.0498</annotation></semantics></math> at low cap), two-stage hierarchical bootstrap intervals extend past fifty percent in every scope, leaving utility equivalence unestablished with only three field campaigns.</p>
 <div class="table*">
 <table>
 <tbody>
 <tr>
 <td style="text-align: left;">Scope</td>
 <td style="text-align: left;">Cand</td>
-<td style="text-align: right;">Cap</td>
+<td style="text-align: left;">Cap</td>
+<td style="text-align: left;">Estimand</td>
 <td style="text-align: right;">G</td>
 <td style="text-align: right;">Z0</td>
 <td style="text-align: right;">RefU</td>
-<td style="text-align: right;">PoolRel</td>
-<td style="text-align: right;">Rel95CI</td>
+<td style="text-align: right;">Delta</td>
+<td style="text-align: right;">RelPct</td>
+<td style="text-align: right;">SpreadOrMDE</td>
 <td style="text-align: right;">pRel50</td>
 <td style="text-align: right;">pRel25</td>
-<td style="text-align: right;">EqdU</td>
-<td style="text-align: right;">MDE80</td>
-<td style="text-align: right;">p1pp</td>
-<td style="text-align: right;">p2pp</td>
+<td style="text-align: right;">pAbs1</td>
+<td style="text-align: right;">pAbs2</td>
 </tr>
 <tr>
 <td style="text-align: left;">Retro</td>
 <td style="text-align: left;">MAR</td>
-<td style="text-align: right;">10</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">EqualCl</td>
 <td style="text-align: right;">16</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">0.60</td>
-<td style="text-align: right;">+35.3</td>
-<td style="text-align: right;">-55.5 to +260.4</td>
-<td style="text-align: right;">0.3564</td>
-<td style="text-align: right;">0.4602</td>
+<td style="text-align: right;">1.52</td>
 <td style="text-align: right;">-0.09</td>
-<td style="text-align: right;">1.65</td>
+<td style="text-align: right;">-6.2</td>
+<td style="text-align: right;">MDE 1.65</td>
+<td style="text-align: right;">0.1228</td>
+<td style="text-align: right;">0.3060</td>
 <td style="text-align: right;">0.0609</td>
 <td style="text-align: right;">0.0018</td>
 </tr>
 <tr>
 <td style="text-align: left;">Retro</td>
-<td style="text-align: left;">PAC</td>
-<td style="text-align: right;">10</td>
+<td style="text-align: left;">MAR</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">PoolRat</td>
 <td style="text-align: right;">16</td>
 <td style="text-align: right;">4</td>
 <td style="text-align: right;">0.60</td>
-<td style="text-align: right;">+18.3</td>
-<td style="text-align: right;">-40.6 to +140.5</td>
-<td style="text-align: right;">0.2917</td>
-<td style="text-align: right;">0.4449</td>
+<td style="text-align: right;">+0.21</td>
+<td style="text-align: right;">+35.3</td>
+<td style="text-align: right;">-44.3 to +207.3</td>
+<td style="text-align: right;">0.4145</td>
+<td style="text-align: right;">0.5560</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro</td>
+<td style="text-align: left;">PAC</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">EqualCl</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.52</td>
 <td style="text-align: right;">-0.10</td>
-<td style="text-align: right;">1.08</td>
+<td style="text-align: right;">-6.6</td>
+<td style="text-align: right;">MDE 1.08</td>
+<td style="text-align: right;">0.0430</td>
+<td style="text-align: right;">0.2239</td>
 <td style="text-align: right;">0.0122</td>
 <td style="text-align: right;">0.0000</td>
 </tr>
 <tr>
+<td style="text-align: left;">Retro</td>
+<td style="text-align: left;">PAC</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">PoolRat</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">+0.11</td>
+<td style="text-align: right;">+18.3</td>
+<td style="text-align: right;">-32.5 to +108.3</td>
+<td style="text-align: right;">0.2260</td>
+<td style="text-align: right;">0.4255</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr>
 <td style="text-align: left;">HeldOut</td>
 <td style="text-align: left;">MAR</td>
-<td style="text-align: right;">10</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">EqualCl</td>
 <td style="text-align: right;">26</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">1.01</td>
-<td style="text-align: right;">+40.0</td>
-<td style="text-align: right;">-2.4 to +87.6</td>
-<td style="text-align: right;">0.9605</td>
-<td style="text-align: right;">0.9713</td>
+<td style="text-align: right;">6.32</td>
 <td style="text-align: right;">-3.36</td>
-<td style="text-align: right;">4.54</td>
+<td style="text-align: right;">-53.1</td>
+<td style="text-align: right;">MDE 4.54</td>
+<td style="text-align: right;">0.5497</td>
+<td style="text-align: right;">0.8675</td>
 <td style="text-align: right;">0.9286</td>
 <td style="text-align: right;">0.8041</td>
 </tr>
 <tr>
 <td style="text-align: left;">HeldOut</td>
-<td style="text-align: left;">PAC</td>
-<td style="text-align: right;">10</td>
+<td style="text-align: left;">MAR</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">PoolRat</td>
 <td style="text-align: right;">26</td>
 <td style="text-align: right;">4</td>
 <td style="text-align: right;">1.01</td>
-<td style="text-align: right;">+46.9</td>
-<td style="text-align: right;">-9.7 to +131.6</td>
-<td style="text-align: right;">0.9731</td>
-<td style="text-align: right;">0.9817</td>
+<td style="text-align: right;">+0.40</td>
+<td style="text-align: right;">+40.0</td>
+<td style="text-align: right;">+4.4 to +81.9</td>
+<td style="text-align: right;">0.3235</td>
+<td style="text-align: right;">0.7325</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">PAC</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">EqualCl</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6.32</td>
 <td style="text-align: right;">-3.29</td>
-<td style="text-align: right;">4.01</td>
+<td style="text-align: right;">-52.0</td>
+<td style="text-align: right;">MDE 4.01</td>
+<td style="text-align: right;">0.5369</td>
+<td style="text-align: right;">0.8872</td>
 <td style="text-align: right;">0.9457</td>
 <td style="text-align: right;">0.8213</td>
 </tr>
 <tr>
 <td style="text-align: left;">HeldOut</td>
 <td style="text-align: left;">PAC</td>
-<td style="text-align: right;">40</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">PoolRat</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">+0.47</td>
+<td style="text-align: right;">+46.9</td>
+<td style="text-align: right;">-1.5 to +114.7</td>
+<td style="text-align: right;">0.4240</td>
+<td style="text-align: right;">0.7285</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut</td>
+<td style="text-align: left;">PAC</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">EqualCl</td>
 <td style="text-align: right;">26</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">1.17</td>
-<td style="text-align: right;">+43.1</td>
-<td style="text-align: right;">-52.2 to +186.4</td>
-<td style="text-align: right;">0.2508</td>
-<td style="text-align: right;">0.3707</td>
+<td style="text-align: right;">4.47</td>
 <td style="text-align: right;">+0.01</td>
-<td style="text-align: right;">2.46</td>
+<td style="text-align: right;">+0.3</td>
+<td style="text-align: right;">MDE 2.46</td>
+<td style="text-align: right;">0.0071</td>
+<td style="text-align: right;">0.1008</td>
 <td style="text-align: right;">0.1261</td>
 <td style="text-align: right;">0.0132</td>
 </tr>
 <tr>
-<td style="text-align: left;">AllCoh</td>
+<td style="text-align: left;">HeldOut</td>
 <td style="text-align: left;">PAC</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">42</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0.76</td>
-<td style="text-align: right;">+32.6</td>
-<td style="text-align: right;">-12.8 to +95.3</td>
-<td style="text-align: right;">0.9682</td>
-<td style="text-align: right;">0.9799</td>
-<td style="text-align: right;">-2.07</td>
-<td style="text-align: right;">2.55</td>
-<td style="text-align: right;">0.8831</td>
-<td style="text-align: right;">0.5334</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">PoolRat</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.17</td>
+<td style="text-align: right;">+0.51</td>
+<td style="text-align: right;">+43.1</td>
+<td style="text-align: right;">-39.5 to +154.0</td>
+<td style="text-align: right;">0.4155</td>
+<td style="text-align: right;">0.5925</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
 </tr>
 <tr>
 <td style="text-align: left;">AllCoh</td>
 <td style="text-align: left;">PAC</td>
-<td style="text-align: right;">40</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">EqualCl</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">3.27</td>
+<td style="text-align: right;">+0.02</td>
+<td style="text-align: right;">+0.8</td>
+<td style="text-align: right;">MDE 1.53</td>
+<td style="text-align: right;">0.0021</td>
+<td style="text-align: right;">0.0721</td>
+<td style="text-align: right;">0.0372</td>
+<td style="text-align: right;">0.0003</td>
+</tr>
+<tr>
+<td style="text-align: left;">AllCoh</td>
+<td style="text-align: left;">PAC</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">PoolRat</td>
 <td style="text-align: right;">42</td>
 <td style="text-align: right;">6</td>
 <td style="text-align: right;">0.80</td>
+<td style="text-align: right;">+0.31</td>
 <td style="text-align: right;">+38.6</td>
-<td style="text-align: right;">-30.3 to +130.9</td>
-<td style="text-align: right;">0.2436</td>
-<td style="text-align: right;">0.3726</td>
-<td style="text-align: right;">+0.02</td>
-<td style="text-align: right;">1.53</td>
-<td style="text-align: right;">0.0372</td>
-<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">-21.2 to +113.6</td>
+<td style="text-align: right;">0.3575</td>
+<td style="text-align: right;">0.6105</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
 </tr>
 </tbody>
 </table>
@@ -1370,11 +1449,11 @@ R_+ &amp;\in [e/M, (e+m)/M]\qquad (M &gt; 0),
 </table>
 </div>
 <p><strong>Window, Nominal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>, Source Predictors, and LOCO:</strong> Enlarging windows or varying nominal levels leaves PACER and MARUR conditional risks elevated without consistent equal-cluster utility gains (Table VIII). Similarly, replaying lower-error source-only predictors (<code>ThroughputResNet</code>, <code>QuantileGBM</code>, <code>ClockGBM</code>, Oslo bus quantile regressor, and lag Persistence) either retains high conditional risk or suppresses throughput below 1%. Dropping any single cohort preserves mobile median conditional risk near <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>47</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">47\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>49</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">49\%</annotation></semantics></math> while omitting Oslo removes the low-cap utility drop without revealing gains elsewhere.</p>
-<p><strong>What Evidence Does Not Cover:</strong> These archived traces do not measure closed-loop network deployment where commitments alter transport congestion or user quality of experience, large query budgets where Theorem 1 tightens across moderate offer rates, devices and cellular operators absent from European and US public archives, alternative active-probing measurement tools, or non-60s service horizons.</p>
+<p><strong>What Evidence Does Not Cover:</strong> These archived traces do not cover other user devices, cellular operators absent from the logs, alternative active-probing measurement tools, closed-loop network deployment where commitments alter transport congestion, larger query budgets, or non-60s horizons.</p>
 <h1 id="sec:conclusion">Limitations, Reproducibility, and Conclusion</h1>
-<p><strong>Limitations and Reproducibility:</strong> All evidence is retrospective from public archives and no live field validation was performed; our results do not establish performance on other devices, operators, measurement tools, or closed-loop deployments. All SHA-256 locked configurations run on CPU Python 3.11 via <code>scripts/reproduce_all.py</code> (with CPU fallback for neural models) alongside CI checks and <code>scripts/audit_policy.py</code>.</p>
-<p><strong>Conclusion:</strong> In these public archives, with these frozen predictors and policies, sparse recalibration did not reliably improve commitments. Crucially, relative equivalence against a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> baseline margin is inconclusive across every retrospective and held-out archive, so substantial relative changes in supported throughput cannot be ruled out; campaign-level clustering further shrinks effective sample sizes.</p>
-<p>Across mobile evaluations, conditional upper violation risk spans <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">9\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>68</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">68\%</annotation></semantics></math> above <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, supported throughput averages <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">3\%</annotation></semantics></math>, and finite-sample bounds are vacuous across most tested regimes. Adopting <code>scripts/audit_policy.py</code> and the six-item reporting checklist exposes abstention, missing-outcome, and pooling artifacts before deployment.</p>
+<p><strong>Limitations and Reproducibility:</strong> All evidence is retrospective from public archives, with no live field validation, and it does not cover other devices, operators, measurement tools, or closed-loop deployment. All SHA-256 locked configurations run on CPU Python 3.11 via <code>scripts/reproduce_all.py</code> (with CPU fallback for neural models) alongside CI checks and <code>scripts/audit_policy.py</code>.</p>
+<p><strong>Conclusion:</strong> Across archived cellular cohorts under frozen predictors and fixed schedules, mobile conditional upper violation risk spans <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">9\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>68</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">68\%</annotation></semantics></math> (well above <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>), supported measured throughput stays around <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">1\%</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">3\%</annotation></semantics></math>, and sparse finite-sample bounds remain vacuous across most regimes, underscoring the need for <code>scripts/audit_policy.py</code> and the six-item reporting checklist.</p>
+<p>Separating equal-cluster and pooled-ratio relative equivalence leaves utility differences largely inconclusive: pooled-ratio TOST fails everywhere, naive high-cap held-out equivalence collapses under campaign clustering, and hierarchical bootstrap intervals exceed <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> across only three campaigns per scope. All evidence is retrospective from public archives without live field validation and does not cover other devices, operators, measurement tools, or closed-loop deployment.</p>
 <h1 class="unnumbered" id="acknowledgment">Acknowledgment</h1>
 <p>OpenAI Codex assisted with code development, experimental checks, and manuscript drafting and revision.</p>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">

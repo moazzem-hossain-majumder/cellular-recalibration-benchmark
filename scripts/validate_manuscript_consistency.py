@@ -89,9 +89,11 @@ def validate_marur_claims(root):
     abstract_nums=re.findall(r'-?\d+(?:\.\d+)?',abstract)
     if len(abstract_nums)>6:
         raise ValueError(f'Abstract must have at most 6 numbers, found {len(abstract_nums)}: {abstract_nums}')
-    for token in ['9','68','0.10','1','3','50','did not reliably improve commitments','retrospective']:
+    for token in ['9','68','0.10','1','3','50','largely inconclusive','retrospective','closed-loop deployment']:
         if token not in abstract:
             raise ValueError(f'Abstract headline claim missing {token}')
+    if abstract.index('9\\%') > abstract.index('50\\%'):
+        raise ValueError('Abstract must lead with descriptive risk finding before relative equivalence limit')
     for idx, block in enumerate(re.split(r'\r?\n\s*\r?\n', manuscript)):
         s = block.strip()
         if not s or '\\begin{abstract}' in s or s.startswith(('\\begin{','\\input{','\\documentclass','\\usepackage','\\title','\\author','\\maketitle','\\bibliographystyle','\\bibliography','\\end{document}','\\IEEEkeywords')):
@@ -153,26 +155,29 @@ def validate_pacer_claims(root):
     for fname in ['paper/manuscript.tex','paper/related_work.tex','paper/supplementary.tex','paper/cover_letter.tex','README.md']:
         txt=(root/fname).read_text(encoding='utf8')
         if re.search(r'\b(?:untouched|unsealed|unsealing|pre-registered|preregistered|preregistration|prospective_trips_collected|prospective)\b',txt,re.I):
-            raise ValueError(f'Overstated or removed-prospective terminology remains in {fname}')
+            raise ValueError(f'Disallowed terminology remains in {fname}')
     sens_dir=root/'results/exploratory/sensitivity'
     sens_exec=read_json(sens_dir/'execution.json')
     if sens_exec['status']!='exploratory_sensitivity_only' or sens_exec['frozen_results_modified']:
         raise ValueError('Exploratory sensitivity ledger status check failed')
     pow_df=pd.read_csv(sens_dir/'power_equivalence.csv')
     r_m=pow_df[(pow_df.scope=='Retrospective')&(pow_df.cap_new==10)&(pow_df.candidate=='MARUR')].iloc[0]
+    r_p=pow_df[(pow_df.scope=='Retrospective')&(pow_df.cap_new==10)&(pow_df.candidate=='PACER')].iloc[0]
+    h_p10=pow_df[(pow_df.scope=='HeldOut')&(pow_df.cap_new==10)&(pow_df.candidate=='PACER')].iloc[0]
     h_p=pow_df[(pow_df.scope=='HeldOut')&(pow_df.cap_new==40)&(pow_df.candidate=='PACER')].iloc[0]
     pow_tex=(root/'paper/tables/table_m4_power_equivalence.tex').read_text(encoding='utf8')
-    for tok in [f'{r_m.pool_rel_du_pct:+.1f}', f'{r_m.tost_p_rel50:.4f}', f'{r_m.mde80_pp:.2f}', f'{r_m.tost_p_2pp:.4f}']:
-        if tok not in source:
-            raise ValueError(f'Power/TOST claim missing in manuscript: {tok}')
-    for tok in [f'{r_m.pool_rel_du_pct:+.1f}', f'{r_m.tost_p_rel50:.4f}', f'{h_p.mde80_pp:.2f}', f'{h_p.tost_p_rel50:.4f}', f'{h_p.tost_p_2pp:.4f}']:
+    for tok in [f'{r_m.eq_ref_u_pp:.2f}', f'{r_m.pool_ref_u_pp:.2f}', f'{r_m.eq_tost_p_rel50:.4f}', f'{r_p.eq_tost_p_rel50:.4f}', f'{h_p10.eq_tost_p_rel50:.4f}', f'{h_p.eq_tost_p_rel50:.4f}']:
+        if tok not in source or tok not in pow_tex:
+            raise ValueError(f'Matched-estimand power/TOST claim missing in manuscript/table: {tok}')
+    for tok in [f'{r_m.pool_rel_du_pct:+.1f}', f'{r_m.mde80_pp:.2f}', f'{r_m.tost_p_2pp:.4f}', f'{h_p.mde80_pp:.2f}', f'{h_p.pool_tost_p_rel50:.4f}', f'{h_p.tost_p_2pp:.4f}']:
         if tok not in pow_tex:
             raise ValueError(f'Power/TOST table claim missing: {tok}')
     camp_df=pd.read_csv(sens_dir/'campaign_dependence.csv')
     c_rm=camp_df[(camp_df.scope=='Retrospective')&(camp_df.cap_new==10)&(camp_df.candidate=='MARUR')].iloc[0]
+    c_rp=camp_df[(camp_df.scope=='Retrospective')&(camp_df.cap_new==10)&(camp_df.candidate=='PACER')].iloc[0]
     c_hp=camp_df[(camp_df.scope=='HeldOut')&(camp_df.cap_new==40)&(camp_df.candidate=='PACER')].iloc[0]
     camp_tex=(root/'paper/tables/table_s18_campaign_dependence.tex').read_text(encoding='utf8')
-    for tok in [f'{c_rm.g_eff:.2f}', f'{c_hp.g_eff:.2f}', f'{c_hp.adj_tost_p_2pp:.4f}']:
+    for tok in [f'{c_rm.g_eff:.2f}', f'{c_rm.adj_eq_tost_p_rel50:.4f}', f'{c_rp.g_eff:.2f}', f'{c_rp.adj_eq_tost_p_rel50:.4f}', f'{c_hp.g_eff:.2f}', f'{c_hp.adj_eq_tost_p_rel50:.4f}']:
         if tok not in source or tok not in camp_tex:
             raise ValueError(f'Campaign-dependence claim missing: {tok}')
 
@@ -305,7 +310,7 @@ def validate(root=ROOT):
     r_a40 = con_all[(con_all.scope=='AllCohortsPooled')&(con_all.model=='HistGBM')&(con_all.scenario=='Recorded')&(con_all.cap_new==40)&(con_all.reference=='Periodic')].iloc[0]
     for needle in [f'{100*row16.eq_du_mean:+.2f} pp', f'{100*row16.pool_du:+.2f} pp', f'{100*r_h10.pool_dpos_hi:+.2f} pp',
                    f'{100*r_h40.pool_dpos_hi:+.2f} pp', f'{100*r_a40.pool_dpos_hi:+.2f} pp', '+0.37 pp', '4/40',
-                   '+35.3%', 'p=0.3564', '3.84/16', '6.73/26', 'worked_heldout_c10_ledger.csv',
+                   '+35.3%', '1.52%', '0.60%', 'p=0.1228', '0.2988', '0.0498', '0.1153', '6.73/26', 'worked_heldout_c10_ledger.csv',
                    '1.65 pp', '2.46 pp', '47.1', '9--68%', '1--3%']:
         if needle not in readme_text:
             raise ValueError(f'README results table mismatch for {needle}')

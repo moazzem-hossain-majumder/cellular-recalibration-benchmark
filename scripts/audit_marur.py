@@ -76,14 +76,14 @@ def main():
     for name,frames in [('actions',actions),('responses',responses)]:
         pd.concat(frames).to_csv(OUT/f'matched_cost_{name}.csv.gz',index=False,
                                 compression={'method':'gzip','mtime':0})
-    # Assumed SD of paired trip-level differences; no tick-independence assumption.
+    # Hypothetical independent-trip precision reference table; no tick-independence assumption.
     precision=[]
     for sd in [.05,.10,.15,.20]:
         for halfwidth in [.025,.05]:
             n=next(n for n in range(3,10000) if t.ppf(.975,n-1)*sd/np.sqrt(n)<=halfwidth)
             precision.append(dict(assumed_trip_difference_sd=sd,target_halfwidth=halfwidth,
                                   complete_independent_trips=n,scheduled_with_15pct_attrition=int(np.ceil(n/.85))))
-    pd.DataFrame(precision).to_csv(OUT/'prospective_precision.csv',index=False)
+    pd.DataFrame(precision).to_csv(OUT/'planning_precision_reference.csv',index=False)
     receipt=dict(start_utc=start,end_utc=datetime.now(timezone.utc).isoformat(),
         command=['python','scripts/audit_marur.py'],new_query_caps=CAPS,policies=POLICIES,
         scope='Exploratory full-suffix replay; exact achieved-cost matches only; Frozen zero-query reference',

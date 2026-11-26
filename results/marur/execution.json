@@ -1,6 +1,6 @@
 {
-  "start_utc": "2026-11-25T06:55:09.317034+00:00",
-  "end_utc": "2026-11-25T06:56:32.793866+00:00",
+  "start_utc": "2026-11-26T08:10:47.826030+00:00",
+  "end_utc": "2026-11-26T08:12:08.408272+00:00",
   "command": [
     "python",
     "scripts/run_marur.py"
@@ -41,6 +41,6 @@
     "paired_date_contrasts.csv": "9fe3cd412855c31998cd31b131ce5c74bae56317b863921b0f0a4ed4f27beb52",
     "paired_policy_contrasts.csv": "9a54380d14bbc0c8fc2c2962c5bc255819d451bf1426e85ddec22192b159f1f9",
     "responses.csv.gz": "16c91a735d1ad13e824983e9238156d3f9a9990fd67ddc183eaea7ac8565a690",
-    "summary.csv": "ec5c654dd9b951795b9b1dc2618f4f06314335fc7edaa19d4ea29e91157d2e38"
+    "summary.csv": "20722291e5cf3c49694c2f58214eb5f39ff4ffb5577a7c314419b9821579ba0a"
   }
 }
