@@ -1,6 +1,6 @@
 {
-  "start_utc": "2026-11-26T08:42:35.980579+00:00",
-  "end_utc": "2026-11-26T08:42:44.678477+00:00",
+  "start_utc": "2026-11-26T09:37:27.668086+00:00",
+  "end_utc": "2026-11-26T09:37:36.468495+00:00",
   "status": "exploratory_sensitivity_only",
   "heldout_cohorts_exploratory": true,
   "frozen_results_modified": false,
@@ -8,9 +8,13 @@
   "campaign_dependence_rows": 10,
   "loco_rows": 11,
   "locampo_rows": 7,
+  "ablation_rows": 6,
+  "pareto_rows": 38,
+  "fairness_rows": 8,
   "window_alpha_rows": 1800,
   "predictor_rows": 480,
   "sha256": {
+    "results/exploratory/sensitivity/baseline_fairness_audit.csv": "5f7d555791525cfabf144c980d3c4633df4186d6f86a6d650b295e0683c1c19f",
     "results/exploratory/sensitivity/campaign_dependence.csv": "b2a1be9bae4f9860fa4bab8bff5d12b7774a25ee183b30a5b6fe6c373c173e87",
     "results/exploratory/sensitivity/leave_one_campaign_out.csv": "b98d5a3e0958a1c59ca3bd692bdf9c0b5a0691fe46d8bb3c26fff8df4596ddb3",
     "results/exploratory/sensitivity/leave_one_cohort_out.csv": "3555dade40d53c9dab8c6ad87b4ef74a132ead73a03b46d547e57209356c5425",
@@ -18,6 +22,8 @@
     "results/exploratory/sensitivity/predictor_point_accuracy.csv": "91c77d46c816ee5edfc662829511171c9f94e8d766e6fc5468315f6de4ec4102",
     "results/exploratory/sensitivity/predictor_sensitivity.csv": "ef92d512d6dc451b7a26cd3952c62a3de0802e0902cc952c4f7610ab3dd4230f",
     "results/exploratory/sensitivity/predictor_sensitivity_clusters.csv": "5b56dcec8b140437faab68a27618ed1871b9032f24f37341300df8ce8dc33db1",
+    "results/exploratory/sensitivity/risk_utility_pareto.csv": "f007a8745ad71f45eb29608c778cdd75cacb222efac5999206477b8fb850ff72",
+    "results/exploratory/sensitivity/single_factor_ablation.csv": "6ae220d698f19b8fb307d552e1bb074b4bac89570a67d6cba5c1a305fe22048c",
     "results/exploratory/sensitivity/window_alpha_clusters.csv": "9732135673569aafea508f77c1f835c2e5847b6995398d84210e4c42774dc876",
     "results/exploratory/sensitivity/window_alpha_sensitivity.csv": "eb977b4c956afef8e526cacf0a08b1ae933a0a308dafd3a599cc74300f2198ec"
   }

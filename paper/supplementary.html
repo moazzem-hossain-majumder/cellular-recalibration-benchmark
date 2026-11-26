@@ -1535,7 +1535,10 @@
 <h1 id="limitations-comparator-taxonomy-and-extended-exploratory-checks">Limitations, comparator taxonomy, and extended exploratory checks</h1>
 <p>These archives were inspected before the controller and cost audit were designed. The 384 exact-cost contrasts are descriptive comparisons of shared observations, not independent trials or confirmatory tests. Missing-outcome intervals are finite-record partial-identification bounds, not sampling confidence intervals. A low all-issued risk can result from abstention; positive-conditional risk and useful service must be reported jointly. The modified ACI comparator, bundled pattern ablation and position-based feedback suppression limit method-specific conclusions. All evidence is retrospective from public archives and no live field validation was performed; simultaneous carriers do not increase independent campaign-dates, and simulated playback does not establish causal live QoE.</p>
 <h2 id="comparator-taxonomy-pacer-protocol-details-and-extended-exploratory-sweeps">Comparator taxonomy, PACER protocol details, and extended exploratory sweeps</h2>
-<p>To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation, making this a frozen retrospective evaluation rather than independent external replication), all PACER parameters (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\gamma=0.05</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mtext mathvariant="normal">veto</mtext></msub><mo>=</mo><mn>0.15</mn></mrow><annotation encoding="application/x-tex">a_{\text{veto}}=0.15</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>κ</mi><mtext mathvariant="normal">ext</mtext></msub><mo>=</mo><mn>2.0</mn></mrow><annotation encoding="application/x-tex">\kappa_{\text{ext}}=2.0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mtext mathvariant="normal">obs</mtext></msub><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">W_{\text{obs}}=20</annotation></semantics></math>, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S15 summarizes the operational taxonomy comparing MARUR and PACER across regimes, Table S16 reports the complete 18-row pooling-rule sensitivity matrix across HeldOut, Retrospective, and AllCohorts scopes, Table S17 reports the complete 11-row Leave-One-Cohort-Out check across all 10 cohorts (42 total clusters), Table S18 reports the exploratory, low-precision campaign-level dependence sensitivity over the 3 retrospective and 3 held-out geographic campaigns (contrasting naive equal-cluster <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> TOST <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> against Donner campaign-adjusted <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>25</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 25\%</annotation></semantics></math> relative TOST <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-values, adjusted <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\pm 2</annotation></semantics></math> pp <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>, effective date counts <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>G</mi><mtext mathvariant="normal">eff</mtext></msub><annotation encoding="application/x-tex">G_{\text{eff}}</annotation></semantics></math>, and two-stage hierarchical bootstrap 90% equal-cluster relative intervals, where non-significant results indicate insufficient precision rather than evidence of equivalence), and Table S19 reports both per-campaign risk/utility medians and the 6-campaign Leave-One-Campaign-Out (LOCampO, 5 remaining campaigns per exclusion) robustness check removing all co-located carrier links of each field campaign together. Across all 120 seed-sensitivity evaluations (QueryCensor20 and Persistence included), weighted selective excess lies within <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">B_1(K) \approx 6.8/K</annotation></semantics></math> on 40/40 cells, though as established in the main manuscript this formal finite-horizon limit is not a generally informative deployment guarantee because it holds trivially on 36/40 cells whenever <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">B_1(K) \ge (1-\alpha)A</annotation></semantics></math> (19/20 cells at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=10</annotation></semantics></math> and 17/20 at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=40</annotation></semantics></math>). Under Persistence across all 42 pooled clusters, PACER’s conservative abstention lowers utility <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>18.89</mn></mrow><annotation encoding="application/x-tex">-18.89</annotation></semantics></math> percentage points at cap 10 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>31.02</mn></mrow><annotation encoding="application/x-tex">-31.02</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>3.25</mn></mrow><annotation encoding="application/x-tex">-3.25</annotation></semantics></math>) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>29.95</mn></mrow><annotation encoding="application/x-tex">-29.95</annotation></semantics></math> percentage points at cap 40 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>37.26</mn></mrow><annotation encoding="application/x-tex">-37.26</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>16.39</mn></mrow><annotation encoding="application/x-tex">-16.39</annotation></semantics></math>) relative to Frozen. For the exploratory controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield 6 matched utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs or risk-only changes, 129 unchanged cases, and 18 unmatched-cost cases; across the 792 configurations of the targeted baseline grid, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks. Complete ledgers (including the extended 1,800-run retrospective/held-out window and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> sweep and 480-run source-only predictor sweep for both MARUR and PACER, as well as the Oslo Commute pre-2010 bus quantile regressor check) reside in <code>results/pacer</code> and <code>results/exploratory/sensitivity</code>.</p>
+<p>To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation, making this a frozen retrospective evaluation rather than independent external replication), all PACER parameters (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.10</mn></mrow><annotation encoding="application/x-tex">\alpha=0.10</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\gamma=0.05</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mtext mathvariant="normal">veto</mtext></msub><mo>=</mo><mn>0.15</mn></mrow><annotation encoding="application/x-tex">a_{\text{veto}}=0.15</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>κ</mi><mtext mathvariant="normal">ext</mtext></msub><mo>=</mo><mn>2.0</mn></mrow><annotation encoding="application/x-tex">\kappa_{\text{ext}}=2.0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mtext mathvariant="normal">obs</mtext></msub><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">W_{\text{obs}}=20</annotation></semantics></math>, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S15 summarizes the operational taxonomy comparing MARUR and PACER across regimes, Table S16 reports the complete 18-row pooling-rule sensitivity matrix across HeldOut, Retrospective, and AllCohorts scopes, Table S17 reports the complete 11-row Leave-One-Cohort-Out check across all 10 cohorts (42 total clusters), Table S18 reports the exploratory, low-precision campaign-level dependence sensitivity over the 3 retrospective and 3 held-out geographic campaigns (contrasting naive equal-cluster <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> TOST <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> against Donner campaign-adjusted <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>50</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 50\%</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>25</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">\pm 25\%</annotation></semantics></math> relative TOST <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-values, adjusted <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\pm 2</annotation></semantics></math> pp <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>, effective date counts <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>G</mi><mtext mathvariant="normal">eff</mtext></msub><annotation encoding="application/x-tex">G_{\text{eff}}</annotation></semantics></math>, and two-stage hierarchical bootstrap 90% equal-cluster relative intervals, where non-significant results indicate insufficient precision rather than evidence of equivalence), Table S19 reports both per-campaign risk/utility medians and the 6-campaign Leave-One-Campaign-Out (LOCampO, 5 remaining campaigns per exclusion) robustness check, Table S20 details the 10-cohort Risk–Utility Pareto operating points and the 100-contrast sequential fairness sieve, Table S21 reports Theorem 1 operational strata ceilings, and Table S22 reports the full exploratory window/<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>, predictor, LOCO, and LOCampO matrix alongside Fig. S9. Formally, PACER’s weighted selective-excess bound over <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>,</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K=\min(C_{\text{new}}, T)</annotation></semantics></math> uniform block probes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>k</mi></msub><mo>∼</mo><mrow><mi mathvariant="normal">U</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">f</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">m</mi></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="script">ℬ</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u_k \sim \mathrm{Uniform}(\mathcal{B}_k)</annotation></semantics></math> satisfies <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝑬</mi><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">[</mo><mi>A</mi><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>−</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mo>≤</mo><mfrac><msub><mi>W</mi><mi mathvariant="normal">max</mi></msub><mi>T</mi></mfrac><mo>⋅</mo><mfrac><mrow><mi>α</mi><mo>+</mo><msub><mi>a</mi><mtext mathvariant="normal">veto</mtext></msub><mo>+</mo><mi>γ</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>D</mi><mo stretchy="false" form="postfix">)</mo></mrow><mi>γ</mi></mfrac><mo>≈</mo><mfrac><mn>6.8</mn><mi>K</mi></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{equation}
+\mathbf{E}\!\left[A\left(R_+^{\text{upper}} - \alpha\right)\right] \le \frac{W_{\max}}{T} \cdot \frac{\alpha + a_{\text{veto}} + \gamma(1 - \alpha)(1 + D)}{\gamma} \approx \frac{6.8}{K},
+\label{eq:supp_t1}
+\end{equation}</annotation></semantics></math> where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mi mathvariant="normal">max</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">⌈</mo><mi>T</mi><mi>/</mi><mi>K</mi><mo stretchy="false" form="postfix">⌉</mo></mrow><annotation encoding="application/x-tex">W_{\max}=\lceil T/K \rceil</annotation></semantics></math> and inter-block delay <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">D \le 1</annotation></semantics></math> under an oblivious stream <span class="citation" data-cites="vovk2005algorithmic">(Vovk et al. 2005)</span>. Across all 120 seed-sensitivity evaluations (QueryCensor20 and Persistence included), weighted selective excess lies within <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">B_1(K) \approx 6.8/K</annotation></semantics></math> on 40/40 cells, though as established in the main manuscript this formal finite-horizon limit is not a generally informative deployment guarantee because every policy satisfies <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><msubsup><mi>R</mi><mo>+</mo><mtext mathvariant="normal">upper</mtext></msubsup><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≤</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>A</mi><mo>=</mo><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">A(R_+^{\text{upper}}-\alpha) \le (1-\alpha)A = 0.9A</annotation></semantics></math> deterministically, rendering <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">B_1(K) \ge 0.9A</annotation></semantics></math> vacuous on 36/40 cells (19/20 cells at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=10</annotation></semantics></math> and 17/20 at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mtext mathvariant="normal">new</mtext></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\text{new}}=40</annotation></semantics></math>; Fig. S9). Tighter bounds without sparse-regime vacuity would require non-vacuous mixing or Lipschitz-drift structure absent across abrupt mobile handovers. Under Persistence across all 42 pooled clusters, PACER’s conservative abstention lowers utility <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math> by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>18.89</mn></mrow><annotation encoding="application/x-tex">-18.89</annotation></semantics></math> percentage points at cap 10 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>31.02</mn></mrow><annotation encoding="application/x-tex">-31.02</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>3.25</mn></mrow><annotation encoding="application/x-tex">-3.25</annotation></semantics></math>) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>29.95</mn></mrow><annotation encoding="application/x-tex">-29.95</annotation></semantics></math> percentage points at cap 40 (bootstrap <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>37.26</mn></mrow><annotation encoding="application/x-tex">-37.26</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>16.39</mn></mrow><annotation encoding="application/x-tex">-16.39</annotation></semantics></math>) relative to Frozen. For the exploratory controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield 6 matched utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs or risk-only changes, 129 unchanged cases, and 18 unmatched-cost cases; across the 792 configurations of the targeted baseline grid, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks. Complete ledgers (including the extended 1,800-run retrospective/held-out window and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> sweep and 480-run source-only predictor sweep for both MARUR and PACER, as well as the Oslo Commute pre-2010 bus quantile regressor check) reside in <code>results/pacer</code> and <code>results/exploratory/sensitivity</code>.</p>
 <div class="table*">
 <table>
 <tbody>
@@ -2159,6 +2162,551 @@
 <td style="text-align: left;">1.28</td>
 <td style="text-align: left;">-2.25</td>
 <td style="text-align: left;">+0.01</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">Policy</td>
+<td style="text-align: left;">Cap</td>
+<td style="text-align: left;">RealQ</td>
+<td style="text-align: left;">OfferA</td>
+<td style="text-align: left;">AllRiskHi</td>
+<td style="text-align: left;">CondRiskHi</td>
+<td style="text-align: left;">SuppU</td>
+<td style="text-align: left;">Notes</td>
+</tr>
+<tr>
+<td style="text-align: left;">ACI</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">10.0</td>
+<td style="text-align: left;">18.30</td>
+<td style="text-align: left;">7.16</td>
+<td style="text-align: left;">43.86</td>
+<td style="text-align: left;">2.87</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">ACI</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">21.6</td>
+<td style="text-align: left;">17.83</td>
+<td style="text-align: left;">5.53</td>
+<td style="text-align: left;">35.59</td>
+<td style="text-align: left;">2.00</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">DecayingOGD</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">10.0</td>
+<td style="text-align: left;">28.07</td>
+<td style="text-align: left;">11.26</td>
+<td style="text-align: left;">53.58</td>
+<td style="text-align: left;">4.88</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">DecayingOGD</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">21.6</td>
+<td style="text-align: left;">26.38</td>
+<td style="text-align: left;">9.31</td>
+<td style="text-align: left;">50.18</td>
+<td style="text-align: left;">3.29</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">Early</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">10.0</td>
+<td style="text-align: left;">26.48</td>
+<td style="text-align: left;">10.14</td>
+<td style="text-align: left;">42.58</td>
+<td style="text-align: left;">4.46</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">Early</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">40.0</td>
+<td style="text-align: left;">30.05</td>
+<td style="text-align: left;">12.29</td>
+<td style="text-align: left;">44.40</td>
+<td style="text-align: left;">4.83</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">Frozen</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.0</td>
+<td style="text-align: left;">35.90</td>
+<td style="text-align: left;">12.99</td>
+<td style="text-align: left;">37.37</td>
+<td style="text-align: left;">2.60</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">9.5</td>
+<td style="text-align: left;">31.04</td>
+<td style="text-align: left;">8.91</td>
+<td style="text-align: left;">39.59</td>
+<td style="text-align: left;">1.97</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">30.3</td>
+<td style="text-align: left;">30.08</td>
+<td style="text-align: left;">8.37</td>
+<td style="text-align: left;">40.24</td>
+<td style="text-align: left;">2.45</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">9.9</td>
+<td style="text-align: left;">25.88</td>
+<td style="text-align: left;">7.09</td>
+<td style="text-align: left;">42.68</td>
+<td style="text-align: left;">1.94</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">37.8</td>
+<td style="text-align: left;">23.13</td>
+<td style="text-align: left;">6.53</td>
+<td style="text-align: left;">43.68</td>
+<td style="text-align: left;">2.40</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">Periodic</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">10.0</td>
+<td style="text-align: left;">21.18</td>
+<td style="text-align: left;">8.14</td>
+<td style="text-align: left;">41.03</td>
+<td style="text-align: left;">3.02</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">Periodic</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">21.6</td>
+<td style="text-align: left;">22.94</td>
+<td style="text-align: left;">6.57</td>
+<td style="text-align: left;">34.36</td>
+<td style="text-align: left;">2.13</td>
+<td style="text-align: left;">10-coh mean</td>
+</tr>
+<tr>
+<td style="text-align: left;">FairnessSieve</td>
+<td style="text-align: left;">10/40</td>
+<td style="text-align: left;">Q=Periodic</td>
+<td style="text-align: left;">dA max 5pp</td>
+<td style="text-align: left;">100 pairs</td>
+<td style="text-align: left;">3/28 matched</td>
+<td style="text-align: left;">3/100 win</td>
+<td style="text-align: left;">E1/TMob Early10; Op1 MAR10</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure data-latex-placement="!ht">
+<embed src="figures/main_fig3_theorem1_bounds.png" style="width:92.0%" />
+<figcaption>PACER weighted selective-excess bound <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>6.8</mn><mi>/</mi><mi>K</mi></mrow><annotation encoding="application/x-tex">B_1(K) \approx 6.8/K</annotation></semantics></math>, trivial ceiling <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi>A</mi><mo>=</mo><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">(1-\alpha)A = 0.9A</annotation></semantics></math>, and 3-seed mean excess across all 40 cells (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">C_{\mathrm{new}}=10</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.683</mn><annotation encoding="application/x-tex">0.683</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.714</mn><annotation encoding="application/x-tex">0.714</annotation></semantics></math>; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">C_{\mathrm{new}}=40</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.178</mn><annotation encoding="application/x-tex">0.178</annotation></semantics></math>–<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.192</mn><annotation encoding="application/x-tex">0.192</annotation></semantics></math>). Only <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mn>20</mn></mrow><annotation encoding="application/x-tex">1/20</annotation></semantics></math> cells at cap 10 and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>/</mi><mn>20</mn></mrow><annotation encoding="application/x-tex">3/20</annotation></semantics></math> at cap 40 (4/40 total) sit below <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.9</mn><mi>A</mi></mrow><annotation encoding="application/x-tex">0.9A</annotation></semantics></math>.</figcaption>
+</figure>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">OfferStratum</td>
+<td style="text-align: left;">RefA</td>
+<td style="text-align: left;">CeilC10</td>
+<td style="text-align: left;">CeilC40</td>
+<td style="text-align: left;">EmpPosHiC40</td>
+<td style="text-align: left;">EmpCohortsC40</td>
+<td style="text-align: left;">PolicyRule</td>
+</tr>
+<tr>
+<td style="text-align: left;">A below 0.15</td>
+<td style="text-align: left;">0.10</td>
+<td style="text-align: left;">100.0</td>
+<td style="text-align: left;">100.0</td>
+<td style="text-align: left;">47.62-62.96</td>
+<td style="text-align: left;">E1,E3,ATT,Ver,Rome1/2</td>
+<td style="text-align: left;">DO NOT DEPLOY</td>
+</tr>
+<tr>
+<td style="text-align: left;">A 0.15 to 0.30</td>
+<td style="text-align: left;">0.22</td>
+<td style="text-align: left;">100.0</td>
+<td style="text-align: left;">93.5</td>
+<td style="text-align: left;">36.84-44.26</td>
+<td style="text-align: left;">T-Mobile, Ireland</td>
+<td style="text-align: left;">DO NOT DEPLOY (SLA)</td>
+</tr>
+<tr>
+<td style="text-align: left;">A 0.30 to 0.70</td>
+<td style="text-align: left;">0.50</td>
+<td style="text-align: left;">100.0</td>
+<td style="text-align: left;">46.7</td>
+<td style="text-align: left;">32.40</td>
+<td style="text-align: left;">Oslo Commute</td>
+<td style="text-align: left;">Advisory Only</td>
+</tr>
+<tr>
+<td style="text-align: left;">A 0.70 or more</td>
+<td style="text-align: left;">0.85</td>
+<td style="text-align: left;">91.7</td>
+<td style="text-align: left;">31.6</td>
+<td style="text-align: left;">6.98</td>
+<td style="text-align: left;">Ireland Static</td>
+<td style="text-align: left;">Usable Target</td>
+</tr>
+<tr>
+<td style="text-align: left;">Persistence Lag</td>
+<td style="text-align: left;">All</td>
+<td style="text-align: left;">T1 0.714</td>
+<td style="text-align: left;">T1 0.192</td>
+<td style="text-align: left;">-29.95pp U vs Frz</td>
+<td style="text-align: left;">All 10 cohorts (42u)</td>
+<td style="text-align: left;">DO NOT DEPLOY</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table*">
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;">Axis</td>
+<td style="text-align: left;">Policy</td>
+<td style="text-align: left;">Setting</td>
+<td style="text-align: left;">Cap</td>
+<td style="text-align: left;">CandHi</td>
+<td style="text-align: left;">PerHi</td>
+<td style="text-align: left;">CandU</td>
+<td style="text-align: left;">Eq dU</td>
+<td style="text-align: left;">tCI95</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.05,W=40</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">24.06</td>
+<td style="text-align: left;">15.15</td>
+<td style="text-align: left;">0.33</td>
+<td style="text-align: left;">+0.16</td>
+<td style="text-align: left;">-0.28 to +0.59</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.10,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">38.04</td>
+<td style="text-align: left;">31.96</td>
+<td style="text-align: left;">1.86</td>
+<td style="text-align: left;">+0.22</td>
+<td style="text-align: left;">-1.13 to +1.57</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.20,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">45.75</td>
+<td style="text-align: left;">44.33</td>
+<td style="text-align: left;">6.82</td>
+<td style="text-align: left;">+2.25</td>
+<td style="text-align: left;">+0.48 to +4.03</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.05,W=40</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">40.48</td>
+<td style="text-align: left;">15.15</td>
+<td style="text-align: left;">0.21</td>
+<td style="text-align: left;">+0.18</td>
+<td style="text-align: left;">-0.54 to +0.90</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.10,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">44.19</td>
+<td style="text-align: left;">31.96</td>
+<td style="text-align: left;">0.76</td>
+<td style="text-align: left;">-0.22</td>
+<td style="text-align: left;">-1.14 to +0.70</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.20,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">43.63</td>
+<td style="text-align: left;">44.33</td>
+<td style="text-align: left;">1.93</td>
+<td style="text-align: left;">+0.15</td>
+<td style="text-align: left;">-0.51 to +0.82</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.05,W=40</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">19.69</td>
+<td style="text-align: left;">20.91</td>
+<td style="text-align: left;">0.18</td>
+<td style="text-align: left;">-0.71</td>
+<td style="text-align: left;">-1.54 to +0.12</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.10,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">19.49</td>
+<td style="text-align: left;">24.90</td>
+<td style="text-align: left;">1.17</td>
+<td style="text-align: left;">-1.33</td>
+<td style="text-align: left;">-2.14 to -0.52</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">a=0.20,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">28.25</td>
+<td style="text-align: left;">37.17</td>
+<td style="text-align: left;">3.20</td>
+<td style="text-align: left;">-1.72</td>
+<td style="text-align: left;">-2.70 to -0.74</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.05,W=40</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">16.90</td>
+<td style="text-align: left;">20.91</td>
+<td style="text-align: left;">0.25</td>
+<td style="text-align: left;">+0.29</td>
+<td style="text-align: left;">-0.40 to +0.98</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.10,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">25.80</td>
+<td style="text-align: left;">24.90</td>
+<td style="text-align: left;">1.68</td>
+<td style="text-align: left;">+0.46</td>
+<td style="text-align: left;">-0.90 to +1.83</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut26 W/a</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">a=0.20,W=20</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">35.80</td>
+<td style="text-align: left;">37.17</td>
+<td style="text-align: left;">5.38</td>
+<td style="text-align: left;">+0.48</td>
+<td style="text-align: left;">-3.15 to +4.10</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">ResNet57</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">23.90</td>
+<td style="text-align: left;">28.14</td>
+<td style="text-align: left;">0.31</td>
+<td style="text-align: left;">-0.43</td>
+<td style="text-align: left;">-1.02 to +0.16</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">ResNet57</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">25.81</td>
+<td style="text-align: left;">28.14</td>
+<td style="text-align: left;">0.33</td>
+<td style="text-align: left;">+0.38</td>
+<td style="text-align: left;">-0.76 to +1.51</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">QGBM10</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">51.99</td>
+<td style="text-align: left;">50.36</td>
+<td style="text-align: left;">0.63</td>
+<td style="text-align: left;">+1.02</td>
+<td style="text-align: left;">+0.06 to +1.98</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">QGBM10</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">54.41</td>
+<td style="text-align: left;">50.36</td>
+<td style="text-align: left;">0.54</td>
+<td style="text-align: left;">-0.18</td>
+<td style="text-align: left;">-0.37 to +0.02</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">ClkGBM112</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">37.87</td>
+<td style="text-align: left;">44.13</td>
+<td style="text-align: left;">1.57</td>
+<td style="text-align: left;">-2.46</td>
+<td style="text-align: left;">-4.75 to -0.16</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">ClkGBM112</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">42.41</td>
+<td style="text-align: left;">44.13</td>
+<td style="text-align: left;">1.28</td>
+<td style="text-align: left;">-1.72</td>
+<td style="text-align: left;">-3.62 to +0.17</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">Persist</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">65.73</td>
+<td style="text-align: left;">64.21</td>
+<td style="text-align: left;">9.50</td>
+<td style="text-align: left;">-4.03</td>
+<td style="text-align: left;">-12.18 to +4.12</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retro16 Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">Persist</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">66.82</td>
+<td style="text-align: left;">64.21</td>
+<td style="text-align: left;">14.35</td>
+<td style="text-align: left;">-8.18</td>
+<td style="text-align: left;">-15.85 to -0.50</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">ResNet57</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">8.43</td>
+<td style="text-align: left;">41.38</td>
+<td style="text-align: left;">0.13</td>
+<td style="text-align: left;">-1.11</td>
+<td style="text-align: left;">-3.35 to +1.13</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">ResNet57</td>
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">19.38</td>
+<td style="text-align: left;">41.38</td>
+<td style="text-align: left;">0.11</td>
+<td style="text-align: left;">-1.08</td>
+<td style="text-align: left;">-3.33 to +1.17</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">QGBM10</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">45.68</td>
+<td style="text-align: left;">58.62</td>
+<td style="text-align: left;">0.46</td>
+<td style="text-align: left;">-0.26</td>
+<td style="text-align: left;">-0.56 to +0.05</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">QGBM10</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">52.23</td>
+<td style="text-align: left;">58.62</td>
+<td style="text-align: left;">0.94</td>
+<td style="text-align: left;">+0.14</td>
+<td style="text-align: left;">-0.23 to +0.51</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">MARUR</td>
+<td style="text-align: left;">Persist</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">57.21</td>
+<td style="text-align: left;">53.71</td>
+<td style="text-align: left;">33.69</td>
+<td style="text-align: left;">+4.04</td>
+<td style="text-align: left;">-0.56 to +8.64</td>
+</tr>
+<tr>
+<td style="text-align: left;">HeldOut Pred</td>
+<td style="text-align: left;">PACER</td>
+<td style="text-align: left;">Persist</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">59.82</td>
+<td style="text-align: left;">53.71</td>
+<td style="text-align: left;">39.21</td>
+<td style="text-align: left;">+0.80</td>
+<td style="text-align: left;">-12.71 to +14.32</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCO (10 cohorts)</td>
+<td style="text-align: left;">MAR/PAC</td>
+<td style="text-align: left;">Drop any 1/10</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">47.1-49.3</td>
+<td style="text-align: left;">47.1 full</td>
+<td style="text-align: left;">0.67-1.17</td>
+<td style="text-align: left;">-2.38 to +0.12</td>
+<td style="text-align: left;">p95 G=35..42</td>
+</tr>
+<tr>
+<td style="text-align: left;">LOCampO (6 camp)</td>
+<td style="text-align: left;">MAR/PAC</td>
+<td style="text-align: left;">Drop any 1/6</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">45.8-49.3</td>
+<td style="text-align: left;">47.6 full</td>
+<td style="text-align: left;">0.61-1.28</td>
+<td style="text-align: left;">-3.38 to +0.12</td>
+<td style="text-align: left;">p95 G=27..39</td>
 </tr>
 </tbody>
 </table>

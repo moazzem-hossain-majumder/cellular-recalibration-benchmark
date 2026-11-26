@@ -21,17 +21,43 @@ def _main_tables(root: Path) -> dict:
     caps_str = '/'.join(str(c) for c in rbcfg['new_query_caps'])
     seeds_str = ','.join(str(s) for s in rbcfg['random_schedule_seeds'])
 
-    # Table II: Evaluated policies and protocols
+    # Table II: Evaluated policies and 7-axis experimental fairness audit
+    fair_df = pd.read_csv(root / 'results/exploratory/sensitivity/baseline_fairness_audit.csv', dtype=str)
+    fair_map = fair_df.set_index('policy')
     baseline_rows = [
-        ['Frozen', 'None (C=0)', 'Static Init10', f'init={mcfg["initial_labels"]}', 'None', 'Zero-cost anchor'],
-        ['Early', 'Every elig tick', f'FIFO W={mcfg["window"]}', f'C={caps_str}', 'Insert score=p', 'Day-1 exhaust'],
-        ['Random', 'Uniform seed', f'FIFO W={mcfg["window"]}', f'seeds={seeds_str}', 'Insert score=p', 'Nonadaptive'],
-        ['Periodic', f'Every P={mcfg["period_ticks"]} ticks', f'FIFO W={mcfg["window"]}', f'P={mcfg["period_ticks"]}, W={mcfg["window"]}', 'Insert score=p', 'Fixed cadence'],
-        ['ACI', f'Every P={mcfg["period_ticks"]} ticks', 'Online level a', f'eta={mcfg["aci_step"]}, W={mcfg["window"]}', 'err=1 on pos', 'Sparse ACI'],
-        ['DecayingOGD', f'Every P={mcfg["period_ticks"]} ticks', 'Decaying step', f'exp={rbcfg["decaying_ogd_exponent"]}', 'score=p on miss', 'Decaying OGD'],
-        ['MARUR', f'Age {mcfg["max_age_minutes"]}m or RAT', f'Pat/Pool W={mcfg["window"]}', f'age={mcfg["max_age_minutes"]}m, min={mcfg["minimum_pattern_support"]}', 'Insert p + gate', 'Heuristic'],
-        ['MARUR ablat.', 'Age or Periodic', 'Pool/DropMiss', 'NoPat/NoGate/Drop', 'Drop or Periodic', 'Gate/miss check'],
-        ['PACER', 'Uniform K blk', f'Smooth sel W={pcfg["pacer_obs_window"]}', f'g={pcfg["pacer_gamma"]}, v={pcfg["pacer_veto"]}', 'Excl W; e=1', 'Paced comparator'],
+        ['Frozen', 'None (C=0)', 'Static Init10', f'init={mcfg["initial_labels"]}', fair_map.loc['Frozen', 'realized_q_c10'], fair_map.loc['Frozen', 'mean_offer_a'].replace('%', ''), 'None / None'],
+        ['Early', 'Every elig', f'FIFO W={mcfg["window"]}', f'C={caps_str}', f'{fair_map.loc["Early","realized_q_c10"]}/{fair_map.loc["Early","realized_q_c40"]}', fair_map.loc['Early', 'mean_offer_a'].replace('%', ''), 'Insert p / Resid'],
+        ['Random', 'Uniform seed', f'FIFO W={mcfg["window"]}', f'seeds={seeds_str}', '10/Match', '6-coh seed', 'Insert p / Resid'],
+        ['Periodic', f'Every P={mcfg["period_ticks"]}', f'FIFO W={mcfg["window"]}', f'P={mcfg["period_ticks"]}, W={mcfg["window"]}', f'{fair_map.loc["Periodic","realized_q_c10"]}/{fair_map.loc["Periodic","realized_q_c40"]}', fair_map.loc['Periodic', 'mean_offer_a'].replace('%', ''), 'Insert p / Resid'],
+        ['ACI', f'Every P={mcfg["period_ticks"]}', 'Online alpha', f'eta={mcfg["aci_step"]}, W={mcfg["window"]}', f'{fair_map.loc["ACI","realized_q_c10"]}/{fair_map.loc["ACI","realized_q_c40"]}', fair_map.loc['ACI', 'mean_offer_a'].replace('%', ''), 'err=1 / Online a'],
+        ['DecayingOGD', f'Every P={mcfg["period_ticks"]}', 'Decaying step', f'exp={rbcfg["decaying_ogd_exponent"]}', f'{fair_map.loc["DecayingOGD","realized_q_c10"]}/{fair_map.loc["DecayingOGD","realized_q_c40"]}', fair_map.loc['DecayingOGD', 'mean_offer_a'].replace('%', ''), 'p miss / Step'],
+        ['MARUR', f'Age {mcfg["max_age_minutes"]}m/RAT', f'Pat/Pool W={mcfg["window"]}', f'age={mcfg["max_age_minutes"]}m, min={mcfg["minimum_pattern_support"]}', f'{fair_map.loc["MARUR","realized_q_c10"]}/{fair_map.loc["MARUR","realized_q_c40"]}', fair_map.loc['MARUR', 'mean_offer_a'].replace('%', ''), 'p+gate / LTE-NR'],
+        ['MARUR ablat.', 'Age/Periodic', 'Pool/DropMiss', 'NoPat/NoGate/Drop', 'Matched', '6-coh abl', 'Drop / Gate check'],
+        ['PACER', 'Uniform K blk', f'Smooth sel W={pcfg["pacer_obs_window"]}', f'g={pcfg["pacer_gamma"]}, v={pcfg["pacer_veto"]}', f'{fair_map.loc["PACER","realized_q_c10"]}/{fair_map.loc["PACER","realized_q_c40"]}', fair_map.loc['PACER', 'mean_offer_a'].replace('%', ''), 'Excl W / Veto A'],
+    ]
+
+    # Table M9 (Table III in main paper): Controlled Single-Factor Accounting Ablation & Proposition 1 Audit
+    abl_df = pd.read_csv(root / 'results/exploratory/sensitivity/single_factor_ablation.csv')
+    def _tex_clean(s: str) -> str:
+        cleaned = (
+            str(s)
+            .replace('%', ' pct')
+            .replace('<=10', ' max 10')
+            .replace('A_1/A_2 < R+,2/R+,1', 'A1/A2 below R+2/R+1')
+            .replace('max(lo)<=min(hi) when m>0', 'max(lo) at most min(hi), m positive')
+            .replace('[lo,hi]', '(lo, hi)')
+            .replace('sum(w*d)', 'sum(w d)')
+            .replace('R<=a permits R+>a when A<R+/a', 'R le a permits R+ above a')
+            .replace('DEFF = 1+(n-1)rho > G/Greq', 'DEFF = 1+(n-1)rho above G/Greq')
+            .replace('(p<0.05)', '(p below 0.05)')
+            .replace('!=', ' not eq ')
+            .replace('flips', 'revs')
+            .replace('_', ' ')
+        )
+        return ' '.join(cleaned.split())
+    abl_rows = [
+        [_tex_clean(r.label), _tex_clean(r.condition), f'{int(r.n_affected)}/{int(r.n_total)}', f'{r.pct_affected:.1f}', _tex_clean(r.note)]
+        for r in abl_df.itertuples()
     ]
 
     # Table III: Physical campaign-date paired cluster inference (G=16)
@@ -322,19 +348,19 @@ def _main_tables(root: Path) -> dict:
 
     return {
         'table_m2_baselines': (
-            'Evaluated controller and comparator rules generated from frozen repository configurations.',
-            ['Policy', 'Trigger', 'Calibration', 'KeyParams', 'MissingRule', 'Rationale'],
+            'Evaluated controller protocols and 7-axis experimental fairness checklist (all policies start from identical 10 initial labels and identical eligible denominator N; Q10/Q40 show 10-cohort HistGBM Recorded mean realized new queries and MeanA mean offer frequency in percent).',
+            ['Policy', 'Trigger', 'Calibration', 'KeyParams', 'Q10/Q40', 'MeanA', 'Missing/Access'],
             baseline_rows,
+        ),
+        'table_m9_ablation': (
+            'Controlled single-factor accounting ablation across immutable saved contrasts versus Periodic baseline (rates in percent), empirically testing Proposition 1 reversal conditions (post-hoc exploratory ledger audit).',
+            ['AccountingChoice', 'Prop1Condition', 'Affected', 'Rate', 'SecondaryAuditNote'],
+            abl_rows,
         ),
         'table_m3_cluster_inference': (
             'Physical campaign-date accounting and paired MARUR minus Periodic contrasts at matched ten new queries (HistGBM, recorded feedback). G counts collection dates (or 11 Irish traces; All pools co-located carriers onto 16 physical dates). Boot and t intervals span 95 percent.',
             ['Scope', 'G', 'QDays', 'PosDays', 'Pool dU', 'BootLo', 'BootHi', 'Eq dU', 'tLo', 'tHi', 'dRhi'],
             cluster_rows,
-        ),
-        'table_m4_power_equivalence': (
-            'Estimand-matched exploratory relative (+-50 percent coarse screening primary, +-25 percent sensitivity) and absolute (+-1.0 / +-2.0 pp) TOST checks (HistGBM, recorded; three physical campaigns in Retro and HeldOut, six total). EqualCl tests equal-cluster mean dU against +-50/25 percent of equal-cluster Periodic U (zero-U clusters Z0 retained; 0 undefined excluded); PoolRat tests pooled ratio against +-50/25 percent via 90 percent cluster bootstrap CIs.',
-            ['Scope', 'Cand', 'Cap', 'Estimand', 'G', 'Z0', 'RefU', 'Delta', 'RelPct', 'SpreadOrMDE', 'pRel50', 'pRel25', 'pAbs1', 'pAbs2'],
-            pow_rows,
         ),
         'table_m5_pacer_breakdown': (
             'Per-cohort and per-cap comparator results across held-out public archives (26 campaign-dates) and retrospective mean (16 campaign-dates) under frozen HistGBM and recorded feedback. Per, MAR, and PAC denote Periodic, MARUR, and PACER; Exc is 3-seed mean excess vs Theorem 1 bound Bnd.',
@@ -345,6 +371,11 @@ def _main_tables(root: Path) -> dict:
             'Pooling-rule sensitivity for PACER minus Periodic contrasts across held-out (26 dates) and combined (42 dates) clusters (HistGBM, recorded, percentage points; full 18-row table in Supplement Table S16).',
             ['Scope', 'Cap', 'WeightRule', 'Units', 'dPosHi', 'Boot95', 'dU'],
             main_pool_rows,
+        ),
+        'table_m4_power_equivalence': (
+            'Estimand-matched exploratory relative (+-50 percent coarse screening primary, +-25 percent sensitivity) and absolute (+-1.0 / +-2.0 pp) TOST checks (HistGBM, recorded; three physical campaigns in Retro and HeldOut, six total). EqualCl tests equal-cluster mean dU against +-50/25 percent of equal-cluster Periodic U (zero-U clusters Z0 retained; 0 undefined excluded); PoolRat tests pooled ratio against +-50/25 percent via 90 percent cluster bootstrap CIs.',
+            ['Scope', 'Cand', 'Cap', 'Estimand', 'G', 'Z0', 'RefU', 'Delta', 'RelPct', 'SpreadOrMDE', 'pRel50', 'pRel25', 'pAbs1', 'pAbs2'],
+            pow_rows,
         ),
         'table_m7_risk_ceilings': (
             'Theoretical Theorem 1 conditional-risk ceilings min(1, alpha + Bnd / RefA) versus empirical PACER HistGBM cap-40 upper risk (percent unless noted) and operational deployment rules.',
@@ -468,6 +499,27 @@ def _supp_extra_tables(root: Path) -> dict:
             f'{r.eq_du_pacer_c40_pp:+.2f}',
         ])
 
+    # S20: Risk-Supported-Throughput Pareto operating points & matched (Q_new, A) fairness sieve
+    par_df = pd.read_csv(root / 'results/exploratory/sensitivity/risk_utility_pareto.csv')
+    par_sub = par_df[par_df['source'] == 'HistGBM_Recorded_10Coh']
+    par_rows = [
+        [
+            r.policy,
+            str(int(r.cap_new)),
+            f'{r.realized_q_new:.1f}',
+            f'{r.offer_freq_a_pp:.2f}',
+            f'{r.all_risk_hi_pp:.2f}',
+            f'{r.cond_risk_hi_pp:.2f}',
+            f'{r.supported_u_pp:.2f}',
+            r.unmatched_note if 'benchmark' not in r.unmatched_note else '10-coh mean',
+        ]
+        for r in par_sub.itertuples()
+    ]
+    sieve_row = par_df[par_df['source'] == 'FairnessSieve_100Pairs'].iloc[0]
+    par_rows.append([
+        'FairnessSieve', '10/40', 'Q=Periodic', 'dA max 5pp', '100 pairs', '3/28 matched', '3/100 win', 'E1/TMob Early10; Op1 MAR10'
+    ])
+
     return {
         'table_s14_marur_audit': (
             'Retrospective six-cohort controllers at new-query cap 40 under frozen HistGBM and recorded feedback (with ten initial successful labels).',
@@ -498,6 +550,11 @@ def _supp_extra_tables(root: Path) -> dict:
             'Leave-one-campaign-out (LOCampO) robustness and per-campaign medians across all 6 physical field campaigns (HistGBM, recorded; percentages and percentage points). None denotes full 6-campaign pool; CampRhiMed and CampUMed report the omitted campaign median across cap in {10, 40}.',
             ['DroppedCamp', 'RemC', 'G', 'CampRhiMed', 'CampUMed', 'RemMobRhiMed', 'RemUMed', 'EqdU PAC10', 'EqdU PAC40'],
             locampo_rows,
+        ),
+        'table_s20_pareto_fairness': (
+            'Exploratory 10-cohort Risk-Utility operating summary (HistGBM, recorded feedback; percentages) and sequential fairness sieve over all 100 contrasts vs Periodic after matching realized queries Qnew and offer rate A.',
+            ['Policy', 'Cap', 'RealQ', 'OfferA', 'AllRiskHi', 'CondRiskHi', 'SuppU', 'Notes'],
+            par_rows,
         ),
     }
 
@@ -589,6 +646,10 @@ def tables(root=ROOT):
         drive_rows.append([carrier, r.model, str(int(r.issued)), str(int(r.scored)), str(int(r.positive)),
                            str(int(r.violations)), f'{100 * r.lo:.2f}', f'{100 * r.hi:.2f}', f'{100 * r.u:.4f}'])
 
+    main_all = _main_tables(root)
+    supp_extra = _supp_extra_tables(root)
+    supp_extra['table_m7_risk_ceilings'] = main_all.pop('table_m7_risk_ceilings')
+    supp_extra['table_m8_sensitivity'] = main_all.pop('table_m8_sensitivity')
     return {
         'table1_point_predictors': ('Source validation errors in Mbps and measured fit time in seconds.', ['Model', 'MAE', 'RMSE', 'Seconds'], profiles),
         'table2_main_benchmark': ('Test sessions and lower-bound performance by regime and target prefix. P denotes point, G global, R radio access and M missingness groups. V denotes violations and U supported fraction.', ['Regime/K', 'N', 'PV', 'PU', 'GV', 'GU', 'RV', 'RU', 'MV', 'MU'], rows),
@@ -603,14 +664,14 @@ def tables(root=ROOT):
         'table11_irish_groups': ('Chronological Irish persistence forecasts on 108519 rows from sixteen suffix dates. Local counts forecasts using a group-specific offset. Performance measures are percentages.', ['Labels', 'Rule', 'Local', 'Coverage', 'Violation', 'Supported'], group_rows),
         'table12_issued': ('Ten-label Rome clock forecasts. Positive gives measured positive commitments divided by issued positive commitments as counts. Errors counts measured violations. Low and High bound the all-issued violation percentage. U is supported throughput on measured outcomes in percent.', ['Regime', 'Predictor', 'Issued', 'Scored', 'Positive', 'Errors', 'Low', 'High', 'U'], issued_rows),
         'table13_drive3': ('US Drive 3 with ten earlier labels per carrier. Pos counts issued positive commitments. Fail counts observed violations. Risk bounds and supported throughput are percentages.', ['Carrier', 'Model', 'Issued', 'Scored', 'Pos', 'Fail', 'Low', 'High', 'U'], drive_rows),
-        **_supp_extra_tables(root),
-        **_main_tables(root),
+        **supp_extra,
+        **main_all,
     }
 
 
 def latex(spec):
     caption, header, rows = spec
-    prose = header[0] in {'Policy', 'Regime', 'OfferStratum', 'Scope', 'Axis', 'Dropped', 'DroppedCamp'}
+    prose = header[0] in {'Policy', 'Regime', 'OfferStratum', 'Scope', 'Axis', 'Dropped', 'DroppedCamp', 'AccountingChoice'}
     wide_pow = len(header) >= 12
     size = r'\centering\footnotesize\setlength{\tabcolsep}{' + ('2.2pt' if wide_pow else '3.5pt') + '}' if prose else r'\centering\small'
     align = (('llll' + 'r' * (len(header) - 4)) if len(header) > 3 and header[3] == 'Estimand' else ('ll' + 'r' * (len(header) - 2))) if wide_pow else ('l' * len(header) if prose else 'l' + 'r' * (len(header) - 1))

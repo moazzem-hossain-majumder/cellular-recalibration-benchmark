@@ -2,27 +2,29 @@
 
 ## Abstract
 
-Across six retrospective cohorts and four held-out public archives evaluated with frozen tree predictors and fixed policies, conditional upper violation risk spans 9\% to 68\% across mobile cohorts---far above nominal $\alpha=0.10$---while supported measured throughput generally remains 1\% to 3\%. Our principal contribution is demonstrating empirically that measurement-accounting and inference choices reverse policy conclusions on cellular traces, supported by an open-source acquisition-and-decision library, checklist, and CLI tool (\texttt{audit\_policy.py}). Separating query attempts, finite-record missing-outcome bounds, selective decomposition $R=(M/N)R_+$, and offer-count pooling turns an apparent held-out risk gain into an equal-cluster increase and leaves $\pm 50\%$ utility equivalence largely inconclusive under three-campaign clustering sensitivity. Because PACER was designed after inspecting retrospective MARUR failures and scored with prior archive access, held-out results represent a frozen retrospective evaluation rather than independent external replication; all evidence comes from public archives without closed-loop deployment.
+Across six retrospective cohorts and four held-out public archives evaluated under frozen tree predictors and fixed policies, mobile conditional upper violation risk spans 9\% to 68\%---far above nominal $\alpha=0.10$---while supported measured throughput remains 1\% to 3\%, forfeiting most achievable capacity. Why do nominally matched controllers often appear safer in conventional evaluations? Our principal contribution formalizes five necessary single-factor accounting conditions and empirically tests them via controlled ablations and an open-source accounting library and CLI (\texttt{audit\_policy.py}). Unpacking all-issued risk via $R=(M/N)R_+$, matching realized queries, bounding missing outcomes via $[e/M,(e+m)/M]$, separating offer-weighted from equal-cluster pooling, and adjusting for campaign clustering systematically reverse risk rankings, flip an apparent held-out risk reduction into an equal-cluster increase, and leave $\pm 50\%$ utility screening largely inconclusive across three campaigns per scope. Held-out scores remain a frozen retrospective evaluation with prior archive access rather than independent replication; all evidence is from public archives without closed-loop deployment.
 
 <div class="IEEEkeywords">
 
-Cellular throughput, calibration feedback, selective prediction, cluster equivalence, measurement methodology.
+Cellular throughput, measurement methodology, selective risk, cluster equivalence, sparse feedback.
 
 </div>
 
 # Introduction
 
-Across archived mobile cellular traces evaluated with frozen tree predictors and sparse recalibration, conditional upper violation risk spans $`9\%`$–$`68\%`$ above nominal $`\alpha=0.10`$ while supported measured throughput remains around $`1\%`$–$`3\%`$. Point error, low all-issued violations, and equal nominal query caps obscure this operational reality because a controller can appear safer merely by abstaining more often, exhausting probes early, spending unequal realized queries, or omitting missing horizon outcomes.
+Across archived mobile cellular traces under frozen tree predictors and sparse recalibration, conditional upper violation risk spans $`9\%`$–$`68\%`$ above nominal $`\alpha=0.10`$ while supported measured throughput remains around $`1\%`$–$`3\%`$. Conventional evaluations built around point accuracy, all-issued error rates, or equal nominal probe caps obscure these failures because a controller can appear safer merely by abstaining more often, triggering queries inconsistently, or omitting censored horizon outcomes.
 
-We ask: *do nominally matched cellular throughput recalibration policies remain comparable once evaluated over realized measurement opportunities, finite-record missing-outcome bounds, and campaign-level dependence?* Our principal contribution is an empirical demonstration that joint measurement-accounting and inference choices reverse policy interpretations on real cellular logs ($`-23.41`$ vs. $`+0.37`$ pp pooling shift and reversed campaign-adjusted equivalence), complementary to trace-replay emulation tools isolating workload drift (Sentosa et al. 2025). We provide an open-source accounting library, checklist, and CLI tool (`src/audit/recalibration_audit.py`, `scripts/audit_policy.py`) supporting three concrete deliverables:
+We ask: *do nominally matched cellular throughput recalibration policies remain comparable once evaluated over realized measurement opportunities, finite-record missing-outcome bounds, and campaign-level dependence?* Rather than proposing a headline recalibration controller or bundling unrelated benchmarks, our single primary contribution is establishing and testing exact conditions under which evaluation choices reverse controller comparisons on cellular traces, operationalized via an open-source accounting library, fairness/reporting checklists, and CLI tool (`src/audit/recalibration_audit.py`, `scripts/audit_policy.py`). We organize our evidence around four research questions across $`G=16`$ retrospective and $`G=26`$ held-out dates spanning six physical campaigns:
 
-1.  **Acquisition-and-decision ledger and CLI:** Temporally ordered tracking of probe requests, horizon missingness, and finite-record bounds $`[e/M,(e+m)/M]`$ satisfying $`R=(M/N)R_+`$, paired with an automated warning CLI and practitioner checklist.
+1.  **RQ1 (Reversal conditions & ablation):** Under what formal conditions do individual accounting layers reverse comparisons (Proposition 1), and how often do single-factor flips occur?
 
-2.  **Exploratory equivalence limits:** Physical campaign-date contrasts ($`G=16`$ retrospective; $`G=26`$ held-out) separating equal-cluster relative TOST, pooled-ratio bootstrap TOST, and low-precision campaign-level sensitivity checks establishing no general utility equivalence.
+2.  **RQ2 (Risk–utility & fair matching):** Do adaptive controllers improve supported throughput $`U`$ per unit conditional risk $`R_+^{\text{hi}}`$ once realized queries $`Q_{\text{new}}`$ and offer rates $`A`$ are jointly matched?
 
-3.  **Frozen retrospective comparator audit:** Evaluating *Missingness-Aware Recalibration under Uncertainty and Risk* (MARUR) and *Horizon-Paced Selective-Offer Conformal Control* (PACER, designed after inspecting retrospective MARUR failures and parameter-frozen prior to held-out scoring) against baselines, documenting pooling-weight artifacts and vacuous small-budget bounds.
+3.  **RQ3 (Frozen case study & formal limits):** How do MARUR and PACER behave as frozen retrospective case studies, and when do formal pacing bounds hold vacuously?
 
-All evidence comes from retrospective public archives under frozen predictors and fixed schedules without independent external replication or live field validation, and it does not cover other devices, operators, measurement tools, or closed-loop deployment; all negative findings are retained.
+4.  **RQ4 (Campaign precision & scope):** What precision limits remain across three campaigns per geographic scope?
+
+All evidence comes from retrospective public archives without independent external replication or live field validation, and it does not cover other devices, operators, measurement tools, or closed-loop deployment; all negative findings are retained.
 
 # Related Work
 
@@ -30,13 +32,11 @@ All evidence comes from retrospective public archives under frozen predictors an
 
 Operational measurements establish that cellular throughput depends on radio conditions, mobility, and collection protocol. Earlier channel/context traces (Raca et al. 2020) and commercial millimeter-wave (mmWave) fifth-generation (5G) campaigns (Narayanan et al. 2020) enabled context-aware rate prediction, while newer multi-technology datasets and machine-learning evaluations extend these insights to non-standalone 5G deployments (Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; Kousias, Rajiullah, Caso, Alay, et al. 2024). However, forecast errors sampled within a single route or shared drive are temporally correlated rather than independent replications, and low point error does not bound rate-commitment violations.
 
-Missing inputs and deployment realism motivate complementary lines of work. The Boosted Additive Model for data with Missing Observations (BAMMO) handles missing covariates during commercial 5G throughput modeling (Jacobson et al. 2025), addressing unobserved inputs rather than unsuccessful acquisition of future calibration outcomes. Smartphone video streaming studies highlight real-time sampling shift (Raca et al. 2024), multi-carrier experiments document conflicting rate histories across links (Basit et al. 2024), and *CellReplay* (Sentosa et al. 2025) solves trace-replay emulation bias caused by workload-dependent cellular adaptation across multiple recorded workloads. Even on fixed recorded traces without replay-workload distortion, however, Sirhan (Sirhan 2026) and conformal baselines do not audit how unequal probe spending, missing horizon completions, offer-weighted pooling, and campaign clustering jointly flip controller evaluations.
+Missing inputs and deployment realism motivate complementary lines of work. The Boosted Additive Model for data with Missing Observations (BAMMO) addresses missing input covariates in commercial 5G prediction (Jacobson et al. 2025), rather than failed acquisition of future calibration outcomes. Smartphone streaming traces expose real-time sampling shift (Raca et al. 2024), multi-carrier measurements reveal divergent link predictability (Basit et al. 2024), and *CellReplay* (Sentosa et al. 2025) solves trace-replay emulation drift caused by adaptive workload feedback. Even without emulation-workload drift on fixed logs, however, global, grouped, and adaptive conformal baselines such as Sirhan (Sirhan 2026) evaluate full-outcome splits without auditing probe budgets or missing completions.
 
-## Missingness, Adaptation, and Budgeted Feedback
+## Why Isolated Accounting Adjustments Are Insufficient
 
-Conformal calibration with missing covariates separates marginal coverage from missingness-pattern conditioning (Zaffran et al. 2023), whereas covariate-shift reweighting (Tibshirani et al. 2019) and non-exchangeable weighted quantiles (Barber et al. 2023) rely on structural weights that degrade under unmodeled drift and outcome censoring. Sequential time-series conformal methods (Zaffran et al. 2022; Xu and Xie 2023; Lin et al. 2022; Gibbs and Candès 2024), Adaptive Conformal Inference (ACI) and online variants (Gibbs and Candès 2021; Bhatnagar et al. 2023; Angelopoulos et al. 2023; Anastasios Nikolas Angelopoulos et al. 2024; Podkopaev et al. 2024), and risk-controlling formulations (Bates et al. 2021; Anastasios N. Angelopoulos et al. 2024; Angelopoulos et al. 2025; Gibbs et al. 2025; Gauthier et al. 2026) assume complete label revelation after each step, while selective classification (Geifman and El-Yaniv 2017) and interval-stability critiques (Min et al. 2026) formalize abstention–risk interactions.
-
-Recent work examines partial or costly feedback directly: upfront stopping rules under i.i.d. arrivals (Ilyas et al. 2026), semi-bandit feedback revealed by set inclusion (Ge et al. 2025), and sporadic edge–cloud calibration (Hou et al. 2025). Our study complements these directions by auditing real cellular ledgers jointly over probe expenditures, unobserved outcomes, $`R=(M/N)R_+`$, and physical cluster equivalence (Table I).
+Existing statistical methodologies examine missingness, adaptation, or sparse labels individually: missing-pattern conformal prediction (Zaffran et al. 2023) and covariate-shift or weighted quantiles (Tibshirani et al. 2019; Barber et al. 2023) focus on covariate or smooth distributional drift; sequential time-series conformal methods (Zaffran et al. 2022; Xu and Xie 2023; Lin et al. 2022; Gibbs and Candès 2024), ACI/OGD (Gibbs and Candès 2021; Bhatnagar et al. 2023; Angelopoulos et al. 2023; Anastasios Nikolas Angelopoulos et al. 2024; Podkopaev et al. 2024), and risk control (Bates et al. 2021; Anastasios N. Angelopoulos et al. 2024; Angelopoulos et al. 2025; Gibbs et al. 2025; Gauthier et al. 2026) generally assume complete step-wise feedback; while upfront stopping (Ilyas et al. 2026), semi-bandit feedback (Ge et al. 2025), sporadic feedback (Hou et al. 2025), and selective abstention/stability analyses (Geifman and El-Yaniv 2017; Min et al. 2026) treat isolated aspects of cost or abstention. On real cellular logs, however, evaluation failures compound across layers: shrinking offer frequency masks conditional risk spikes while simultaneously changing realized cooldown queries, position-locked missingness interacts asymmetrically with periodic updates, and offer-count covariance across heterogeneous cohorts flips pooled contrasts. Auditing these multi-layer failures jointly motivates Proposition 1 and Table I.
 
 <div class="table*">
 
@@ -59,11 +59,20 @@ Recent work examines partial or costly feedback directly: upfront stopping rules
 
 </div>
 
-# Decision Process, Accounting, and Audit Tool
+# Measurement-Accounting Framework and Assumptions
 
-At scheduled issue time $`t`$, a frozen predictor outputs point forecast $`p_t`$ from strictly prior lag throughput and radio telemetry. A controller selects nonnegative commitment $`L_t \ge 0`$ and decides whether to request outcome $`y_t`$ over the upcoming horizon (`ready` timestamp); ticks lacking a valid prior rate are marked ineligible ($`L_t = 0`$). All controllers begin with identical complete initial pre-test labels excluded from new target queries $`Q_{\text{new}}`$ under budget cap $`C_{\text{new}}`$.
+Fig. 1 summarizes the complete workflow, explicitly separating source training (*Rome Op1* 57 rows), retrospective policy design, frozen held-out scoring (with prior archive access), and post-hoc exploratory audits.
 
-Across $`N`$ eligible opportunities, let $`M = \sum_t \mathbf{1}\{L_t > 0\}`$ denote positive commitments, $`A = M/N`$ the positive-offer frequency, $`e`$ observed violations ($`L_t > y_t`$), and $`m`$ positive commitments lacking observed $`y_t`$. Because $`y_t \ge 0`$ prevents zero commitments from violating, all-issued risk $`R`$ and positive-offer conditional risk $`R_+`$ obey
+<figure id="fig:pipeline" data-latex-placement="!t">
+<embed src="figures/main_fig0_pipeline_flow.png" style="width:95.0%" />
+<figcaption>End-to-end study workflow explicitly distinguishing source predictor fitting, retrospective design, SHA-256 frozen retrospective scoring (prior archive access, not independent external replication), five-layer accounting (Proposition 1), and post-hoc exploratory audits.</figcaption>
+</figure>
+
+## Decision Clock, Accounting Identity, and Reversal Conditions
+
+At scheduled issue time $`t`$, a frozen predictor outputs point forecast $`p_t`$ from strictly prior lag throughput and radio telemetry. A controller selects nonnegative commitment $`L_t \ge 0`$ and decides whether to probe $`y_t`$ over a 60-second horizon (`ready` timestamp); ticks lacking a valid prior rate are marked ineligible ($`L_t = 0`$). All controllers receive identical pre-test initial labels excluded from new target queries $`Q_{\text{new}}`$ under nominal cap $`C_{\text{new}}`$.
+
+Across $`N`$ eligible opportunities, let $`M = \sum_t \mathbf{1}\{L_t > 0\}`$ denote positive commitments, $`A = M/N`$ positive-offer frequency, $`e`$ observed violations ($`L_t > y_t`$), and $`m`$ positive offers lacking observed $`y_t`$. Because $`y_t \ge 0`$ prevents zero commitments from violating, all-issued risk $`R`$ and positive-offer conditional risk $`R_+`$ satisfy
 ``` math
 \begin{equation}
 \begin{aligned}
@@ -73,42 +82,87 @@ R_+ &\in [e/M, (e+m)/M]\qquad (M > 0),
 \label{eq:risk_bounds}
 \end{equation}
 ```
-where $`[e/M,(e+m)/M]`$ are exact finite-record partial-identification bounds (Manski 1989). Whenever abstention shrinks $`A`$, $`R \le \alpha`$ permits $`R_+ \approx \alpha/A \gg \alpha`$. Service utility is measured via supported throughput $`U = \sum_{t:y_t\text{ obs}}\min(L_t,y_t)/\sum_{t:y_t\text{ obs}}y_t`$.
+and service utility is measured by supported throughput $`U = \sum_{t:y_t\text{ obs}}\min(L_t,y_t)/\sum_{t:y_t\text{ obs}}y_t`$.
 
-## Practitioner Checklist and `audit_policy.py` Tool
+**Proposition 1 (Single-Factor Evaluation Reversal Conditions):** Comparing candidate $`a`$ against baseline $`b`$ on finite records admits five falsifiable failure mechanisms:
 
-To operationalize these checks, `src/audit/recalibration_audit.py` and `scripts/audit_policy.py` ingest cluster-summary or tick-level CSV ledgers, verify <a href="#eq:risk_bounds" data-reference-type="eqref" data-reference="eq:risk_bounds">[eq:risk_bounds]</a>, compute separate equal-cluster and pooled-ratio relative equivalence tests alongside absolute TOST and $`\text{MDE}_{80}`$, and emit automated deployment warnings (boxed checklist). Run on our exported held-out cap-10 ledger (`examples/worked_heldout_c10_ledger.csv`), the CLI flags zero-offer clusters, unmatched realized queries, inconclusive relative equivalence, and offer-count pooling divergence ($`-23.41`$ pp vs. $`+0.37`$ pp).
+1.  *Abstention rank/SLA flip ($`R`$ vs. $`R_+`$):* Pairwise risk order reverses ($`R_a < R_b`$ with $`R_{+,a} > R_{+,b}`$) iff $`A_a/A_b < R_{+,b}/R_{+,a}`$, and nominal compliance $`R_a \le \alpha`$ admits $`R_{+,a} > \alpha`$ whenever $`A_a < R_{+,a}/\alpha`$.
+
+2.  *Query disparity ($`C_{\text{new}}`$ vs. $`Q_{\text{new}}`$):* Nominal-cap equality misallocates measurement effort whenever trigger or cooldown logic produces $`Q_{\text{new},a} \ne Q_{\text{new},b}`$.
+
+3.  *Missing-outcome indeterminacy ($`R_+^{\text{meas}}`$ vs. $`[R_+^{\text{lo}}, R_+^{\text{hi}}]`$):* Complete-case orderings lose worst-case identifiability whenever $`\max(R_+^{\text{lo},a}, R_+^{\text{lo},b}) \le \min(R_+^{\text{hi},a}, R_+^{\text{hi},b})`$ with $`m_a + m_b > 0`$.
+
+4.  *Pooling-weight reversal ($`\Delta_{\text{pool}}`$ vs. $`\Delta_{\text{eq}}`$):* Offer-weighted risk contrast $`\sum_c w_c^a R_{+,c}^a - \sum_c w_c^b R_{+,c}^b`$ (with $`w_c = M_c / \sum_j M_j`$) reverses equal-unit mean $`\Delta_{\text{eq}}`$ whenever cohort risk covaries with offer shares or weights differ across policies.
+
+5.  *Clustering variance reversal ($`G`$ vs. $`G_{\text{eff}}`$):* Date-level rejections reverse under campaign dependence whenever intra-campaign correlation $`\rho > 0`$ inflates $`\text{DEFF}=1+(\bar{n}-1)\rho`$ such that effective units $`G_{\text{eff}}=G/\text{DEFF}`$ fail critical significance, or hierarchical bootstrap across $`k`$ campaigns fails containment.
+
+## Missingness Mechanisms, Margin Choice, and Utility Meaning
+
+Missing horizon outcomes arise from two mechanisms in the logs: trace or session truncation censoring past log completion, and synthetic deterministic masking (`QueryCensor20`), which suppresses every fifth eligible tick and selectively skips fixed periodic updates while hitting asynchronous triggers. Partial-identification bounds <a href="#eq:risk_bounds" data-reference-type="eqref" data-reference="eq:risk_bounds">[eq:risk_bounds]</a> (Manski 1989) require only binary bounded loss outcomes without assuming missingness-at-random, whereas supported throughput $`U`$ conditions on observed $`y_t`$ and cannot bound unmeasured sessions.
+
+Because no standard cellular SLA defines a universal relative utility equivalence threshold, $`\pm 50\%`$ (and $`\pm 25\%`$ sensitivity) serve explicitly as *exploratory precision-screening benchmarks* asking whether three campaigns can rule out halving or doubling baseline throughput—not production acceptability thresholds. Fixed one-point and two-point margins likewise span excessive fractions of a $`1\%`$–$`3\%`$ baseline. Operationally, supporting only a few percent of throughput means conservative backoffs and abstention leave almost all link capacity uncommitted.
+
+## Fairness Checklist, Reporting CLI, and Evaluated Policies
+
+Table II consolidates all nine evaluated policy families alongside a seven-axis fairness audit confirming identical initial labels, identical slots $`N`$, unequal realized query spend ($`Q_{10}/Q_{40}`$), distinct offer rates, missingness rules, and feature access. Our library (`src/audit/recalibration_audit.py`) and CLI (`scripts/audit_policy.py`) enforce <a href="#eq:risk_bounds" data-reference-type="eqref" data-reference="eq:risk_bounds">[eq:risk_bounds]</a>, emit warnings from the six-item checklist, and compute separated equal-cluster and pooled-ratio TOST tests. Run on `examples/worked_heldout_c10_ledger.csv`, the CLI flags zero-offer clusters, unmatched queries, inconclusive equivalence, and offer-count pooling divergence ($`-23.41`$ vs. $`+0.37`$ pp).
 
 <figure data-latex-placement="!t">
 
 </figure>
 
-## Evaluated Controllers and Baselines
-
-Nine policy families share this temporally ordered decision interface (Table II; decision taxonomy in Supplement Table S15): static *Frozen*, greedy *Early*, uniform *Random*, fixed *Periodic*, sparse *ACI* (Gibbs and Candès 2021), *Decaying Online Gradient Descent* (*DecayingOGD*) (Anastasios Nikolas Angelopoulos et al. 2024), reactive *MARUR* (60-minute or LTE/NR pattern triggers, window inserting predicted score on missingness, and pattern gates), and *PACER* (designed after inspecting retrospective MARUR failures; uniform block pacing excluding missingness and using smooth selective updates).
-
 <div class="table*">
 
-|  |  |  |  |  |  |
-|:---|:---|:---|:---|:---|:---|
-| Policy | Trigger | Calibration | KeyParams | MissingRule | Rationale |
-| Frozen | None (C=0) | Static Init10 | init=10 | None | Zero-cost anchor |
-| Early | Every elig tick | FIFO W=10 | C=10/40 | Insert score=p | Day-1 exhaust |
-| Random | Uniform seed | FIFO W=10 | seeds=42,123,2026 | Insert score=p | Nonadaptive |
-| Periodic | Every P=15 ticks | FIFO W=10 | P=15, W=10 | Insert score=p | Fixed cadence |
-| ACI | Every P=15 ticks | Online level a | eta=0.05, W=10 | err=1 on pos | Sparse ACI |
-| DecayingOGD | Every P=15 ticks | Decaying step | exp=0.6 | score=p on miss | Decaying OGD |
-| MARUR | Age 60m or RAT | Pat/Pool W=10 | age=60m, min=3 | Insert p + gate | Heuristic |
-| MARUR ablat. | Age or Periodic | Pool/DropMiss | NoPat/NoGate/Drop | Drop or Periodic | Gate/miss check |
-| PACER | Uniform K blk | Smooth sel W=20 | g=0.05, v=0.15 | Excl W; e=1 | Paced comparator |
+|  |  |  |  |  |  |  |
+|:---|:---|:---|:---|:---|:---|:---|
+| Policy | Trigger | Calibration | KeyParams | Q10/Q40 | MeanA | Missing/Access |
+| Frozen | None (C=0) | Static Init10 | init=10 | 0.0 | 35.9 | None / None |
+| Early | Every elig | FIFO W=10 | C=10/40 | 10.0/40.0 | 28.3 | Insert p / Resid |
+| Random | Uniform seed | FIFO W=10 | seeds=42,123,2026 | 10/Match | 6-coh seed | Insert p / Resid |
+| Periodic | Every P=15 | FIFO W=10 | P=15, W=10 | 10.0/21.6 | 22.1 | Insert p / Resid |
+| ACI | Every P=15 | Online alpha | eta=0.05, W=10 | 10.0/21.6 | 18.1 | err=1 / Online a |
+| DecayingOGD | Every P=15 | Decaying step | exp=0.6 | 10.0/21.6 | 27.2 | p miss / Step |
+| MARUR | Age 60m/RAT | Pat/Pool W=10 | age=60m, min=3 | 9.5/30.3 | 30.6 | p+gate / LTE-NR |
+| MARUR ablat. | Age/Periodic | Pool/DropMiss | NoPat/NoGate/Drop | Matched | 6-coh abl | Drop / Gate check |
+| PACER | Uniform K blk | Smooth sel W=20 | g=0.05, v=0.15 | 9.9/37.8 | 24.5 | Excl W / Veto A |
 
 </div>
 
-# Retrospective Inference and Power Analysis
+# Empirical Results
 
-Six retrospective cohorts operate on 60-second forward-ordered measurement clocks (Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; NUWiNS 2025; Raca et al. 2020): Rome *E1* and *E3*, US Drive 3 (*AT&T*, *T-Mobile*, *Verizon*), and *Ireland* driving traces. Earliest Rome Op1 splits train the frozen Histogram Gradient Boosted Machine (*HistGBM*) on 57 source rows without future leakage; co-located carriers collapse onto three geographic campaigns and $`G=16`$ physical campaign-dates.
+Six retrospective cohorts operate on 60-second forward-ordered measurement clocks (Kousias, Rajiullah, Caso, Ali, et al. 2024; Caso et al. 2024; NUWiNS 2025; Raca et al. 2020): Rome *E1* and *E3*, US Drive 3 (*AT&T*, *T-Mobile*, *Verizon*), and *Ireland* driving logs, collapsed across co-located links onto three physical campaigns and $`G=16`$ campaign-dates under frozen 57-row *HistGBM*.
 
-Across mobile-cohort *HistGBM* evaluations (*Periodic*, *MARUR*, *PACER*), conditional upper risk $`R_+^{\text{hi}}`$ spans $`9\%`$–$`68\%`$, well above $`\alpha=0.10`$, while quasi-stationary *Ireland Static* stays lower and supported throughput generally remains $`1\%`$–$`3\%`$ (Fig. 1; high-budget six-cohort breakdown in Supplement Table S14).
+Across mobile evaluations, conditional upper risk $`R_+^{\text{hi}}`$ spans $`9\%`$–$`68\%`$ above nominal tolerance while $`U`$ remains around $`1\%`$–$`3\%`$ (Fig. 3; high-budget breakdown in Supplement Table S14).
+
+## RQ1: Controlled Single-Factor Accounting Ablation
+
+Testing Proposition 1 one accounting choice at a time across immutable saved ledgers proves that evaluation reversals are widespread rather than isolated anomalies (Table III, Fig. 2a). Across $`400`$ cohort-model-scenario-cap comparisons versus Periodic, switching from all-issued risk $`R^{\text{hi}}`$ to conditional risk $`R_+^{\text{hi}}`$ flips nominal ten-percent SLA compliance in $`228/400`$ ($`57.0\%`$) cases and reverses pairwise winners in $`33.8\%`$.
+
+Evaluating nominal caps without auditing realized spend $`Q_{\text{new}}`$ mismatches probe effort in $`124/400`$ ($`31.0\%`$) comparisons (plus $`72/432`$ active contrasts in the MARUR audit).
+
+Accounting for missingness bounds across unresolved comparisons leaves $`47.4\%`$ ($`135/285`$) with overlapping $`[R_+^{\text{lo}}, R_+^{\text{hi}}]`$ intervals and nine worst-case rank flips.
+
+Varying pooling rules reverses the sign of $`\Delta R_+^{\text{hi}}`$ in $`47/120`$ ($`39.2\%`$) scope contrasts and shifts $`\Delta U`$ sign in $`20.8\%`$.
+
+Table IV details date-level MARUR mechanisms at matched ten new queries ($`-0.09`$ pp equal-cluster mean across $`G=16`$; *Ireland* removes $`-14`$ shared-offer failures by cutting offers rather than improving calibration).
+
+<div class="table*">
+
+|  |  |  |  |  |
+|:---|:---|:---|:---|:---|
+| AccountingChoice | Prop1Condition | Affected | Rate | SecondaryAuditNote |
+| All-issued R vs Cond R+ (SLA max 10 pct) | R le a permits R+ above a | 228/400 | 57.0 | 0 algebraic mismatches |
+| All-issued R vs Cond R+ (Winner) | A1/A2 below R+2/R+1 | 135/400 | 33.8 | Exact 0 mismatches across 400 |
+| Nominal Cnew vs Realized Qnew | Qnew(cand) not eq Qnew(Periodic) | 124/400 | 31.0 | 72/432 in 6-coh MARUR audit |
+| Complete R+meas vs Bounds (lo, hi) | max(lo) at most min(hi), m positive | 135/285 | 47.4 | 9 rank / 8 SLA revs |
+| OfferWtd vs EqualUnit Pooling (dR+hi) | Cov(w c, r c) not eq 0 revs sum(w d) | 47/120 | 39.2 | 25/120 U revs (20.8 pct) |
+| Date TOST vs Donner DEFF (p below 0.05) | DEFF = 1+(n-1)rho above G/Greq | 2/5 | 40.0 | 4/5 HierBoot Eq revs; 0/10 Pool pass |
+
+</div>
+
+<figure id="fig:ablation_pareto" data-latex-placement="!t">
+<embed src="figures/main_fig4_ablation_pareto.png" style="width:92.0%" />
+<figcaption>Exploratory verification of Proposition 1 across saved ledgers: (a) single-factor reversal/ambiguity rates across all five accounting layers (Donner DEFF flips 2/5, hierarchical bootstrap flips 4/5 naive passes), and (b) 10-cohort Risk–Utility trade-off showing no adaptive controller beating Periodic jointly on <span class="math inline">(<em>R</em><sub>+</sub><sup>hi</sup>, <em>U</em>)</span> when realized queries and offer rates are matched (3/100 contrasts).</figcaption>
+</figure>
 
 <div class="table*">
 
@@ -126,48 +180,30 @@ Across mobile-cohort *HistGBM* evaluations (*Periodic*, *MARUR*, *PACER*), condi
 
 </div>
 
-## Matched-Estimand Relative Equivalence and Campaign Dependence
+## RQ2: Risk–Utility Pareto Frontier and Matched Fairness Audit
 
-Equal-cluster and pooled summaries answer different weighting questions and can point in opposite directions (Table IV). Equal-cluster weighting weights each date identically (Periodic mean $`U`$ is $`1.52\%`$ retrospective and $`6.32\%`$ held-out), whereas pooled totals weight by observed throughput sums (Periodic pooled $`U`$ is $`0.60\%`$ and $`1.01\%`$): because heavy-traffic days exhibit low baseline $`U`$ and occasional positive gains, they lift pooled ratios while light-traffic days drive negative equal-cluster means ($`-0.09`$ pp on retrospective MARUR).
+Plot (b) of Fig. 2 shows the mean ten-cohort $`(U, R_+^{\mathrm{hi}})`$ trade-off across nominal levels $`\alpha \in \{0.05, 0.10, 0.20\}`$ and $`1800`$ sensitivity runs (Supplement Table S20).
 
-To avoid mixing estimands, we evaluate two matched relative TOST formulations relative to each estimand’s own Periodic baseline. Because baseline supported throughput sits near $`1\%`$–$`3\%`$, $`\pm 50\%`$ is a coarse pragmatic screening margin (accepting halving or doubling baseline throughput, paired with $`\pm 25\%`$ sensitivity and preserved one- and two-point absolute checks). Clusters with undefined $`U`$ are excluded (none across our cohorts), whereas zero-baseline clusters remain in linear equal-cluster differences rather than unstable per-cluster ratios.
+No controller reaches the high-utility, low-risk quadrant: tightening nominal tolerance to five percent shrinks throughput below one percent ($`0.32\%`$–$`0.92\%`$) while conditional risk remains $`28.5\%`$–$`49.3\%`$.
 
-On naive campaign-date inference without campaign clustering (Table IV), equal-cluster $`\pm 50\%`$ TOST is inconclusive for retrospective MARUR ($`p=0.1228`$) and low-cap held-out PACER ($`p=0.5369`$), while passing for retrospective PACER ($`p=0.0430`$) and high-cap held-out PACER ($`p=0.0071`$). Conversely, pooled-ratio equivalence fails in every scope because ninety-percent bootstrap intervals extend past fifty percent.
+Relaxing nominal tolerance lifts supported throughput to $`4.4\%`$–$`7.4\%`$ only at $`42.9\%`$–$`47.1\%`$ conditional upper risk.
 
-Re-applying an exploratory, low-precision post-hoc campaign-level adjustment over only three field campaigns per scope (Supplement Table S18) contracts effective units to $`3.84/16`$ on retrospective MARUR ($`p=0.2988`$) and $`6.73/26`$ on high-cap held-out PACER.
+Applying a sequential fairness sieve across $`100`$ *HistGBM Recorded* contrasts versus Periodic drops unfiltered risk–utility wins from $`15/100`$ to $`8/69`$ at matched realized queries.
 
-This adjustment reverses high-cap held-out equivalence ($`p=0.0071 \to 0.1153`$). Where Donner’s three-campaign variance estimate stays near zero on retrospective PACER ($`G_{\text{eff}}=14.77/16`$, borderline $`p=0.0498`$ at low cap), two-stage hierarchical bootstrap intervals cannot fabricate independent campaign signal and extend past fifty percent in every scope. Non-significant differences or unrejected null intervals here represent insufficient precision and lack of evidence for a difference, never evidence of equivalence or generalization to unseen campaigns.
-
-<div class="table*">
-
-|  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-|:---|:---|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Scope | Cand | Cap | Estimand | G | Z0 | RefU | Delta | RelPct | SpreadOrMDE | pRel50 | pRel25 | pAbs1 | pAbs2 |
-| Retro | MAR | 10 | EqualCl | 16 | 4 | 1.52 | -0.09 | -6.2 | MDE 1.65 | 0.1228 | 0.3060 | 0.0609 | 0.0018 |
-| Retro | MAR | 10 | PoolRat | 16 | 4 | 0.60 | +0.21 | +35.3 | -44.3 to +207.3 | 0.4145 | 0.5560 | NA | NA |
-| Retro | PAC | 10 | EqualCl | 16 | 4 | 1.52 | -0.10 | -6.6 | MDE 1.08 | 0.0430 | 0.2239 | 0.0122 | 0.0000 |
-| Retro | PAC | 10 | PoolRat | 16 | 4 | 0.60 | +0.11 | +18.3 | -32.5 to +108.3 | 0.2260 | 0.4255 | NA | NA |
-| HeldOut | MAR | 10 | EqualCl | 26 | 4 | 6.32 | -3.36 | -53.1 | MDE 4.54 | 0.5497 | 0.8675 | 0.9286 | 0.8041 |
-| HeldOut | MAR | 10 | PoolRat | 26 | 4 | 1.01 | +0.40 | +40.0 | +4.4 to +81.9 | 0.3235 | 0.7325 | NA | NA |
-| HeldOut | PAC | 10 | EqualCl | 26 | 4 | 6.32 | -3.29 | -52.0 | MDE 4.01 | 0.5369 | 0.8872 | 0.9457 | 0.8213 |
-| HeldOut | PAC | 10 | PoolRat | 26 | 4 | 1.01 | +0.47 | +46.9 | -1.5 to +114.7 | 0.4240 | 0.7285 | NA | NA |
-| HeldOut | PAC | 40 | EqualCl | 26 | 2 | 4.47 | +0.01 | +0.3 | MDE 2.46 | 0.0071 | 0.1008 | 0.1261 | 0.0132 |
-| HeldOut | PAC | 40 | PoolRat | 26 | 2 | 1.17 | +0.51 | +43.1 | -39.5 to +154.0 | 0.4155 | 0.5925 | NA | NA |
-| AllCoh | PAC | 40 | EqualCl | 42 | 6 | 3.27 | +0.02 | +0.8 | MDE 1.53 | 0.0021 | 0.0721 | 0.0372 | 0.0003 |
-| AllCoh | PAC | 40 | PoolRat | 42 | 6 | 0.80 | +0.31 | +38.6 | -21.2 to +113.6 | 0.3575 | 0.6105 | NA | NA |
-
-</div>
+Further matching positive-offer frequency within five percentage points leaves $`28`$ jointly fair contrasts, of which only $`3/100`$ (*E1* and *T-Mobile* Early, plus *Rome Capacity Op1* MARUR at low cap) improve risk while PACER achieves $`0/20`$.
 
 <figure id="fig:policy_summary" data-latex-placement="!t">
 <embed src="figures/main_fig1_policy_summary.png" style="width:84.0%" />
 <figcaption>Overview of (a) positive-offer frequency <span class="math inline"><em>A</em></span>, (b) conditional upper risk <span class="math inline"><em>R</em><sub>+</sub><sup>hi</sup></span> vs. <span class="math inline"><em>α</em> = 10%</span>, and (c) supported throughput <span class="math inline"><em>U</em></span> across all 10 archived cohorts (6 retrospective R, 4 held-out H) under frozen HistGBM and recorded feedback.</figcaption>
 </figure>
 
-# Frozen Held-Out Archives and Bound Audit
+## RQ3: Frozen Held-Out Case Study and Formal Bound Limits
 
-Four held-out public archives contribute $`G=26`$ additional physical campaign-dates ($`42`$ pooled clusters total): shared *Rome Capacity Op1/Op2* dates, post-2011 *Oslo Commute* (Riiser et al. 2013), and *Ireland Static*. We separate the retrospective design phase (inspecting MARUR failures to specify PACER) from the frozen held-out scoring phase (checksum-locking parameters in `docs/PACER_FROZEN_PROTOCOL.md`). Because the authors had prior access to these public archives, held-out results constitute a frozen retrospective evaluation rather than independent external replication or proof of general PACER effectiveness.
+Four held-out public archives contribute $`G=26`$ additional physical campaign-dates ($`42`$ pooled clusters total): shared *Rome Capacity Op1/Op2* dates, post-2011 *Oslo Commute* (Riiser et al. 2013), and *Ireland Static*. We separate the retrospective design phase (inspecting MARUR failures to specify PACER) from the frozen scoring phase (SHA-256 protocol in `docs/PACER_FROZEN_PROTOCOL.md`). Because the authors had prior archive access, held-out results form a frozen retrospective case study rather than independent external confirmation.
 
-Per-cohort outcomes remain heterogeneous (Table V, Fig. 2): PACER lowers first-day risk on Oslo at low cap and keeps low risk on Ireland Static, yet matches or trails Periodic across most mobile cells. Table VI resolves why pooled headlines diverge: offer-weighted held-out contrast ($`-23.41`$ pp) reflects Oslo’s heavy Periodic offer share versus Ireland Static’s PACER share, vanishing under equal-cluster weighting ($`+0.37`$ pp); under Persistence at high cap, PACER cuts pooled utility by $`-29.95`$ pp relative to Frozen (full matrix in Supplement Table S16).
+Case-study performance remains mixed (Table V, Fig. 4; pooling in Table VI, full matrix in Supplement Table S16): offer-weighted pooling claims a $`-23.41`$ pp low-cap risk improvement for PACER driven by Oslo versus Ireland offer weights, reversing to $`+0.37`$ pp equal-unit, while Persistence PACER loses $`-29.95`$ pp utility.
+
+Formally, PACER’s block-pacing bound ($`6.8/K`$ under locked settings; Supplement Table S21, Fig. S9) assumes an oblivious stream (Vovk et al. 2005) and tightens below the deterministic ceiling $`0.9A`$ in only $`4/40`$ seed-mean cells. Because sparse cellular commitments commonly yield low $`A`$, non-vacuous bounds would require stronger stationarity absent across mobile handovers; practitioners should inspect empirical bounds and $`U`$ directly.
 
 <div class="table*">
 
@@ -189,7 +225,7 @@ Per-cohort outcomes remain heterogeneous (Table V, Fig. 2): PACER lowers first
 
 <figure id="fig:pacer_breakdown" data-latex-placement="!t">
 <embed src="figures/main_fig2_pacer_breakdown.png" style="width:78.0%" />
-<figcaption>Per-cohort conditional upper risk <span class="math inline"><em>R</em><sub>+</sub><sup>hi</sup></span> comparing Periodic, MARUR, and PACER across held-out public archives and the 6-cohort retrospective mean at (a) <span class="math inline"><em>C</em><sub>new</sub> = 10</span> and (b) <span class="math inline"><em>C</em><sub>new</sub> = 40</span> (frozen HistGBM, recorded feedback).</figcaption>
+<figcaption>Per-cohort conditional upper risk <span class="math inline"><em>R</em><sub>+</sub><sup>hi</sup></span> comparing Periodic, MARUR, and PACER across frozen held-out archives and the 6-cohort retrospective mean at (a) <span class="math inline"><em>C</em><sub>new</sub> = 10</span> and (b) <span class="math inline"><em>C</em><sub>new</sub> = 40</span> (HistGBM, recorded).</figcaption>
 </figure>
 
 <div class="table*">
@@ -210,92 +246,49 @@ Per-cohort outcomes remain heterogeneous (Table V, Fig. 2): PACER lowers first
 
 </div>
 
-## Theorem 1 Formal Bound and Operational Limits
+## RQ4: Estimand-Matched Equivalence and Campaign Precision
 
-PACER’s weighted selective-excess bound over $`K=\min(C_{\text{new}}, T)`$ uniform probes $`u_k \sim \mathrm{Uniform}(\mathcal{B}_k)`$ is
-``` math
-\begin{equation}
-\mathbf{E}\!\left[A\left(R_+^{\text{upper}} - \alpha\right)\right] \le \frac{W_{\max}}{T} \cdot \frac{\alpha + a_{\text{veto}} + \gamma(1 - \alpha)(1 + D)}{\gamma},
-\label{eq:t1_bound}
-\end{equation}
-```
-where $`W_{\max}=\lceil T/K \rceil`$ and inter-block delay $`D \le 1`$ (verified empirically alongside block-constant thresholds under an oblivious stream (Vovk et al. 2005)). With locked parameters, <a href="#eq:t1_bound" data-reference-type="eqref" data-reference="eq:t1_bound">[eq:t1_bound]</a> yields $`B_1(K) \approx 6.8/K`$.
+Table VII separates equal-cluster (*EqualCl*, $`1.52\%`$ retrospective and $`6.32\%`$ held-out Periodic baseline $`U`$) from pooled-ratio (*PoolRat*, $`0.60\%`$ and $`1.01\%`$) relative equivalence checks.
 
-**Remark 1 (Formal vs. Operational Scope) and Proposition 1:** Any policy deterministically obeys $`A(R_+^{\text{upper}}-\alpha) \le 0.9A`$, so formal bound <a href="#eq:t1_bound" data-reference-type="eqref" data-reference="eq:t1_bound">[eq:t1_bound]</a> becomes non-vacuous only when $`K`$ is large relative to $`A`$—only $`4/40`$ archived seed-mean cells (Fig. 3). Theorem 1 thus serves as a formal finite-horizon limit characterizing inter-probe gaps ($`W_{\max}`$) under uniform pacing rather than a generally informative deployment guarantee; Table VII maps low-offer ($`A < 0.30`$) and Persistence failures into explicit vetoes.
+At naive campaign-date precision under a $`\pm 50\%`$ margin, equal-cluster TOST is inconclusive for retrospective MARUR ($`p=0.1228`$) and low-cap held-out PACER ($`p=0.5369`$), while passing for retrospective PACER ($`p=0.0430`$) and high-cap held-out PACER ($`p=0.0071`$); pooled-ratio TOST fails everywhere.
 
-<figure id="fig:t1_bounds" data-latex-placement="!t">
-<embed src="figures/main_fig3_theorem1_bounds.png" style="width:78.0%" />
-<figcaption>PACER weighted selective-excess bound <span class="math inline"><em>B</em><sub>1</sub>(<em>K</em>) ≈ 6.8/<em>K</em></span>, trivial ceiling <span class="math inline">(1 − <em>α</em>)<em>A</em> = 0.9<em>A</em></span>, and 3-seed mean excess across all 40 cells (<span class="math inline"><em>C</em><sub>new</sub> = 10</span>: <span class="math inline">0.683</span>–<span class="math inline">0.714</span>; <span class="math inline"><em>C</em><sub>new</sub> = 40</span>: <span class="math inline">0.178</span>–<span class="math inline">0.192</span>). Only <span class="math inline">1/20</span> cells at cap 10 and <span class="math inline">3/20</span> at cap 40 (4/40 total) sit below <span class="math inline">0.9<em>A</em></span>.</figcaption>
-</figure>
+Re-applying exploratory, low-precision campaign clustering over three campaigns per scope (Supplement Table S18) shrinks effective units to $`3.84/16`$ on retrospective MARUR ($`p=0.2988`$) and $`6.73/26`$ on high-cap held-out PACER.
+
+This adjustment reverses high-cap held-out equivalence ($`p=0.0071 \to 0.1153`$). Where Donner’s three-campaign variance stays near zero on retrospective PACER ($`G_{\text{eff}}=14.77/16`$, $`p=0.0498`$ at low cap), two-stage hierarchical bootstrap intervals cannot create campaign signal and exceed fifty percent everywhere.
+
+Extended sweeps (Supplement Table S22) and leave-one-out checks (Supplement Table S17, Table S19) confirm mobile median risk remains $`47.1\%`$–$`49.3\%`$ across cohort drops and $`45.8\%`$–$`49.3\%`$ across all six campaign exclusions (five remaining campaigns per drop).
+
+High-risk campaigns (early Rome 2023, Rome capacity, and US Drive 3) coincide with low throughput ($`47.5\%`$–$`54.2\%`$ median risk; $`0.35\%`$–$`1.35\%`$ utility). Non-significant TOST checks establish low campaign precision, never equivalence.
 
 <div class="table*">
 
-|  |  |  |  |  |  |  |
-|:---|:---|:---|:---|:---|:---|:---|
-| OfferStratum | RefA | CeilC10 | CeilC40 | EmpPosHiC40 | EmpCohortsC40 | PolicyRule |
-| A below 0.15 | 0.10 | 100.0 | 100.0 | 47.62-62.96 | E1,E3,ATT,Ver,Rome1/2 | DO NOT DEPLOY |
-| A 0.15 to 0.30 | 0.22 | 100.0 | 93.5 | 36.84-44.26 | T-Mobile, Ireland | DO NOT DEPLOY (SLA) |
-| A 0.30 to 0.70 | 0.50 | 100.0 | 46.7 | 32.40 | Oslo Commute | Advisory Only |
-| A 0.70 or more | 0.85 | 91.7 | 31.6 | 6.98 | Ireland Static | Usable Target |
-| Persistence Lag | All | T1 0.714 | T1 0.192 | -29.95pp U vs Frz | All 10 cohorts (42u) | DO NOT DEPLOY |
+|  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+|:---|:---|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Scope | Cand | Cap | Estimand | G | Z0 | RefU | Delta | RelPct | SpreadOrMDE | pRel50 | pRel25 | pAbs1 | pAbs2 |
+| Retro | MAR | 10 | EqualCl | 16 | 4 | 1.52 | -0.09 | -6.2 | MDE 1.65 | 0.1228 | 0.3060 | 0.0609 | 0.0018 |
+| Retro | MAR | 10 | PoolRat | 16 | 4 | 0.60 | +0.21 | +35.3 | -44.3 to +207.3 | 0.4145 | 0.5560 | NA | NA |
+| Retro | PAC | 10 | EqualCl | 16 | 4 | 1.52 | -0.10 | -6.6 | MDE 1.08 | 0.0430 | 0.2239 | 0.0122 | 0.0000 |
+| Retro | PAC | 10 | PoolRat | 16 | 4 | 0.60 | +0.11 | +18.3 | -32.5 to +108.3 | 0.2260 | 0.4255 | NA | NA |
+| HeldOut | MAR | 10 | EqualCl | 26 | 4 | 6.32 | -3.36 | -53.1 | MDE 4.54 | 0.5497 | 0.8675 | 0.9286 | 0.8041 |
+| HeldOut | MAR | 10 | PoolRat | 26 | 4 | 1.01 | +0.40 | +40.0 | +4.4 to +81.9 | 0.3235 | 0.7325 | NA | NA |
+| HeldOut | PAC | 10 | EqualCl | 26 | 4 | 6.32 | -3.29 | -52.0 | MDE 4.01 | 0.5369 | 0.8872 | 0.9457 | 0.8213 |
+| HeldOut | PAC | 10 | PoolRat | 26 | 4 | 1.01 | +0.47 | +46.9 | -1.5 to +114.7 | 0.4240 | 0.7285 | NA | NA |
+| HeldOut | PAC | 40 | EqualCl | 26 | 2 | 4.47 | +0.01 | +0.3 | MDE 2.46 | 0.0071 | 0.1008 | 0.1261 | 0.0132 |
+| HeldOut | PAC | 40 | PoolRat | 26 | 2 | 1.17 | +0.51 | +43.1 | -39.5 to +154.0 | 0.4155 | 0.5925 | NA | NA |
+| AllCoh | PAC | 40 | EqualCl | 42 | 6 | 3.27 | +0.02 | +0.8 | MDE 1.53 | 0.0021 | 0.0721 | 0.0372 | 0.0003 |
+| AllCoh | PAC | 40 | PoolRat | 42 | 6 | 0.80 | +0.31 | +38.6 | -21.2 to +113.6 | 0.3575 | 0.6105 | NA | NA |
 
 </div>
 
-# Extended Exploratory Sensitivity and Scope
+# Discussion, Limitations, and Conclusion
 
-Under an explicitly *exploratory* label (`results/exploratory/sensitivity/`) preserving all frozen results, we extended window/$`\alpha`$ and source-only predictor evaluations to both *MARUR* and *PACER* across retrospective and held-out archives, plus Leave-One-Cohort-Out (LOCO) and Leave-One-Campaign-Out (LOCampO) checks over all $`42`$ clusters and $`6`$ campaigns (Table VIII; full tables in Supplement Tables S17–S19).
+**Implications for Cellular Evaluation Practice:** Our findings urge four concrete changes in cellular adaptation evaluation: (1) report $`R_+`$, $`[e/M,(e+m)/M]`$, and $`U`$ jointly rather than all-issued $`R`$ alone; (2) match baselines on both realized probes $`Q_{\text{new}}`$ and offer frequency $`A`$; (3) pair offer-weighted contrasts with equal-unit and campaign-adjusted intervals; and (4) distinguish frozen retrospective case studies from independent external trials.
 
-<div class="table*">
+**Limitations and Scope:** All evidence comes from retrospective public archives across six physical campaigns ($`42`$ dates) under frozen parameters rather than independent external replication or live field validation (PACER followed MARUR inspection with prior archive access). These archives do not cover other user devices, absent operators, alternative probing tools, non-60s horizons, or closed-loop congestion; reproduction runs CPU-only via `scripts/reproduce_all.py` and `scripts/audit_policy.py`.
 
-|  |  |  |  |  |  |  |  |  |
-|:---|:---|:---|:---|:---|:---|:---|:---|:---|
-| Axis | Policy | Setting | Cap | CandHi | PerHi | CandU | Eq dU | tCI95 |
-| Retro16 W/a | MARUR | a=0.05,W=40 | 40 | 24.06 | 15.15 | 0.33 | +0.16 | -0.28 to +0.59 |
-| Retro16 W/a | MARUR | a=0.10,W=20 | 40 | 38.04 | 31.96 | 1.86 | +0.22 | -1.13 to +1.57 |
-| Retro16 W/a | MARUR | a=0.20,W=20 | 40 | 45.75 | 44.33 | 6.82 | +2.25 | +0.48 to +4.03 |
-| Retro16 W/a | PACER | a=0.05,W=40 | 40 | 40.48 | 15.15 | 0.21 | +0.18 | -0.54 to +0.90 |
-| Retro16 W/a | PACER | a=0.10,W=20 | 40 | 44.19 | 31.96 | 0.76 | -0.22 | -1.14 to +0.70 |
-| Retro16 W/a | PACER | a=0.20,W=20 | 40 | 43.63 | 44.33 | 1.93 | +0.15 | -0.51 to +0.82 |
-| HeldOut26 W/a | MARUR | a=0.05,W=40 | 40 | 19.69 | 20.91 | 0.18 | -0.71 | -1.54 to +0.12 |
-| HeldOut26 W/a | MARUR | a=0.10,W=20 | 40 | 19.49 | 24.90 | 1.17 | -1.33 | -2.14 to -0.52 |
-| HeldOut26 W/a | MARUR | a=0.20,W=20 | 40 | 28.25 | 37.17 | 3.20 | -1.72 | -2.70 to -0.74 |
-| HeldOut26 W/a | PACER | a=0.05,W=40 | 40 | 16.90 | 20.91 | 0.25 | +0.29 | -0.40 to +0.98 |
-| HeldOut26 W/a | PACER | a=0.10,W=20 | 40 | 25.80 | 24.90 | 1.68 | +0.46 | -0.90 to +1.83 |
-| HeldOut26 W/a | PACER | a=0.20,W=20 | 40 | 35.80 | 37.17 | 5.38 | +0.48 | -3.15 to +4.10 |
-| Retro16 Pred | MARUR | ResNet57 | 40 | 23.90 | 28.14 | 0.31 | -0.43 | -1.02 to +0.16 |
-| Retro16 Pred | PACER | ResNet57 | 40 | 25.81 | 28.14 | 0.33 | +0.38 | -0.76 to +1.51 |
-| Retro16 Pred | MARUR | QGBM10 | 10 | 51.99 | 50.36 | 0.63 | +1.02 | +0.06 to +1.98 |
-| Retro16 Pred | PACER | QGBM10 | 10 | 54.41 | 50.36 | 0.54 | -0.18 | -0.37 to +0.02 |
-| Retro16 Pred | MARUR | ClkGBM112 | 40 | 37.87 | 44.13 | 1.57 | -2.46 | -4.75 to -0.16 |
-| Retro16 Pred | PACER | ClkGBM112 | 40 | 42.41 | 44.13 | 1.28 | -1.72 | -3.62 to +0.17 |
-| Retro16 Pred | MARUR | Persist | 10 | 65.73 | 64.21 | 9.50 | -4.03 | -12.18 to +4.12 |
-| Retro16 Pred | PACER | Persist | 10 | 66.82 | 64.21 | 14.35 | -8.18 | -15.85 to -0.50 |
-| HeldOut Pred | MARUR | ResNet57 | 40 | 8.43 | 41.38 | 0.13 | -1.11 | -3.35 to +1.13 |
-| HeldOut Pred | PACER | ResNet57 | 40 | 19.38 | 41.38 | 0.11 | -1.08 | -3.33 to +1.17 |
-| HeldOut Pred | MARUR | QGBM10 | 10 | 45.68 | 58.62 | 0.46 | -0.26 | -0.56 to +0.05 |
-| HeldOut Pred | PACER | QGBM10 | 10 | 52.23 | 58.62 | 0.94 | +0.14 | -0.23 to +0.51 |
-| HeldOut Pred | MARUR | Persist | 10 | 57.21 | 53.71 | 33.69 | +4.04 | -0.56 to +8.64 |
-| HeldOut Pred | PACER | Persist | 10 | 59.82 | 53.71 | 39.21 | +0.80 | -12.71 to +14.32 |
-| LOCO (10 cohorts) | MAR/PAC | Drop any 1/10 | 10 | 47.1-49.3 | 47.1 full | 0.67-1.17 | -2.38 to +0.12 | p95 G=35..42 |
-| LOCampO (6 camp) | MAR/PAC | Drop any 1/6 | 10 | 45.8-49.3 | 47.6 full | 0.61-1.28 | -3.38 to +0.12 | p95 G=27..39 |
+**Conclusion:** Joint measurement-accounting and inference choices systematically reverse controller evaluations on cellular logs: conditional risk spans $`9\%`$–$`68\%`$ above $`\alpha=0.10`$ while supported throughput generally stays around $`1\%`$–$`3\%`$.
 
-</div>
-
-**Window, Nominal $`\alpha`$, and Source Predictors:** Enlarging windows or varying nominal levels leaves PACER and MARUR conditional risks elevated without consistent equal-cluster utility gains (Table VIII). Similarly, replaying lower-error source-only predictors (`ThroughputResNet`, `QuantileGBM`, `ClockGBM`, Oslo bus quantile regressor, and lag Persistence) either retains high conditional risk or suppresses throughput below 1%.
-
-**Per-Campaign Distribution:** High-risk cohorts coincide with low-throughput mobile drives (Supplement Table S19): early Rome, capacity Rome, and US driving traces yield $`47.5\%`$–$`54.2\%`$ median conditional risk alongside $`0.35\%`$–$`1.35\%`$ median utility, whereas Norwegian bus traces reach higher throughput.
-
-**Cohort and Campaign Leave-One-Out:** Dropping any single cohort leaves mobile median risk at $`47.1\%`$–$`49.3\%`$, and excluding any one of the six entire physical campaigns (five remaining campaigns per exclusion; Supplement Table S19) preserves $`45.8\%`$–$`49.3\%`$; removing Oslo eliminates the low-cap utility drop without establishing equivalence elsewhere.
-
-**What Evidence Does Not Cover:** These archived traces do not cover other user devices, cellular operators absent from the logs, alternative active-probing measurement tools, closed-loop network deployment where commitments alter transport congestion, larger query budgets, or non-60s horizons.
-
-# Limitations, Reproducibility, and Conclusion
-
-**Limitations and Reproducibility:** All evidence comes from retrospective public archives under a frozen-parameter protocol rather than independent external replication or live field validation (PACER was designed after retrospective MARUR inspection with prior held-out archive access), and it does not cover other devices, operators, measurement tools, or closed-loop deployment. All SHA-256 locked configurations run on CPU Python 3.11 via `scripts/reproduce_all.py` (with CPU fallback for neural models) alongside CI checks and `scripts/audit_policy.py`.
-
-**Conclusion:** Our empirical audit shows how joint measurement-accounting and inference choices reverse policy conclusions across archived cellular traces: conditional upper risk spans $`9\%`$–$`68\%`$ above $`\alpha=0.10`$ while supported throughput generally remains near $`1\%`$–$`3\%`$, offer-count pooling masks equal-cluster risk shifts, and Theorem 1 holds vacuously across small query budgets—motivating `scripts/audit_policy.py` and our six-item checklist.
-
-Separating equal-cluster and pooled-ratio relative equivalence confirms that utility differences remain statistically inconclusive: pooled-ratio TOST fails everywhere, naive high-cap equivalence reverses under exploratory low-precision campaign clustering, and non-significant intervals over three campaigns per scope indicate insufficient precision rather than evidence of equivalence or external generalization. Held-out scores remain frozen retrospective evaluations without live field validation or closed-loop deployment.
+Single-factor choices flip $`31\%`$–$`57\%`$ of contrasts, matching realized queries and offer rates leaves $`3/100`$ wins over Periodic, and three-campaign TOST intervals remain statistically inconclusive due to low campaign precision rather than equivalence. All evidence is retrospective from public archives without live validation or closed-loop deployment.
 
 # Acknowledgment
 

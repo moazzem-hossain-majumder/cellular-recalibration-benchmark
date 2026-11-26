@@ -1,0 +1,23 @@
+\begin{table*}[!ht]
+\centering\footnotesize\setlength{\tabcolsep}{3.5pt}
+\caption{Exploratory 10-cohort Risk-Utility operating summary (HistGBM, recorded feedback; percentages) and sequential fairness sieve over all 100 contrasts vs Periodic after matching realized queries Qnew and offer rate A.}
+\begin{tabular}{llllllll}
+\hline
+Policy & Cap & RealQ & OfferA & AllRiskHi & CondRiskHi & SuppU & Notes \\
+ACI & 10 & 10.0 & 18.30 & 7.16 & 43.86 & 2.87 & 10-coh mean \\
+ACI & 40 & 21.6 & 17.83 & 5.53 & 35.59 & 2.00 & 10-coh mean \\
+DecayingOGD & 10 & 10.0 & 28.07 & 11.26 & 53.58 & 4.88 & 10-coh mean \\
+DecayingOGD & 40 & 21.6 & 26.38 & 9.31 & 50.18 & 3.29 & 10-coh mean \\
+Early & 10 & 10.0 & 26.48 & 10.14 & 42.58 & 4.46 & 10-coh mean \\
+Early & 40 & 40.0 & 30.05 & 12.29 & 44.40 & 4.83 & 10-coh mean \\
+Frozen & 0 & 0.0 & 35.90 & 12.99 & 37.37 & 2.60 & 10-coh mean \\
+MARUR & 10 & 9.5 & 31.04 & 8.91 & 39.59 & 1.97 & 10-coh mean \\
+MARUR & 40 & 30.3 & 30.08 & 8.37 & 40.24 & 2.45 & 10-coh mean \\
+PACER & 10 & 9.9 & 25.88 & 7.09 & 42.68 & 1.94 & 10-coh mean \\
+PACER & 40 & 37.8 & 23.13 & 6.53 & 43.68 & 2.40 & 10-coh mean \\
+Periodic & 10 & 10.0 & 21.18 & 8.14 & 41.03 & 3.02 & 10-coh mean \\
+Periodic & 40 & 21.6 & 22.94 & 6.57 & 34.36 & 2.13 & 10-coh mean \\
+FairnessSieve & 10/40 & Q=Periodic & dA max 5pp & 100 pairs & 3/28 matched & 3/100 win & E1/TMob Early10; Op1 MAR10 \\
+\hline
+\end{tabular}
+\end{table*}

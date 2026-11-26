@@ -185,6 +185,15 @@ def validate_pacer_claims(root):
     locampo_tex=(root/'paper/tables/table_s19_locampo.tex').read_text(encoding='utf8')
     if len(locampo)!=7 or '45.8' not in source or '49.3' not in source or '45.8' not in locampo_tex:
         raise ValueError('Leave-one-campaign-out claim mismatch')
+    abl=pd.read_csv(sens_dir/'single_factor_ablation.csv')
+    abl_tex=(root/'paper/tables/table_m9_ablation.tex').read_text(encoding='utf8')
+    par_df=pd.read_csv(sens_dir/'risk_utility_pareto.csv')
+    par_tex=(root/'paper/tables/table_s20_pareto_fairness.tex').read_text(encoding='utf8')
+    fair_df=pd.read_csv(sens_dir/'baseline_fairness_audit.csv')
+    if len(abl)!=6 or '228/400' not in source or '228/400' not in abl_tex or '47/120' not in source:
+        raise ValueError('Single-factor ablation consistency mismatch')
+    if len(fair_df)!=8 or 'FairnessSieve' not in par_tex or '3/100' not in combined:
+        raise ValueError('Pareto/fairness sieve consistency mismatch')
     related=(root/'paper/related_work.tex').read_text(encoding='utf8')
     if 'sentosa2025cellreplay' not in related:
         raise ValueError('CellReplay citation missing from related_work.tex')
@@ -262,7 +271,7 @@ def validate(root=ROOT):
     supplement=(root/'paper/supplementary.tex').read_text(encoding='utf8')
     combined=manuscript+'\n'+supplement
     referenced = re.findall(r'\\includegraphics(?:\[[^\]]+\])?\{(figures/[^}]+\.pdf)\}',combined)
-    if len(set(referenced))!=11:
+    if len(set(referenced))!=13:
         raise ValueError(f'Incomplete manuscript figure set: found {len(set(referenced))}')
     for fig in referenced:
         for suffix in ['.pdf','.png']:

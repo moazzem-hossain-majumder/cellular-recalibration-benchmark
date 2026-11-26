@@ -1,18 +1,18 @@
 \begin{table*}[!ht]
 \centering\footnotesize\setlength{\tabcolsep}{3.5pt}
-\caption{Evaluated controller and comparator rules generated from frozen repository configurations.}
-\begin{tabular}{llllll}
+\caption{Evaluated controller protocols and 7-axis experimental fairness checklist (all policies start from identical 10 initial labels and identical eligible denominator N; Q10/Q40 show 10-cohort HistGBM Recorded mean realized new queries and MeanA mean offer frequency in percent).}
+\begin{tabular}{lllllll}
 \hline
-Policy & Trigger & Calibration & KeyParams & MissingRule & Rationale \\
-Frozen & None (C=0) & Static Init10 & init=10 & None & Zero-cost anchor \\
-Early & Every elig tick & FIFO W=10 & C=10/40 & Insert score=p & Day-1 exhaust \\
-Random & Uniform seed & FIFO W=10 & seeds=42,123,2026 & Insert score=p & Nonadaptive \\
-Periodic & Every P=15 ticks & FIFO W=10 & P=15, W=10 & Insert score=p & Fixed cadence \\
-ACI & Every P=15 ticks & Online level a & eta=0.05, W=10 & err=1 on pos & Sparse ACI \\
-DecayingOGD & Every P=15 ticks & Decaying step & exp=0.6 & score=p on miss & Decaying OGD \\
-MARUR & Age 60m or RAT & Pat/Pool W=10 & age=60m, min=3 & Insert p + gate & Heuristic \\
-MARUR ablat. & Age or Periodic & Pool/DropMiss & NoPat/NoGate/Drop & Drop or Periodic & Gate/miss check \\
-PACER & Uniform K blk & Smooth sel W=20 & g=0.05, v=0.15 & Excl W; e=1 & Paced comparator \\
+Policy & Trigger & Calibration & KeyParams & Q10/Q40 & MeanA & Missing/Access \\
+Frozen & None (C=0) & Static Init10 & init=10 & 0.0 & 35.9 & None / None \\
+Early & Every elig & FIFO W=10 & C=10/40 & 10.0/40.0 & 28.3 & Insert p / Resid \\
+Random & Uniform seed & FIFO W=10 & seeds=42,123,2026 & 10/Match & 6-coh seed & Insert p / Resid \\
+Periodic & Every P=15 & FIFO W=10 & P=15, W=10 & 10.0/21.6 & 22.1 & Insert p / Resid \\
+ACI & Every P=15 & Online alpha & eta=0.05, W=10 & 10.0/21.6 & 18.1 & err=1 / Online a \\
+DecayingOGD & Every P=15 & Decaying step & exp=0.6 & 10.0/21.6 & 27.2 & p miss / Step \\
+MARUR & Age 60m/RAT & Pat/Pool W=10 & age=60m, min=3 & 9.5/30.3 & 30.6 & p+gate / LTE-NR \\
+MARUR ablat. & Age/Periodic & Pool/DropMiss & NoPat/NoGate/Drop & Matched & 6-coh abl & Drop / Gate check \\
+PACER & Uniform K blk & Smooth sel W=20 & g=0.05, v=0.15 & 9.9/37.8 & 24.5 & Excl W / Veto A \\
 \hline
 \end{tabular}
 \end{table*}

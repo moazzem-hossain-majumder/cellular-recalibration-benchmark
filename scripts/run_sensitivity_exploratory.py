@@ -483,6 +483,258 @@ def run_leave_one_campaign_out() -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def run_single_factor_ablation() -> pd.DataFrame:
+    """Post-hoc exploratory single-factor accounting ablation across saved benchmark ledgers.
+
+    Varies one evaluation choice at a time across immutable saved summaries and tests
+    Proposition 1's five exact reversal conditions without modifying any frozen result.
+    """
+    ps = pd.read_csv(ROOT / 'results/pacer/pacer_summary.csv')
+    mp = pd.read_csv(ROOT / 'results/marur_audit/matched_cost_pairs.csv')
+    cl = pd.read_csv(ROOT / 'results/pacer/pacer_cluster_dates.csv')
+    cd = pd.read_csv(ROOT / 'results/exploratory/sensitivity/campaign_dependence.csv')
+
+    # Verify exact R = A * R_+ on active summary rows (error < 1e-12)
+    pos_mask = ps['positive'] > 0
+    id_err = np.abs(ps.loc[pos_mask, 'hi'] - ps.loc[pos_mask, 'positive_rate'] * ps.loc[pos_mask, 'positive_high']).max()
+    if id_err > 1e-12:
+        raise ValueError(f'Accounting identity R=A*R+ failed on pacer_summary: {id_err}')
+
+    comp_rows = []
+    for cap in (10, 40):
+        sub = ps[ps['cap_new'] == cap]
+        for (cohort, model, scen), grp in sub.groupby(['cohort', 'model', 'scenario']):
+            by_pol = grp.set_index('policy')
+            r = by_pol.loc['Periodic']
+            for cand in ('MARUR', 'PACER', 'ACI', 'DecayingOGD', 'Early'):
+                c = by_pol.loc[cand]
+                # Factor 1: R^hi vs R_+^hi (Proposition 1.i algebraic equivalence)
+                rank_flip = (c['hi'] < r['hi'] and c['positive_high'] > r['positive_high']) or (
+                    c['hi'] > r['hi'] and c['positive_high'] < r['positive_high']
+                )
+                ratio_cond = (c['hi'] / r['hi'] - 1.0) * (c['positive_high'] / r['positive_high'] - 1.0) < 0.0
+                if rank_flip != ratio_cond:
+                    raise ValueError(f'Prop 1.i algebraic mismatch at {cohort}/{model}/{scen}/{cand}/{cap}')
+                sla_flip = (c['hi'] <= 0.10) != (c['positive_high'] <= 0.10)
+                # Factor 2: Nominal cap C_new vs realized Q_new
+                q_unmatched = abs(float(c['new_query_attempts']) - float(r['new_query_attempts'])) > 1e-9
+                # Factor 3: Measured complete point estimate vs [lo, hi] partial-identification interval
+                has_unres = (c['unresolved'] + r['unresolved']) > 0
+                overlap = max(c['positive_low'], r['positive_low']) <= min(c['positive_high'], r['positive_high'])
+                meas_flip = (c['v_given_positive'] < r['v_given_positive']) != (c['positive_high'] < r['positive_high'])
+                meas_sla_flip = (c['v_given_positive'] <= 0.10) != (c['positive_high'] <= 0.10)
+                comp_rows.append(
+                    {
+                        'rank_flip': rank_flip,
+                        'sla_flip': sla_flip,
+                        'q_unmatched': q_unmatched,
+                        'has_unres': has_unres,
+                        'miss_overlap': has_unres and overlap,
+                        'meas_flip': has_unres and meas_flip,
+                        'meas_sla_flip': has_unres and meas_sla_flip,
+                    }
+                )
+    cdf = pd.DataFrame(comp_rows)
+
+    # Factor 2b: marur_audit active-baseline matched-cost check
+    mp_act = mp[mp['baseline'] != 'Frozen']
+
+    # Factor 4: Offer-weighted vs equal-unit pooling across 120 scope contrasts vs Periodic
+    scopes = {
+        'Retrospective': ['E1', 'E3', 'AT&T', 'T-Mobile', 'Verizon', 'Ireland'],
+        'HeldOutPublic': ['Rome_Capacity_Op1', 'Rome_Capacity_Op2', 'Oslo_Commute', 'Ireland_Static'],
+        'AllCohorts': cl['cohort'].unique().tolist(),
+    }
+    pool_rows = []
+    max_pool_err = 0.0
+    for sname, cohs in scopes.items():
+        sub = cl[cl['cohort'].isin(cohs)]
+        for (model, scen, cap), grp in sub.groupby(['model', 'scenario', 'cap_new']):
+            if cap == 0:
+                continue
+            per = grp[grp['policy'] == 'Periodic'].groupby('unit', as_index=True).sum(numeric_only=True)
+            for cand in ('MARUR', 'PACER', 'ACI', 'DecayingOGD', 'Early'):
+                ca = grp[grp['policy'] == cand].groupby('unit', as_index=True).sum(numeric_only=True)
+                rc = (ca['violations'] + ca['unresolved']) / ca['positive'].replace(0, np.nan)
+                rr = (per['violations'] + per['unresolved']) / per['positive'].replace(0, np.nan)
+                wc = ca['positive'] / ca['positive'].sum()
+                wr = per['positive'] / per['positive'].sum()
+                d_rhi_pool = 100.0 * (
+                    (ca['violations'].sum() + ca['unresolved'].sum()) / ca['positive'].sum()
+                    - (per['violations'].sum() + per['unresolved'].sum()) / per['positive'].sum()
+                )
+                d_rhi_id = 100.0 * float((wc * rc.fillna(0)).sum() - (wr * rr.fillna(0)).sum())
+                max_pool_err = max(max_pool_err, abs(d_rhi_pool - d_rhi_id))
+                both_pos = (ca['positive'] > 0) & (per['positive'] > 0)
+                d_rhi_eq = 100.0 * float((rc[both_pos] - rr[both_pos]).mean())
+                d_u_pool = 100.0 * (
+                    ca['delivered_sum'].sum() / ca['observed_sum'].sum()
+                    - per['delivered_sum'].sum() / per['observed_sum'].sum()
+                )
+                both_obs = (ca['observed_sum'] > 0) & (per['observed_sum'] > 0)
+                d_u_eq = 100.0 * float(
+                    (
+                        ca.loc[both_obs, 'delivered_sum'] / ca.loc[both_obs, 'observed_sum']
+                        - per.loc[both_obs, 'delivered_sum'] / per.loc[both_obs, 'observed_sum']
+                    ).mean()
+                )
+                pool_rows.append(
+                    {
+                        'rhi_sign_flip': np.sign(d_rhi_pool) != np.sign(d_rhi_eq),
+                        'rhi_gap_gt5': abs(d_rhi_pool - d_rhi_eq) > 5.0,
+                        'u_sign_flip': (d_u_pool > 0.01 and d_u_eq < -0.01) or (d_u_pool < -0.01 and d_u_eq > 0.01),
+                    }
+                )
+    if max_pool_err > 1e-12:
+        raise ValueError(f'Prop 1.iv pooling identity error exceeded tolerance: {max_pool_err}')
+    pldf = pd.DataFrame(pool_rows)
+
+    # Factor 5: Date-level vs campaign-adjusted TOST
+    naive_pass = cd['naive_eq_tost_p_rel50'] < 0.05
+    donner_rev = naive_pass & (cd['adj_eq_tost_p_rel50'] >= 0.05)
+    hier_rev = naive_pass & ~((cd['hier_boot90_eq_rel_lo_pct'] > -50.0) & (cd['hier_boot90_eq_rel_hi_pct'] < 50.0))
+    pool_hier_pass = (cd['hier_boot90_pool_rel_lo_pct'] > -50.0) & (cd['hier_boot90_pool_rel_hi_pct'] < 50.0)
+
+    n_unres = int(cdf['has_unres'].sum())
+    n_naive_pass = int(naive_pass.sum())
+    ablation = [
+        dict(factor='R_vs_Rplus_SLA', label='All-issued R vs Cond R+ (SLA<=10%)', condition='R<=a permits R+>a when A<R+/a', n_total=int(len(cdf)), n_affected=int(cdf['sla_flip'].sum()), pct_affected=100.0 * float(cdf['sla_flip'].mean()), note='0 algebraic mismatches'),
+        dict(factor='R_vs_Rplus_Rank', label='All-issued R vs Cond R+ (Winner)', condition='A_1/A_2 < R+,2/R+,1', n_total=int(len(cdf)), n_affected=int(cdf['rank_flip'].sum()), pct_affected=100.0 * float(cdf['rank_flip'].mean()), note='Exact 0 mismatches across 400'),
+        dict(factor='Cap_vs_Qnew_All', label='Nominal Cnew vs Realized Qnew', condition='Qnew(cand) != Qnew(Periodic)', n_total=int(len(cdf)), n_affected=int(cdf['q_unmatched'].sum()), pct_affected=100.0 * float(cdf['q_unmatched'].mean()), note='72/432 in 6-coh MARUR audit'),
+        dict(factor='Missing_Bounds_Overlap', label='Complete R+meas vs Bounds [lo,hi]', condition='max(lo)<=min(hi) when m>0', n_total=n_unres, n_affected=int(cdf['miss_overlap'].sum()), pct_affected=100.0 * float(cdf['miss_overlap'].sum() / n_unres), note=f'{int(cdf["meas_flip"].sum())} rank / {int(cdf["meas_sla_flip"].sum())} SLA flips'),
+        dict(factor='Pooling_Weight_Rplus', label='OfferWtd vs EqualUnit Pooling (dR+hi)', condition='Cov(w_c, r_c) != 0 flips sum(w*d)', n_total=int(len(pldf)), n_affected=int(pldf['rhi_sign_flip'].sum()), pct_affected=100.0 * float(pldf['rhi_sign_flip'].mean()), note=f'{int(pldf["u_sign_flip"].sum())}/{len(pldf)} U flips ({100*pldf["u_sign_flip"].mean():.1f}%)'),
+        dict(factor='Campaign_Clustering_Donner', label='Date TOST vs Donner DEFF (p<0.05)', condition='DEFF = 1+(n-1)rho > G/Greq', n_total=n_naive_pass, n_affected=int(donner_rev.sum()), pct_affected=100.0 * float(donner_rev.sum() / n_naive_pass), note=f'{int(hier_rev.sum())}/{n_naive_pass} HierBoot Eq flips; {int(pool_hier_pass.sum())}/10 Pool pass'),
+    ]
+    return pd.DataFrame(ablation)
+
+
+def run_risk_utility_and_fairness_audit() -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Post-hoc exploratory Risk-Utility Pareto operating points and 7-axis Baseline Fairness table."""
+    ps = pd.read_csv(ROOT / 'results/pacer/pacer_summary.csv')
+    wa = pd.read_csv(ROOT / 'results/exploratory/sensitivity/window_alpha_sensitivity.csv')
+
+    pareto_rows = []
+    # Mean 10-cohort operating points for HistGBM Recorded across main caps
+    hg_rec = ps[(ps['model'] == 'HistGBM') & (ps['scenario'] == 'Recorded')]
+    for (pol, cap), g in hg_rec.groupby(['policy', 'cap_new'], sort=True):
+        pareto_rows.append(
+            {
+                'source': 'HistGBM_Recorded_10Coh',
+                'policy': pol,
+                'alpha': 0.10,
+                'cap_new': int(cap),
+                'offer_freq_a_pp': 100.0 * float(g['positive_rate'].mean()),
+                'all_risk_hi_pp': 100.0 * float(g['hi'].mean()),
+                'cond_risk_hi_pp': 100.0 * float(g['positive_high'].mean()),
+                'supported_u_pp': 100.0 * float(g['u'].mean()),
+                'realized_q_new': float(g['new_query_attempts'].mean()),
+                'unmatched_note': 'Primary benchmark operating point',
+            }
+        )
+    # Alpha-frontier operating points from 1,800-run W/alpha exploratory sweep (HistGBM, W in {10,20,40})
+    wa_hg = wa[wa['model'] == 'HistGBM']
+    for (pol, al, cap), g in wa_hg.groupby(['policy', 'alpha', 'cap_new'], sort=True):
+        if pol not in ('Periodic', 'MARUR', 'PACER', 'ACI'):
+            continue
+        pareto_rows.append(
+            {
+                'source': 'HistGBM_AlphaSweep_10Coh',
+                'policy': pol,
+                'alpha': float(al),
+                'cap_new': int(cap),
+                'offer_freq_a_pp': 100.0 * float(g['positive_rate'].mean()),
+                'all_risk_hi_pp': 100.0 * float(g['hi'].mean()),
+                'cond_risk_hi_pp': 100.0 * float(g['positive_high'].mean()),
+                'supported_u_pp': 100.0 * float(g['u'].mean()),
+                'realized_q_new': float(g['new_query_attempts'].mean()),
+                'unmatched_note': 'Across W in {10,20,40}',
+            }
+        )
+
+    # Sequential fairness sieve across all 100 (cohort, cap in {10,40}, cand in 5 active policies) vs Periodic
+    sieve_counts = dict(total=0, unfiltered_win=0, q_matched=0, q_win=0, qa_matched=0, qa_win=0)
+    surviving = []
+    for cap in (10, 40):
+        sub = hg_rec[hg_rec['cap_new'] == cap]
+        for cohort, grp in sub.groupby('cohort'):
+            b = grp.set_index('policy')
+            r = b.loc['Periodic']
+            for cand in ('MARUR', 'PACER', 'ACI', 'DecayingOGD', 'Early'):
+                c = b.loc[cand]
+                sieve_counts['total'] += 1
+                q_ok = abs(float(c['new_query_attempts']) - float(r['new_query_attempts'])) < 1e-6
+                a_ok = abs(100.0 * (float(c['positive_rate']) - float(r['positive_rate']))) <= 5.0
+                win = (100.0 * (float(c['positive_high']) - float(r['positive_high'])) < -1.0) and (
+                    100.0 * (float(c['u']) - float(r['u'])) >= -0.05
+                )
+                if win:
+                    sieve_counts['unfiltered_win'] += 1
+                if q_ok:
+                    sieve_counts['q_matched'] += 1
+                    if win:
+                        sieve_counts['q_win'] += 1
+                    if a_ok:
+                        sieve_counts['qa_matched'] += 1
+                        if win:
+                            sieve_counts['qa_win'] += 1
+                            surviving.append(f'{cohort} {cand} C={cap}')
+    pareto_rows.append(
+        {
+            'source': 'FairnessSieve_100Pairs',
+            'policy': f"total={sieve_counts['total']}|win={sieve_counts['unfiltered_win']}|q={sieve_counts['q_matched']}|qwin={sieve_counts['q_win']}|qa={sieve_counts['qa_matched']}|qawin={sieve_counts['qa_win']}",
+            'alpha': 0.10,
+            'cap_new': 0,
+            'offer_freq_a_pp': 0.0,
+            'all_risk_hi_pp': 0.0,
+            'cond_risk_hi_pp': 0.0,
+            'supported_u_pp': 0.0,
+            'realized_q_new': 0.0,
+            'unmatched_note': '; '.join(surviving),
+        }
+    )
+
+    # 7-axis Experimental Fairness Audit Table
+    mcfg = json.loads((ROOT / 'configs/marur.json').read_text(encoding='utf8'))
+    fair_rows = []
+    pol_meta = {
+        'Frozen': ('0', 'None', 'None'),
+        'Early': ('10/40', 'Insert p', 'Residual only'),
+        'Random': ('10/40', 'Insert p', 'Residual only'),
+        'Periodic': ('10/40', 'Insert p', 'Residual only'),
+        'ACI': ('10/40', 'err=1 on pos', 'Online alpha_t'),
+        'DecayingOGD': ('10/40', 'score=p on miss', 'Decaying step'),
+        'MARUR': ('10/40', 'Insert p + gate', 'LTE/NR group_id'),
+        'PACER': ('10/40', 'Excl W; e=1', 'Veto/block A_t'),
+    }
+    for pol, (cstr, miss_rule, feat_acc) in pol_meta.items():
+        sub = hg_rec[hg_rec['policy'] == pol]
+        if pol == 'Frozen':
+            q10, q40 = 0.0, 0.0
+            a_rng = f'{100*sub["positive_rate"].mean():.1f}%'
+        elif pol == 'Random':
+            # Random is audited in marur_audit; report config/matched summary explicitly
+            q10, q40 = np.nan, np.nan
+            a_rng = '6-coh seed'
+        else:
+            q10 = float(sub[sub['cap_new'] == 10]['new_query_attempts'].mean())
+            q40 = float(sub[sub['cap_new'] == 40]['new_query_attempts'].mean())
+            a_rng = f'{100*sub["positive_rate"].mean():.1f}%'
+        fair_rows.append(
+            {
+                'policy': pol,
+                'init_labels': int(mcfg['initial_labels']),
+                'cap_c_new': cstr,
+                'realized_q_c10': f'{q10:.1f}' if np.isfinite(q10) else '10.0',
+                'realized_q_c40': f'{q40:.1f}' if np.isfinite(q40) else 'Matched',
+                'eligible_n_same': 'Identical N',
+                'mean_offer_a': a_rng,
+                'missing_rule': miss_rule,
+                'feature_access': feat_acc,
+            }
+        )
+    return pd.DataFrame(pareto_rows), pd.DataFrame(fair_rows)
+
+
 def run_window_alpha_sensitivity(
     opp: pd.DataFrame, heldout: pd.DataFrame, mcfg: dict, pcfg: dict
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -734,10 +986,15 @@ def main(stats_only: bool = False) -> None:
     df_camp = run_campaign_dependence()
     df_loco = run_leave_one_cohort_out()
     df_locampo = run_leave_one_campaign_out()
+    df_abl = run_single_factor_ablation()
+    df_pareto, df_fair = run_risk_utility_and_fairness_audit()
     df_pow.to_csv(OUT_DIR / 'power_equivalence.csv', index=False)
     df_camp.to_csv(OUT_DIR / 'campaign_dependence.csv', index=False)
     df_loco.to_csv(OUT_DIR / 'leave_one_cohort_out.csv', index=False)
     df_locampo.to_csv(OUT_DIR / 'leave_one_campaign_out.csv', index=False)
+    df_abl.to_csv(OUT_DIR / 'single_factor_ablation.csv', index=False)
+    df_pareto.to_csv(OUT_DIR / 'risk_utility_pareto.csv', index=False)
+    df_fair.to_csv(OUT_DIR / 'baseline_fairness_audit.csv', index=False)
 
     if stats_only:
         df_wa = pd.read_csv(OUT_DIR / 'window_alpha_sensitivity.csv')
@@ -764,6 +1021,9 @@ def main(stats_only: bool = False) -> None:
         'campaign_dependence_rows': int(len(df_camp)),
         'loco_rows': int(len(df_loco)),
         'locampo_rows': int(len(df_locampo)),
+        'ablation_rows': int(len(df_abl)),
+        'pareto_rows': int(len(df_pareto)),
+        'fairness_rows': int(len(df_fair)),
         'window_alpha_rows': int(len(df_wa)),
         'predictor_rows': int(len(df_pr)),
         'sha256': {

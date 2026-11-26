@@ -1,0 +1,7 @@
+factor,label,condition,n_total,n_affected,pct_affected,note
+R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),R<=a permits R+>a when A<R+/a,400,228,56.99999999999999,0 algebraic mismatches
+R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),"A_1/A_2 < R+,2/R+,1",400,135,33.75,Exact 0 mismatches across 400
+Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,Qnew(cand) != Qnew(Periodic),400,124,31.0,72/432 in 6-coh MARUR audit
+Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",max(lo)<=min(hi) when m>0,285,135,47.368421052631575,9 rank / 8 SLA flips
+Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),"Cov(w_c, r_c) != 0 flips sum(w*d)",120,47,39.166666666666664,25/120 U flips (20.8%)
+Campaign_Clustering_Donner,Date TOST vs Donner DEFF (p<0.05),DEFF = 1+(n-1)rho > G/Greq,5,2,40.0,4/5 HierBoot Eq flips; 0/10 Pool pass

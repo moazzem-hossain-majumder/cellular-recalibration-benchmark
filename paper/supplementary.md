@@ -419,7 +419,14 @@ These archives were inspected before the controller and cost audit were designed
 
 ## Comparator taxonomy, PACER protocol details, and extended exploratory sweeps
 
-To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation, making this a frozen retrospective evaluation rather than independent external replication), all PACER parameters ($`\alpha=0.10`$, $`\gamma=0.05`$, $`a_{\text{veto}}=0.15`$, $`\kappa_{\text{ext}}=2.0`$, $`W_{\text{obs}}=20`$, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S15 summarizes the operational taxonomy comparing MARUR and PACER across regimes, Table S16 reports the complete 18-row pooling-rule sensitivity matrix across HeldOut, Retrospective, and AllCohorts scopes, Table S17 reports the complete 11-row Leave-One-Cohort-Out check across all 10 cohorts (42 total clusters), Table S18 reports the exploratory, low-precision campaign-level dependence sensitivity over the 3 retrospective and 3 held-out geographic campaigns (contrasting naive equal-cluster $`\pm 50\%`$ TOST $`p`$ against Donner campaign-adjusted $`\pm 50\%`$ and $`\pm 25\%`$ relative TOST $`p`$-values, adjusted $`\pm 2`$ pp $`p`$, effective date counts $`G_{\text{eff}}`$, and two-stage hierarchical bootstrap 90% equal-cluster relative intervals, where non-significant results indicate insufficient precision rather than evidence of equivalence), and Table S19 reports both per-campaign risk/utility medians and the 6-campaign Leave-One-Campaign-Out (LOCampO, 5 remaining campaigns per exclusion) robustness check removing all co-located carrier links of each field campaign together. Across all 120 seed-sensitivity evaluations (QueryCensor20 and Persistence included), weighted selective excess lies within $`B_1(K) \approx 6.8/K`$ on 40/40 cells, though as established in the main manuscript this formal finite-horizon limit is not a generally informative deployment guarantee because it holds trivially on 36/40 cells whenever $`B_1(K) \ge (1-\alpha)A`$ (19/20 cells at $`C_{\text{new}}=10`$ and 17/20 at $`C_{\text{new}}=40`$). Under Persistence across all 42 pooled clusters, PACER’s conservative abstention lowers utility $`U`$ by $`-18.89`$ percentage points at cap 10 (bootstrap $`-31.02`$ to $`-3.25`$) and $`-29.95`$ percentage points at cap 40 (bootstrap $`-37.26`$ to $`-16.39`$) relative to Frozen. For the exploratory controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield 6 matched utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs or risk-only changes, 129 unchanged cases, and 18 unmatched-cost cases; across the 792 configurations of the targeted baseline grid, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks. Complete ledgers (including the extended 1,800-run retrospective/held-out window and $`\alpha`$ sweep and 480-run source-only predictor sweep for both MARUR and PACER, as well as the Oslo Commute pre-2010 bus quantile regressor check) reside in `results/pacer` and `results/exploratory/sensitivity`.
+To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rome Capacity Op2, Oslo Commute, Ireland Static; accessed prior to evaluation, making this a frozen retrospective evaluation rather than independent external replication), all PACER parameters ($`\alpha=0.10`$, $`\gamma=0.05`$, $`a_{\text{veto}}=0.15`$, $`\kappa_{\text{ext}}=2.0`$, $`W_{\text{obs}}=20`$, seeds 42, 123, and 2026, caps 0, 10, and 40) were frozen and SHA-256 locked before scoring those archives, following retrospective analysis of MARUR failure modes. Table S15 summarizes the operational taxonomy comparing MARUR and PACER across regimes, Table S16 reports the complete 18-row pooling-rule sensitivity matrix across HeldOut, Retrospective, and AllCohorts scopes, Table S17 reports the complete 11-row Leave-One-Cohort-Out check across all 10 cohorts (42 total clusters), Table S18 reports the exploratory, low-precision campaign-level dependence sensitivity over the 3 retrospective and 3 held-out geographic campaigns (contrasting naive equal-cluster $`\pm 50\%`$ TOST $`p`$ against Donner campaign-adjusted $`\pm 50\%`$ and $`\pm 25\%`$ relative TOST $`p`$-values, adjusted $`\pm 2`$ pp $`p`$, effective date counts $`G_{\text{eff}}`$, and two-stage hierarchical bootstrap 90% equal-cluster relative intervals, where non-significant results indicate insufficient precision rather than evidence of equivalence), Table S19 reports both per-campaign risk/utility medians and the 6-campaign Leave-One-Campaign-Out (LOCampO, 5 remaining campaigns per exclusion) robustness check, Table S20 details the 10-cohort Risk–Utility Pareto operating points and the 100-contrast sequential fairness sieve, Table S21 reports Theorem 1 operational strata ceilings, and Table S22 reports the full exploratory window/$`\alpha`$, predictor, LOCO, and LOCampO matrix alongside Fig. S9. Formally, PACER’s weighted selective-excess bound over $`K=\min(C_{\text{new}}, T)`$ uniform block probes $`u_k \sim \mathrm{Uniform}(\mathcal{B}_k)`$ satisfies
+``` math
+\begin{equation}
+\mathbf{E}\!\left[A\left(R_+^{\text{upper}} - \alpha\right)\right] \le \frac{W_{\max}}{T} \cdot \frac{\alpha + a_{\text{veto}} + \gamma(1 - \alpha)(1 + D)}{\gamma} \approx \frac{6.8}{K},
+\label{eq:supp_t1}
+\end{equation}
+```
+where $`W_{\max}=\lceil T/K \rceil`$ and inter-block delay $`D \le 1`$ under an oblivious stream (Vovk et al. 2005). Across all 120 seed-sensitivity evaluations (QueryCensor20 and Persistence included), weighted selective excess lies within $`B_1(K) \approx 6.8/K`$ on 40/40 cells, though as established in the main manuscript this formal finite-horizon limit is not a generally informative deployment guarantee because every policy satisfies $`A(R_+^{\text{upper}}-\alpha) \le (1-\alpha)A = 0.9A`$ deterministically, rendering $`B_1(K) \ge 0.9A`$ vacuous on 36/40 cells (19/20 cells at $`C_{\text{new}}=10`$ and 17/20 at $`C_{\text{new}}=40`$; Fig. S9). Tighter bounds without sparse-regime vacuity would require non-vacuous mixing or Lipschitz-drift structure absent across abrupt mobile handovers. Under Persistence across all 42 pooled clusters, PACER’s conservative abstention lowers utility $`U`$ by $`-18.89`$ percentage points at cap 10 (bootstrap $`-31.02`$ to $`-3.25`$) and $`-29.95`$ percentage points at cap 40 (bootstrap $`-37.26`$ to $`-16.39`$) relative to Frozen. For the exploratory controlled-freshness 1,848-configuration grid across recorded and masked stresses, completed versus observed clocks yield 6 matched utility gains without higher conditional upper risk, 7 losses without lower risk, 8 trade-offs or risk-only changes, 129 unchanged cases, and 18 unmatched-cost cases; across the 792 configurations of the targeted baseline grid, pattern versus pooled quantiles give identical utility and conditional risk in all 72 paired configurations with the gate fixed, removing only the gate produces 16 utility gains without higher upper risk, 10 trade-offs/risk-only changes, and 46 unchanged cases, DecayingOGD versus Periodic yields 9 utility gains without higher upper risk, 18 losses without lower risk, and 45 trade-offs or risk-only changes, and reconstructed Verizon window-20 scores tie a conservative missing-response penalty at the quantile on 159 of 287 eligible ticks. Complete ledgers (including the extended 1,800-run retrospective/held-out window and $`\alpha`$ sweep and 480-run source-only predictor sweep for both MARUR and PACER, as well as the Oslo Commute pre-2010 bus quantile regressor check) reside in `results/pacer` and `results/exploratory/sensitivity`.
 
 <div class="table*">
 
@@ -509,6 +516,82 @@ To avoid post-hoc tuning on the held-out public archives (Rome Capacity Op1, Rom
 | Rome 2023 | 5 | 34 | 54.2 | 0.61 | 45.8 | 1.15 | -2.63 | +0.11 |
 | Rome Capacity | 5 | 27 | 47.5 | 1.35 | 47.9 | 0.61 | -3.38 | +0.81 |
 | US Drive3 | 5 | 39 | 47.9 | 0.35 | 47.5 | 1.28 | -2.25 | +0.01 |
+
+</div>
+
+<div class="table*">
+
+|  |  |  |  |  |  |  |  |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| Policy | Cap | RealQ | OfferA | AllRiskHi | CondRiskHi | SuppU | Notes |
+| ACI | 10 | 10.0 | 18.30 | 7.16 | 43.86 | 2.87 | 10-coh mean |
+| ACI | 40 | 21.6 | 17.83 | 5.53 | 35.59 | 2.00 | 10-coh mean |
+| DecayingOGD | 10 | 10.0 | 28.07 | 11.26 | 53.58 | 4.88 | 10-coh mean |
+| DecayingOGD | 40 | 21.6 | 26.38 | 9.31 | 50.18 | 3.29 | 10-coh mean |
+| Early | 10 | 10.0 | 26.48 | 10.14 | 42.58 | 4.46 | 10-coh mean |
+| Early | 40 | 40.0 | 30.05 | 12.29 | 44.40 | 4.83 | 10-coh mean |
+| Frozen | 0 | 0.0 | 35.90 | 12.99 | 37.37 | 2.60 | 10-coh mean |
+| MARUR | 10 | 9.5 | 31.04 | 8.91 | 39.59 | 1.97 | 10-coh mean |
+| MARUR | 40 | 30.3 | 30.08 | 8.37 | 40.24 | 2.45 | 10-coh mean |
+| PACER | 10 | 9.9 | 25.88 | 7.09 | 42.68 | 1.94 | 10-coh mean |
+| PACER | 40 | 37.8 | 23.13 | 6.53 | 43.68 | 2.40 | 10-coh mean |
+| Periodic | 10 | 10.0 | 21.18 | 8.14 | 41.03 | 3.02 | 10-coh mean |
+| Periodic | 40 | 21.6 | 22.94 | 6.57 | 34.36 | 2.13 | 10-coh mean |
+| FairnessSieve | 10/40 | Q=Periodic | dA max 5pp | 100 pairs | 3/28 matched | 3/100 win | E1/TMob Early10; Op1 MAR10 |
+
+</div>
+
+<figure data-latex-placement="!ht">
+<embed src="figures/main_fig3_theorem1_bounds.png" style="width:92.0%" />
+<figcaption>PACER weighted selective-excess bound <span class="math inline"><em>B</em><sub>1</sub>(<em>K</em>) ≈ 6.8/<em>K</em></span>, trivial ceiling <span class="math inline">(1 − <em>α</em>)<em>A</em> = 0.9<em>A</em></span>, and 3-seed mean excess across all 40 cells (<span class="math inline"><em>C</em><sub>new</sub> = 10</span>: <span class="math inline">0.683</span>–<span class="math inline">0.714</span>; <span class="math inline"><em>C</em><sub>new</sub> = 40</span>: <span class="math inline">0.178</span>–<span class="math inline">0.192</span>). Only <span class="math inline">1/20</span> cells at cap 10 and <span class="math inline">3/20</span> at cap 40 (4/40 total) sit below <span class="math inline">0.9<em>A</em></span>.</figcaption>
+</figure>
+
+<div class="table*">
+
+|  |  |  |  |  |  |  |
+|:---|:---|:---|:---|:---|:---|:---|
+| OfferStratum | RefA | CeilC10 | CeilC40 | EmpPosHiC40 | EmpCohortsC40 | PolicyRule |
+| A below 0.15 | 0.10 | 100.0 | 100.0 | 47.62-62.96 | E1,E3,ATT,Ver,Rome1/2 | DO NOT DEPLOY |
+| A 0.15 to 0.30 | 0.22 | 100.0 | 93.5 | 36.84-44.26 | T-Mobile, Ireland | DO NOT DEPLOY (SLA) |
+| A 0.30 to 0.70 | 0.50 | 100.0 | 46.7 | 32.40 | Oslo Commute | Advisory Only |
+| A 0.70 or more | 0.85 | 91.7 | 31.6 | 6.98 | Ireland Static | Usable Target |
+| Persistence Lag | All | T1 0.714 | T1 0.192 | -29.95pp U vs Frz | All 10 cohorts (42u) | DO NOT DEPLOY |
+
+</div>
+
+<div class="table*">
+
+|  |  |  |  |  |  |  |  |  |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| Axis | Policy | Setting | Cap | CandHi | PerHi | CandU | Eq dU | tCI95 |
+| Retro16 W/a | MARUR | a=0.05,W=40 | 40 | 24.06 | 15.15 | 0.33 | +0.16 | -0.28 to +0.59 |
+| Retro16 W/a | MARUR | a=0.10,W=20 | 40 | 38.04 | 31.96 | 1.86 | +0.22 | -1.13 to +1.57 |
+| Retro16 W/a | MARUR | a=0.20,W=20 | 40 | 45.75 | 44.33 | 6.82 | +2.25 | +0.48 to +4.03 |
+| Retro16 W/a | PACER | a=0.05,W=40 | 40 | 40.48 | 15.15 | 0.21 | +0.18 | -0.54 to +0.90 |
+| Retro16 W/a | PACER | a=0.10,W=20 | 40 | 44.19 | 31.96 | 0.76 | -0.22 | -1.14 to +0.70 |
+| Retro16 W/a | PACER | a=0.20,W=20 | 40 | 43.63 | 44.33 | 1.93 | +0.15 | -0.51 to +0.82 |
+| HeldOut26 W/a | MARUR | a=0.05,W=40 | 40 | 19.69 | 20.91 | 0.18 | -0.71 | -1.54 to +0.12 |
+| HeldOut26 W/a | MARUR | a=0.10,W=20 | 40 | 19.49 | 24.90 | 1.17 | -1.33 | -2.14 to -0.52 |
+| HeldOut26 W/a | MARUR | a=0.20,W=20 | 40 | 28.25 | 37.17 | 3.20 | -1.72 | -2.70 to -0.74 |
+| HeldOut26 W/a | PACER | a=0.05,W=40 | 40 | 16.90 | 20.91 | 0.25 | +0.29 | -0.40 to +0.98 |
+| HeldOut26 W/a | PACER | a=0.10,W=20 | 40 | 25.80 | 24.90 | 1.68 | +0.46 | -0.90 to +1.83 |
+| HeldOut26 W/a | PACER | a=0.20,W=20 | 40 | 35.80 | 37.17 | 5.38 | +0.48 | -3.15 to +4.10 |
+| Retro16 Pred | MARUR | ResNet57 | 40 | 23.90 | 28.14 | 0.31 | -0.43 | -1.02 to +0.16 |
+| Retro16 Pred | PACER | ResNet57 | 40 | 25.81 | 28.14 | 0.33 | +0.38 | -0.76 to +1.51 |
+| Retro16 Pred | MARUR | QGBM10 | 10 | 51.99 | 50.36 | 0.63 | +1.02 | +0.06 to +1.98 |
+| Retro16 Pred | PACER | QGBM10 | 10 | 54.41 | 50.36 | 0.54 | -0.18 | -0.37 to +0.02 |
+| Retro16 Pred | MARUR | ClkGBM112 | 40 | 37.87 | 44.13 | 1.57 | -2.46 | -4.75 to -0.16 |
+| Retro16 Pred | PACER | ClkGBM112 | 40 | 42.41 | 44.13 | 1.28 | -1.72 | -3.62 to +0.17 |
+| Retro16 Pred | MARUR | Persist | 10 | 65.73 | 64.21 | 9.50 | -4.03 | -12.18 to +4.12 |
+| Retro16 Pred | PACER | Persist | 10 | 66.82 | 64.21 | 14.35 | -8.18 | -15.85 to -0.50 |
+| HeldOut Pred | MARUR | ResNet57 | 40 | 8.43 | 41.38 | 0.13 | -1.11 | -3.35 to +1.13 |
+| HeldOut Pred | PACER | ResNet57 | 40 | 19.38 | 41.38 | 0.11 | -1.08 | -3.33 to +1.17 |
+| HeldOut Pred | MARUR | QGBM10 | 10 | 45.68 | 58.62 | 0.46 | -0.26 | -0.56 to +0.05 |
+| HeldOut Pred | PACER | QGBM10 | 10 | 52.23 | 58.62 | 0.94 | +0.14 | -0.23 to +0.51 |
+| HeldOut Pred | MARUR | Persist | 10 | 57.21 | 53.71 | 33.69 | +4.04 | -0.56 to +8.64 |
+| HeldOut Pred | PACER | Persist | 10 | 59.82 | 53.71 | 39.21 | +0.80 | -12.71 to +14.32 |
+| LOCO (10 cohorts) | MAR/PAC | Drop any 1/10 | 10 | 47.1-49.3 | 47.1 full | 0.67-1.17 | -2.38 to +0.12 | p95 G=35..42 |
+| LOCampO (6 camp) | MAR/PAC | Drop any 1/6 | 10 | 45.8-49.3 | 47.6 full | 0.61-1.28 | -3.38 to +0.12 | p95 G=27..39 |
 
 </div>
 

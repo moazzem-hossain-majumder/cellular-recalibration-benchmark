@@ -1,0 +1,9 @@
+policy,init_labels,cap_c_new,realized_q_c10,realized_q_c40,eligible_n_same,mean_offer_a,missing_rule,feature_access
+Frozen,10,0,0.0,0.0,Identical N,35.9%,None,None
+Early,10,10/40,10.0,40.0,Identical N,28.3%,Insert p,Residual only
+Random,10,10/40,10.0,Matched,Identical N,6-coh seed,Insert p,Residual only
+Periodic,10,10/40,10.0,21.6,Identical N,22.1%,Insert p,Residual only
+ACI,10,10/40,10.0,21.6,Identical N,18.1%,err=1 on pos,Online alpha_t
+DecayingOGD,10,10/40,10.0,21.6,Identical N,27.2%,score=p on miss,Decaying step
+MARUR,10,10/40,9.5,30.3,Identical N,30.6%,Insert p + gate,LTE/NR group_id
+PACER,10,10/40,9.9,37.8,Identical N,24.5%,Excl W; e=1,Veto/block A_t
