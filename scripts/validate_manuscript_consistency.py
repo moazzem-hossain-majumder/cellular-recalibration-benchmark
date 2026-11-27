@@ -204,10 +204,207 @@ def validate_pacer_claims(root):
         raise ValueError('CellReplay citation missing from related_work.tex')
 
 
+def validate_predictor_robustness(root):
+    """Bind docs/PREDICTOR_ROBUSTNESS.md claims, verdict, and SHA-256 digests to predictor_robustness CSVs."""
+    pr_dir = root / 'results/exploratory/predictor_robustness'
+    doc_path = root / 'docs/PREDICTOR_ROBUSTNESS.md'
+    if not pr_dir.is_dir() or not doc_path.is_file():
+        raise ValueError('Missing exploratory predictor_robustness results or docs/PREDICTOR_ROBUSTNESS.md')
+    exec_meta = read_json(pr_dir / 'execution.json')
+    if exec_meta['status'] != 'exploratory_predictor_robustness_only' or exec_meta['frozen_configs_modified'] or not exec_meta['frozen_checksums_verified']:
+        raise ValueError('Predictor robustness execution metadata check failed')
+    for rel, expected in exec_meta['sha256'].items():
+        actual = hashlib.sha256((root / rel).read_bytes()).hexdigest()
+        if actual != expected:
+            raise ValueError(f'Predictor robustness digest mismatch: {rel}')
+    summary = pd.read_csv(pr_dir / 'summary.csv')
+    if float(summary['id_err_max'].max()) > 1e-12:
+        raise ValueError('Predictor robustness accounting identity R=A*R+ failed')
+    comp = pd.read_csv(pr_dir / 'comparison_table.csv')
+    sieve = pd.read_csv(pr_dir / 'fairness_sieve_by_predictor.csv')
+    tost = pd.read_csv(pr_dir / 'tost_and_divergence.csv')
+    doc = doc_path.read_text(encoding='utf8')
+    if f"Verdict ({exec_meta['verdict']})" not in doc:
+        raise ValueError(f"PREDICTOR_ROBUSTNESS.md missing Verdict ({exec_meta['verdict']})")
+    for row in comp.itertuples():
+        for needle in (
+            row.predictor,
+            f'{row.mae_med_mbps:.2f}',
+            f'{row.mob_r_pos_hi_med_pct:.1f}',
+            f'{row.mob_u_med_pct:.2f}',
+            f'{row.post21_r_pos_hi_med_pct:.1f}',
+            f'{row.sla_flip_pct:.1f}',
+            f'{row.rank_flip_pct:.1f}',
+            f'{row.q_mismatch_pct:.1f}',
+            f'{row.miss_overlap_pct:.1f}',
+            f'{row.pool_flip_pct:.1f}',
+            row.fair_sieve_wins,
+        ):
+            if needle not in doc:
+                raise ValueError(f'PREDICTOR_ROBUSTNESS.md value mismatch for {row.predictor}: {needle}')
+    for row in sieve.itertuples():
+        if row.evidence_tier != 'exploratory':
+            raise ValueError('Fairness sieve row must carry exploratory label')
+    if (tost['evidence_tier'] != 'exploratory').any() or (summary['evidence_tier'] != 'exploratory').any():
+        raise ValueError('Predictor robustness CSV rows must be labeled exploratory')
+    raw_adj = int((tost['p_adj_eq_rel50'] < 0.05).sum())
+    bh_adj = int((tost['p_adj_eq_rel50_bh'] < 0.05).sum())
+    holm_adj = int((tost['p_adj_eq_rel50_holm'] < 0.05).sum())
+    for tok in (f'{raw_adj}/{len(tost)}', f'{bh_adj}/{len(tost)}', f'{holm_adj}/{len(tost)}'):
+        if tok not in doc:
+            raise ValueError(f'Multiplicity count mismatch in PREDICTOR_ROBUSTNESS.md: {tok}')
+
+
+def validate_predictor_robustness(root):
+    """Verify exploratory predictor-robustness outputs, frozen checksums, Holm/BH order, and docs sync."""
+    rob_dir = root/'results/exploratory/predictor_robustness'
+    cfg = read_json(root/'configs/predictor_robustness_exploratory.json')
+    pacer_lock = read_json(root/'results/pacer/frozen_config_checksums.json')
+    for rel, expected in pacer_lock['sha256_lf'].items():
+        actual = hashlib.sha256((root/rel).read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+        if actual != expected:
+            raise ValueError(f'Frozen file checksum changed during robustness checks: {rel}')
+    exec_rec = read_json(rob_dir/'execution.json')
+    if exec_rec.get('status') != 'exploratory_predictor_robustness_only' or exec_rec.get('evidence_tier') != 'exploratory':
+        raise ValueError('Predictor robustness execution status/tier check failed')
+    if exec_rec.get('frozen_configs_modified') or not exec_rec.get('frozen_checksums_verified'):
+        raise ValueError('Predictor robustness frozen integrity flag check failed')
+    if exec_rec.get('ref_5cand_sieve_parity') != '3/28 (3/100)':
+        raise ValueError(f"Expected 3/28 (3/100) reference parity, got {exec_rec.get('ref_5cand_sieve_parity')}")
+    if exec_rec.get('verdict') not in {'A', 'B', 'C'}:
+        raise ValueError(f"Invalid verdict in execution.json: {exec_rec.get('verdict')}")
+
+    comp = pd.read_csv(rob_dir/'comparison_table.csv')
+    summ = pd.read_csv(rob_dir/'summary.csv')
+    tost = pd.read_csv(rob_dir/'tost_and_divergence.csv')
+    sieve = pd.read_csv(rob_dir/'fairness_sieve_by_predictor.csv')
+    abl = pd.read_csv(rob_dir/'ablation_by_predictor.csv')
+    if len(comp) != 10 or not (summ['evidence_tier'] == 'exploratory').all():
+        raise ValueError('Comparison table size or exploratory label check failed')
+    if float(summ['id_err_max'].max()) > 1e-12:
+        raise ValueError(f"Predictor robustness accounting identity R=A*R+ error exceeded tolerance: {summ['id_err_max'].max()}")
+    if (abl['campaigns_k'] != 6).any() or not (abl['evidence_tier'] == 'exploratory').all():
+        raise ValueError('Campaign-level bootstrap ablation metadata check failed')
+
+    # Verify Holm >= BH >= raw p-value ordering across every adjusted p-value column
+    for pcol in ['p_eq_rel50', 'p_eq_rel25', 'p_pool_rel50', 'p_abs_1pp', 'p_abs_2pp', 'p_adj_eq_rel50', 'p_adj_eq_rel25', 'p_adj_2pp']:
+        raw = tost[pcol].to_numpy(dtype=float)
+        holm = tost[f'{pcol}_holm'].to_numpy(dtype=float)
+        bh = tost[f'{pcol}_bh'].to_numpy(dtype=float)
+        m = np.isfinite(raw)
+        if m.any() and not ((holm[m] + 1e-12 >= bh[m]).all() and (bh[m] + 1e-12 >= raw[m]).all()):
+            raise ValueError(f'Multiplicity adjustment ordering violated in {pcol}')
+
+    # Verify HistGBM_57_Ref matches frozen summary metrics cleanly
+    pacer_saved = pd.read_csv(root/'results/pacer/pacer_summary.csv')
+    coh_led = pd.read_csv(rob_dir/'cohort_policy_ledger.csv')
+    for pol_new, pol_saved in (('Periodic', 'Periodic'), ('MARUR', 'MARUR'), ('PACER', 'PACER'), ('ACI_g0.05', 'ACI')):
+        a = coh_led[(coh_led['predictor'] == 'HistGBM_57_Ref') & (coh_led['scenario'] == 'Recorded') & (coh_led['policy'] == pol_new)].sort_values(['cohort', 'cap_new'])
+        b = pacer_saved[(pacer_saved['model'] == 'HistGBM') & (pacer_saved['scenario'] == 'Recorded') & (pacer_saved['policy'] == pol_saved)].sort_values(['cohort', 'cap_new'])
+        np.testing.assert_allclose(a['positive_high'].to_numpy(), b['positive_high'].to_numpy(), rtol=1e-12, atol=1e-12)
+        np.testing.assert_allclose(a['u'].to_numpy(), b['u'].to_numpy(), rtol=1e-12, atol=1e-12)
+
+    # Bind docs/PREDICTOR_ROBUSTNESS.md and docs/PAPER_REVISION_NOTES.md to CSV numbers & verdict
+    doc_txt = (root/'docs/PREDICTOR_ROBUSTNESS.md').read_text(encoding='utf8')
+    notes_txt = (root/'docs/PAPER_REVISION_NOTES.md').read_text(encoding='utf8')
+    if f"Verdict `({exec_rec['verdict']})`" not in doc_txt or 'Verdict A' not in notes_txt:
+        raise ValueError('Predictor robustness verdict missing from documentation')
+    for row in comp.itertuples():
+        for needle in (
+            row.predictor,
+            f'{row.mae_med_mbps:.2f}',
+            f'{row.mob_r_pos_hi_med_pct:.2f}',
+            f'{row.mob_u_med_pct:.2f}',
+            f'{row.post21_r_pos_hi_med_pct:.2f}',
+            f'{row.sla_flip_pct:.1f}',
+            row.fair_sieve_wins,
+            row.net_sieve_wins,
+        ):
+            if needle not in doc_txt:
+                raise ValueError(f'Comparison metric {needle} for {row.predictor} missing from docs/PREDICTOR_ROBUSTNESS.md')
+    if len(sieve) != 10 or not (rob_dir/'fig_predictor_robustness.png').is_file() or not (rob_dir/'fig_predictor_robustness.pdf').is_file():
+        raise ValueError('Predictor robustness figure or sieve CSV incomplete')
+    if 'q_match_tol' not in cfg.get('fairness_sieve', {}):
+        raise ValueError('Pre-committed robustness config missing fairness_sieve threshold')
+
+
+def validate_predictor_robustness(root: Path = ROOT) -> None:
+    """Bind exploratory predictor-robustness CSVs, docs/PREDICTOR_ROBUSTNESS.md, and any future paper citations."""
+    from src.predictors.analysis import adjust_pvalues_holm_bh
+
+    pr_dir = root / 'results/exploratory/predictor_robustness'
+    exec_meta = read_json(pr_dir / 'execution.json')
+    if exec_meta.get('frozen_configs_modified') or not exec_meta.get('frozen_checksums_verified'):
+        raise ValueError('Predictor robustness run failed frozen checksum verification')
+    if exec_meta.get('verdict') not in ('A', 'B', 'C'):
+        raise ValueError(f"Invalid predictor robustness verdict: {exec_meta.get('verdict')}")
+
+    summ = pd.read_csv(pr_dir / 'summary.csv')
+    comp = pd.read_csv(pr_dir / 'comparison_table.csv')
+    abl = pd.read_csv(pr_dir / 'ablation_by_predictor.csv')
+    tost = pd.read_csv(pr_dir / 'tost_and_divergence.csv')
+    sieve = pd.read_csv(pr_dir / 'fairness_sieve_by_predictor.csv')
+
+    if summ.empty or float(summ['id_err_max'].max()) > 1e-12:
+        raise ValueError('Predictor robustness summary failed R=A*R+ identity tolerance')
+    if not (summ['evidence_tier'] == 'exploratory').all() or not (tost['evidence_tier'] == 'exploratory').all():
+        raise ValueError('Predictor robustness outputs must carry exploratory evidence_tier label')
+    if len(comp) != 10 or len(tost) != 180 or len(abl) != 100 or len(sieve) != 10:
+        raise ValueError('Unexpected row counts in predictor robustness tables')
+
+    # Re-verify Holm and Benjamini-Hochberg adjustments directly on tost_and_divergence.csv
+    p_cols = ['p_eq_rel50', 'p_eq_rel25', 'p_pool_rel50', 'p_abs_1pp', 'p_abs_2pp', 'p_adj_eq_rel50', 'p_adj_eq_rel25', 'p_adj_2pp']
+    flat_p = np.concatenate([tost[c].to_numpy(dtype=float) for c in p_cols])
+    holm_exp, bh_exp = adjust_pvalues_holm_bh(flat_p)
+    n_tost = len(tost)
+    for idx, col in enumerate(p_cols):
+        np.testing.assert_allclose(tost[f'{col}_holm'].to_numpy(dtype=float), holm_exp[idx * n_tost : (idx + 1) * n_tost], rtol=1e-11, atol=1e-12, equal_nan=True)
+        np.testing.assert_allclose(tost[f'{col}_bh'].to_numpy(dtype=float), bh_exp[idx * n_tost : (idx + 1) * n_tost], rtol=1e-11, atol=1e-12, equal_nan=True)
+
+    doc_txt = (root / 'docs/PREDICTOR_ROBUSTNESS.md').read_text(encoding='utf8')
+    if f"Verdict ({exec_meta['verdict']})" not in doc_txt:
+        raise ValueError('docs/PREDICTOR_ROBUSTNESS.md missing matching Verdict')
+    for _, row in comp.iterrows():
+        pred = str(row['predictor'])
+        expected_tokens = [
+            pred,
+            f"{row['mae_med_mbps']:.2f}",
+            f"{row['mob_r_pos_hi_med_pct']:.1f}",
+            f"{row['mob_u_med_pct']:.2f}",
+            f"{row['sla_flip_pct']:.1f}",
+            f"{row['rank_flip_pct']:.1f}",
+        ]
+        for tok in expected_tokens:
+            if tok not in doc_txt:
+                raise ValueError(f'docs/PREDICTOR_ROBUSTNESS.md missing {pred} token: {tok}')
+
+    # Verify Ref Retro C=10 PACER adjusted multiplicity claim in docs/PREDICTOR_ROBUSTNESS.md
+    ref_r10 = tost[
+        (tost['predictor'] == 'HistGBM_57_Ref') & (tost['scope'] == 'Retrospective') & (tost['cap_new'] == 10) & (tost['candidate'] == 'PACER')
+    ].iloc[0]
+    for tok in [f"{ref_r10['p_adj_eq_rel50']:.4f}", f"{ref_r10['p_adj_eq_rel50_bh']:.4f}", f"{ref_r10['p_adj_eq_rel50_holm']:.3f}"]:
+        if tok not in doc_txt:
+            raise ValueError(f'docs/PREDICTOR_ROBUSTNESS.md missing multiplicity token: {tok}')
+
+    # If the manuscript cites any new predictor robustness numbers, bind them strictly to comparison_table.csv
+    paper_combined = (root / 'paper/manuscript.tex').read_text(encoding='utf8') + '\n' + (root / 'paper/supplementary.tex').read_text(encoding='utf8')
+    for _, row in comp.iterrows():
+        pred = str(row['predictor'])
+        if not pred.endswith('_LOCampO') or pred not in paper_combined:
+            continue
+        rhi_str = f"{row['mob_r_pos_hi_med_pct']:.1f}"
+        u_str = f"{row['mob_u_med_pct']:.2f}"
+        if rhi_str not in paper_combined or u_str not in paper_combined:
+            raise ValueError(f'Manuscript cites {pred} without matching CSV values ({rhi_str}%, {u_str}%)')
+
+
 def validate(root=ROOT):
     validate_marur_claims(root)
     validate_reviewer_claims(root)
     validate_pacer_claims(root)
+    validate_predictor_robustness(root)
+    validate_predictor_robustness(root)
+    validate_predictor_robustness(root)
     verify_clock_frontier(root)
     verify_revision_ledgers(root)
     verify_drive3(root)

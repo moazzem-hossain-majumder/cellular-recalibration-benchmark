@@ -1,0 +1,101 @@
+predictor,scenario_filter,factor,label,evidence_tier,campaigns_k,n_total,n_affected,pct_affected,camp_boot_ci95_lo,camp_boot_ci95_hi
+HistGBM_57_Ref,All,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,280,180,64.28571428571429,37.244897959183675,82.14285714285714
+HistGBM_57_Ref,All,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,280,67,23.92857142857143,17.258928571428573,32.142857142857146
+HistGBM_57_Ref,All,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,280,62,22.142857142857142,19.636479591836736,24.489795918367346
+HistGBM_57_Ref,All,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,201,121,60.19900497512438,41.37931034482759,70.12987012987013
+HistGBM_57_Ref,All,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,84,37,44.047619047619044,7.142857142857143,51.19047619047619
+HistGBM_57_Ref,Recorded,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,140,88,62.857142857142854,36.70918367346939,80.0
+HistGBM_57_Ref,Recorded,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,140,35,25.0,19.047619047619047,32.6530612244898
+HistGBM_57_Ref,Recorded,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,140,31,22.142857142857142,19.636479591836736,24.489795918367346
+HistGBM_57_Ref,Recorded,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,101,60,59.4059405940594,39.726027397260275,70.0
+HistGBM_57_Ref,Recorded,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,42,17,40.476190476190474,7.142857142857143,52.38095238095238
+Persistence,All,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,280,128,45.714285714285715,29.910714285714285,59.61538461538461
+Persistence,All,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,280,88,31.428571428571427,21.428571428571427,40.10989010989011
+Persistence,All,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,280,62,22.142857142857142,19.636479591836736,24.489795918367346
+Persistence,All,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,196,114,58.16326530612245,34.523809523809526,71.07142857142857
+Persistence,All,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,84,26,30.952380952380953,8.333333333333334,36.904761904761905
+Persistence,Recorded,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,140,63,45.0,28.571428571428573,59.34065934065934
+Persistence,Recorded,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,140,46,32.857142857142854,23.214285714285715,41.75824175824176
+Persistence,Recorded,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,140,31,22.142857142857142,19.636479591836736,24.489795918367346
+Persistence,Recorded,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,98,58,59.183673469387756,34.523809523809526,72.72727272727273
+Persistence,Recorded,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,42,12,28.57142857142857,11.904761904761905,38.095238095238095
+HistGBM_Reg_LOCampO,All,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,280,169,60.357142857142854,48.05194805194805,72.72727272727273
+HistGBM_Reg_LOCampO,All,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,280,62,22.142857142857142,17.857142857142858,26.948051948051948
+HistGBM_Reg_LOCampO,All,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,280,62,22.142857142857142,19.636479591836736,24.489795918367346
+HistGBM_Reg_LOCampO,All,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,228,156,68.42105263157895,52.32426004228329,80.44871794871794
+HistGBM_Reg_LOCampO,All,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,84,16,19.047619047619047,2.380952380952381,27.38095238095238
+HistGBM_Reg_LOCampO,Recorded,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,140,80,57.14285714285714,43.75,70.12987012987013
+HistGBM_Reg_LOCampO,Recorded,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,140,30,21.428571428571427,13.26530612244898,26.623376623376622
+HistGBM_Reg_LOCampO,Recorded,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,140,31,22.142857142857142,19.636479591836736,24.489795918367346
+HistGBM_Reg_LOCampO,Recorded,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,114,79,69.2982456140351,54.54545454545455,80.52435064935062
+HistGBM_Reg_LOCampO,Recorded,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,42,8,19.047619047619047,2.380952380952381,26.19047619047619
+HistGBM_Mono_LOCampO,All,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,280,204,72.85714285714285,59.28084415584416,86.16071428571429
+HistGBM_Mono_LOCampO,All,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,280,78,27.857142857142858,22.321428571428573,32.53968253968254
+HistGBM_Mono_LOCampO,All,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,280,62,22.142857142857142,19.636479591836736,24.489795918367346
+HistGBM_Mono_LOCampO,All,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,231,132,57.14285714285714,48.44481605351171,62.69982993197278
+HistGBM_Mono_LOCampO,All,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,84,34,40.476190476190474,7.142857142857143,46.42857142857143
+HistGBM_Mono_LOCampO,Recorded,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,140,98,70.0,53.96825396825397,84.12698412698413
+HistGBM_Mono_LOCampO,Recorded,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,140,39,27.857142857142858,24.107142857142858,31.74783549783549
+HistGBM_Mono_LOCampO,Recorded,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,140,31,22.142857142857142,19.636479591836736,24.489795918367346
+HistGBM_Mono_LOCampO,Recorded,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,116,65,56.03448275862068,47.05882352941177,61.42857142857143
+HistGBM_Mono_LOCampO,Recorded,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,42,18,42.857142857142854,7.142857142857143,50.0
+Ridge_LOCampO,All,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,280,168,60.0,48.214285714285715,71.438492063492
+Ridge_LOCampO,All,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,280,73,26.071428571428573,20.535714285714285,32.142857142857146
+Ridge_LOCampO,All,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,280,62,22.142857142857142,19.636479591836736,24.489795918367346
+Ridge_LOCampO,All,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,196,113,57.6530612244898,44.04761904761905,75.0
+Ridge_LOCampO,All,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,84,33,39.285714285714285,10.714285714285714,54.76190476190476
+Ridge_LOCampO,Recorded,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,140,81,57.85714285714286,44.642857142857146,69.05612244897955
+Ridge_LOCampO,Recorded,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,140,37,26.42857142857143,21.428571428571427,31.428571428571427
+Ridge_LOCampO,Recorded,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,140,31,22.142857142857142,19.636479591836736,24.489795918367346
+Ridge_LOCampO,Recorded,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,98,57,58.16326530612245,45.23809523809524,75.0
+Ridge_LOCampO,Recorded,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,42,17,40.476190476190474,7.142857142857143,54.76190476190476
+ElasticNet_LOCampO,All,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,280,170,60.71428571428571,51.98412698412698,71.42857142857143
+ElasticNet_LOCampO,All,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,280,66,23.57142857142857,17.5,30.0
+ElasticNet_LOCampO,All,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,280,62,22.142857142857142,19.636479591836736,24.489795918367346
+ElasticNet_LOCampO,All,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,196,112,57.14285714285714,42.142857142857146,72.16326530612233
+ElasticNet_LOCampO,All,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,84,37,44.047619047619044,11.904761904761905,53.57142857142857
+ElasticNet_LOCampO,Recorded,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,140,82,58.57142857142858,49.20634920634921,68.25396825396825
+ElasticNet_LOCampO,Recorded,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,140,34,24.285714285714285,19.285714285714285,29.365079365079364
+ElasticNet_LOCampO,Recorded,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,140,31,22.142857142857142,19.636479591836736,24.489795918367346
+ElasticNet_LOCampO,Recorded,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,98,56,57.14285714285714,42.857142857142854,70.5580357142856
+ElasticNet_LOCampO,Recorded,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,42,19,45.23809523809524,11.904761904761905,54.76190476190476
+QuantileGBM_p10_LOCampO,All,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,280,151,53.92857142857142,32.62914540816327,66.42857142857143
+QuantileGBM_p10_LOCampO,All,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,280,65,23.214285714285715,17.857142857142858,29.5478896103896
+QuantileGBM_p10_LOCampO,All,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,280,62,22.142857142857142,19.636479591836736,24.489795918367346
+QuantileGBM_p10_LOCampO,All,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,200,123,61.5,40.0,74.22042410714285
+QuantileGBM_p10_LOCampO,All,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,84,21,25.0,8.333333333333334,34.523809523809526
+QuantileGBM_p10_LOCampO,Recorded,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,140,74,52.85714285714286,30.605867346938776,65.71428571428571
+QuantileGBM_p10_LOCampO,Recorded,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,140,33,23.57142857142857,18.253968253968253,29.873376623376604
+QuantileGBM_p10_LOCampO,Recorded,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,140,31,22.142857142857142,19.636479591836736,24.489795918367346
+QuantileGBM_p10_LOCampO,Recorded,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,100,61,61.0,40.0,74.21875
+QuantileGBM_p10_LOCampO,Recorded,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,42,10,23.809523809523807,7.142857142857143,35.714285714285715
+QuantileGBM_p90_LOCampO,All,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,280,184,65.71428571428571,51.785714285714285,80.80357142857143
+QuantileGBM_p90_LOCampO,All,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,280,83,29.642857142857142,21.153846153846153,42.410714285714285
+QuantileGBM_p90_LOCampO,All,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,280,62,22.142857142857142,19.636479591836736,24.489795918367346
+QuantileGBM_p90_LOCampO,All,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,202,121,59.900990099009896,53.44827586206897,66.27906976744185
+QuantileGBM_p90_LOCampO,All,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,84,28,33.33333333333333,14.285714285714286,45.23809523809524
+QuantileGBM_p90_LOCampO,Recorded,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,140,88,62.857142857142854,48.05194805194805,78.57142857142857
+QuantileGBM_p90_LOCampO,Recorded,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,140,42,30.0,22.023809523809526,41.964285714285715
+QuantileGBM_p90_LOCampO,Recorded,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,140,31,22.142857142857142,19.636479591836736,24.489795918367346
+QuantileGBM_p90_LOCampO,Recorded,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,101,61,60.396039603960396,53.333333333333336,66.66666666666667
+QuantileGBM_p90_LOCampO,Recorded,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,42,14,33.33333333333333,14.285714285714286,45.23809523809524
+CQR_Unscaled_LOCampO,All,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,280,163,58.214285714285715,33.482142857142854,81.42857142857143
+CQR_Unscaled_LOCampO,All,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,280,97,34.64285714285714,28.96825396825397,38.26646567717995
+CQR_Unscaled_LOCampO,All,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,280,62,22.142857142857142,19.636479591836736,24.489795918367346
+CQR_Unscaled_LOCampO,All,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,200,132,66.0,45.138888888888886,77.45098039215686
+CQR_Unscaled_LOCampO,All,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,84,34,40.476190476190474,13.095238095238095,50.0
+CQR_Unscaled_LOCampO,Recorded,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,140,78,55.714285714285715,30.357142857142858,80.71428571428571
+CQR_Unscaled_LOCampO,Recorded,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,140,50,35.714285714285715,31.746031746031747,40.25974025974026
+CQR_Unscaled_LOCampO,Recorded,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,140,31,22.142857142857142,19.636479591836736,24.489795918367346
+CQR_Unscaled_LOCampO,Recorded,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,100,68,68.0,47.22222222222222,79.87012987012987
+CQR_Unscaled_LOCampO,Recorded,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,42,18,42.857142857142854,11.904761904761905,50.0
+CQR_Scaled_LOCampO,All,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,280,184,65.71428571428571,39.795918367346935,82.93650793650794
+CQR_Scaled_LOCampO,All,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,280,101,36.07142857142857,30.102040816326532,40.714285714285715
+CQR_Scaled_LOCampO,All,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,280,62,22.142857142857142,19.636479591836736,24.489795918367346
+CQR_Scaled_LOCampO,All,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,189,120,63.49206349206349,27.054242749731472,80.13468013468014
+CQR_Scaled_LOCampO,All,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,84,33,39.285714285714285,14.285714285714286,47.61904761904762
+CQR_Scaled_LOCampO,Recorded,R_vs_Rplus_SLA,All-issued R vs Cond R+ (SLA<=10%),exploratory,6,140,89,63.57142857142857,38.775510204081634,80.15873015873017
+CQR_Scaled_LOCampO,Recorded,R_vs_Rplus_Rank,All-issued R vs Cond R+ (Winner),exploratory,6,140,51,36.42857142857142,30.357142857142858,41.55844155844156
+CQR_Scaled_LOCampO,Recorded,Cap_vs_Qnew_All,Nominal Cnew vs Realized Qnew,exploratory,6,140,31,22.142857142857142,19.636479591836736,24.489795918367346
+CQR_Scaled_LOCampO,Recorded,Missing_Bounds_Overlap,"Complete R+meas vs Bounds [lo,hi]",exploratory,6,95,60,63.1578947368421,28.0,79.22077922077922
+CQR_Scaled_LOCampO,Recorded,Pooling_Weight_Rplus,OfferWtd vs EqualUnit Pooling (dR+hi),exploratory,6,42,16,38.095238095238095,11.904761904761905,45.23809523809524

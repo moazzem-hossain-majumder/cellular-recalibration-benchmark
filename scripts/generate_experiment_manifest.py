@@ -17,6 +17,8 @@ PACKAGES = ['torch','pandas','numpy','scipy','scikit-learn','matplotlib','seabor
 PATTERNS = [
     'results/runs/reviewer_revision_completion.json',
     'results/exploratory/reviewer_baselines/*','results/exploratory/sensitivity/*',
+    'results/exploratory/predictor_robustness/*',
+    'results/exploratory/predictor_robustness/*',
     'results/exploratory/marur_information/*','docs/MARUR_INFORMATION_EXPERIMENT*.md',
     'literature_review/*.tex','literature_review/*.bib','literature_review/*.csv','literature_review/*.md','literature_review/*.pdf',
     'literature_review/_support/verification_sources.json','literature_review/_support/validation.json',

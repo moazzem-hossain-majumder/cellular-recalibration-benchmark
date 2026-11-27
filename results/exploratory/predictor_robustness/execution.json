@@ -1,0 +1,39 @@
+{
+  "start_utc": "2026-11-26T17:27:31.541596+00:00",
+  "end_utc": "2026-11-26T17:43:36.207322+00:00",
+  "status": "exploratory_predictor_robustness_only",
+  "evidence_tier": "exploratory",
+  "frozen_configs_modified": false,
+  "frozen_checksums_verified": true,
+  "pre_committed_config": {
+    "git_head": "a7902bbfb34f2ed4dda96c4dcbedb4fb741fb652",
+    "config_clean_at_run": true,
+    "config_path": "configs/predictor_robustness_exploratory.json"
+  },
+  "config_sha256_lf": "992a5443d3f8cd499e18106aad176526ce0fe665b30898e8b0869adc0828b8bf",
+  "verdict": "A",
+  "min_nonref_mobile_rhi_med_pct": 40.52361853832443,
+  "min_nonref_post21_rhi_med_pct": 43.24324324324324,
+  "min_nonref_peak_flip_pct": 58.16326530612245,
+  "ref_5cand_sieve_parity": "3/28 (3/100)",
+  "counts": {
+    "summary_rows": 1700,
+    "cohort_policy_rows": 3400,
+    "ablation_rows": 100,
+    "tost_rows": 180,
+    "sieve_rows": 10
+  },
+  "sha256": {
+    "results/exploratory/predictor_robustness/ablation_by_predictor.csv": "ed823655cb03fec177577b40009a60ce94995306db396c6d112845d072cb27e9",
+    "results/exploratory/predictor_robustness/cluster_policy_ledger.csv.gz": "4c3dae8c3f549917b5de2415b7ab03b4403c7510ed075b35907a8f9a0ffe23ea",
+    "results/exploratory/predictor_robustness/cohort_policy_ledger.csv": "b1c7a632dff9c9ab34855b50f5ea5b36565308fa23be718b7e4372956895fe7e",
+    "results/exploratory/predictor_robustness/comparison_table.csv": "a46c9e202152568dd41bfc35a566bc317f6be45dd4ec1b5496749de9b3b37316",
+    "results/exploratory/predictor_robustness/fairness_sieve_by_predictor.csv": "cf8fdc4deec26cd8175016c442910f0c43c2fbb6ed224cfcb6038de2b9d4f3e1",
+    "results/exploratory/predictor_robustness/fig_predictor_robustness.pdf": "10dfb0282a9a70d75095fd1e60611155399f6f5dc8658ef41818ca76d9eab61e",
+    "results/exploratory/predictor_robustness/fig_predictor_robustness.png": "2e0151db6ec77c3cf08b3c6e66582654716af1603a50458b148b05fe057e52ea",
+    "results/exploratory/predictor_robustness/fold_training_summary.csv": "7fe74bb061fca152b6f86f1d07f8b7e9ed02740079358731325d4c18466dc957",
+    "results/exploratory/predictor_robustness/point_accuracy.csv": "f5a134158c70528680d6f1fda683f32104c788b576e88946bd90c6a346a16f04",
+    "results/exploratory/predictor_robustness/summary.csv": "fcaa782039e9e7feca066f49a9b6aa623958c508c611cebd3095b3e8ace7e3b1",
+    "results/exploratory/predictor_robustness/tost_and_divergence.csv": "497cb9e34b564e92853da96c25bad3e64256c5b5aad88f6870928f09d6b93a39"
+  }
+}
